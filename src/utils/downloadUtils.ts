@@ -125,14 +125,15 @@ export async function consolidateLabels(
   exportInfos: IExportInfos,
   formatUsingLayerPopup = true,
   includeHeaderNames = false,
-  isCSVExport = false
+  isCSVExport = false,
+  fields = []
 ): Promise<string[][]> {
   const labelRequests = [];
 
   Object.keys(exportInfos).forEach(k => {
     const labelInfo: IExportInfo = exportInfos[k];
     labelRequests.push(
-      _prepareLabels(webmap, labelInfo.layerView?.layer || labelInfo.layer, labelInfo.ids, formatUsingLayerPopup, includeHeaderNames)
+      _prepareLabels(webmap, labelInfo.layerView?.layer || labelInfo.layer, labelInfo.ids, formatUsingLayerPopup, includeHeaderNames, fields)
     );
     if (isCSVExport) {
       // add the layer id as a temp value separator that we can use to split values for CSV export
@@ -160,9 +161,10 @@ export async function downloadCSV(
   exportInfos: IExportInfos,
   formatUsingLayerPopup: boolean,
   removeDuplicates = false,
-  addColumnTitle = false
+  addColumnTitle = false,
+  fields = []
 ): Promise<void> {
-  let labels = await consolidateLabels(webmap, exportInfos, formatUsingLayerPopup, addColumnTitle, true);
+  let labels = await consolidateLabels(webmap, exportInfos, formatUsingLayerPopup, addColumnTitle, true, fields);
   labels = removeDuplicates ? removeDuplicateLabels(labels) : labels;
 
   const layerIds = Object.keys(exportInfos);
@@ -838,7 +840,8 @@ export async function _prepareLabels(
   layer: __esri.FeatureLayer,
   ids: number[],
   formatUsingLayerPopup = true,
-  includeHeaderNames = false
+  includeHeaderNames = false,
+  fields = []
 ): Promise<string[][]> {
   // Get the label formatting, if any
   const labelFormatProps: ILabelFormatProps = await _getLabelFormat(webmap, layer, formatUsingLayerPopup);
@@ -909,7 +912,8 @@ export async function _prepareLabels(
 
   } else {
     // Get the features to export
-    featureSet = await queryFeaturesByID(ids, featureLayer, [], false);
+    const outFields = fields.length > 0 ? fields : undefined;
+    featureSet = await queryFeaturesByID(ids, featureLayer, [], false, undefined, outFields);
   }
 
   // Get field data types. Do we have any domain-based fields?
@@ -920,18 +924,22 @@ export async function _prepareLabels(
   if (featureLayer.fields) {
     featureLayer.fields.forEach(
       field => {
-        const lowercaseFieldname = field.name.toLowerCase();
-        attributeOrigNames[lowercaseFieldname] = field.name;
-        attributeDomains[lowercaseFieldname] = field.domain;
-        attributeTypes[lowercaseFieldname] = field.type;
+        if (fields.indexOf(field.name.toLowerCase()) > -1) {
+          const lowercaseFieldname = field.name.toLowerCase();
+          attributeOrigNames[lowercaseFieldname] = field.name;
+          attributeDomains[lowercaseFieldname] = field.domain;
+          attributeTypes[lowercaseFieldname] = field.type;
+        }
       }
     );
   } else {
     // Feature layer is missing fields, so get info from first feature
     Object.keys(featureSet[0]).forEach(
       fieldName => {
-        const lowercaseFieldname = fieldName.toLowerCase();
-        attributeOrigNames[lowercaseFieldname] = fieldName;
+        if (fields.indexOf(fieldName.toLowerCase()) > -1) {
+          const lowercaseFieldname = fieldName.toLowerCase();
+          attributeOrigNames[lowercaseFieldname] = fieldName;
+        }
       }
     )
   }

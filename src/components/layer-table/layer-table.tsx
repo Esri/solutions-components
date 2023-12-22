@@ -1898,12 +1898,19 @@ export class LayerTable {
       ids,
       layer: this._layer
     }
+    const fields = this._table.columns.toArray().reduce((prev, cur) => {
+      if (!(cur as any).hidden) {
+        prev.push((cur as any).name.toLocaleLowerCase());
+      }
+      return prev;
+    }, []);
     void downloadUtils.downloadCSV(
       null,//???
       exportInfos,
       false, // formatUsingLayerPopup
       false, // removeDuplicates
       true, // addColumnTitle
+      fields
     );
   }
 
