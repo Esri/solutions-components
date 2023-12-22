@@ -1666,6 +1666,7 @@ export class LayerTable {
     return (
       <calcite-modal
         aria-labelledby="modal-title"
+        class="modal"
         kind="brand"
         onCalciteModalClose={async () => this._closeFilter()}
         open={this._filterOpen}
