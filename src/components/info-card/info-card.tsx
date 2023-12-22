@@ -18,6 +18,8 @@ import { Component, Element, Event, EventEmitter, Host, h, Listen, Method, Prop,
 import InfoCard_T9n from "../../assets/t9n/info-card/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { loadModules } from "../../utils/loadModules";
+import { PopupUtils } from "../../utils/popupUtils";
+import { IPopupUtils } from "../../utils/interfaces";
 
 @Component({
   tag: "info-card",
@@ -127,6 +129,11 @@ export class InfoCard {
   protected _features: __esri.Features;
 
   /**
+   * IPopupUtils: When false alerts will be shown to indicate that the layer must have editing enabled for edit actions
+   */
+  protected _popupUtils: IPopupUtils;
+
+  /**
    * esri/core/reactiveUtils: https://developers.arcgis.com/javascript/latest/api-reference/esri-core-reactiveUtils.html
    */
   protected reactiveUtils: typeof import("esri/core/reactiveUtils");
@@ -148,6 +155,7 @@ export class InfoCard {
     if (this.graphics.length > 0) {
       const featureLayer = (this.graphics[0]?.layer as __esri.FeatureLayer);
       this._editEnabled = featureLayer.editingEnabled && featureLayer.capabilities.operations.supportsUpdate;
+      this._mobileTitle = await this._popupUtils.getPopupTitle(this.graphics[0]);
       this._features.open({
         features: this.graphics
       });
@@ -241,6 +249,7 @@ export class InfoCard {
   async componentWillLoad(): Promise<void> {
     await this._initModules();
     await this._getTranslations();
+    this._popupUtils = new PopupUtils();
   }
 
   /**
@@ -433,12 +442,6 @@ export class InfoCard {
             if (!isOpen) {
               this._showListView = isOpen;
             }
-          });
-
-        this.reactiveUtils.watch(
-          () => this._features.viewModel.title,
-          (title) => {
-            this._mobileTitle = title;
           });
 
         if (this.zoomAndScrollToSelected) {
