@@ -169,12 +169,12 @@ export class SolutionSpatialRef {
    * Toggles the ability to set the default spatial reference.
    */
   protected _updateLocked(event: any): void {
-    this.locked = !event.detail.switched;
+    this.locked = !event.target.checked;
     this._updateStore();
     if (!this.loaded) {
       // when this is switched on when loading we have reloaded a solution that
       // has a custom wkid param and we should honor the settings they already have in the templates
-      if (event.detail.switched) {
+      if (event.target.checked) {
         // By default enable all Feature Services on first load
         this._setFeatureServiceDefaults(this.services);
       }
@@ -241,12 +241,12 @@ export class SolutionSpatialRef {
    */
   protected _updateEnabledServices(event: any, name: string): void {
     const spatialReferenceInfo = state.getStoreInfo("spatialReferenceInfo");
-    spatialReferenceInfo.services[name] = event.detail.switched;
+    spatialReferenceInfo.services[name] = event.target.checked;
     state.setStoreInfo("spatialReferenceInfo", spatialReferenceInfo);
 
     this.featureServiceSpatialReferenceChange.emit({
       name,
-      enabled: event.detail.switched
+      enabled: event.target.checked
     });
   }
 
