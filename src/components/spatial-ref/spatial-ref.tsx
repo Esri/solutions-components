@@ -67,6 +67,14 @@ export class SpatialRef {
       searchBox.value = this._srSearchText = "";
     }
     this._clearSelection();
+
+    if (this._cachedValue !== this.value) {
+      this.spatialReferenceChange.emit({
+        oldValue: this._cachedValue,
+        newValue: this.value
+      });
+      this._cachedValue = this.value;
+    }
   }
 
   //--------------------------------------------------------------------------
@@ -112,6 +120,11 @@ export class SpatialRef {
   //  Properties (protected)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Holds a pre-change value of the wkid so that an event can be posted with the cached and new values.
+   */
+  @State() protected _cachedValue = this.defaultWkid.toString();
 
   /**
    * Internal representation of component's value for display purposes.
@@ -229,10 +242,6 @@ export class SpatialRef {
    */
   protected _setSpatialRef(wkid: string): void {
     if (this.value !== wkid) {
-      this.spatialReferenceChange.emit({
-        oldValue: this.value,
-        newValue: wkid
-      });
       this.value = wkid;
     }
   }
