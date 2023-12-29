@@ -61,10 +61,6 @@ export class SpatialRef {
 
   @Watch("value")
   valueChanged(newValue: string): void {
-    this.spatialReferenceChange.emit({
-      oldValue: this.value,
-      newValue: newValue
-    });
     this._spatialRef = this._createSpatialRefDisplay(newValue);
     const searchBox = document.getElementById("calcite-sr-search") as HTMLCalciteInputElement;
     if (searchBox) {
@@ -233,6 +229,10 @@ export class SpatialRef {
    */
   protected _setSpatialRef(wkid: string): void {
     if (this.value !== wkid) {
+      this.spatialReferenceChange.emit({
+        oldValue: this.value,
+        newValue: wkid
+      });
       this.value = wkid;
     }
   }
