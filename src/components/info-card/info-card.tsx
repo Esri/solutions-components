@@ -163,6 +163,7 @@ export class InfoCard {
       this._features.clear();
       this._features.close();
     }
+    this._count = this._getCount();
   }
 
   /**
@@ -348,7 +349,7 @@ export class InfoCard {
                   icon="list"
                   onClick={() => this._toggleListView()}
                   scale="s"
-                  text={this._getCount()}
+                  text={this._count}
                   textEnabled={true}
                 />
               </div>
