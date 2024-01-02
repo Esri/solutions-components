@@ -1852,6 +1852,7 @@ export class LayerTable {
   protected _clearSelection(): void {
     this._selectedIndexes = [];
     this._table?.highlightIds.removeAll();
+    this._finishOnChange();
   }
 
   /**
