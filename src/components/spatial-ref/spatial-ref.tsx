@@ -61,16 +61,20 @@ export class SpatialRef {
 
   @Watch("value")
   valueChanged(newValue: string): void {
-    this.spatialReferenceChange.emit({
-      oldValue: this.value,
-      newValue: newValue
-    });
     this._spatialRef = this._createSpatialRefDisplay(newValue);
     const searchBox = document.getElementById("calcite-sr-search") as HTMLCalciteInputElement;
     if (searchBox) {
       searchBox.value = this._srSearchText = "";
     }
     this._clearSelection();
+
+    if (this._cachedValue !== this.value) {
+      this.spatialReferenceChange.emit({
+        oldValue: this._cachedValue,
+        newValue: this.value
+      });
+      this._cachedValue = this.value;
+    }
   }
 
   //--------------------------------------------------------------------------
@@ -116,6 +120,11 @@ export class SpatialRef {
   //  Properties (protected)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Holds a pre-change value of the wkid so that an event can be posted with the cached and new values.
+   */
+  @State() protected _cachedValue = this.defaultWkid.toString();
 
   /**
    * Internal representation of component's value for display purposes.
