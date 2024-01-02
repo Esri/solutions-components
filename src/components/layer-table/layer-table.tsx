@@ -1693,6 +1693,7 @@ export class LayerTable {
             onFilterUpdate={() => this._handleFilterUpdate()}
             ref={(el) => this._filterList = el}
             view={this.mapView}
+            zoomBtn={false}
           />
         </div>
       </calcite-modal>
