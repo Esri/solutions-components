@@ -41,9 +41,6 @@ describe('solution-spatial-ref', () => {
     await page.waitForChanges();
     await spatial_ref.setProperty('value', newSpatialRef);
     await page.waitForChanges();
-    /*
-    expect(await spatial_ref.getProperty('value')).toBe(newSpatialRef);
-    */
 
     const solution_spatial_ref = await page.find('solution-spatial-ref');
     expect(await solution_spatial_ref.getProperty('value')).toBe(newSpatialRef);
