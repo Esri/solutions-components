@@ -227,6 +227,16 @@ export class InfoCard {
   }
 
   /**
+   * Reset key properties when the layer selection changes
+   */
+  @Listen("layerSelectionChange", { target: "window" })
+  async layerSelectionChange(): Promise<void> {
+    this._showListView = false;
+    (this._features.viewModel as any).featureMenuOpen = false;
+    this._features.close();
+  }
+
+  /**
    * Refresh the info-card graphics
    */
   @Listen("refreshGraphics", { target: "window" })
