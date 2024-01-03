@@ -1435,7 +1435,6 @@ export class LayerTable {
         this._skipOnChange = true;
         this._previousCurrentId = this._currentId;
         this._currentId = [...this._table.highlightIds.toArray()].reverse()[0];
-
         if (this._previousCurrentId !== this._currentId) {
           // query the layer based on current sort and filters then grab between the current id and previous id
           const orderBy = this._table.activeSortOrders.reduce((prev, cur) => {
@@ -1451,6 +1450,8 @@ export class LayerTable {
 
           const startIndex = _start < _end ? _start : _end;
           const endIndex = _end > _start ? _end : _start;
+
+          this._skipOnChange = startIndex + 1 !== endIndex;
 
           this._selectedIndexes = oids.reduce((prev, cur) => {
             const id = cur;
