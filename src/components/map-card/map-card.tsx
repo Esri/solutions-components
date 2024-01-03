@@ -71,9 +71,10 @@ export class MapCard {
   @Prop() enableFullscreen: boolean;
 
   /**
-   * boolean: when true map tools will be displayed within a expand/collapse widget
+   * boolean: when true map tools will be displayed within a single expand/collapse widget
+   * when false widgets will be loaded individually into expand widgets
    */
-  @Prop() enableMapToolsExpand = true;
+  @Prop() enableSingleExpand = true;
 
   /**
    * boolean: when true the search widget will be available
@@ -300,12 +301,14 @@ export class MapCard {
           enableBasemap={this.enableBasemap}
           enableFloorFilter={this.enableFloorFilter}
           enableFullscreen={this.enableFullscreen}
+          enableHome={this.enableHome}
           enableLegend={this.enableLegend}
-          enableMapToolsExpand={this.enableMapToolsExpand}
           enableSearch={this.enableSearch}
+          enableSingleExpand={this.enableSingleExpand}
           homeZoomToolsSize={this.homeZoomToolsSize}
           mapView={this.mapView}
           mapWidgetsSize={this.mapWidgetsSize}
+          position={this.mapWidgetsPosition}
           ref={(el) => this._mapTools = el}
           searchConfiguration={this._searchConfiguration}
           stackTools={this.stackTools}
