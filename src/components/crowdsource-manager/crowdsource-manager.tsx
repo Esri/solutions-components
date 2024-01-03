@@ -709,8 +709,8 @@ export class CrowdsourceManager {
           enableFullscreen={this.enableFullscreen}
           enableHome={this.enableHome}
           enableLegend={this.enableLegend}
-          enableMapToolsExpand={true}
           enableSearch={this.enableSearch}
+          enableSingleExpand={true}
           hidden={this._expandPopup}
           homeZoomIndex={3}
           homeZoomPosition={"top-left"}

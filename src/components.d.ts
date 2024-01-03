@@ -472,13 +472,13 @@ export namespace Components {
          */
         "enableLegend": boolean;
         /**
-          * boolean: when true map tools will be displayed within a expand/collapse widget
-         */
-        "enableMapToolsExpand": boolean;
-        /**
           * boolean: when true the search widget will be available
          */
         "enableSearch": boolean;
+        /**
+          * boolean: when true map tools will be displayed within a single expand/collapse widget when false widgets will be loaded individually into expand widgets
+         */
+        "enableSingleExpand": boolean;
         /**
           * boolean: When true the map display will be hidden
          */
@@ -797,17 +797,21 @@ export namespace Components {
          */
         "enableFullscreen": boolean;
         /**
+          * boolean: when true the home widget will be available
+         */
+        "enableHome": boolean;
+        /**
           * boolean: when true the legend widget will be available
          */
         "enableLegend": boolean;
         /**
-          * boolean: when true map tools will be displayed within a expand/collapse widget
-         */
-        "enableMapToolsExpand": boolean;
-        /**
           * boolean: when true the search widget will be available
          */
         "enableSearch": boolean;
+        /**
+          * boolean: when true map tools will be displayed within a single expand/collapse widget when false widgets will be loaded individually into expand widgets
+         */
+        "enableSingleExpand": boolean;
         /**
           * "s" | "m" | "l": Used for Zoom and Home tools
          */
@@ -824,6 +828,10 @@ export namespace Components {
           * "s" | "m" | "l": Used for optional map tool widget
          */
         "mapWidgetsSize": "s" | "m" | "l";
+        /**
+          * __esri.UIPosition: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-ui-UI.html#UIPosition The position details for the tools
+         */
+        "position": __esri.UIPosition;
         /**
           * ISearchConfiguration: Configuration details for the Search widget
          */
@@ -2267,13 +2275,13 @@ declare namespace LocalJSX {
          */
         "enableLegend"?: boolean;
         /**
-          * boolean: when true map tools will be displayed within a expand/collapse widget
-         */
-        "enableMapToolsExpand"?: boolean;
-        /**
           * boolean: when true the search widget will be available
          */
         "enableSearch"?: boolean;
+        /**
+          * boolean: when true map tools will be displayed within a single expand/collapse widget when false widgets will be loaded individually into expand widgets
+         */
+        "enableSingleExpand"?: boolean;
         /**
           * boolean: When true the map display will be hidden
          */
@@ -2619,17 +2627,21 @@ declare namespace LocalJSX {
          */
         "enableFullscreen"?: boolean;
         /**
+          * boolean: when true the home widget will be available
+         */
+        "enableHome"?: boolean;
+        /**
           * boolean: when true the legend widget will be available
          */
         "enableLegend"?: boolean;
         /**
-          * boolean: when true map tools will be displayed within a expand/collapse widget
-         */
-        "enableMapToolsExpand"?: boolean;
-        /**
           * boolean: when true the search widget will be available
          */
         "enableSearch"?: boolean;
+        /**
+          * boolean: when true map tools will be displayed within a single expand/collapse widget when false widgets will be loaded individually into expand widgets
+         */
+        "enableSingleExpand"?: boolean;
         /**
           * "s" | "m" | "l": Used for Zoom and Home tools
          */
@@ -2646,6 +2658,10 @@ declare namespace LocalJSX {
           * "s" | "m" | "l": Used for optional map tool widget
          */
         "mapWidgetsSize"?: "s" | "m" | "l";
+        /**
+          * __esri.UIPosition: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-ui-UI.html#UIPosition The position details for the tools
+         */
+        "position"?: __esri.UIPosition;
         /**
           * ISearchConfiguration: Configuration details for the Search widget
          */

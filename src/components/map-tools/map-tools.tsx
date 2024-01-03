@@ -17,6 +17,7 @@
 import { Component, Element, Host, h, Prop, State, VNode, Watch } from '@stencil/core';
 import MapTools_T9n from "../../assets/t9n/map-tools/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
+import { loadModules } from "../../utils/loadModules";
 import { IBasemapConfig, ISearchConfiguration } from "../../utils/interfaces";
 
 @Component({
@@ -70,9 +71,15 @@ export class MapTools {
   @Prop() enableBasemap: boolean;
 
   /**
-   * boolean: when true map tools will be displayed within a expand/collapse widget
+   * boolean: when true the home widget will be available
    */
-  @Prop() enableMapToolsExpand: boolean;
+  @Prop() enableHome: boolean;
+
+  /**
+   * boolean: when true map tools will be displayed within a single expand/collapse widget
+   * when false widgets will be loaded individually into expand widgets
+   */
+  @Prop() enableSingleExpand: boolean;
 
   /**
    * "s" | "m" | "l": Used for Zoom and Home tools
@@ -93,6 +100,12 @@ export class MapTools {
    * "s" | "m" | "l": Used for optional map tool widget
    */
   @Prop() mapWidgetsSize: "s" | "m" | "l" = "m";
+
+  /**
+   * __esri.UIPosition: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-ui-UI.html#UIPosition
+   * The position details for the tools
+   */
+  @Prop() position: __esri.UIPosition = "top-right";
 
   /**
    * ISearchConfiguration: Configuration details for the Search widget
@@ -165,6 +178,11 @@ export class MapTools {
   //--------------------------------------------------------------------------
 
   /**
+   * esri/widgets/Expand: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Expand.html
+   */
+  protected Expand: typeof import("esri/widgets/Expand");
+
+  /**
    * HTMLMapSearchElement: The search element node
    */
   protected _basemapElement: HTMLBasemapGalleryElement;
@@ -188,6 +206,12 @@ export class MapTools {
    * HTMLMapSearchElement: The search element node
    */
   protected _searchElement: HTMLMapSearchElement;
+
+  /**
+   * string[]: List of widget names that have been added to the UI
+   * This prop is only used when enableSingleExpand is false
+   */
+  protected _widgets = [];
 
   //--------------------------------------------------------------------------
   //
@@ -214,7 +238,7 @@ export class MapTools {
   ): Promise<void> {
     if (v) {
       this.mapView.ui.add(this._basemapElement.basemapWidget, {
-        position: "top-right",
+        position: this.position,
         index: 1
       });
     } else {
@@ -232,7 +256,7 @@ export class MapTools {
     const widget = this._floorFilterElement.floorFilterWidget;
     if (v) {
       this.mapView.ui.add(widget, {
-        position: "top-right",
+        position: this.position,
         index: 1
       });
     } else {
@@ -268,7 +292,7 @@ export class MapTools {
   ): Promise<void> {
     if (v) {
       this.mapView.ui.add(this._legendElement.legendWidget, {
-        position: "top-right",
+        position: this.position,
         index: 1
       });
     } else {
@@ -285,7 +309,7 @@ export class MapTools {
   ): Promise<void> {
     if (v) {
       this.mapView.ui.add(this._searchElement.searchWidget, {
-        position: "top-right",
+        position: this.position,
         index: 1
       });
     } else {
@@ -316,6 +340,7 @@ export class MapTools {
    */
   async componentWillLoad(): Promise<void> {
     await this._getTranslations();
+    await this._initModules();
   }
 
   /**
@@ -332,13 +357,13 @@ export class MapTools {
     const fullscreenClass = this._showFullscreen ? "" : "display-none";
     const expandTip = this._showTools ? this._translations.collapse : this._translations.expand;
     const containerClass = !this.enableBasemap && !this.enableFullscreen && !this.enableLegend && !this.enableSearch ? "display-none" : "";
-    const toolMarginClass = this.enableMapToolsExpand ? "margin-top-1-2" : "";
+    const toolMarginClass = this.enableSingleExpand ? "margin-top-1-2" : "";
     const toolOrder = this.toolOrder ? this.toolOrder : ["legend", "search", "fullscreen", "floorfilter"];
     const shadowClass = this.stackTools ? "box-shadow" : "";
     return (
       <Host>
         <div class={containerClass}>
-          {this.enableMapToolsExpand ? (
+          {this.enableSingleExpand ? (
             <div class="box-shadow">
               {this._getActionGroup(toggleIcon, false, expandTip, () => this._toggleTools())}
             </div>
@@ -383,6 +408,26 @@ export class MapTools {
     );
   }
 
+  //--------------------------------------------------------------------------
+  //
+  //  Functions (protected)
+  //
+  //--------------------------------------------------------------------------
+
+  /**
+   * Load esri javascript api modules
+   *
+   * @returns Promise resolving when function is done
+   *
+   * @protected
+   */
+  protected async _initModules(): Promise<void> {
+    const [Expand] = await loadModules([
+      "esri/widgets/Expand"
+    ]);
+    this.Expand = Expand;
+  }
+
   /**
    * Set the size of the zoom tools based on the user defined homeZoomToolsSize variable.
    *
@@ -413,25 +458,25 @@ export class MapTools {
     return toolOrder.map(t => {
       switch (t) {
         case "legend":
-          return this.enableLegend ?
+          return this.enableLegend && this.enableSingleExpand ?
             this._getActionGroup("legend", false, this._translations.legend, () => this._showLegend()) :
-            undefined;
+            this.enableLegend ? this._getWidget(t, this._legendElement?.legendWidget, true) : undefined;
         case "search":
-          return this.enableSearch ?
+          return this.enableSearch && this.enableSingleExpand ?
             this._getActionGroup("magnifying-glass", false, this._translations.search, () => this._search()) :
-            undefined;
+            this.enableSearch ? this._getWidget(t, this._searchElement?.searchWidget, true) : undefined;
         case "fullscreen":
-          return this.enableFullscreen ?
+          return this.enableFullscreen && this.enableSingleExpand ?
             this._getActionGroup(fullscreenIcon, false, fullscreenTip, () => this._expand()) :
-            undefined;
+            this.enableFullscreen ? this._getWidget(t, this._fullscreenElement?.fullscreenWidget, false) : undefined;
         case "basemap":
-          return this.enableBasemap ?
+          return this.enableBasemap && this.enableSingleExpand ?
             this._getActionGroup("basemap", false, this._translations.basemap, () => this._toggleBasemapPicker()) :
-            undefined;
+            this.enableBasemap ? this._getWidget(t, this._basemapElement?.basemapWidget, true) : undefined;
         case "floorfilter":
-          return this.enableFloorFilter && this._hasFloorInfo ?
+          return this.enableFloorFilter && this._hasFloorInfo && this.enableSingleExpand ?
             this._getActionGroup("urban-model", false, this._translations.floorFilter, () => this._toggleFloorFilter()) :
-            undefined;
+            this.enableFloorFilter && this._hasFloorInfo ? this._getWidget(t, this._floorFilterElement?.floorFilterWidget, true) : undefined;
         default:
           break;
       }
@@ -454,12 +499,6 @@ export class MapTools {
       this._showFullscreen = true;
     }
   }
-
-  //--------------------------------------------------------------------------
-  //
-  //  Functions (protected)
-  //
-  //--------------------------------------------------------------------------
 
   /**
    * Get a calcite action group for the current action
@@ -504,13 +543,49 @@ export class MapTools {
     );
   }
 
-  // need to discuss this with the team
+  /**
+   * Add the widget to the UI and optionally to an Expand widget
+   *
+   * @param name the icon to display for the current action
+   * @param content the widget to display
+   * @param internalExpand when true the widget will be added to an Expand widget
+   *
+   * @protected
+   */
+  protected _getWidget(
+    name: string,
+    content: any,
+    internalExpand: boolean
+  ): undefined {
+    if (this._widgets.indexOf(name) < 0 && this.mapView && content) {
+      const i = this.toolOrder.indexOf(name);
+      const exp = new this.Expand({
+        view: this.mapView,
+        content
+      });
+      const v = this.enableHome ? 2 : 1;
+      this.mapView.ui.add(
+        internalExpand ? exp : content,
+        {
+          position: this.position,
+          index: i > -1 ? i + v : 1
+        }
+      );
+      this._widgets.push(name);
+    }
+  }
+
+  /**
+   * Show/Hide the legend widget
+   */
   protected _showLegend(): void {
     this._showLegendWidget = !this._showLegendWidget;
     this._showTools = false;
   }
 
-  // Need to discuss this with the team
+  /**
+   * Show/Hide the search widget
+   */
   protected _search(): void {
     this._showSearchWidget = !this._showSearchWidget;
     this._showTools = false;
