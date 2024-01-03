@@ -829,7 +829,8 @@ export class LayerTable {
   _validateActiveActions(): void {
     const activeDependant = [
       "filter",
-      "list-check-all"
+      "list-check-all",
+      "selected-items-filter"
     ];
     this._toolInfos?.forEach(ti => {
       if (ti && activeDependant.indexOf(ti.icon) > -1) {
@@ -838,6 +839,9 @@ export class LayerTable {
         }
         if (ti.icon === "list-check-all") {
           ti.active = this._selectAllActive;
+        }
+        if (ti.icon === "selected-items-filter") {
+          ti.active = this._showOnlySelected;
         }
       }
     });
@@ -1689,6 +1693,7 @@ export class LayerTable {
             onFilterUpdate={() => this._handleFilterUpdate()}
             ref={(el) => this._filterList = el}
             view={this.mapView}
+            zoomBtn={false}
           />
         </div>
       </calcite-modal>
@@ -1848,6 +1853,7 @@ export class LayerTable {
   protected _clearSelection(): void {
     this._selectedIndexes = [];
     this._table?.highlightIds.removeAll();
+    this._finishOnChange();
   }
 
   /**
