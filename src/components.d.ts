@@ -90,10 +90,6 @@ export namespace Components {
          */
         "basemapConfig": IBasemapConfig;
         /**
-          * boolean: when true the grid will display like the previous manager app with the table across the top
-         */
-        "classicGrid": boolean;
-        /**
           * string: default center point values for the map ; delimited x;y pair
          */
         "defaultCenter": string;
@@ -165,10 +161,6 @@ export namespace Components {
           * boolean: when true the zoom widget will be available
          */
         "enableZoom": boolean;
-        /**
-          * boolean: when true no map is displayed for the app
-         */
-        "hideMap": boolean;
         /**
           * IMapInfo[]: array of map infos (name and id)
          */
@@ -1883,10 +1875,6 @@ declare namespace LocalJSX {
          */
         "basemapConfig"?: IBasemapConfig;
         /**
-          * boolean: when true the grid will display like the previous manager app with the table across the top
-         */
-        "classicGrid"?: boolean;
-        /**
           * string: default center point values for the map ; delimited x;y pair
          */
         "defaultCenter"?: string;
@@ -1958,10 +1946,6 @@ declare namespace LocalJSX {
           * boolean: when true the zoom widget will be available
          */
         "enableZoom"?: boolean;
-        /**
-          * boolean: when true no map is displayed for the app
-         */
-        "hideMap"?: boolean;
         /**
           * IMapInfo[]: array of map infos (name and id)
          */
