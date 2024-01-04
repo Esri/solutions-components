@@ -332,15 +332,6 @@ export class CrowdsourceManager {
     this._initMapZoom();
   }
 
-  /**
-   * Show the map, popup, and table if the user switches out of mobile mode
-   */
-  @Watch("_isMobile")
-  async _isMobileWatchHandler(): Promise<void> {
-    const show = !this._isMobile ? false : this._numSelected > 0;
-    this.showHideMapPopupAndTable(show);
-  }
-
   //--------------------------------------------------------------------------
   //
   //  Methods (public)
