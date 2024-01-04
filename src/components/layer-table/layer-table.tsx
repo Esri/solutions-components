@@ -21,8 +21,9 @@ import { getLocaleComponentStrings } from "../../utils/locale";
 import { getLayerOrTable, goToSelection } from "../../utils/mapViewUtils";
 import { queryAllIds, queryFeatureIds, queryFeaturesByGlobalID } from "../../utils/queryUtils";
 import * as downloadUtils from "../../utils/downloadUtils";
-import { IColumnsInfo, IExportInfos, ILayerExpression, ILayerInfo, IMapClick, IMapInfo, IToolInfo, IToolSizeInfo } from "../../utils/interfaces";
+import { IColumnsInfo, IExportInfos, ILayerInfo, IMapClick, IMapInfo, IToolInfo, IToolSizeInfo } from "../../utils/interfaces";
 import "@esri/instant-apps-components/dist/components/instant-apps-social-share";
+import { LayerExpression } from "@esri/instant-apps-components";
 
 @Component({
   tag: "layer-table",
@@ -44,14 +45,19 @@ export class LayerTable {
   //--------------------------------------------------------------------------
 
   /**
-   * string: when provided this layer ID will be used when the app loads
+   * LayerExpression[]: default layer expression(s) to apply to the current layer
    */
-  @Prop() defaultLayerId: string;
+  @Prop() defaultFilter: LayerExpression[];
 
   /**
    * string: Global ID of the feature to select
    */
   @Prop() defaultGlobalId: string[];
+
+  /**
+   * string: when provided this layer ID will be used when the app loads
+   */
+  @Prop() defaultLayerId: string;
 
   /**
    * number: when provided this will be used to select a feature in the table by default
@@ -232,6 +238,11 @@ export class LayerTable {
   protected _editEnabled: boolean;
 
   /**
+   * boolean: When true the default filter provided via url param has been honored and should now be ignored
+   */
+  protected _defaultFilterHonored = false;
+
+  /**
    * boolean: When true the default global id provided via url param has been honored and should now be ignored
    */
   protected _defaultGlobalIdHonored = false;
@@ -262,9 +273,9 @@ export class LayerTable {
   protected _filterList: HTMLInstantAppsFilterListElement;
 
   /**
-   * ILayerExpression[]: All layer expressions from the current filter config for the currently selected layer
+   * LayerExpression[]: All layer expressions from the current filter config for the currently selected layer
    */
-  protected _layerExpressions: ILayerExpression[];
+  protected _layerExpressions: LayerExpression[];
 
   /**
    * IHandle: The map click handle
@@ -1268,6 +1279,20 @@ export class LayerTable {
       urlObj.searchParams.set("oid", this._selectedIndexes.join(","));
     }
 
+    if (this._filterActive) {
+      const filter = JSON.parse(this._filterList.urlParams.get("filter"));
+      const layerExpressions = this._filterList.layerExpressions.map(layerExp => {
+        layerExp.expressions = layerExp.expressions.map(exp => {
+          if (exp.id.toString() === filter.expressionId.toString()) {
+            exp.active = true;
+          }
+          return exp;
+        })
+        return layerExp;
+      });
+      urlObj.searchParams.set("filter", JSON.stringify(layerExpressions));
+    }
+
     this._shareNode.shareUrl = urlObj.href;
   }
 
@@ -1545,6 +1570,12 @@ export class LayerTable {
         }
         this._defaultGlobalIdHonored = true;
       }
+
+      if (!this._defaultFilterHonored && this.defaultFilter && this._filterList) {
+        this._layerExpressions = this.defaultFilter;
+        this._filterActive = true;
+        this._defaultFilterHonored = true;
+      }
     });
 
     this._showOnlySelected = false;
@@ -1709,6 +1740,7 @@ export class LayerTable {
    */
   protected _handleFilterListReset(): void {
     this._filterActive = false;
+    this._updateShareUrl();
   }
 
   /**
@@ -1716,6 +1748,7 @@ export class LayerTable {
    */
   protected _handleFilterUpdate(): void {
     this._filterActive = this._definitionExpression !== this._layer.definitionExpression;
+    this._updateShareUrl();
   }
 
   /**

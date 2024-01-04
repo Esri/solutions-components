@@ -6,8 +6,10 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { DistanceUnit, EDrawMode, ELayoutMode, IBasemapConfig, IExportInfos, IInventoryItem, ILayerAndTableIds, IMapChange, IMapInfo, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange, theme } from "./utils/interfaces";
+import { LayerExpression } from "@esri/instant-apps-components";
 import { UserSession } from "@esri/solution-common";
 export { DistanceUnit, EDrawMode, ELayoutMode, IBasemapConfig, IExportInfos, IInventoryItem, ILayerAndTableIds, IMapChange, IMapInfo, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange, theme } from "./utils/interfaces";
+export { LayerExpression } from "@esri/instant-apps-components";
 export { UserSession } from "@esri/solution-common";
 export namespace Components {
     interface ArcgisLogin {
@@ -93,6 +95,10 @@ export namespace Components {
           * string: default center point values for the map ; delimited x;y pair
          */
         "defaultCenter": string;
+        /**
+          * string: default layer expression to apply to the current layer
+         */
+        "defaultFilter": string;
         /**
           * string: Global ID of the feature to select
          */
@@ -358,6 +364,10 @@ export namespace Components {
         "value": any;
     }
     interface LayerTable {
+        /**
+          * LayerExpression[]: default layer expression(s) to apply to the current layer
+         */
+        "defaultFilter": LayerExpression[];
         /**
           * string: Global ID of the feature to select
          */
@@ -1887,6 +1897,10 @@ declare namespace LocalJSX {
          */
         "defaultCenter"?: string;
         /**
+          * string: default layer expression to apply to the current layer
+         */
+        "defaultFilter"?: string;
+        /**
           * string: Global ID of the feature to select
          */
         "defaultGlobalId"?: string;
@@ -2150,6 +2164,10 @@ declare namespace LocalJSX {
         "value"?: any;
     }
     interface LayerTable {
+        /**
+          * LayerExpression[]: default layer expression(s) to apply to the current layer
+         */
+        "defaultFilter"?: LayerExpression[];
         /**
           * string: Global ID of the feature to select
          */
