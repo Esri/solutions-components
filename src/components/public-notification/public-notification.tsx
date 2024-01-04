@@ -167,6 +167,11 @@ export class PublicNotification {
   @State() _addMap = false;
 
   /**
+   * boolean: When true the selected results will be added on export
+   */
+  @State() _addResults = true;
+
+  /**
    * boolean: When true a title will be added above the map on export
    */
   @State() _addTitle = false;
@@ -993,7 +998,7 @@ export class PublicNotification {
                 </div>
                 <div class="padding-1 display-flex">
                   <calcite-button
-                    disabled={!this._downloadActive || this._fetchingData}
+                    disabled={(!this._downloadActive || this._fetchingData) || (!this._addMap && !this._addResults)}
                     loading={this._fetchingData}
                     onClick={() => void this._export()}
                     width="full"
@@ -1033,17 +1038,31 @@ export class PublicNotification {
     const displayClass = this._exportType === EExportType.PDF ? "display-block" : "display-none";
     const titleOptionsClass = this._addTitle ? "display-block" : "display-none";
     const title = this._titleValue ? this._titleValue : this.defaultExportTitle ? this.defaultExportTitle : "";
+    const formatOptionsClass = this._addResults ? "" : "display-none";
     return (
       <div class={displayClass}>
         {this._getLabel(this._translations.pdfOptions, true)}
         <div class="padding-top-sides-1">
           <calcite-label
             class="label-margin-0"
+            layout="inline"
+          >
+            <calcite-checkbox
+              checked={this._addResults}
+              onCalciteCheckboxChange={() => this._addResults = !this._addResults}
+            />
+            {this._translations.addResults}
+          </calcite-label>
+        </div>
+
+        <div class={`padding-top-sides-1 ${formatOptionsClass}`}>
+          <calcite-label
+            class="label-margin-0"
           >
             {this._translations.selectPDFLabelOption}
           </calcite-label>
         </div>
-        <div class="padding-sides-1">
+        <div class={`padding-sides-1 ${formatOptionsClass}`}>
           <pdf-download
             defaultNumLabelsPerPage={parseInt(this.defaultNumLabelsPerPage.toString(), 10)}
             disabled={!this._downloadActive}
@@ -1292,7 +1311,8 @@ export class PublicNotification {
    * @protected
    */
   protected async _export(): Promise<void> {
-    const exportInfos: IExportInfos = this._getSelectionIdsAndViews(this._selectionSets, true);
+    const exportInfos: IExportInfos = this._addResults ?
+      this._getSelectionIdsAndViews(this._selectionSets, true) : {};
 
     if (this._exportType === EExportType.PDF) {
       // Generate a map screenshot

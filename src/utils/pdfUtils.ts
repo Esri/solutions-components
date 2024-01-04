@@ -98,8 +98,10 @@ function downloadPDFFile(
               labeller.drawSupplementalText(title, 0, -0.1);
             }
 
-            pdfLib.addPage();
-            ++startingPageNum;
+            if (labels.length > 0) {
+              pdfLib.addPage();
+              ++startingPageNum;
+            }
           }
 
           // Add the labels to the PDF
