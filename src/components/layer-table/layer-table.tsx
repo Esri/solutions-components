@@ -1453,7 +1453,7 @@ export class LayerTable {
 
           this._skipOnChange = startIndex + 1 !== endIndex;
 
-          this._selectedIndexes = oids.reduce((prev, cur) => {
+          const selectedIndexes = oids.reduce((prev, cur) => {
             const id = cur;
             const index = this._table.viewModel.getObjectIdIndex(id);
             if ((id === this._currentId || id === this._previousCurrentId)) {
@@ -1477,6 +1477,9 @@ export class LayerTable {
             }
             return prev;
           }, []);
+
+          this._selectedIndexes = _start < _end ? selectedIndexes.reverse() : selectedIndexes;
+
           this._table.highlightIds.addMany(this._selectedIndexes.filter(i => ids.indexOf(i) < 0));
         }
       }
