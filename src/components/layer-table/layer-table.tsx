@@ -867,94 +867,96 @@ export class LayerTable {
     const featuresSelected = this._featuresSelected();
     const featuresEmpty = this._featuresEmpty();
     const hasFilterExpressions = this._hasFilterExpressions();
-    this._toolInfos = [{
-      active: false,
-      icon: "zoom-to-object",
-      indicator: false,
-      label: this._translations.zoom,
-      func: () => this._zoom(),
-      disabled: !featuresSelected,
-      isOverflow: false
-    },
-    hasFilterExpressions ? {
-      active: false,
-      icon: "filter",
-      indicator: false,
-      label: this._translations.filters,
-      func: () => this._toggleFilter(),
-      disabled: false,
-      isOverflow: false
-    } : undefined,
-    this._deleteEnabled ? {
-      active: false,
-      icon: "trash",
-      indicator: false,
-      label: this._translations.delete,
-      func: () => this._delete(),
-      disabled: !featuresSelected,
-      isDanger: true,
-      isOverflow: false
-    } : undefined, {
-      active: false,
-      icon: "erase",
-      indicator: false,
-      label: this._translations.clearSelection,
-      func: () => this._clearSelection(),
-      disabled: !featuresSelected,
-      isOverflow: false
-    }, {
-      active: false,
-      icon: "selected-items-filter",
-      indicator: false,
-      label: this._showOnlySelected ? this._translations.showAll : this._translations.showSelected,
-      func: () => this._toggleShowSelected(),
-      disabled: !featuresSelected,
-      isOverflow: false
-    }, {
-      active: false,
-      icon: "list-check-all",
-      indicator: false,
-      func: () => this._selectAll(),
-      label: this._translations.selectAll,
-      disabled: featuresEmpty,
-      isOverflow: false
-    }, {
-      active: false,
-      icon: "compare",
-      indicator: false,
-      func: () => this._switchSelected(),
-      label: this._translations.switchSelected,
-      disabled: featuresEmpty,
-      isOverflow: false
-    }, {
-      active: false,
-      icon: "refresh",
-      indicator: false,
-      func: () => this._refresh(),
-      label: this._translations.refresh,
-      disabled: false,
-      isOverflow: false
-    },
-    this.enableCSV ? {
-      active: false,
-      icon: "export",
-      indicator: false,
-      func: () => void this._exportToCSV(),
-      label: this._translations.exportCSV,
-      disabled: featuresEmpty,
-      isOverflow: false
-    } : undefined, {
-      active: false,
-      icon: this._showHideOpen ? "chevron-down" : "chevron-right",
-      indicator: false,
-      func: () => this._toggleShowHide(),
-      label: this._translations.showHideColumns,
-      disabled: false,
-      isOverflow: false,
-      isSublist: true
-    }];
+    if (this._translations) {
+      this._toolInfos = [{
+        active: false,
+        icon: "zoom-to-object",
+        indicator: false,
+        label: this._translations.zoom,
+        func: () => this._zoom(),
+        disabled: !featuresSelected,
+        isOverflow: false
+      },
+      hasFilterExpressions ? {
+        active: false,
+        icon: "filter",
+        indicator: false,
+        label: this._translations.filters,
+        func: () => this._toggleFilter(),
+        disabled: false,
+        isOverflow: false
+      } : undefined,
+      this._deleteEnabled ? {
+        active: false,
+        icon: "trash",
+        indicator: false,
+        label: this._translations.delete,
+        func: () => this._delete(),
+        disabled: !featuresSelected,
+        isDanger: true,
+        isOverflow: false
+      } : undefined, {
+        active: false,
+        icon: "erase",
+        indicator: false,
+        label: this._translations.clearSelection,
+        func: () => this._clearSelection(),
+        disabled: !featuresSelected,
+        isOverflow: false
+      }, {
+        active: false,
+        icon: "selected-items-filter",
+        indicator: false,
+        label: this._showOnlySelected ? this._translations.showAll : this._translations.showSelected,
+        func: () => this._toggleShowSelected(),
+        disabled: !featuresSelected,
+        isOverflow: false
+      }, {
+        active: false,
+        icon: "list-check-all",
+        indicator: false,
+        func: () => this._selectAll(),
+        label: this._translations.selectAll,
+        disabled: featuresEmpty,
+        isOverflow: false
+      }, {
+        active: false,
+        icon: "compare",
+        indicator: false,
+        func: () => this._switchSelected(),
+        label: this._translations.switchSelected,
+        disabled: featuresEmpty,
+        isOverflow: false
+      }, {
+        active: false,
+        icon: "refresh",
+        indicator: false,
+        func: () => this._refresh(),
+        label: this._translations.refresh,
+        disabled: false,
+        isOverflow: false
+      },
+      this.enableCSV ? {
+        active: false,
+        icon: "export",
+        indicator: false,
+        func: () => void this._exportToCSV(),
+        label: this._translations.exportCSV,
+        disabled: featuresEmpty,
+        isOverflow: false
+      } : undefined, {
+        active: false,
+        icon: this._showHideOpen ? "chevron-down" : "chevron-right",
+        indicator: false,
+        func: () => this._toggleShowHide(),
+        label: this._translations.showHideColumns,
+        disabled: false,
+        isOverflow: false,
+        isSublist: true
+      }];
 
-    this._defaultVisibleToolSizeInfos = undefined;
+      this._defaultVisibleToolSizeInfos = undefined;
+    }
   }
 
   /**
@@ -1269,14 +1271,21 @@ export class LayerTable {
     //set the additional search params
     if (this.mapInfo?.id) {
       urlObj.searchParams.set("webmap", this.mapInfo.id);
+    } else {
+      urlObj.searchParams.delete("webmap");
+
     }
 
     if (this._layer?.id) {
       urlObj.searchParams.set("layer", this._layer.id);
+    } else {
+      urlObj.searchParams.delete("layer");
     }
 
     if (this._selectedIndexes?.length > 0) {
       urlObj.searchParams.set("oid", this._selectedIndexes.join(","));
+    } else {
+      urlObj.searchParams.delete("oid");
     }
 
     if (this._filterActive) {
@@ -1291,9 +1300,12 @@ export class LayerTable {
         return layerExp;
       });
       urlObj.searchParams.set("filter", JSON.stringify(layerExpressions));
+    } else {
+      urlObj.searchParams.delete("filter");
     }
 
     this._shareNode.shareUrl = urlObj.href;
+    history.pushState(history.state, document.title, urlObj.href);
   }
 
   /**
@@ -1720,7 +1732,7 @@ export class LayerTable {
         </div>
         <div slot="content">
           <instant-apps-filter-list
-            autoUpdateUrl={false}
+            autoUpdateUrl={true}
             closeBtn={true}
             closeBtnOnClick={async () => this._closeFilter()}
             layerExpressions={this._layerExpressions}
