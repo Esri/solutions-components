@@ -1269,14 +1269,21 @@ export class LayerTable {
     //set the additional search params
     if (this.mapInfo?.id) {
       urlObj.searchParams.set("webmap", this.mapInfo.id);
+    } else {
+      urlObj.searchParams.delete("webmap");
+
     }
 
     if (this._layer?.id) {
       urlObj.searchParams.set("layer", this._layer.id);
+    } else {
+      urlObj.searchParams.delete("layer");
     }
 
     if (this._selectedIndexes?.length > 0) {
       urlObj.searchParams.set("oid", this._selectedIndexes.join(","));
+    } else {
+      urlObj.searchParams.delete("oid");
     }
 
     if (this._filterActive) {
@@ -1291,9 +1298,12 @@ export class LayerTable {
         return layerExp;
       });
       urlObj.searchParams.set("filter", JSON.stringify(layerExpressions));
+    } else {
+      urlObj.searchParams.delete("filter");
     }
 
     this._shareNode.shareUrl = urlObj.href;
+    history.pushState(history.state, document.title, urlObj.href);
   }
 
   /**
@@ -1720,7 +1730,7 @@ export class LayerTable {
         </div>
         <div slot="content">
           <instant-apps-filter-list
-            autoUpdateUrl={false}
+            autoUpdateUrl={true}
             closeBtn={true}
             closeBtnOnClick={async () => this._closeFilter()}
             layerExpressions={this._layerExpressions}
