@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Prop, Watch } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Prop, Watch } from '@stencil/core';
 import { loadModules } from "../../utils/loadModules";
 
 @Component({
@@ -78,6 +78,16 @@ export class FloorFilter {
    */
   protected _floorFilterElement: HTMLElement;
 
+  /**
+   * esri/core/reactiveUtils: https://developers.arcgis.com/javascript/latest/api-reference/esri-core-reactiveUtils.html
+   */
+  protected reactiveUtils: typeof import("esri/core/reactiveUtils");
+
+  /**
+   * esri/core/Accessor: https://developers.arcgis.com/javascript/latest/api-reference/esri-core-Accessor.html#WatchHandle
+   */
+  protected _levelHandle: __esri.WatchHandle;
+
   //--------------------------------------------------------------------------
   //
   //  Watch handlers
@@ -102,6 +112,11 @@ export class FloorFilter {
   //  Events (public)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Emitted on demand when the Level is changed
+   */
+  @Event() levelChanged: EventEmitter<string>;
 
   //--------------------------------------------------------------------------
   //
@@ -138,10 +153,12 @@ export class FloorFilter {
    * @protected
    */
   protected async _initModules(): Promise<void> {
-    const [FloorFilter] = await loadModules([
-      "esri/widgets/FloorFilter"
+    const [FloorFilter, reactiveUtils] = await loadModules([
+      "esri/widgets/FloorFilter",
+      "esri/core/reactiveUtils"
     ]);
     this.FloorFilter = FloorFilter;
+    this.reactiveUtils = reactiveUtils;
   }
 
   /**
@@ -156,6 +173,15 @@ export class FloorFilter {
           container: this._floorFilterElement,
           view
         });
+
+        if (this._levelHandle) {
+          this._levelHandle.remove();
+        }
+
+        this._levelHandle = this.reactiveUtils.watch(() => this.floorFilterWidget.level,
+          (level) => {
+            this.levelChanged.emit(level);
+          });
       } else {
         this.floorFilterWidget.view = view;
       }
