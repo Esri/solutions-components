@@ -1079,7 +1079,7 @@ export class PublicNotification {
               checked={this._addTitle}
               onCalciteCheckboxChange={() => this._addTitle = !this._addTitle}
             />
-            {this._translations.addTitle}
+            {this._translations.title}
           </calcite-label>
         </div>
         <div class={titleOptionsClass}>
