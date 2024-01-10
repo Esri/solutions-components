@@ -273,6 +273,16 @@ export class LayerTable {
   protected _filterList: HTMLInstantAppsFilterListElement;
 
   /**
+   * string: The name of the floor field for the current layer
+   */
+  protected _floorField: string;
+
+  /**
+   * string: The name of the floor field for the current layer
+   */
+  protected _floorLevel: string;
+
+  /**
    * LayerExpression[]: All layer expressions from the current filter config for the currently selected layer
    */
   protected _layerExpressions: LayerExpression[];
@@ -458,6 +468,8 @@ export class LayerTable {
   async _layerWatchHandler(): Promise<void> {
     this._fetchingData = true;
     this._definitionExpression = this._layer.definitionExpression;
+    this._floorField = this._layer?.floorInfo?.floorField;
+    this._updateFloorDefinitionExpression();
     await this._resetTable();
     this._updateShareUrl();
     this._initLayerExpressions();
@@ -545,7 +557,6 @@ export class LayerTable {
 
   /**
    * Refresh the table when edits are completed
-   *
    */
   @Listen("editsComplete", { target: "window" })
   async editsComplete(): Promise<void> {
@@ -553,8 +564,18 @@ export class LayerTable {
   }
 
   /**
-   * Refresh the table when edits are completed
-   *
+   * Refresh the table when floor filter level is changed
+   */
+  @Listen("levelChanged", { target: "window" })
+  async levelChanged(
+    evt: CustomEvent
+  ): Promise<void> {
+    this._floorLevel = evt.detail;
+    this._updateFloorDefinitionExpression();
+  }
+
+  /**
+   * Refresh the table when
    */
   @Listen("noLayersFound", { target: "window" })
   noLayersFound(): void {
@@ -956,6 +977,17 @@ export class LayerTable {
       }];
 
       this._defaultVisibleToolSizeInfos = undefined;
+    }
+  }
+
+  /**
+   * Applies a definition expression when floor field and level are available
+   *
+   * @returns boolean
+   */
+  protected _updateFloorDefinitionExpression(): void {
+    if (this._floorField && this._floorLevel) {
+      this._layer.definitionExpression = `${this._floorField} = '${this._floorLevel}'`;
     }
   }
 
