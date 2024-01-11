@@ -1684,6 +1684,7 @@ declare global {
     };
     interface HTMLSolutionSpatialRefElementEventMap {
         "featureServiceSpatialReferenceChange": { name: string, enabled: boolean };
+        "lockedSpatialReferenceChange": { locked: boolean };
     }
     interface HTMLSolutionSpatialRefElement extends Components.SolutionSpatialRef, HTMLStencilElement {
         addEventListener<K extends keyof HTMLSolutionSpatialRefElementEventMap>(type: K, listener: (this: HTMLSolutionSpatialRefElement, ev: SolutionSpatialRefCustomEvent<HTMLSolutionSpatialRefElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2910,6 +2911,7 @@ declare namespace LocalJSX {
          */
         "locked"?: boolean;
         "onFeatureServiceSpatialReferenceChange"?: (event: SolutionSpatialRefCustomEvent<{ name: string, enabled: boolean }>) => void;
+        "onLockedSpatialReferenceChange"?: (event: SolutionSpatialRefCustomEvent<{ locked: boolean }>) => void;
         /**
           * List of service names the spatial reference should apply to
          */

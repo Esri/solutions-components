@@ -17,7 +17,7 @@
 import '@esri/calcite-components';
 import SolutionSpatialRef_T9n from '../../assets/t9n/solution-spatial-ref/resources.json';
 import state from "../../utils/solution-store";
-import { Component, Element, Event, EventEmitter, h, Host, Listen, Prop, State, VNode } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, h, Host, Listen, Prop, State, VNode, Watch } from '@stencil/core';
 import { getLocaleComponentStrings } from '../../utils/locale';
 import { nodeListToArray } from '../../utils/common';
 
@@ -57,6 +57,18 @@ export class SolutionSpatialRef {
   * When true, all but the main switch are disabled to prevent interaction.
   */
   @Prop({ mutable: true, reflect: true }) locked = true;
+
+  @Watch("locked")
+  lockedChanged(newLocked: boolean): void {
+    if (!newLocked) {
+      // By default enable all Feature Services on first load
+      this._setFeatureServiceDefaults(this.services);
+    }
+
+    this.lockedSpatialReferenceChange.emit({
+      locked: newLocked
+    });
+  }
 
   /**
   * List of service names the spatial reference should apply to
@@ -145,8 +157,10 @@ export class SolutionSpatialRef {
 
   @Event() featureServiceSpatialReferenceChange: EventEmitter<{ name: string, enabled: boolean }>;
 
+  @Event() lockedSpatialReferenceChange: EventEmitter<{ locked: boolean }>;
+
   /**
-   * Handle changes to the buffer distance value
+   * Saves changes to the embedded spatial reference value
    */
   @Listen("spatialReferenceChange", { target: "window" })
   spatialReferenceChange(event: CustomEvent): void {
