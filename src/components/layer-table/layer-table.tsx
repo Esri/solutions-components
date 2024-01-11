@@ -21,7 +21,7 @@ import { getLocaleComponentStrings } from "../../utils/locale";
 import { getLayerOrTable, goToSelection } from "../../utils/mapViewUtils";
 import { queryAllIds, queryFeatureIds, queryFeaturesByGlobalID } from "../../utils/queryUtils";
 import * as downloadUtils from "../../utils/downloadUtils";
-import { IColumnsInfo, IExportInfos, ILayerInfo, IMapClick, IMapInfo, IToolInfo, IToolSizeInfo } from "../../utils/interfaces";
+import { EditType, IColumnsInfo, IExportInfos, ILayerInfo, IMapClick, IMapInfo, IToolInfo, IToolSizeInfo } from "../../utils/interfaces";
 import "@esri/instant-apps-components/dist/components/instant-apps-social-share";
 import { LayerExpression } from "@esri/instant-apps-components";
 
@@ -136,11 +136,6 @@ export class LayerTable {
   //--------------------------------------------------------------------------
 
   /**
-   * boolean: When true the user will be asked to confirm the delete operation
-   */
-  @State() _confirmDelete = false;
-
-  /**
    * IToolSizeInfo[]: The controls that currently fit based on toolbar size
    */
   @State() _controlsThatFit: IToolSizeInfo[];
@@ -159,11 +154,6 @@ export class LayerTable {
    * boolean: When true the filter component will be displayed
    */
   @State() _filterOpen = false;
-
-  /**
-   * boolean: When true a loading indicator will be shown in the delete button
-   */
-  @State() _isDeleting = false;
 
   /**
    * esri/views/layers/FeatureLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html
@@ -504,14 +494,9 @@ export class LayerTable {
   //
   //--------------------------------------------------------------------------
 
-  /**
-   * Delete currently selected features
-   *
-   * @returns Promise resolving when the process is complete
-   */
   @Method()
-  async deleteFeatures(): Promise<void> {
-    return this._delete();
+  async getSelectedIds(): Promise<number[]> {
+    return this._getIds();
   }
 
   //--------------------------------------------------------------------------
@@ -559,7 +544,13 @@ export class LayerTable {
    * Refresh the table when edits are completed
    */
   @Listen("editsComplete", { target: "window" })
-  async editsComplete(): Promise<void> {
+  async editsComplete(
+    evt: CustomEvent
+  ): Promise<void> {
+    const editType: EditType = evt.detail;
+    if (editType === "delete" || editType === "add") {
+      this._allIds = await queryAllIds(this._layer);
+    }
     await this._refresh();
   }
 
@@ -643,7 +634,6 @@ export class LayerTable {
             }
           </div>
         </calcite-shell>
-        {this._deleteMessage()}
         {this._filterModal()}
       </Host>
     );
@@ -908,11 +898,11 @@ export class LayerTable {
         isOverflow: false
       } : undefined,
       this._deleteEnabled ? {
-        active: false,
+        active: undefined,
         icon: "trash",
-        indicator: false,
-        label: this._translations.delete,
-        func: () => this._delete(),
+        indicator: undefined,
+        label: undefined,
+        func: undefined,
         disabled: !featuresSelected,
         isDanger: true,
         isOverflow: false
@@ -1397,24 +1387,43 @@ export class LayerTable {
     const _disabled = this._layer === undefined ? true : disabled;
     return (
       <div class="display-flex" id={this._getId(icon)}>
-        <calcite-action
-          appearance="solid"
-          disabled={_disabled}
-          id={icon}
-          onClick={func}
-          text=""
-        >
-          <calcite-button
-            appearance="transparent"
-            iconStart={icon}
-            kind="danger"
+        {icon === "trash" ? (
+          <delete-button
+            buttonType="action"
+            class="display-flex"
+            disabled={_disabled}
+            icon={icon}
+            ids={this._getIds()}
+          />
+        ) : (
+          <calcite-action
+            appearance="solid"
+            disabled={_disabled}
+            id={icon}
+            onClick={func}
+            text=""
           >
-            {label}
-          </calcite-button>
-        </calcite-action>
+            <calcite-button
+              appearance="transparent"
+              iconStart={icon}
+              kind="danger"
+            >
+              {label}
+            </calcite-button>
+          </calcite-action>
+        )}
         {this._getToolTip("bottom", icon, label)}
       </div>
     )
+  }
+
+  /**
+   * Return all currently selected IDs from the table
+   *
+   * @param number[] the selected ids
+   */
+  protected _getIds(): number[] {
+    return this._table.highlightIds.toArray();
   }
 
   /**
@@ -1807,66 +1816,6 @@ export class LayerTable {
   }
 
   /**
-   * Show delete confirmation message
-   *
-   * @returns node to confirm or deny the delete operation
-   */
-  protected _deleteMessage(): VNode {
-    return (
-      <calcite-modal
-        aria-labelledby="modal-title"
-        kind="danger"
-        onCalciteModalClose={() => this._deleteClosed()}
-        open={this._confirmDelete}
-      >
-        <div
-          class="display-flex align-center"
-          id="modal-title"
-          slot="header"
-        >
-          {this._translations.deleteFeature}
-        </div>
-        <div slot="content">
-          {this._translations.confirm}
-        </div>
-        <calcite-button
-          appearance="outline"
-          kind="danger"
-          onClick={() => this._deleteClosed()}
-          slot="secondary"
-          width="full"
-        >
-          {this._translations.cancel}
-        </calcite-button>
-        <calcite-button
-          kind="danger"
-          loading={this._isDeleting}
-          onClick={() => void this._deleteFeatures()}
-          slot="primary" width="full">
-          {this._translations.delete}
-        </calcite-button>
-      </calcite-modal>
-    );
-  }
-
-  /**
-   * Delete the currently selected features
-   */
-  protected async _deleteFeatures(): Promise<void> {
-    this._isDeleting = true;
-    const deleteFeatures = this._table.highlightIds.toArray().map((objectId) => {
-      return {objectId};
-    })
-    await this._layer.applyEdits({
-      deleteFeatures
-    });
-    await this._table.refresh();
-    this._allIds = await queryAllIds(this._layer);
-    this._isDeleting = false;
-    this._deleteClosed();
-  }
-
-  /**
    * Handle map click events to keep table and map click selection in sync
    *
    * @param evt IMapClick map click event details
@@ -1893,13 +1842,6 @@ export class LayerTable {
         this._table.filterBySelection();
       }
     }
-  }
-
-  /**
-   * Set the alertOpen member to false when the alert is closed
-   */
-  protected _deleteClosed(): void {
-    this._confirmDelete = false;
   }
 
   /**
@@ -2016,15 +1958,6 @@ export class LayerTable {
    */
   protected _zoom(): void {
     this._table.zoomToSelection();
-  }
-
-  /**
-   * Delete all selected records or shows an alert if the layer does not have editing enabled
-   *
-   * @returns a promise that will resolve when the operation is complete
-   */
-  protected _delete(): void {
-    this._confirmDelete = true;
   }
 
   /**

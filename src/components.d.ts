@@ -5,10 +5,10 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { DistanceUnit, EDrawMode, ELayoutMode, IBasemapConfig, IExportInfos, IInventoryItem, ILayerAndTableIds, IMapChange, IMapInfo, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange, theme } from "./utils/interfaces";
+import { ButtonType, DistanceUnit, EditType, EDrawMode, ELayoutMode, IBasemapConfig, IExportInfos, IInventoryItem, ILayerAndTableIds, IMapChange, IMapInfo, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange, theme } from "./utils/interfaces";
 import { LayerExpression } from "@esri/instant-apps-components";
 import { UserSession } from "@esri/solution-common";
-export { DistanceUnit, EDrawMode, ELayoutMode, IBasemapConfig, IExportInfos, IInventoryItem, ILayerAndTableIds, IMapChange, IMapInfo, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange, theme } from "./utils/interfaces";
+export { ButtonType, DistanceUnit, EditType, EDrawMode, ELayoutMode, IBasemapConfig, IExportInfos, IInventoryItem, ILayerAndTableIds, IMapChange, IMapInfo, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange, theme } from "./utils/interfaces";
 export { LayerExpression } from "@esri/instant-apps-components";
 export { UserSession } from "@esri/solution-common";
 export namespace Components {
@@ -260,6 +260,13 @@ export namespace Components {
     }
     interface DeductCalculator {
     }
+    interface DeleteButton {
+        "buttonType": ButtonType;
+        "disabled": boolean;
+        "icon": string;
+        "ids": any[];
+        "layer": __esri.FeatureLayer;
+    }
     interface EditCard {
         /**
           * The index of the current graphic
@@ -381,11 +388,6 @@ export namespace Components {
          */
         "defaultOid": number[];
         /**
-          * Delete currently selected features
-          * @returns Promise resolving when the process is complete
-         */
-        "deleteFeatures": () => Promise<void>;
-        /**
           * boolean: when true the layer table will auto refresh the data
          */
         "enableAutoRefresh": boolean;
@@ -405,6 +407,7 @@ export namespace Components {
           * boolean: when true the share widget will be available
          */
         "enableShare": boolean;
+        "getSelectedIds": () => Promise<number[]>;
         /**
           * When true the component will render an optimized view for mobile devices
          */
@@ -1175,6 +1178,10 @@ export interface DeductCalculatorCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLDeductCalculatorElement;
 }
+export interface DeleteButtonCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLDeleteButtonElement;
+}
 export interface EditCardCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLEditCardElement;
@@ -1317,6 +1324,23 @@ declare global {
     var HTMLDeductCalculatorElement: {
         prototype: HTMLDeductCalculatorElement;
         new (): HTMLDeductCalculatorElement;
+    };
+    interface HTMLDeleteButtonElementEventMap {
+        "editsComplete": EditType;
+    }
+    interface HTMLDeleteButtonElement extends Components.DeleteButton, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLDeleteButtonElementEventMap>(type: K, listener: (this: HTMLDeleteButtonElement, ev: DeleteButtonCustomEvent<HTMLDeleteButtonElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLDeleteButtonElementEventMap>(type: K, listener: (this: HTMLDeleteButtonElement, ev: DeleteButtonCustomEvent<HTMLDeleteButtonElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLDeleteButtonElement: {
+        prototype: HTMLDeleteButtonElement;
+        new (): HTMLDeleteButtonElement;
     };
     interface HTMLEditCardElementEventMap {
         "closeEdit": void;
@@ -1779,6 +1803,7 @@ declare global {
         "crowdsource-manager": HTMLCrowdsourceManagerElement;
         "crowdsource-reporter": HTMLCrowdsourceReporterElement;
         "deduct-calculator": HTMLDeductCalculatorElement;
+        "delete-button": HTMLDeleteButtonElement;
         "edit-card": HTMLEditCardElement;
         "feature-comments": HTMLFeatureCommentsElement;
         "feature-form-flow-item": HTMLFeatureFormFlowItemElement;
@@ -2079,6 +2104,17 @@ declare namespace LocalJSX {
           * Emitted on demand when the user clicks to calculate the deduct value
          */
         "onDeductValueComplete"?: (event: DeductCalculatorCustomEvent<string>) => void;
+    }
+    interface DeleteButton {
+        "buttonType"?: ButtonType;
+        "disabled"?: boolean;
+        "icon"?: string;
+        "ids"?: any[];
+        "layer"?: __esri.FeatureLayer;
+        /**
+          * Emitted on demand when features have been deleted
+         */
+        "onEditsComplete"?: (event: DeleteButtonCustomEvent<EditType>) => void;
     }
     interface EditCard {
         /**
@@ -3002,6 +3038,7 @@ declare namespace LocalJSX {
         "crowdsource-manager": CrowdsourceManager;
         "crowdsource-reporter": CrowdsourceReporter;
         "deduct-calculator": DeductCalculator;
+        "delete-button": DeleteButton;
         "edit-card": EditCard;
         "feature-comments": FeatureComments;
         "feature-form-flow-item": FeatureFormFlowItem;
@@ -3054,6 +3091,7 @@ declare module "@stencil/core" {
             "crowdsource-manager": LocalJSX.CrowdsourceManager & JSXBase.HTMLAttributes<HTMLCrowdsourceManagerElement>;
             "crowdsource-reporter": LocalJSX.CrowdsourceReporter & JSXBase.HTMLAttributes<HTMLCrowdsourceReporterElement>;
             "deduct-calculator": LocalJSX.DeductCalculator & JSXBase.HTMLAttributes<HTMLDeductCalculatorElement>;
+            "delete-button": LocalJSX.DeleteButton & JSXBase.HTMLAttributes<HTMLDeleteButtonElement>;
             "edit-card": LocalJSX.EditCard & JSXBase.HTMLAttributes<HTMLEditCardElement>;
             "feature-comments": LocalJSX.FeatureComments & JSXBase.HTMLAttributes<HTMLFeatureCommentsElement>;
             "feature-form-flow-item": LocalJSX.FeatureFormFlowItem & JSXBase.HTMLAttributes<HTMLFeatureFormFlowItemElement>;

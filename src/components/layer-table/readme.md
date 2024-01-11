@@ -37,15 +37,15 @@
 
 ## Methods
 
-### `deleteFeatures() => Promise<void>`
+### `getSelectedIds() => Promise<number[]>`
 
-Delete currently selected features
+
 
 #### Returns
 
-Type: `Promise<void>`
+Type: `Promise<number[]>`
 
-Promise resolving when the process is complete
+
 
 
 ## Dependencies
@@ -68,6 +68,7 @@ Promise resolving when the process is complete
 - calcite-button
 - instant-apps-social-share
 - calcite-tooltip
+- [delete-button](../delete-button)
 - calcite-modal
 - instant-apps-filter-list
 
@@ -86,6 +87,7 @@ graph TD;
   layer-table --> calcite-button
   layer-table --> instant-apps-social-share
   layer-table --> calcite-tooltip
+  layer-table --> delete-button
   layer-table --> calcite-modal
   layer-table --> instant-apps-filter-list
   calcite-panel --> calcite-action
@@ -127,6 +129,9 @@ graph TD;
   instant-apps-social-share --> calcite-button
   instant-apps-social-share --> calcite-icon
   instant-apps-social-share --> calcite-action
+  delete-button --> calcite-button
+  delete-button --> calcite-action
+  delete-button --> calcite-modal
   calcite-modal --> calcite-scrim
   calcite-modal --> calcite-icon
   instant-apps-filter-list --> calcite-panel

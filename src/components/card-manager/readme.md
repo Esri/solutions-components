@@ -38,6 +38,7 @@ graph TD;
   info-card --> calcite-shell
   info-card --> calcite-loader
   info-card --> calcite-button
+  info-card --> delete-button
   info-card --> calcite-tooltip
   info-card --> edit-card
   info-card --> calcite-alert
@@ -53,6 +54,11 @@ graph TD;
   calcite-scrim --> calcite-loader
   calcite-button --> calcite-loader
   calcite-button --> calcite-icon
+  delete-button --> calcite-button
+  delete-button --> calcite-action
+  delete-button --> calcite-modal
+  calcite-modal --> calcite-scrim
+  calcite-modal --> calcite-icon
   edit-card --> calcite-notice
   edit-card --> calcite-loader
   calcite-notice --> calcite-icon

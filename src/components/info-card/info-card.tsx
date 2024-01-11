@@ -129,6 +129,11 @@ export class InfoCard {
   protected _features: __esri.Features;
 
   /**
+   * esri/widgets/FeatureLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html
+   */
+  protected _layer: __esri.FeatureLayer;
+
+  /**
    * IPopupUtils: When false alerts will be shown to indicate that the layer must have editing enabled for edit actions
    */
   protected _popupUtils: IPopupUtils;
@@ -153,8 +158,8 @@ export class InfoCard {
       await this._initFeaturesWidget();
     }
     if (this.graphics.length > 0) {
-      const featureLayer = (this.graphics[0]?.layer as __esri.FeatureLayer);
-      this._editEnabled = featureLayer.editingEnabled && featureLayer.capabilities.operations.supportsUpdate;
+      this._layer = (this.graphics[0]?.layer as __esri.FeatureLayer);
+      this._editEnabled = this._layer.editingEnabled && this._layer.capabilities.operations.supportsUpdate;
       this._mobileTitle = await this._popupUtils.getPopupTitle(this.graphics[0]);
       this._features.open({
         features: this.graphics
@@ -317,15 +322,12 @@ export class InfoCard {
               </calcite-button>
               {
                 this.isMobile ? (
-                  <calcite-button
-                    appearance="outline"
+                  <delete-button
                     class="padding-inline-start-1"
-                    id="solutions-cancel"
-                    onClick={() => this._closePopup()}
-                    width="full"
-                  >
-                    {this._translations.cancel}
-                  </calcite-button>
+                    id="solutions-delete"
+                    ids={[this._features?.selectedFeature?.getObjectId()]}
+                    layer={this._layer}
+                  />
                 ) : undefined
               }
               <calcite-tooltip label="" placement="bottom" reference-element="solutions-edit">
@@ -333,8 +335,8 @@ export class InfoCard {
               </calcite-tooltip>
               {
                 this.isMobile ? (
-                  <calcite-tooltip label="" placement="bottom" reference-element="solutions-cancel">
-                    <span>{this._translations.cancel}</span>
+                  <calcite-tooltip label="" placement="bottom" reference-element="solutions-delete">
+                    <span>{this._translations.delete}</span>
                   </calcite-tooltip>
                 ) : undefined
               }

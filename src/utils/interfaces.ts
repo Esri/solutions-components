@@ -517,6 +517,10 @@ export interface ILayerExpression {
 
 export type ExpressionField = 'string' | 'number' | 'date' | 'coded-value' | 'range' | 'checkbox';
 
+export type EditType = "update" | "add" | "delete";
+
+export type ButtonType = "button" | "action";
+
 export interface IExpression {
   id: number;
   type?: ExpressionField;

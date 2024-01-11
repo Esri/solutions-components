@@ -508,16 +508,11 @@ export class CrowdsourceManager {
           >
             {this._translations.view.replace("{{n}}", this._numSelected.toString())}
           </calcite-button>
-          <calcite-button
-            appearance="outline"
+          <delete-button
             class="padding-inline-start-1"
             id="solutions-delete"
-            kind="danger"
-            onClick={() => this._layerTable.deleteFeatures()}
-            width="full"
-          >
-            {this._translations.delete.replace("{{n}}", this._numSelected.toString())}
-          </calcite-button>
+            ids={void this._layerTable.getSelectedIds()}
+          />
         </div>
       </div>
     ) : undefined;
