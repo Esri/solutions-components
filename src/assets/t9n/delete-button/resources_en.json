@@ -4,6 +4,5 @@
   "confirmSingle": "This feature will be permanently removed.",
   "delete": "Delete",
   "deleteCount": "Delete ({{n}})",
-  "deleteDisabled": "Delete Disabled",
   "deleteFeature": "Delete feature"
 }

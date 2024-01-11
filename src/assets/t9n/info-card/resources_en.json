@@ -6,6 +6,5 @@
   "next": "Next",
   "back": "Back",
   "indexOfTotal": "{{index}} of {{total}}",
-  "cancel": "Cancel",
   "delete": "Delete"
 }
