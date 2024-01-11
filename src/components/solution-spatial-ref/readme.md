@@ -20,6 +20,7 @@
 | Event                                  | Description | Type                                               |
 | -------------------------------------- | ----------- | -------------------------------------------------- |
 | `featureServiceSpatialReferenceChange` |             | `CustomEvent<{ name: string; enabled: boolean; }>` |
+| `lockedSpatialReferenceChange`         |             | `CustomEvent<{ locked: boolean; }>`                |
 
 
 ## Dependencies
