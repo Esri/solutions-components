@@ -1179,6 +1179,10 @@ export interface EditCardCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLEditCardElement;
 }
+export interface FloorFilterCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLFloorFilterElement;
+}
 export interface InfoCardCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLInfoCardElement;
@@ -1351,7 +1355,18 @@ declare global {
         prototype: HTMLFeaturesFlowItemElement;
         new (): HTMLFeaturesFlowItemElement;
     };
+    interface HTMLFloorFilterElementEventMap {
+        "levelChanged": string;
+    }
     interface HTMLFloorFilterElement extends Components.FloorFilter, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLFloorFilterElementEventMap>(type: K, listener: (this: HTMLFloorFilterElement, ev: FloorFilterCustomEvent<HTMLFloorFilterElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLFloorFilterElementEventMap>(type: K, listener: (this: HTMLFloorFilterElement, ev: FloorFilterCustomEvent<HTMLFloorFilterElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLFloorFilterElement: {
         prototype: HTMLFloorFilterElement;
@@ -2115,6 +2130,10 @@ declare namespace LocalJSX {
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
+        /**
+          * Emitted on demand when the Level is changed
+         */
+        "onLevelChanged"?: (event: FloorFilterCustomEvent<string>) => void;
     }
     interface InfoCard {
         /**

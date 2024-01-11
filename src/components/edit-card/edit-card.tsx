@@ -142,6 +142,7 @@ export class EditCard {
 
   /**
    * boolean: When true the Editor widget should be closed
+   * Without this logic we are taken to the Editors "Select" workflow step
    */
   protected _shouldClose = false;
 
@@ -161,8 +162,8 @@ export class EditCard {
    */
   @Watch("graphics")
   async graphicsWatchHandler(): Promise<void> {
-    if (this.graphics.length === 0) {
-      await this._closeEdit();
+    if (this.graphics.length === 0 && this.open) {
+      await this._closeEdit(true);
     }
   }
 
@@ -177,7 +178,7 @@ export class EditCard {
       this._editorLoading = false;
     }
     if (!v) {
-      await this._closeEdit();
+      await this._closeEdit(true);
     }
   }
 
@@ -211,7 +212,9 @@ export class EditCard {
 
   @Listen("featureSelectionChange", { target: "window" })
   async featureSelectionChange(): Promise<void> {
-    await this._closeEdit();
+    if (this.open) {
+      await this._closeEdit(false);
+    }
   }
 
   //--------------------------------------------------------------------------
@@ -244,7 +247,6 @@ export class EditCard {
       }
       this._layerEditHandle = this._layer.on("edits", () => {
         this.editsComplete.emit();
-        this.open = false;
       });
     }
   }
@@ -276,7 +278,7 @@ export class EditCard {
               </calcite-notice>
             ) : undefined
           }
-          <div class="position-absolute" slot="content">
+          <div class="position-absolute">
             <div
               class={tableNodeClass}
               id="feature-form"
@@ -359,7 +361,10 @@ export class EditCard {
           if (activeWorkflow?.type === "update-table-record" || activeWorkflow?.type === "create-features") {
             this._shouldClose = false;
           }
-          if (!activeWorkflow?.type && !activeWorkflow?.hasPendingEdits) {
+
+          // Handle back click and when feature is de-selected from the table
+          // this ensures that we are not shown the Editors "Select" workflow step
+          if ((!activeWorkflow?.type && !activeWorkflow?.hasPendingEdits && !this._editor.activeWorkflow) || !this._editor?.activeWorkflow?.started) {
             this.open = false;
           }
         }
@@ -373,17 +378,22 @@ export class EditCard {
   /**
    * Close the edit widget
    */
-  protected async _closeEdit(): Promise<void> {
+  protected async _closeEdit(
+    destroyOnClose: boolean
+  ): Promise<void> {
     this._shouldClose = true;
-    if (this._editor?.activeWorkflow) {
-      await this._editor?.cancelWorkflow();
+    if (destroyOnClose && this._editor?.activeWorkflow) {
+      if ((this._editor.activeWorkflow as any)?.activeWorkflow?.hasPendingEdits) {
+        await this._editor.activeWorkflow.reset();
+        await this._editor.cancelWorkflow();
+      }
+      this._editor.destroy();
+    } else {
+      if (this.graphicIndex > -1 && this.graphics?.length > 0) {
+        this.refreshGraphics.emit(this.graphics);
+      }
     }
 
-    if (this.graphicIndex > -1 && this.graphics?.length > 0) {
-      this.refreshGraphics.emit(this.graphics);
-    }
-
-    this._editor?.destroy();
     this._shouldClose = false;
     this.closeEdit.emit();
   }

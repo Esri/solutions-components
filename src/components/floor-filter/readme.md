@@ -14,6 +14,13 @@
 | `mapView`           | --        | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html                                      | `MapView`     | `undefined` |
 
 
+## Events
+
+| Event          | Description                                 | Type                  |
+| -------------- | ------------------------------------------- | --------------------- |
+| `levelChanged` | Emitted on demand when the Level is changed | `CustomEvent<string>` |
+
+
 ## Dependencies
 
 ### Used by
