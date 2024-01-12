@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.7.24] - Jan 12th 2024
+Reporter added
+
 ## [0.7.23] - Jan 10th 2024
 
 ## [0.7.22] - Jan 5th 2024
@@ -382,4 +385,5 @@ Recover from test releases
 [0.7.21]: https://github.com/Esri/solution.js/compare/v0.7.20...v0.7.21 "v0.7.21"
 [0.7.22]: https://github.com/Esri/solution.js/compare/v0.7.21...v0.7.22 "v0.7.22"
 [0.7.23]: https://github.com/Esri/solution.js/compare/v0.7.22...v0.7.23 "v0.7.23"
-[Unreleased]: https://github.com/Esri/solution.js/compare/v0.7.23...HEAD "Unreleased Changes"
+[0.7.24]: https://github.com/Esri/solution.js/compare/v0.7.23...v0.7.24 "v0.7.24"
+[Unreleased]: https://github.com/Esri/solution.js/compare/v0.7.24...HEAD "Unreleased Changes"
