@@ -815,7 +815,7 @@ export class CrowdsourceManager {
     panelOpen: boolean,
     hideTable: boolean
   ): VNode {
-    const tableClass = hideTable ? "visibility-hidden" : "";
+    const tableClass = hideTable && this._isMobile ? "visibility-hidden" : "";
     const tableSizeClass = this._getTableSizeClass(layoutMode, panelOpen)
     const icon = this._getDividerIcon(layoutMode, panelOpen);
     const tooltip = panelOpen ? this._translations.close : this._translations.open;
