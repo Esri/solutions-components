@@ -45,6 +45,7 @@
 ### Used by
 
  - [crowdsource-manager](../crowdsource-manager)
+ - [crowdsource-reporter](../crowdsource-reporter)
 
 ### Depends on
 
@@ -92,6 +93,7 @@ graph TD;
   map-tools --> calcite-icon
   map-tools --> calcite-tooltip
   crowdsource-manager --> map-card
+  crowdsource-reporter --> map-card
   style map-card fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

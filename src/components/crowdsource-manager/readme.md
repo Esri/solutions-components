@@ -46,6 +46,7 @@
 - calcite-shell
 - calcite-panel
 - calcite-button
+- [delete-button](../delete-button)
 - [map-card](../map-card)
 - calcite-icon
 - calcite-action
@@ -60,6 +61,7 @@ graph TD;
   crowdsource-manager --> calcite-shell
   crowdsource-manager --> calcite-panel
   crowdsource-manager --> calcite-button
+  crowdsource-manager --> delete-button
   crowdsource-manager --> map-card
   crowdsource-manager --> calcite-icon
   crowdsource-manager --> calcite-action
@@ -79,6 +81,11 @@ graph TD;
   calcite-scrim --> calcite-loader
   calcite-button --> calcite-loader
   calcite-button --> calcite-icon
+  delete-button --> calcite-button
+  delete-button --> calcite-action
+  delete-button --> calcite-modal
+  calcite-modal --> calcite-scrim
+  calcite-modal --> calcite-icon
   map-card --> map-picker
   map-card --> map-tools
   map-picker --> calcite-button
@@ -115,6 +122,7 @@ graph TD;
   info-card --> calcite-shell
   info-card --> calcite-loader
   info-card --> calcite-button
+  info-card --> delete-button
   info-card --> calcite-tooltip
   info-card --> edit-card
   info-card --> calcite-alert
@@ -136,6 +144,7 @@ graph TD;
   layer-table --> calcite-button
   layer-table --> instant-apps-social-share
   layer-table --> calcite-tooltip
+  layer-table --> delete-button
   layer-table --> calcite-modal
   layer-table --> instant-apps-filter-list
   map-layer-picker --> calcite-tooltip
@@ -160,8 +169,6 @@ graph TD;
   instant-apps-social-share --> calcite-button
   instant-apps-social-share --> calcite-icon
   instant-apps-social-share --> calcite-action
-  calcite-modal --> calcite-scrim
-  calcite-modal --> calcite-icon
   instant-apps-filter-list --> calcite-panel
   instant-apps-filter-list --> calcite-loader
   instant-apps-filter-list --> calcite-checkbox

@@ -22,6 +22,7 @@
 | `mapInfo`                 | --                            | IMapInfo: key configuration details about the current map                                                          | `IMapInfo`          | `undefined` |
 | `mapView`                 | --                            | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html             | `MapView`           | `undefined` |
 | `onlyShowUpdatableLayers` | `only-show-updatable-layers`  | boolean: When true only editable layers that support the update capability will be available                       | `boolean`           | `undefined` |
+| `selectedIds`             | --                            | number[]: A list of ids that are currently selected                                                                | `number[]`          | `[]`        |
 | `shareIncludeEmbed`       | `share-include-embed`         | boolean: When true the share options will include embed option                                                     | `boolean`           | `undefined` |
 | `shareIncludeSocial`      | `share-include-social`        | boolean: When true the share options will include social media sharing                                             | `boolean`           | `undefined` |
 | `showNewestFirst`         | `show-newest-first`           | boolean: when true the table will be sorted by objectid in descending order by default                             | `boolean`           | `undefined` |
@@ -33,19 +34,6 @@
 | Event                    | Description                                | Type                    |
 | ------------------------ | ------------------------------------------ | ----------------------- |
 | `featureSelectionChange` | Emitted on demand when a layer is selected | `CustomEvent<number[]>` |
-
-
-## Methods
-
-### `deleteFeatures() => Promise<void>`
-
-Delete currently selected features
-
-#### Returns
-
-Type: `Promise<void>`
-
-Promise resolving when the process is complete
 
 
 ## Dependencies
@@ -68,6 +56,7 @@ Promise resolving when the process is complete
 - calcite-button
 - instant-apps-social-share
 - calcite-tooltip
+- [delete-button](../delete-button)
 - calcite-modal
 - instant-apps-filter-list
 
@@ -86,6 +75,7 @@ graph TD;
   layer-table --> calcite-button
   layer-table --> instant-apps-social-share
   layer-table --> calcite-tooltip
+  layer-table --> delete-button
   layer-table --> calcite-modal
   layer-table --> instant-apps-filter-list
   calcite-panel --> calcite-action
@@ -127,6 +117,9 @@ graph TD;
   instant-apps-social-share --> calcite-button
   instant-apps-social-share --> calcite-icon
   instant-apps-social-share --> calcite-action
+  delete-button --> calcite-button
+  delete-button --> calcite-action
+  delete-button --> calcite-modal
   calcite-modal --> calcite-scrim
   calcite-modal --> calcite-icon
   instant-apps-filter-list --> calcite-panel

@@ -19,6 +19,7 @@ import CrowdsourceManager_T9n from "../../assets/t9n/crowdsource-manager/resourc
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { ELayoutMode, IBasemapConfig, ILayerAndTableIds, IMapChange, IMapInfo, ISearchConfiguration, theme } from "../../utils/interfaces";
 import { LayerExpression } from "@esri/instant-apps-components";
+import { getLayerOrTable } from "../../utils/mapViewUtils";
 
 @Component({
   tag: "crowdsource-manager",
@@ -211,6 +212,11 @@ export class CrowdsourceManager {
    * All UI strings should be defined here.
    */
   @State() _translations: typeof CrowdsourceManager_T9n;
+
+  /**
+   * esri/views/layers/FeatureLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html
+   */
+  @State() _layer: __esri.FeatureLayer;
 
   /**
    * Controls the layout of the application
@@ -431,6 +437,20 @@ export class CrowdsourceManager {
     }
   }
 
+  /**
+   * Get the layer for the provided layer id
+   */
+  @Listen("layerSelectionChange", { target: "window" })
+  async layerSelectionChange(
+    evt: CustomEvent
+  ): Promise<void> {
+    const id: string = evt.detail[0];
+    const layer = await getLayerOrTable(this._mapView, id);
+    await layer.when(() => {
+      this._layer = layer;
+    });
+  }
+
   //--------------------------------------------------------------------------
   //
   //  Functions (lifecycle)
@@ -497,6 +517,7 @@ export class CrowdsourceManager {
    */
   protected _getFooter(): VNode {
     const hasSelectedFeatures = this._numSelected > 0;
+    const deleteEnabled = this._layer?.editingEnabled && this._layer?.capabilities?.operations?.supportsDelete;
     return this._isMobile && hasSelectedFeatures && !this._hideFooter ? (
       <div class={`width-100`} slot="footer">
         <div class="display-flex padding-1-2">
@@ -508,16 +529,14 @@ export class CrowdsourceManager {
           >
             {this._translations.view.replace("{{n}}", this._numSelected.toString())}
           </calcite-button>
-          <calcite-button
-            appearance="outline"
-            class="padding-inline-start-1"
-            id="solutions-delete"
-            kind="danger"
-            onClick={() => this._layerTable.deleteFeatures()}
-            width="full"
-          >
-            {this._translations.delete.replace("{{n}}", this._numSelected.toString())}
-          </calcite-button>
+          {deleteEnabled ? (
+            <delete-button
+              class="padding-inline-start-1 width-full"
+              id="solutions-delete"
+              ids={this._layerTable.selectedIds}
+              layer={this._layer}
+            />
+          ) : undefined}
         </div>
       </div>
     ) : undefined;
@@ -796,7 +815,7 @@ export class CrowdsourceManager {
     panelOpen: boolean,
     hideTable: boolean
   ): VNode {
-    const tableClass = hideTable ? "visibility-hidden" : "";
+    const tableClass = hideTable && this._isMobile ? "visibility-hidden" : "";
     const tableSizeClass = this._getTableSizeClass(layoutMode, panelOpen)
     const icon = this._getDividerIcon(layoutMode, panelOpen);
     const tooltip = panelOpen ? this._translations.close : this._translations.open;

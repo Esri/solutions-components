@@ -9,6 +9,7 @@
 
 | Property                  | Attribute                     | Description                                                                                                        | Type        | Default     |
 | ------------------------- | ----------------------------- | ------------------------------------------------------------------------------------------------------------------ | ----------- | ----------- |
+| `allowEditing`            | `allow-editing`               | boolean: If true will show edit button                                                                             | `boolean`   | `true`      |
 | `graphics`                | --                            | esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html                      | `Graphic[]` | `undefined` |
 | `isLoading`               | `is-loading`                  | boolean: when true a loading indicator will be shown                                                               | `boolean`   | `false`     |
 | `isMobile`                | `is-mobile`                   | When true the component will render an optimized view for mobile devices                                           | `boolean`   | `undefined` |
@@ -42,6 +43,7 @@ Promise resolving with the current feature
 ### Used by
 
  - [card-manager](../card-manager)
+ - [crowdsource-reporter](../crowdsource-reporter)
 
 ### Depends on
 
@@ -50,6 +52,7 @@ Promise resolving with the current feature
 - calcite-shell
 - calcite-loader
 - calcite-button
+- [delete-button](../delete-button)
 - calcite-tooltip
 - [edit-card](../edit-card)
 - calcite-alert
@@ -62,6 +65,7 @@ graph TD;
   info-card --> calcite-shell
   info-card --> calcite-loader
   info-card --> calcite-button
+  info-card --> delete-button
   info-card --> calcite-tooltip
   info-card --> edit-card
   info-card --> calcite-alert
@@ -77,6 +81,11 @@ graph TD;
   calcite-scrim --> calcite-loader
   calcite-button --> calcite-loader
   calcite-button --> calcite-icon
+  delete-button --> calcite-button
+  delete-button --> calcite-action
+  delete-button --> calcite-modal
+  calcite-modal --> calcite-scrim
+  calcite-modal --> calcite-icon
   edit-card --> calcite-notice
   edit-card --> calcite-loader
   calcite-notice --> calcite-icon
@@ -84,6 +93,7 @@ graph TD;
   calcite-alert --> calcite-chip
   calcite-chip --> calcite-icon
   card-manager --> info-card
+  crowdsource-reporter --> info-card
   style info-card fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
