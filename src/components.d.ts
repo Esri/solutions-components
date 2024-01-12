@@ -202,6 +202,10 @@ export namespace Components {
     }
     interface CrowdsourceReporter {
         /**
+          * string: Item ID of the web map that should be selected by default
+         */
+        "defaultWebmap": string;
+        /**
           * string: The text that will display under the title on the landing page
          */
         "description": string;
@@ -218,6 +222,10 @@ export namespace Components {
          */
         "enableComments": boolean;
         /**
+          * boolean: when true the home widget will be available
+         */
+        "enableHome": boolean;
+        /**
           * boolean: When true the user will be provided a login page
          */
         "enableLogin": boolean;
@@ -225,6 +233,14 @@ export namespace Components {
           * boolean: When true the user will be allowed to submit new reports
          */
         "enableNewReports": boolean;
+        /**
+          * boolean: when true the search widget will be available
+         */
+        "enableSearch": boolean;
+        /**
+          * boolean: when true the zoom widget will be available
+         */
+        "enableZoom": boolean;
         /**
           * string[]: list of layer ids
          */
@@ -234,9 +250,9 @@ export namespace Components {
          */
         "loginTitle": string;
         /**
-          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+          * IMapInfo[]: array of map infos (name and id)
          */
-        "mapView": __esri.MapView;
+        "mapInfos": IMapInfo[];
         /**
           * string: The word(s) to display in the reports submit button
          */
@@ -257,6 +273,10 @@ export namespace Components {
           * boolean: When true the comments from all users will be visible
          */
         "showComments": boolean;
+        /**
+          * theme: "light" | "dark" theme to be used
+         */
+        "theme": theme;
     }
     interface DeductCalculator {
     }
@@ -304,6 +324,28 @@ export namespace Components {
     }
     interface FeatureFormFlowItem {
     }
+    interface FeatureList {
+        /**
+          * boolean: Highlight feature on map optional (default false) boolean to indicate if we should highlight and zoom to the extent of the feature geometry
+         */
+        "highlightOnMap"?: boolean;
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.MapView;
+        /**
+          * string: Message to be displayed when features are not found
+         */
+        "noFeaturesFoundMsg"?: string;
+        /**
+          * number: Number features to be fetched per page, by default 100 features will be fetched
+         */
+        "pageSize"?: number;
+        /**
+          * string: Layer id of the feature layer to show the list
+         */
+        "selectedLayerId": string;
+    }
     interface FeaturesFlowItem {
     }
     interface FloorFilter {
@@ -321,6 +363,10 @@ export namespace Components {
         "mapView": __esri.MapView;
     }
     interface InfoCard {
+        /**
+          * boolean: If true will show edit button
+         */
+        "allowEditing"?: boolean;
         /**
           * Get the current selected feature from the Features widget
           * @returns Promise resolving with the current feature
@@ -384,6 +430,20 @@ export namespace Components {
           * Contains the public value for this component; it is not changed by the editor. When changed, the change overwrites the contents of the editor.
          */
         "value": any;
+    }
+    interface LayerList {
+        /**
+          * string[]: If passed will show only these layers in the list if they are present in map and are editable
+         */
+        "layers": string[];
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.MapView;
+        /**
+          * string: Error message to be displayed when no layers found
+         */
+        "noLayerErrorMsg"?: string;
     }
     interface LayerTable {
         /**
@@ -1204,6 +1264,10 @@ export interface EditCardCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLEditCardElement;
 }
+export interface FeatureListCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLFeatureListElement;
+}
 export interface FloorFilterCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLFloorFilterElement;
@@ -1211,6 +1275,10 @@ export interface FloorFilterCustomEvent<T> extends CustomEvent<T> {
 export interface InfoCardCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLInfoCardElement;
+}
+export interface LayerListCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLLayerListElement;
 }
 export interface LayerTableCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -1391,6 +1459,23 @@ declare global {
         prototype: HTMLFeatureFormFlowItemElement;
         new (): HTMLFeatureFormFlowItemElement;
     };
+    interface HTMLFeatureListElementEventMap {
+        "featureSelect": __esri.Graphic;
+    }
+    interface HTMLFeatureListElement extends Components.FeatureList, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLFeatureListElementEventMap>(type: K, listener: (this: HTMLFeatureListElement, ev: FeatureListCustomEvent<HTMLFeatureListElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLFeatureListElementEventMap>(type: K, listener: (this: HTMLFeatureListElement, ev: FeatureListCustomEvent<HTMLFeatureListElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLFeatureListElement: {
+        prototype: HTMLFeatureListElement;
+        new (): HTMLFeatureListElement;
+    };
     interface HTMLFeaturesFlowItemElement extends Components.FeaturesFlowItem, HTMLStencilElement {
     }
     var HTMLFeaturesFlowItemElement: {
@@ -1437,6 +1522,24 @@ declare global {
     var HTMLJsonEditorElement: {
         prototype: HTMLJsonEditorElement;
         new (): HTMLJsonEditorElement;
+    };
+    interface HTMLLayerListElementEventMap {
+        "layerSelect": { layerId: string, layerName: string };
+        "layersListLoaded": string[];
+    }
+    interface HTMLLayerListElement extends Components.LayerList, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLLayerListElementEventMap>(type: K, listener: (this: HTMLLayerListElement, ev: LayerListCustomEvent<HTMLLayerListElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLLayerListElementEventMap>(type: K, listener: (this: HTMLLayerListElement, ev: LayerListCustomEvent<HTMLLayerListElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLLayerListElement: {
+        prototype: HTMLLayerListElement;
+        new (): HTMLLayerListElement;
     };
     interface HTMLLayerTableElementEventMap {
         "featureSelectionChange": number[];
@@ -1826,10 +1929,12 @@ declare global {
         "edit-card": HTMLEditCardElement;
         "feature-comments": HTMLFeatureCommentsElement;
         "feature-form-flow-item": HTMLFeatureFormFlowItemElement;
+        "feature-list": HTMLFeatureListElement;
         "features-flow-item": HTMLFeaturesFlowItemElement;
         "floor-filter": HTMLFloorFilterElement;
         "info-card": HTMLInfoCardElement;
         "json-editor": HTMLJsonEditorElement;
+        "layer-list": HTMLLayerListElement;
         "layer-table": HTMLLayerTableElement;
         "layout-manager": HTMLLayoutManagerElement;
         "list-flow-item": HTMLListFlowItemElement;
@@ -2062,6 +2167,10 @@ declare namespace LocalJSX {
     }
     interface CrowdsourceReporter {
         /**
+          * string: Item ID of the web map that should be selected by default
+         */
+        "defaultWebmap"?: string;
+        /**
           * string: The text that will display under the title on the landing page
          */
         "description"?: string;
@@ -2078,6 +2187,10 @@ declare namespace LocalJSX {
          */
         "enableComments"?: boolean;
         /**
+          * boolean: when true the home widget will be available
+         */
+        "enableHome"?: boolean;
+        /**
           * boolean: When true the user will be provided a login page
          */
         "enableLogin"?: boolean;
@@ -2085,6 +2198,14 @@ declare namespace LocalJSX {
           * boolean: When true the user will be allowed to submit new reports
          */
         "enableNewReports"?: boolean;
+        /**
+          * boolean: when true the search widget will be available
+         */
+        "enableSearch"?: boolean;
+        /**
+          * boolean: when true the zoom widget will be available
+         */
+        "enableZoom"?: boolean;
         /**
           * string[]: list of layer ids
          */
@@ -2094,9 +2215,9 @@ declare namespace LocalJSX {
          */
         "loginTitle"?: string;
         /**
-          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+          * IMapInfo[]: array of map infos (name and id)
          */
-        "mapView"?: __esri.MapView;
+        "mapInfos"?: IMapInfo[];
         /**
           * string: The word(s) to display in the reports submit button
          */
@@ -2117,6 +2238,10 @@ declare namespace LocalJSX {
           * boolean: When true the comments from all users will be visible
          */
         "showComments"?: boolean;
+        /**
+          * theme: "light" | "dark" theme to be used
+         */
+        "theme"?: theme;
     }
     interface DeductCalculator {
         /**
@@ -2184,6 +2309,32 @@ declare namespace LocalJSX {
     }
     interface FeatureFormFlowItem {
     }
+    interface FeatureList {
+        /**
+          * boolean: Highlight feature on map optional (default false) boolean to indicate if we should highlight and zoom to the extent of the feature geometry
+         */
+        "highlightOnMap"?: boolean;
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView"?: __esri.MapView;
+        /**
+          * string: Message to be displayed when features are not found
+         */
+        "noFeaturesFoundMsg"?: string;
+        /**
+          * Emitted on demand when feature is selected using the list
+         */
+        "onFeatureSelect"?: (event: FeatureListCustomEvent<__esri.Graphic>) => void;
+        /**
+          * number: Number features to be fetched per page, by default 100 features will be fetched
+         */
+        "pageSize"?: number;
+        /**
+          * string: Layer id of the feature layer to show the list
+         */
+        "selectedLayerId"?: string;
+    }
     interface FeaturesFlowItem {
     }
     interface FloorFilter {
@@ -2205,6 +2356,10 @@ declare namespace LocalJSX {
         "onLevelChanged"?: (event: FloorFilterCustomEvent<string>) => void;
     }
     interface InfoCard {
+        /**
+          * boolean: If true will show edit button
+         */
+        "allowEditing"?: boolean;
         /**
           * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
          */
@@ -2251,6 +2406,28 @@ declare namespace LocalJSX {
           * Contains the public value for this component; it is not changed by the editor. When changed, the change overwrites the contents of the editor.
          */
         "value"?: any;
+    }
+    interface LayerList {
+        /**
+          * string[]: If passed will show only these layers in the list if they are present in map and are editable
+         */
+        "layers"?: string[];
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView"?: __esri.MapView;
+        /**
+          * string: Error message to be displayed when no layers found
+         */
+        "noLayerErrorMsg"?: string;
+        /**
+          * Emitted on demand when feature layer clicked with details layerId and layerName
+         */
+        "onLayerSelect"?: (event: LayerListCustomEvent<{ layerId: string, layerName: string }>) => void;
+        /**
+          * Emitted on demand when list of layers to be listed are created. When empty array received in this event means no valid layers are found to be listed
+         */
+        "onLayersListLoaded"?: (event: LayerListCustomEvent<string[]>) => void;
     }
     interface LayerTable {
         /**
@@ -3081,10 +3258,12 @@ declare namespace LocalJSX {
         "edit-card": EditCard;
         "feature-comments": FeatureComments;
         "feature-form-flow-item": FeatureFormFlowItem;
+        "feature-list": FeatureList;
         "features-flow-item": FeaturesFlowItem;
         "floor-filter": FloorFilter;
         "info-card": InfoCard;
         "json-editor": JsonEditor;
+        "layer-list": LayerList;
         "layer-table": LayerTable;
         "layout-manager": LayoutManager;
         "list-flow-item": ListFlowItem;
@@ -3134,10 +3313,12 @@ declare module "@stencil/core" {
             "edit-card": LocalJSX.EditCard & JSXBase.HTMLAttributes<HTMLEditCardElement>;
             "feature-comments": LocalJSX.FeatureComments & JSXBase.HTMLAttributes<HTMLFeatureCommentsElement>;
             "feature-form-flow-item": LocalJSX.FeatureFormFlowItem & JSXBase.HTMLAttributes<HTMLFeatureFormFlowItemElement>;
+            "feature-list": LocalJSX.FeatureList & JSXBase.HTMLAttributes<HTMLFeatureListElement>;
             "features-flow-item": LocalJSX.FeaturesFlowItem & JSXBase.HTMLAttributes<HTMLFeaturesFlowItemElement>;
             "floor-filter": LocalJSX.FloorFilter & JSXBase.HTMLAttributes<HTMLFloorFilterElement>;
             "info-card": LocalJSX.InfoCard & JSXBase.HTMLAttributes<HTMLInfoCardElement>;
             "json-editor": LocalJSX.JsonEditor & JSXBase.HTMLAttributes<HTMLJsonEditorElement>;
+            "layer-list": LocalJSX.LayerList & JSXBase.HTMLAttributes<HTMLLayerListElement>;
             "layer-table": LocalJSX.LayerTable & JSXBase.HTMLAttributes<HTMLLayerTableElement>;
             "layout-manager": LocalJSX.LayoutManager & JSXBase.HTMLAttributes<HTMLLayoutManagerElement>;
             "list-flow-item": LocalJSX.ListFlowItem & JSXBase.HTMLAttributes<HTMLListFlowItemElement>;

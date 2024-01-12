@@ -66,6 +66,11 @@ export class InfoCard {
    */
   @Prop() zoomAndScrollToSelected: boolean;
 
+  /**
+   * boolean: If true will show edit button
+   */
+  @Prop() allowEditing?: boolean = true;
+
   //--------------------------------------------------------------------------
   //
   //  State (internal)
@@ -154,21 +159,7 @@ export class InfoCard {
    */
   @Watch("graphics")
   async graphicsWatchHandler(): Promise<void> {
-    if (!this._features) {
-      await this._initFeaturesWidget();
-    }
-    if (this.graphics.length > 0) {
-      this._layer = (this.graphics[0]?.layer as __esri.FeatureLayer);
-      this._editEnabled = this._layer.editingEnabled && this._layer.capabilities.operations.supportsUpdate;
-      this._mobileTitle = await this._popupUtils.getPopupTitle(this.graphics[0]);
-      this._features.open({
-        features: this.graphics
-      });
-    } else {
-      this._features.clear();
-      this._features.close();
-    }
-    this._count = this._getCount();
+    await this.setGraphics()
   }
 
   /**
@@ -271,6 +262,16 @@ export class InfoCard {
   }
 
   /**
+   * StencilJS: Called once just after the component is fully loaded and the first render() occurs.
+   * @returns Promise when complete
+   */
+  async componentDidLoad() {
+    if (this.graphics?.length > 0) {
+      await this.setGraphics()
+    }
+  }
+
+  /**
    * Renders the component.
    */
   render() {
@@ -316,38 +317,39 @@ export class InfoCard {
             id="features-node"
           />
           <div class={`${editButtonClass} width-100`} slot="footer">
-            <div class="display-flex top-border padding-1-2">
-              <calcite-button
-                appearance="solid"
-                id="solutions-edit"
-                onClick={() => this._openEditRecord()}
-                width="full"
-              >
-                {this._translations.edit}
-              </calcite-button>
-              {
-                this.isMobile && deleteEnabled ? (
-                  <delete-button
-                    class="padding-inline-start-1 width-100"
-                    id="solutions-delete"
-                    ids={ids}
-                    layer={this._layer}
-                    onEditsComplete={() => this._closePopup()}
-                  />
-                ) : undefined
-              }
-              <calcite-tooltip label="" placement="bottom" reference-element="solutions-edit">
-                <span>{this._translations.edit}</span>
-              </calcite-tooltip>
-              {
-                this.isMobile ? (
-                  <calcite-tooltip label="" placement="bottom" reference-element="solutions-delete">
-                    <span>{this._translations.delete}</span>
-                  </calcite-tooltip>
-                ) : undefined
-              }
-            </div>
-            <div class={`display-flex padding-1-2 button-container top-border ${nextBackClass}`}>
+            {this.allowEditing &&
+              <div class="display-flex top-border padding-1-2">
+                <calcite-button
+                  appearance="solid"
+                  id="solutions-edit"
+                  onClick={() => this._openEditRecord()}
+                  width="full"
+                >
+                  {this._translations.edit}
+                </calcite-button>
+                {
+                  this.isMobile && deleteEnabled ? (
+                    <delete-button
+                      class="padding-inline-start-1 width-100"
+                      id="solutions-delete"
+                      ids={ids}
+                      layer={this._layer}
+                      onEditsComplete={() => this._closePopup()}
+                    />
+                  ) : undefined
+                }
+                <calcite-tooltip label="" placement="bottom" reference-element="solutions-edit">
+                  <span>{this._translations.edit}</span>
+                </calcite-tooltip>
+                {
+                  this.isMobile ? (
+                    <calcite-tooltip label="" placement="bottom" reference-element="solutions-delete">
+                      <span>{this._translations.delete}</span>
+                    </calcite-tooltip>
+                  ) : undefined
+                }
+              </div>}
+            {!nextBackDisabled && <div class={`display-flex padding-1-2 button-container top-border ${nextBackClass}`}>
               <div class="min-width-100">
                 <calcite-button
                   appearance="outline"
@@ -385,7 +387,7 @@ export class InfoCard {
                   <span>{this._translations.next}</span>
                 </calcite-tooltip>
               </div>
-            </div>
+            </div>}
           </div>
           <edit-card
             class={editClass}
@@ -434,6 +436,29 @@ export class InfoCard {
     ]);
     this.Features = Features;
     this.reactiveUtils = reactiveUtils;
+  }
+
+  /**
+   * Initializes the features widget if not created and updates the feature widget and other required states
+   * 
+   * @protected
+   */
+  protected async setGraphics(): Promise<void> {
+    if (!this._features) {
+      await this._initFeaturesWidget();
+    }
+    if (this.graphics.length > 0) {
+      this._layer = (this.graphics[0]?.layer as __esri.FeatureLayer);
+      this._editEnabled = this._layer.editingEnabled && this._layer.capabilities.operations.supportsUpdate;
+      this._mobileTitle = await this._popupUtils.getPopupTitle(this.graphics[0]);
+      this._features.open({
+        features: this.graphics
+      });
+    } else {
+      this._features.clear();
+      this._features.close();
+    }
+    this._count = this._getCount();
   }
 
   /**

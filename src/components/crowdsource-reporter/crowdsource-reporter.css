@@ -16,4 +16,77 @@
 
 :host {
   display: block;
+  --calcite-label-margin-bottom: 0px;
+  --solutions-theme-foreground-color: var(--calcite-color-foreground-1);
+}
+
+.width-full {
+  width: 100%;
+}
+
+.width-0 {
+  width: 0;
+}
+
+.height-full {
+  height: 100%;
+}
+
+.height-0 {
+  height: 0;
+}
+
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.border {
+  border: 1px solid var(--calcite-color-border-3);
+}
+
+.map-container {
+  position: absolute;
+  width: calc(100% - 390px);
+  left: 390px;
+}
+
+.side-panel {
+  padding: 2px;
+  width: 390px;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 60;
+}
+
+.error-msg{
+  padding: 10px;
+}
+
+@media screen and (max-width: 600px) {
+  .map-container {
+    left: 0;
+    height: 50%;
+    width: 100%;
+  }
+
+  .map-container-mobile {
+    height:  calc(100% - 100px);
+  }
+
+  .side-panel {
+    padding: 2px;
+    width: 100%;
+    height: 50%;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    z-index: 60;
+  }
+
+  .collapsed-side-panel {
+    top: calc(100% - 100px);
+    height: 100px;
+  }
 }
