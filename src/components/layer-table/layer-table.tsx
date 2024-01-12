@@ -1322,7 +1322,6 @@ export class LayerTable {
     }
 
     this._shareNode.shareUrl = urlObj.href;
-    history.pushState(history.state, document.title, urlObj.href);
   }
 
   /**
