@@ -22,6 +22,7 @@
 | `mapInfo`                 | --                            | IMapInfo: key configuration details about the current map                                                          | `IMapInfo`          | `undefined` |
 | `mapView`                 | --                            | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html             | `MapView`           | `undefined` |
 | `onlyShowUpdatableLayers` | `only-show-updatable-layers`  | boolean: When true only editable layers that support the update capability will be available                       | `boolean`           | `undefined` |
+| `selectedIds`             | --                            | number[]: A list of ids that are currently selected                                                                | `number[]`          | `[]`        |
 | `shareIncludeEmbed`       | `share-include-embed`         | boolean: When true the share options will include embed option                                                     | `boolean`           | `undefined` |
 | `shareIncludeSocial`      | `share-include-social`        | boolean: When true the share options will include social media sharing                                             | `boolean`           | `undefined` |
 | `showNewestFirst`         | `show-newest-first`           | boolean: when true the table will be sorted by objectid in descending order by default                             | `boolean`           | `undefined` |
@@ -33,19 +34,6 @@
 | Event                    | Description                                | Type                    |
 | ------------------------ | ------------------------------------------ | ----------------------- |
 | `featureSelectionChange` | Emitted on demand when a layer is selected | `CustomEvent<number[]>` |
-
-
-## Methods
-
-### `getSelectedIds() => Promise<number[]>`
-
-
-
-#### Returns
-
-Type: `Promise<number[]>`
-
-
 
 
 ## Dependencies

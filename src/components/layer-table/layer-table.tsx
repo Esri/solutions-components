@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Listen, Method, Prop, State, VNode, Watch } from "@stencil/core";
+import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, State, VNode, Watch } from "@stencil/core";
 import LayerTable_T9n from "../../assets/t9n/layer-table/resources.json";
 import { loadModules } from "../../utils/loadModules";
 import { getLocaleComponentStrings } from "../../utils/locale";
@@ -110,6 +110,11 @@ export class LayerTable {
   @Prop() onlyShowUpdatableLayers: boolean;
 
   /**
+   * number[]: A list of ids that are currently selected
+   */
+  @Prop() selectedIds: number[] = [];
+
+  /**
    * boolean: When true the share options will include embed option
    */
   @Prop() shareIncludeEmbed: boolean;
@@ -164,11 +169,6 @@ export class LayerTable {
    * boolean: When true the select all will be displayed in an active state
    */
   @State() _selectAllActive = false;
-
-  /**
-   * number[]: A list of indexes that are currently selected
-   */
-  @State() _selectedIndexes: number[] = [];
 
   /**
    * boolean: When true the show/hide fields list is forced open
@@ -469,11 +469,11 @@ export class LayerTable {
   /**
    * watch for selection changes
    */
-  @Watch("_selectedIndexes")
-  async _selectedIndexesWatchHandler(): Promise<void> {
+  @Watch("_selectedIds")
+  async _selectedIdsWatchHandler(): Promise<void> {
     this._updateShareUrl();
     this._validateEnabledActions();
-    if (this._selectAllActive && this._selectedIndexes.length !== this._allIds.length) {
+    if (this._selectAllActive && this.selectedIds.length !== this._allIds.length) {
       this._selectAllActive = false;
     }
   }
@@ -493,11 +493,6 @@ export class LayerTable {
   //  Methods (public)
   //
   //--------------------------------------------------------------------------
-
-  @Method()
-  async getSelectedIds(): Promise<number[]> {
-    return this._getIds();
-  }
 
   //--------------------------------------------------------------------------
   //
@@ -602,7 +597,7 @@ export class LayerTable {
     const tableNodeClass = this._fetchingData ? "display-none" : "";
     const loadingClass = this._fetchingData ? "" : "display-none";
     const total = this._allIds.length.toString();
-    const selected = this._selectedIndexes.length.toString();
+    const selected = this.selectedIds.length.toString();
     const tableHeightClass = this.isMobile ? "height-full" : "height-full-adjusted";
     this._validateActiveActions();
     return (
@@ -987,7 +982,7 @@ export class LayerTable {
    * @returns boolean
    */
   protected _featuresSelected(): boolean {
-    return this._selectedIndexes.length > 0;
+    return this.selectedIds.length > 0;
   }
 
   /**
@@ -1304,8 +1299,8 @@ export class LayerTable {
       urlObj.searchParams.delete("layer");
     }
 
-    if (this._selectedIndexes?.length > 0) {
-      urlObj.searchParams.set("oid", this._selectedIndexes.join(","));
+    if (this.selectedIds?.length > 0) {
+      urlObj.searchParams.set("oid", this.selectedIds.join(","));
     } else {
       urlObj.searchParams.delete("oid");
     }
@@ -1394,6 +1389,7 @@ export class LayerTable {
             disabled={_disabled}
             icon={icon}
             ids={this._getIds()}
+            layer={this._layer}
           />
         ) : (
           <calcite-action
@@ -1491,24 +1487,24 @@ export class LayerTable {
     const ids = [...this._table.highlightIds.toArray()];
     if (!this._skipOnChange) {
       if (!this._ctrlIsPressed && !this._shiftIsPressed) {
-        if (this._selectedIndexes.length > 0) {
+        if (this.selectedIds.length > 0) {
           this._skipOnChange = true;
           // only readd in specific case where we have multiple selected and then click one of the currently selected
-          const reAdd = this._selectedIndexes.length > 1 && evt.removed.length === 1;
-          const newIndexes = reAdd ? evt.removed : ids.filter(id => this._selectedIndexes.indexOf(id) < 0);
+          const reAdd = this.selectedIds.length > 1 && evt.removed.length === 1;
+          const newIds = reAdd ? evt.removed : ids.filter(id => this.selectedIds.indexOf(id) < 0);
           this._clearSelection();
-          this._selectedIndexes = [...newIndexes];
-          if (newIndexes.length > 0) {
-            this._table.highlightIds.add(newIndexes[0]);
+          this.selectedIds = [...newIds];
+          if (newIds.length > 0) {
+            this._table.highlightIds.add(newIds[0]);
           } else {
             this._skipOnChange = false;
           }
         } else {
           // https://github.com/Esri/solutions-components/issues/365
-          this._selectedIndexes = ids.reverse();
+          this.selectedIds = ids.reverse();
         }
       } else if (this._ctrlIsPressed) {
-        this._selectedIndexes = ids.reverse();
+        this.selectedIds = ids.reverse();
       } else if (this._shiftIsPressed) {
         this._skipOnChange = true;
         this._previousCurrentId = this._currentId;
@@ -1531,7 +1527,7 @@ export class LayerTable {
 
           this._skipOnChange = startIndex + 1 !== endIndex;
 
-          const selectedIndexes = oids.reduce((prev, cur) => {
+          const selectedIds = oids.reduce((prev, cur) => {
             const id = cur;
             const index = this._table.viewModel.getObjectIdIndex(id);
             if ((id === this._currentId || id === this._previousCurrentId)) {
@@ -1550,15 +1546,15 @@ export class LayerTable {
 
             // Also add index based check.
             // In some cases the FeatureTable and Layer query will have differences in how null/undefined field values are sorted
-            if ((this._selectedIndexes.indexOf(id) > -1 || (index >= startIndex && index <= endIndex)) && prev.indexOf(id) < 0 && index > -1) {
+            if ((this.selectedIds.indexOf(id) > -1 || (index >= startIndex && index <= endIndex)) && prev.indexOf(id) < 0 && index > -1) {
               prev.push(id);
             }
             return prev;
           }, []);
 
-          this._selectedIndexes = _start < _end ? selectedIndexes.reverse() : selectedIndexes;
+          this.selectedIds = _start < _end ? selectedIds.reverse() : selectedIds;
 
-          this._table.highlightIds.addMany(this._selectedIndexes.filter(i => ids.indexOf(i) < 0));
+          this._table.highlightIds.addMany(this.selectedIds.filter(i => ids.indexOf(i) < 0));
         }
       }
       this._finishOnChange();
@@ -1579,7 +1575,7 @@ export class LayerTable {
         this._toggleShowSelected();
       }
     }
-    this.featureSelectionChange.emit(this._selectedIndexes);
+    this.featureSelectionChange.emit(this.selectedIds);
   }
 
   /**
@@ -1588,7 +1584,7 @@ export class LayerTable {
   protected async _resetTable(): Promise<void> {
     this._clearSelection();
     this._allIds = [];
-    this.featureSelectionChange.emit(this._selectedIndexes);
+    this.featureSelectionChange.emit(this.selectedIds);
 
     const columnTemplates = this._getColumnTemplates(this._layer.id, this._layer?.fields);
     this._allIds = await queryAllIds(this._layer);
@@ -1852,7 +1848,7 @@ export class LayerTable {
     this._table.highlightIds.removeAll();
     this._skipOnChange = true;
     this._table.highlightIds.addMany(ids);
-    this._selectedIndexes = ids;
+    this.selectedIds = ids;
     this._finishOnChange();
     this._selectAllActive = true;
   }
@@ -1874,7 +1870,7 @@ export class LayerTable {
    * Clears the selected indexes
    */
   protected _clearSelection(): void {
-    this._selectedIndexes = [];
+    this.selectedIds = [];
     this._table?.highlightIds.removeAll();
     this._finishOnChange();
   }
@@ -1900,7 +1896,7 @@ export class LayerTable {
    * Select all rows that are not currently selectd
    */
   protected _switchSelected(): void {
-    const currentIndexes = [...this._selectedIndexes];
+    const currentIndexes = [...this.selectedIds];
     this._table.highlightIds.removeAll();
     const ids = this._allIds.reduce((prev, _cur) => {
       if (currentIndexes.indexOf(_cur) < 0) {
@@ -1910,7 +1906,7 @@ export class LayerTable {
     }, []).sort((a,b) => a - b);
     this._skipOnChange = true;
     this._table.highlightIds.addMany(ids);
-    this._selectedIndexes = ids;
+    this.selectedIds = ids;
     this._finishOnChange();
   }
 
@@ -1948,7 +1944,7 @@ export class LayerTable {
    */
   protected async _refresh(): Promise<void> {
     await this._table.refresh();
-    this.featureSelectionChange.emit(this._selectedIndexes);
+    this.featureSelectionChange.emit(this.selectedIds);
   }
 
   /**

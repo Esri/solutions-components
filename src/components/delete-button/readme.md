@@ -7,13 +7,13 @@
 
 ## Properties
 
-| Property     | Attribute     | Description | Type                   | Default     |
-| ------------ | ------------- | ----------- | ---------------------- | ----------- |
-| `buttonType` | `button-type` |             | `"action" \| "button"` | `"button"`  |
-| `disabled`   | `disabled`    |             | `boolean`              | `false`     |
-| `icon`       | `icon`        |             | `string`               | `undefined` |
-| `ids`        | --            |             | `any[]`                | `[]`        |
-| `layer`      | --            |             | `FeatureLayer`         | `undefined` |
+| Property     | Attribute     | Description                                                                                                                 | Type                   | Default     |
+| ------------ | ------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------------------- | ----------- |
+| `buttonType` | `button-type` | ButtonType (button \| action): Support usage as action or button                                                            | `"action" \| "button"` | `"button"`  |
+| `disabled`   | `disabled`    | boolean: This overrides internal enable/disable logic that is based on checks if the layer supports delete                  | `boolean`              | `false`     |
+| `icon`       | `icon`        | string: The icon to display in the component                                                                                | `string`               | `undefined` |
+| `ids`        | --            | number[]: The ids that would be deleted                                                                                     | `any[]`                | `[]`        |
+| `layer`      | --            | esri/views/layers/FeatureLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html | `FeatureLayer`         | `undefined` |
 
 
 ## Events

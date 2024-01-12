@@ -261,10 +261,25 @@ export namespace Components {
     interface DeductCalculator {
     }
     interface DeleteButton {
+        /**
+          * ButtonType (button | action): Support usage as action or button
+         */
         "buttonType": ButtonType;
+        /**
+          * boolean: This overrides internal enable/disable logic that is based on checks if the layer supports delete
+         */
         "disabled": boolean;
+        /**
+          * string: The icon to display in the component
+         */
         "icon": string;
+        /**
+          * number[]: The ids that would be deleted
+         */
         "ids": any[];
+        /**
+          * esri/views/layers/FeatureLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html
+         */
         "layer": __esri.FeatureLayer;
     }
     interface EditCard {
@@ -407,7 +422,6 @@ export namespace Components {
           * boolean: when true the share widget will be available
          */
         "enableShare": boolean;
-        "getSelectedIds": () => Promise<number[]>;
         /**
           * When true the component will render an optimized view for mobile devices
          */
@@ -424,6 +438,10 @@ export namespace Components {
           * boolean: When true only editable layers that support the update capability will be available
          */
         "onlyShowUpdatableLayers": boolean;
+        /**
+          * number[]: A list of ids that are currently selected
+         */
+        "selectedIds": number[];
         /**
           * boolean: When true the share options will include embed option
          */
@@ -2107,10 +2125,25 @@ declare namespace LocalJSX {
         "onDeductValueComplete"?: (event: DeductCalculatorCustomEvent<string>) => void;
     }
     interface DeleteButton {
+        /**
+          * ButtonType (button | action): Support usage as action or button
+         */
         "buttonType"?: ButtonType;
+        /**
+          * boolean: This overrides internal enable/disable logic that is based on checks if the layer supports delete
+         */
         "disabled"?: boolean;
+        /**
+          * string: The icon to display in the component
+         */
         "icon"?: string;
+        /**
+          * number[]: The ids that would be deleted
+         */
         "ids"?: any[];
+        /**
+          * esri/views/layers/FeatureLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html
+         */
         "layer"?: __esri.FeatureLayer;
         /**
           * Emitted on demand when features have been deleted
@@ -2276,6 +2309,10 @@ declare namespace LocalJSX {
           * boolean: When true only editable layers that support the update capability will be available
          */
         "onlyShowUpdatableLayers"?: boolean;
+        /**
+          * number[]: A list of ids that are currently selected
+         */
+        "selectedIds"?: number[];
         /**
           * boolean: When true the share options will include embed option
          */

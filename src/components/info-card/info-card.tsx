@@ -237,8 +237,10 @@ export class InfoCard {
   @Listen("layerSelectionChange", { target: "window" })
   async layerSelectionChange(): Promise<void> {
     this._showListView = false;
-    (this._features.viewModel as any).featureMenuOpen = false;
-    this._features.close();
+    if (this._features?.viewModel) {
+      (this._features.viewModel as any).featureMenuOpen = false;
+      this._features.close();
+    }
   }
 
   /**
@@ -279,6 +281,9 @@ export class InfoCard {
     const nextBackDisabled = this._features?.features?.length < 2;
     const nextBackClass = this.isMobile ? "display-none" : "";
     const shellClass = this.isMobile && !this._editRecordOpen ? "padding-top-46" : "";
+    const id = this._features?.selectedFeature?.getObjectId();
+    const ids = parseInt(id?.toString(), 10) > -1 ? [id] : [];
+    const deleteEnabled = this._layer?.editingEnabled && this._layer?.capabilities?.operations?.supportsDelete;
     return (
       <Host>
         {this.isMobile && !this._editRecordOpen ? (
@@ -321,12 +326,13 @@ export class InfoCard {
                 {this._translations.edit}
               </calcite-button>
               {
-                this.isMobile ? (
+                this.isMobile && deleteEnabled ? (
                   <delete-button
-                    class="padding-inline-start-1"
+                    class="padding-inline-start-1 width-100"
                     id="solutions-delete"
-                    ids={[this._features?.selectedFeature?.getObjectId()]}
+                    ids={ids}
                     layer={this._layer}
+                    onEditsComplete={() => this._closePopup()}
                   />
                 ) : undefined
               }

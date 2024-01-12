@@ -38,15 +38,29 @@ export class DeleteButton {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * ButtonType (button | action): Support usage as action or button
+   */
   @Prop() buttonType: ButtonType = "button";
 
-  // Overrides the layer check
+  /**
+   * boolean: This overrides internal enable/disable logic that is based on checks if the layer supports delete
+   */
   @Prop() disabled = false;
 
+  /**
+   * string: The icon to display in the component
+   */
   @Prop() icon: string;
 
+  /**
+   * number[]: The ids that would be deleted
+   */
   @Prop() ids = [];
 
+  /**
+   * esri/views/layers/FeatureLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html
+   */
   @Prop() layer: __esri.FeatureLayer;
 
   //--------------------------------------------------------------------------
@@ -71,6 +85,11 @@ export class DeleteButton {
   @State() _isDeleting = false;
 
   /**
+   * boolean: When true the layer supports delete and a button will be returned
+   */
+  @State() _supportsDelete: boolean;
+
+  /**
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
@@ -93,8 +112,6 @@ export class DeleteButton {
    */
   @Watch("ids")
   async idsWatchHandler(): Promise<void> {
-    console.log("idsWatchHandler")
-    console.log(this.ids)
     this._setDeleteEnabled();
   }
 
@@ -147,7 +164,7 @@ export class DeleteButton {
         {this.buttonType === "button" ? (
           <calcite-button
             appearance="outline"
-            class="padding-inline-start-1"
+            disabled={!this._deleteEndabled}
             id="solutions-delete"
             kind="danger"
             onClick={() => this._delete()}
@@ -158,10 +175,11 @@ export class DeleteButton {
         ) : (
           <calcite-action
             appearance="solid"
+            compact={true}
             disabled={!this._deleteEndabled}
             id={this.icon}
             onClick={() => this._delete()}
-            text={this._translations.delete}
+            scale="s"
           >
             <calcite-button
               appearance="transparent"
@@ -172,10 +190,16 @@ export class DeleteButton {
             </calcite-button>
           </calcite-action>
         )}
-
         {this._deleteMessage()}
       </Host>
     );
+  }
+
+  /**
+   * StencilJS: Called once just after the component is fully loaded and the first render() occurs.
+   */
+  async componentDidLoad(): Promise<void> {
+    this._setDeleteEnabled();
   }
 
   //--------------------------------------------------------------------------
@@ -184,9 +208,12 @@ export class DeleteButton {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * Verify if the layer supports delete and that we have 1 or more ids
+   */
   protected _setDeleteEnabled(): void {
-    const supportsDelete = this.layer?.editingEnabled && this.layer?.capabilities?.operations?.supportsDelete
-    this._deleteEndabled = !this.disabled || supportsDelete && this.ids.length > 0;
+    this._supportsDelete = this.layer?.editingEnabled && this.layer?.capabilities?.operations?.supportsDelete;
+    this._deleteEndabled = !this.disabled || this._supportsDelete && this.ids.length > 0;
   }
 
   /**
