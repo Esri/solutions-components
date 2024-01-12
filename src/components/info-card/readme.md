@@ -9,6 +9,7 @@
 
 | Property                  | Attribute                     | Description                                                                                                        | Type        | Default     |
 | ------------------------- | ----------------------------- | ------------------------------------------------------------------------------------------------------------------ | ----------- | ----------- |
+| `allowEditing`            | `allow-editing`               | boolean: If true will show edit button                                                                             | `boolean`   | `true`      |
 | `graphics`                | --                            | esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html                      | `Graphic[]` | `undefined` |
 | `isLoading`               | `is-loading`                  | boolean: when true a loading indicator will be shown                                                               | `boolean`   | `false`     |
 | `isMobile`                | `is-mobile`                   | When true the component will render an optimized view for mobile devices                                           | `boolean`   | `undefined` |
@@ -42,6 +43,7 @@ Promise resolving with the current feature
 ### Used by
 
  - [card-manager](../card-manager)
+ - [crowdsource-reporter](../crowdsource-reporter)
 
 ### Depends on
 
@@ -91,6 +93,7 @@ graph TD;
   calcite-alert --> calcite-chip
   calcite-chip --> calcite-icon
   card-manager --> info-card
+  crowdsource-reporter --> info-card
   style info-card fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
