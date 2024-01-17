@@ -254,6 +254,10 @@ export namespace Components {
          */
         "mapInfos": IMapInfo[];
         /**
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.MapView;
+        /**
           * string: The word(s) to display in the reports submit button
          */
         "reportButtonText": string;
@@ -2218,6 +2222,10 @@ declare namespace LocalJSX {
           * IMapInfo[]: array of map infos (name and id)
          */
         "mapInfos"?: IMapInfo[];
+        /**
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView"?: __esri.MapView;
         /**
           * string: The word(s) to display in the reports submit button
          */
