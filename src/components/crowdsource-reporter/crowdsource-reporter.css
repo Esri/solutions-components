@@ -21,7 +21,7 @@
 }
 
 .width-full {
-  width: 100%;
+  width: 100% !important;
 }
 
 .width-0 {
@@ -29,7 +29,7 @@
 }
 
 .height-full {
-  height: 100%;
+  height: 100% !important;
 }
 
 .height-0 {
@@ -62,4 +62,9 @@
 
 .error-msg{
   padding: 10px;
+}
+
+.collapsed-side-panel {
+  top: calc(100% - 55px);
+  height: 54px;
 }

@@ -312,7 +312,7 @@ export class CrowdsourceReporter {
     }
     const themeClass = this.theme === "dark" ? "calcite-mode-dark" : "calcite-mode-light";
     return (
-      <calcite-panel class={sidePanelClass + " " + themeClass}>
+      <calcite-panel class={sidePanelClass + " width-full " + themeClass}>
         {this.mapView
           ? <calcite-flow>
             {renderLists?.length > 0 && renderLists}
