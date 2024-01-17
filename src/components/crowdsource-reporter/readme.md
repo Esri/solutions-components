@@ -19,6 +19,7 @@
 | `enableNewReports`        | `enable-new-reports`        | boolean: When true the user will be allowed to submit new reports                                         | `boolean`              | `undefined` |
 | `enableSearch`            | `enable-search`             | boolean: when true the search widget will be available                                                    | `boolean`              | `true`      |
 | `enableZoom`              | `enable-zoom`               | boolean: when true the zoom widget will be available                                                      | `boolean`              | `true`      |
+| `isMobile`                | `is-mobile`                 | boolean: When true the application will be in mobile mode, controls the mobile or desktop view            | `boolean`              | `undefined` |
 | `layers`                  | --                          | string[]: list of layer ids                                                                               | `string[]`             | `undefined` |
 | `loginTitle`              | `login-title`               | string: The text that will display at the top of the landing page                                         | `string`               | `undefined` |
 | `mapInfos`                | --                          | IMapInfo[]: array of map infos (name and id)                                                              | `IMapInfo[]`           | `[]`        |

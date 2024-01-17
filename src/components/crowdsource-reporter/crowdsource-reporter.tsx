@@ -45,6 +45,11 @@ export class CrowdsourceReporter {
   @Prop() description: string;
 
   /**
+   * boolean: When true the application will be in mobile mode, controls the mobile or desktop view
+   */
+  @Prop() isMobile: boolean;
+
+  /**
    * boolean: When true the anonymous users will be allowed to submit reports and comments
    */
   @Prop() enableAnonymousAccess: boolean;
@@ -151,11 +156,6 @@ export class CrowdsourceReporter {
   @State() _mapInfo: IMapInfo;
 
   /**
-   * boolean: When true the application will be in mobile mode, controls the mobile or desktop view
-   */
-  @State() _isMobile = false;
-
-  /**
    * string[]: Reporter flow items list
    */
   @State() _flowItems: string[] = ["layer-list"];
@@ -220,6 +220,16 @@ export class CrowdsourceReporter {
   /**
    * Called each time the mapView prop is changed.
    */
+  @Watch("isMobile")
+  async isMobileWatchHandler(): Promise<void> {
+    if (this.isMobile) {
+      this._sidePanelCollapsed = false;
+    }
+  }
+
+  /**
+   * Called each time the mapView prop is changed.
+   */
   @Watch("mapView")
   async mapViewWatchHandler(): Promise<void> {
     await this.mapView.when(async () => {
@@ -252,36 +262,18 @@ export class CrowdsourceReporter {
    */
   async componentWillLoad(): Promise<void> {
     await this._getTranslations();
-    const mediaQueryList = window.matchMedia("screen and (max-width: 600px)");
-    this._isMobile = mediaQueryList.matches;
-    //on change update the state for is mobile and the sidePanelCollapsed
-    mediaQueryList.onchange = (e) => {
-      this._isMobile = e.matches;
-      this._sidePanelCollapsed = false;
-    }
   }
 
   /**
    * Renders the component.
    */
   render() {
-    // const  validConfiguration = true;
-    //Check if webMap id is configured
-    // if(!this.mapInfos || this.mapInfos.length<=0  || (this.mapInfos?.length>0 && !this.mapInfos[0]?.id)){
-    //   validConfiguration = false
-    // }
     return (
       <Host>
         <div>
           <calcite-shell content-behind >
             {this._getReporter()}
           </calcite-shell>
-          {/* {!validConfiguration &&
-            <calcite-notice class="error-msg" icon="configure" kind="danger" open>
-              <div slot="title">{this._translations.error}</div>
-              <div slot="message">{ this._translations.invalidConfigurationErrorMsg}</div>
-            </calcite-notice>
-          } */}
         </div>
       </Host>
     );
@@ -315,7 +307,7 @@ export class CrowdsourceReporter {
     });
     let sidePanelClass = "side-panel";
     //in case of mobile handle for collapsed styles of the panel
-    if (this._isMobile && this._sidePanelCollapsed) {
+    if (this.isMobile && this._sidePanelCollapsed) {
       sidePanelClass += " collapsed-side-panel";
     }
     const themeClass = this.theme === "dark" ? "calcite-mode-dark" : "calcite-mode-light";
@@ -337,12 +329,12 @@ export class CrowdsourceReporter {
    */
   protected getLayerListFlowItem(): Node {
     return (
-      <calcite-flow-item collapsed={this._isMobile && this._sidePanelCollapsed} heading={this.reportsHeader}>
-        {this._hasValidLayers && <calcite-action icon="sort-ascending-arrow" slot={this._isMobile ? "header-menu-actions" : "header-actions-end"}
-          text={this._translations.sort} text-enabled={this._isMobile} />}
-        {this._hasValidLayers && <calcite-action icon="filter" slot={this._isMobile ? "header-menu-actions" : "header-actions-end"}
-          text={this._translations.filter} text-enabled={this._isMobile} />}
-        {this._isMobile && this.getActionToExpandCollapsePanel()}
+      <calcite-flow-item collapsed={this.isMobile && this._sidePanelCollapsed} heading={this.reportsHeader}>
+        {this._hasValidLayers && <calcite-action icon="sort-ascending-arrow" slot={this.isMobile ? "header-menu-actions" : "header-actions-end"}
+          text={this._translations.sort} text-enabled={this.isMobile} />}
+        {this._hasValidLayers && <calcite-action icon="filter" slot={this.isMobile ? "header-menu-actions" : "header-actions-end"}
+          text={this._translations.filter} text-enabled={this.isMobile} />}
+        {this.isMobile && this.getActionToExpandCollapsePanel()}
         {this._hasValidLayers && this.enableNewReports && <calcite-button appearance="secondary" slot="footer" width="full">
           {this.reportButtonText}
         </calcite-button>}
@@ -412,12 +404,12 @@ export class CrowdsourceReporter {
    */
   protected getFeatureListFlowItem(layerId: string, layerName: string): Node {
     return (
-      <calcite-flow-item collapsed={this._isMobile && this._sidePanelCollapsed} heading={layerName} onCalciteFlowItemBack={this.backFromFeatureList.bind(this)}>
-        <calcite-action icon="sort-ascending-arrow" slot={this._isMobile ? "header-menu-actions" : "header-actions-end"}
-          text={this._translations.sort} text-enabled={this._isMobile} />
-        <calcite-action icon="filter" slot={this._isMobile ? "header-menu-actions" : "header-actions-end"}
-          text={this._translations.filter} text-enabled={this._isMobile} />
-        {this._isMobile && this.getActionToExpandCollapsePanel()}
+      <calcite-flow-item collapsed={this.isMobile && this._sidePanelCollapsed} heading={layerName} onCalciteFlowItemBack={this.backFromFeatureList.bind(this)}>
+        <calcite-action icon="sort-ascending-arrow" slot={this.isMobile ? "header-menu-actions" : "header-actions-end"}
+          text={this._translations.sort} text-enabled={this.isMobile} />
+        <calcite-action icon="filter" slot={this.isMobile ? "header-menu-actions" : "header-actions-end"}
+          text={this._translations.filter} text-enabled={this.isMobile} />
+        {this.isMobile && this.getActionToExpandCollapsePanel()}
         {this.enableNewReports && <calcite-button appearance="secondary" slot="footer" width="full">
           {this.reportButtonText}
         </calcite-button>}
@@ -440,8 +432,8 @@ export class CrowdsourceReporter {
    */
   protected getFeatureDetailsFlowItem(): Node {
     return (
-      <calcite-flow-item collapsed={this._isMobile && this._sidePanelCollapsed} heading={this._selectedLayerName} onCalciteFlowItemBack={this.backFromFeatureList.bind(this)}>
-        {this._isMobile && this.getActionToExpandCollapsePanel()}
+      <calcite-flow-item collapsed={this.isMobile && this._sidePanelCollapsed} heading={this._selectedLayerName} onCalciteFlowItemBack={this.backFromFeatureList.bind(this)}>
+        {this.isMobile && this.getActionToExpandCollapsePanel()}
         <calcite-action icon="share" slot={"header-actions-end"} text={this._translations.share} />
         <calcite-panel full-height>
           <info-card

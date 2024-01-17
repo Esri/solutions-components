@@ -242,6 +242,10 @@ export namespace Components {
          */
         "enableZoom": boolean;
         /**
+          * boolean: When true the application will be in mobile mode, controls the mobile or desktop view
+         */
+        "isMobile": boolean;
+        /**
           * string[]: list of layer ids
          */
         "layers": string[];
@@ -2210,6 +2214,10 @@ declare namespace LocalJSX {
           * boolean: when true the zoom widget will be available
          */
         "enableZoom"?: boolean;
+        /**
+          * boolean: When true the application will be in mobile mode, controls the mobile or desktop view
+         */
+        "isMobile"?: boolean;
         /**
           * string[]: list of layer ids
          */
