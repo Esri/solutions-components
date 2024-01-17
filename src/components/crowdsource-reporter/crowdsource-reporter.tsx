@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Prop, VNode, State, Listen } from "@stencil/core";
+import { Component, Element, Host, h, Prop, VNode, State, Watch } from "@stencil/core";
 import { IMapChange, IMapInfo, ISearchConfiguration, theme } from "../../utils/interfaces";
 import { getLocaleComponentStrings } from "../../utils/locale";
 import CrowdsourceReporter_T9n from "../../assets/t9n/crowdsource-reporter/resources.json";
@@ -43,6 +43,11 @@ export class CrowdsourceReporter {
    * string: The text that will display under the title on the landing page
    */
   @Prop() description: string;
+
+  /**
+   * boolean: When true the application will be in mobile mode, controls the mobile or desktop view
+   */
+  @Prop() isMobile: boolean;
 
   /**
    * boolean: When true the anonymous users will be allowed to submit reports and comments
@@ -78,6 +83,11 @@ export class CrowdsourceReporter {
    * string: The text that will display at the top of the landing page
    */
   @Prop() loginTitle: string;
+
+  /**
+   * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+   */
+  @Prop() mapView: __esri.MapView;
 
   /**
    * string: The word(s) to display in the reports submit button
@@ -146,16 +156,6 @@ export class CrowdsourceReporter {
   @State() _mapInfo: IMapInfo;
 
   /**
-   * __esri.MapView: Stores the current map view
-   */
-  @State() _mapView: __esri.MapView;
-
-  /**
-   * boolean: When true the application will be in mobile mode, controls the mobile or desktop view
-   */
-  @State() _isMobile = false;
-
-  /**
    * string[]: Reporter flow items list
    */
   @State() _flowItems: string[] = ["layer-list"];
@@ -217,6 +217,26 @@ export class CrowdsourceReporter {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * Called each time the mapView prop is changed.
+   */
+  @Watch("isMobile")
+  async isMobileWatchHandler(): Promise<void> {
+    if (this.isMobile) {
+      this._sidePanelCollapsed = false;
+    }
+  }
+
+  /**
+   * Called each time the mapView prop is changed.
+   */
+  @Watch("mapView")
+  async mapViewWatchHandler(): Promise<void> {
+    await this.mapView.when(async () => {
+      await this.setMapView();
+    });
+  }
+
   //--------------------------------------------------------------------------
   //
   //  Methods (public)
@@ -229,18 +249,6 @@ export class CrowdsourceReporter {
   //
   //--------------------------------------------------------------------------
 
-  /**
-   * Listen for mapChanged event to be fired then store the new mapView so components will be updated
-   */
-  @Listen("mapChanged", { target: "window" })
-  async mapChanged(
-    evt: CustomEvent
-  ): Promise<void> {
-    this._mapChange = evt.detail;
-    await this._mapChange.mapView.when(async () => {
-      await this.setMapView();
-    });
-  }
   //--------------------------------------------------------------------------
   //
   //  Functions (lifecycle)
@@ -254,39 +262,18 @@ export class CrowdsourceReporter {
    */
   async componentWillLoad(): Promise<void> {
     await this._getTranslations();
-    const mediaQueryList = window.matchMedia("screen and (max-width: 600px)");
-    this._isMobile = mediaQueryList.matches;
-    //on change update the state for is mobile and the sidePanelCollapsed
-    mediaQueryList.onchange = (e) => {
-      this._isMobile = e.matches;
-      this._sidePanelCollapsed = false;
-    }
   }
 
   /**
    * Renders the component.
    */
   render() {
-    let  validConfiguration = true;
-    //Check if webMap id is configured
-    if(!this.mapInfos || this.mapInfos.length<=0  || (this.mapInfos?.length>0 && !this.mapInfos[0]?.id)){
-      validConfiguration = false
-    }
     return (
       <Host>
         <div>
-          {validConfiguration &&
-            <calcite-shell content-behind >
-              {this._getReporter()}
-              {this._getMapNode()}
-            </calcite-shell>
-          }
-          {!validConfiguration &&
-            <calcite-notice class="error-msg" icon="configure" kind="danger" open>
-              <div slot="title">{this._translations.error}</div>
-              <div slot="message">{ this._translations.invalidConfigurationErrorMsg}</div>
-            </calcite-notice>
-          }
+          <calcite-shell content-behind >
+            {this._getReporter()}
+          </calcite-shell>
         </div>
       </Host>
     );
@@ -315,18 +302,18 @@ export class CrowdsourceReporter {
           case "feature-details":
             renderLists.push(this.getFeatureDetailsFlowItem());
             break;
-          
+
       }
     });
     let sidePanelClass = "side-panel";
     //in case of mobile handle for collapsed styles of the panel
-    if (this._isMobile && this._sidePanelCollapsed) {
+    if (this.isMobile && this._sidePanelCollapsed) {
       sidePanelClass += " collapsed-side-panel";
     }
     const themeClass = this.theme === "dark" ? "calcite-mode-dark" : "calcite-mode-light";
     return (
-      <calcite-panel class={sidePanelClass + " " + themeClass}>
-        {this._mapView
+      <calcite-panel class={sidePanelClass + " width-full " + themeClass}>
+        {this.mapView
           ? <calcite-flow>
             {renderLists?.length > 0 && renderLists}
           </calcite-flow>
@@ -342,19 +329,19 @@ export class CrowdsourceReporter {
    */
   protected getLayerListFlowItem(): Node {
     return (
-      <calcite-flow-item collapsed={this._isMobile && this._sidePanelCollapsed} heading={this.reportsHeader}>
-        {this._hasValidLayers && <calcite-action icon="sort-ascending-arrow" slot={this._isMobile ? "header-menu-actions" : "header-actions-end"}
-          text={this._translations.sort} text-enabled={this._isMobile} />}
-        {this._hasValidLayers && <calcite-action icon="filter" slot={this._isMobile ? "header-menu-actions" : "header-actions-end"}
-          text={this._translations.filter} text-enabled={this._isMobile} />}
-        {this._isMobile && this.getActionToExpandCollapsePanel()}
+      <calcite-flow-item collapsed={this.isMobile && this._sidePanelCollapsed} heading={this.reportsHeader}>
+        {this._hasValidLayers && <calcite-action icon="sort-ascending-arrow" slot={this.isMobile ? "header-menu-actions" : "header-actions-end"}
+          text={this._translations.sort} text-enabled={this.isMobile} />}
+        {this._hasValidLayers && <calcite-action icon="filter" slot={this.isMobile ? "header-menu-actions" : "header-actions-end"}
+          text={this._translations.filter} text-enabled={this.isMobile} />}
+        {this.isMobile && this.getActionToExpandCollapsePanel()}
         {this._hasValidLayers && this.enableNewReports && <calcite-button appearance="secondary" slot="footer" width="full">
           {this.reportButtonText}
         </calcite-button>}
         <calcite-panel full-height full-width>
           <layer-list class="height-full"
             layers={this.layers}
-            mapView={this._mapView}
+            mapView={this.mapView}
             noLayerErrorMsg={this._translations.noLayerToDisplayErrorMsg}
             onLayerSelect={this.displayFeaturesList.bind(this)}
             onLayersListLoaded={this.layerListLoaded.bind(this)} />
@@ -417,19 +404,19 @@ export class CrowdsourceReporter {
    */
   protected getFeatureListFlowItem(layerId: string, layerName: string): Node {
     return (
-      <calcite-flow-item collapsed={this._isMobile && this._sidePanelCollapsed} heading={layerName} onCalciteFlowItemBack={this.backFromFeatureList.bind(this)}>
-        <calcite-action icon="sort-ascending-arrow" slot={this._isMobile ? "header-menu-actions" : "header-actions-end"}
-          text={this._translations.sort} text-enabled={this._isMobile} />
-        <calcite-action icon="filter" slot={this._isMobile ? "header-menu-actions" : "header-actions-end"}
-          text={this._translations.filter} text-enabled={this._isMobile} />
-        {this._isMobile && this.getActionToExpandCollapsePanel()}
+      <calcite-flow-item collapsed={this.isMobile && this._sidePanelCollapsed} heading={layerName} onCalciteFlowItemBack={this.backFromFeatureList.bind(this)}>
+        <calcite-action icon="sort-ascending-arrow" slot={this.isMobile ? "header-menu-actions" : "header-actions-end"}
+          text={this._translations.sort} text-enabled={this.isMobile} />
+        <calcite-action icon="filter" slot={this.isMobile ? "header-menu-actions" : "header-actions-end"}
+          text={this._translations.filter} text-enabled={this.isMobile} />
+        {this.isMobile && this.getActionToExpandCollapsePanel()}
         {this.enableNewReports && <calcite-button appearance="secondary" slot="footer" width="full">
           {this.reportButtonText}
         </calcite-button>}
         <calcite-panel full-height>
           {<feature-list class="height-full"
             highlightOnMap
-            mapView={this._mapView}
+            mapView={this.mapView}
             noFeaturesFoundMsg={this._translations.featureErrorMsg}
             onFeatureSelect={this.onFeatureSelectFromList.bind(this)}
             pageSize={100}
@@ -445,8 +432,8 @@ export class CrowdsourceReporter {
    */
   protected getFeatureDetailsFlowItem(): Node {
     return (
-      <calcite-flow-item collapsed={this._isMobile && this._sidePanelCollapsed} heading={this._selectedLayerName} onCalciteFlowItemBack={this.backFromFeatureList.bind(this)}>
-        {this._isMobile && this.getActionToExpandCollapsePanel()}
+      <calcite-flow-item collapsed={this.isMobile && this._sidePanelCollapsed} heading={this._selectedLayerName} onCalciteFlowItemBack={this.backFromFeatureList.bind(this)}>
+        {this.isMobile && this.getActionToExpandCollapsePanel()}
         <calcite-action icon="share" slot={"header-actions-end"} text={this._translations.share} />
         <calcite-panel full-height>
           <info-card
@@ -454,7 +441,7 @@ export class CrowdsourceReporter {
             graphics={this._selectedFeature}
             isLoading={false}
             isMobile={false}
-            mapView={this._mapView}
+            mapView={this.mapView}
             zoomAndScrollToSelected={true}
           />
         </calcite-panel>
@@ -473,96 +460,18 @@ export class CrowdsourceReporter {
   }
 
   /**
-   * Get the map node based for the current layout options
-   * @returns the map node
-   * @protected
-   */
-  protected _getMapNode(): VNode {
-    let mapContainerClass = "overflow-hidden map-container";
-    if (this._isMobile) {
-      if (this._sidePanelCollapsed) {
-        mapContainerClass += " map-container-mobile";
-      }
-    } else {
-      mapContainerClass += " height-full";
-    }
-    
-    return (
-      <div class={mapContainerClass}>
-        <map-card
-          class="width-full"
-          defaultWebmapId={this.defaultWebmap}
-          enableBasemap={false}
-          enableFloorFilter={false}
-          enableFullscreen={false}
-          enableHome={this.enableHome}
-          enableLegend={true}
-          enableSearch={this.enableSearch}
-          enableSingleExpand={false}
-          hidden={false}
-          homeZoomIndex={0}
-          homeZoomPosition={"top-left"}
-          homeZoomToolsSize={"s"}
-          mapInfos={this.mapInfos?.filter(mapInfo => mapInfo.visible !== false)}
-          mapWidgetsIndex={this.enableHome ? 4 : 3}
-          mapWidgetsPosition={"top-left"}
-          mapWidgetsSize={"s"}
-          stackTools={false}
-          theme={this.theme}
-          toolOrder={["search", "legend", "fullscreen", "basemap", "floorfilter"]}
-        />
-      </div>);
-  }
-
-  /**
-   * Get the current map info (configuration details) when maps change
-   * @param id Id of the map to be returned
-   * @returns IMapInfo for the provided id
-   * @protected
-   */
-  protected getMapInfo(id: string): IMapInfo {
-    let mapInfo: IMapInfo;
-    this.mapInfos.some(mi => {
-      if (mi.id === id) {
-        mapInfo = mi;
-        return true;
-      }
-    })
-    return { ...mapInfo };
-  }
-
-  /**
    * Set the current map info when maps change
    * @protected
    */
   protected async setMapView(): Promise<void> {
-    this._mapInfo = this.getMapInfo(this._mapChange.id);
-    this._mapView = this._mapChange.mapView;
-    this.initMapZoom();
-    this._mapView.popupEnabled = false;
+    this.mapView.popupEnabled = false;
     if (this._defaultCenter && this._defaultLevel) {
-      await this._mapView.goTo({
+      await this.mapView.goTo({
         center: this._defaultCenter,
         zoom: this._defaultLevel
       });
       this._defaultCenter = undefined;
       this._defaultLevel = undefined;
-    }
-  }
-
-  /**
-   * Add/remove zoom tools based on enableZoom prop
-   * @protected
-   */
-  protected initMapZoom(): void {
-    if (!this.enableZoom) {
-      this._mapView.ui.remove("zoom");
-    } else if (this.enableZoom) {
-      this._mapView.ui.add({
-        component: "zoom",
-        position: "top-left",
-        index: 0
-      });
     }
   }
 

@@ -7,27 +7,29 @@
 
 ## Properties
 
-| Property                  | Attribute                   | Description                                                                           | Type                   | Default     |
-| ------------------------- | --------------------------- | ------------------------------------------------------------------------------------- | ---------------------- | ----------- |
-| `defaultWebmap`           | `default-webmap`            | string: Item ID of the web map that should be selected by default                     | `string`               | `""`        |
-| `description`             | `description`               | string: The text that will display under the title on the landing page                | `string`               | `undefined` |
-| `enableAnonymousAccess`   | `enable-anonymous-access`   | boolean: When true the anonymous users will be allowed to submit reports and comments | `boolean`              | `undefined` |
-| `enableAnonymousComments` | `enable-anonymous-comments` | boolean: When true the anonymous users will be allowed to submit comments             | `boolean`              | `undefined` |
-| `enableComments`          | `enable-comments`           | boolean: When true the user will be allowed to submit comments                        | `boolean`              | `undefined` |
-| `enableHome`              | `enable-home`               | boolean: when true the home widget will be available                                  | `boolean`              | `true`      |
-| `enableLogin`             | `enable-login`              | boolean: When true the user will be provided a login page                             | `boolean`              | `undefined` |
-| `enableNewReports`        | `enable-new-reports`        | boolean: When true the user will be allowed to submit new reports                     | `boolean`              | `undefined` |
-| `enableSearch`            | `enable-search`             | boolean: when true the search widget will be available                                | `boolean`              | `true`      |
-| `enableZoom`              | `enable-zoom`               | boolean: when true the zoom widget will be available                                  | `boolean`              | `true`      |
-| `layers`                  | --                          | string[]: list of layer ids                                                           | `string[]`             | `undefined` |
-| `loginTitle`              | `login-title`               | string: The text that will display at the top of the landing page                     | `string`               | `undefined` |
-| `mapInfos`                | --                          | IMapInfo[]: array of map infos (name and id)                                          | `IMapInfo[]`           | `[]`        |
-| `reportButtonText`        | `report-button-text`        | string: The word(s) to display in the reports submit button                           | `string`               | `undefined` |
-| `reportSubmittedMessage`  | `report-submitted-message`  | string: The message to display when the report has been submitted                     | `string`               | `undefined` |
-| `reportsHeader`           | `reports-header`            | string: The word(s) to display in the reports header                                  | `string`               | `undefined` |
-| `searchConfiguration`     | --                          | ISearchConfiguration: Configuration details for the Search widget                     | `ISearchConfiguration` | `undefined` |
-| `showComments`            | `show-comments`             | boolean: When true the comments from all users will be visible                        | `boolean`              | `undefined` |
-| `theme`                   | `theme`                     | theme: "light" \| "dark" theme to be used                                             | `"dark" \| "light"`    | `"light"`   |
+| Property                  | Attribute                   | Description                                                                                               | Type                   | Default     |
+| ------------------------- | --------------------------- | --------------------------------------------------------------------------------------------------------- | ---------------------- | ----------- |
+| `defaultWebmap`           | `default-webmap`            | string: Item ID of the web map that should be selected by default                                         | `string`               | `""`        |
+| `description`             | `description`               | string: The text that will display under the title on the landing page                                    | `string`               | `undefined` |
+| `enableAnonymousAccess`   | `enable-anonymous-access`   | boolean: When true the anonymous users will be allowed to submit reports and comments                     | `boolean`              | `undefined` |
+| `enableAnonymousComments` | `enable-anonymous-comments` | boolean: When true the anonymous users will be allowed to submit comments                                 | `boolean`              | `undefined` |
+| `enableComments`          | `enable-comments`           | boolean: When true the user will be allowed to submit comments                                            | `boolean`              | `undefined` |
+| `enableHome`              | `enable-home`               | boolean: when true the home widget will be available                                                      | `boolean`              | `true`      |
+| `enableLogin`             | `enable-login`              | boolean: When true the user will be provided a login page                                                 | `boolean`              | `undefined` |
+| `enableNewReports`        | `enable-new-reports`        | boolean: When true the user will be allowed to submit new reports                                         | `boolean`              | `undefined` |
+| `enableSearch`            | `enable-search`             | boolean: when true the search widget will be available                                                    | `boolean`              | `true`      |
+| `enableZoom`              | `enable-zoom`               | boolean: when true the zoom widget will be available                                                      | `boolean`              | `true`      |
+| `isMobile`                | `is-mobile`                 | boolean: When true the application will be in mobile mode, controls the mobile or desktop view            | `boolean`              | `undefined` |
+| `layers`                  | --                          | string[]: list of layer ids                                                                               | `string[]`             | `undefined` |
+| `loginTitle`              | `login-title`               | string: The text that will display at the top of the landing page                                         | `string`               | `undefined` |
+| `mapInfos`                | --                          | IMapInfo[]: array of map infos (name and id)                                                              | `IMapInfo[]`           | `[]`        |
+| `mapView`                 | --                          | esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html | `MapView`              | `undefined` |
+| `reportButtonText`        | `report-button-text`        | string: The word(s) to display in the reports submit button                                               | `string`               | `undefined` |
+| `reportSubmittedMessage`  | `report-submitted-message`  | string: The message to display when the report has been submitted                                         | `string`               | `undefined` |
+| `reportsHeader`           | `reports-header`            | string: The word(s) to display in the reports header                                                      | `string`               | `undefined` |
+| `searchConfiguration`     | --                          | ISearchConfiguration: Configuration details for the Search widget                                         | `ISearchConfiguration` | `undefined` |
+| `showComments`            | `show-comments`             | boolean: When true the comments from all users will be visible                                            | `boolean`              | `undefined` |
+| `theme`                   | `theme`                     | theme: "light" \| "dark" theme to be used                                                                 | `"dark" \| "light"`    | `"light"`   |
 
 
 ## Dependencies
@@ -35,7 +37,6 @@
 ### Depends on
 
 - calcite-shell
-- calcite-notice
 - calcite-panel
 - calcite-flow
 - calcite-loader
@@ -45,13 +46,11 @@
 - [layer-list](../layer-list)
 - [feature-list](../feature-list)
 - [info-card](../info-card)
-- [map-card](../map-card)
 
 ### Graph
 ```mermaid
 graph TD;
   crowdsource-reporter --> calcite-shell
-  crowdsource-reporter --> calcite-notice
   crowdsource-reporter --> calcite-panel
   crowdsource-reporter --> calcite-flow
   crowdsource-reporter --> calcite-loader
@@ -61,8 +60,6 @@ graph TD;
   crowdsource-reporter --> layer-list
   crowdsource-reporter --> feature-list
   crowdsource-reporter --> info-card
-  crowdsource-reporter --> map-card
-  calcite-notice --> calcite-icon
   calcite-panel --> calcite-action
   calcite-panel --> calcite-action-menu
   calcite-panel --> calcite-scrim
@@ -82,6 +79,7 @@ graph TD;
   layer-list --> calcite-list
   layer-list --> calcite-list-item
   layer-list --> calcite-icon
+  calcite-notice --> calcite-icon
   calcite-list --> calcite-scrim
   calcite-list --> calcite-stack
   calcite-list --> calcite-filter
@@ -119,24 +117,6 @@ graph TD;
   calcite-alert --> calcite-icon
   calcite-alert --> calcite-chip
   calcite-chip --> calcite-icon
-  map-card --> map-picker
-  map-card --> map-tools
-  map-picker --> calcite-button
-  map-picker --> calcite-tooltip
-  map-picker --> calcite-action-bar
-  map-picker --> calcite-list
-  map-picker --> calcite-list-item
-  calcite-action-bar --> calcite-action-group
-  calcite-action-group --> calcite-action-menu
-  calcite-action-group --> calcite-action
-  map-tools --> basemap-gallery
-  map-tools --> map-search
-  map-tools --> map-legend
-  map-tools --> map-fullscreen
-  map-tools --> floor-filter
-  map-tools --> calcite-action
-  map-tools --> calcite-icon
-  map-tools --> calcite-tooltip
   style crowdsource-reporter fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
