@@ -32,6 +32,13 @@
 | `theme`                   | `theme`                     | theme: "light" \| "dark" theme to be used                                                                 | `"dark" \| "light"`    | `"light"`   |
 
 
+## Events
+
+| Event         | Description                                             | Type                   |
+| ------------- | ------------------------------------------------------- | ---------------------- |
+| `togglePanel` | Emitted when toggle panel button is clicked in reporter | `CustomEvent<boolean>` |
+
+
 ## Dependencies
 
 ### Depends on

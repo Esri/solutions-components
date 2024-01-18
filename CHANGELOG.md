@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.7.27] - Jan 18th 2024
+Error occured on previous publish
+
 ## [0.7.26] - Jan 18th 2024
 Toggle reporter panel and fix manager filter issue
 
@@ -394,4 +397,5 @@ Recover from test releases
 [0.7.24]: https://github.com/Esri/solution.js/compare/v0.7.23...v0.7.24 "v0.7.24"
 [0.7.25]: https://github.com/Esri/solution.js/compare/v0.7.24...v0.7.25 "v0.7.25"
 [0.7.26]: https://github.com/Esri/solution.js/compare/v0.7.25...v0.7.26 "v0.7.26"
-[Unreleased]: https://github.com/Esri/solution.js/compare/v0.7.26...HEAD "Unreleased Changes"
+[0.7.27]: https://github.com/Esri/solution.js/compare/v0.7.26...v0.7.27 "v0.7.27"
+[Unreleased]: https://github.com/Esri/solution.js/compare/v0.7.27...HEAD "Unreleased Changes"
