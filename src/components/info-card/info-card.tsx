@@ -450,7 +450,7 @@ export class InfoCard {
     if (this.graphics.length > 0) {
       this._layer = (this.graphics[0]?.layer as __esri.FeatureLayer);
       this._editEnabled = this._layer.editingEnabled && this._layer.capabilities.operations.supportsUpdate;
-      this._mobileTitle = await this._popupUtils.getPopupTitle(this.graphics[0]);
+      this._mobileTitle = await this._popupUtils.getPopupTitle(this.graphics[0], this.mapView.map);
       this._features.open({
         features: this.graphics
       });

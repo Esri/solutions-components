@@ -260,7 +260,7 @@ export class FeatureList {
   protected async createFeatureItem(featureSet: any): Promise<VNode[]> {
     const currentFeatures = featureSet?.features;
     const items = currentFeatures.map(async (feature) => {
-      const popupTitle = await this._popupUtils.getPopupTitle(feature);
+      const popupTitle = await this._popupUtils.getPopupTitle(feature, this.mapView.map);
       return this.getFeatureItem(feature, popupTitle);
     });
     return Promise.all(items);
