@@ -27,10 +27,10 @@
         top: 0px;
         right: 0px;
         bottom: 0px;
-        left: 390px;
+        left: 361px;
       }
       #viewDiv[dir="rtl"] {
-        right: 390px;
+        right: 361px;
         left: 0px;
       }
       .over-map {
@@ -43,13 +43,35 @@
       }
       .column {
         width: 360px;
-        padding: 1rem;
         border: 1px solid var(--calcite-color-border-2);
         height: -webkit-fill-available;
         height: 100%;
       }
       .column[dir="rtl"] {
         float: right;
+      }
+
+      @media screen and (max-width: 600px) {
+        #viewDiv {
+          left: 0;
+          height: 50%;
+          width: 100%;
+        }
+
+        .column {
+          height: 50%;
+          top: 50%;
+          width: calc(100% - 2px);
+        }
+
+        .map-with-panel-collapsed {
+          height: calc(100% - 100px) !important;
+        }
+
+        .column-collapsed {
+          top: calc(100% - 100px);
+          height: 100px;
+        }
       }
     </style>
 
@@ -69,51 +91,43 @@
         esriConfig
       ) => {
         const demo = document.getElementById("demo");
-
-        // let headerSet = false;
-        // let custom = [];
-        // let portal;
-        // //Support id and portal URL parameter
-        // var vars = window.location.search.substring(1).split("&");
-        // vars.forEach((param) => {
-        //   let vals = param.split("=");
-        //   const v = vals[1];
-        //   switch (vals[0]) {
-        //     case "id":
-        //       custom = [{
-        //         id: v,
-        //         name: "Map from URL"
-        //       }];
-        //       break;
-        //     case "portal":
-        //       portal = v;
-        //     default:
-        //       break;
-        //   }
-        // });
-
-        // if (portal) {
-        //   esriConfig.portalUrl = portal;
-        // }
-
-        // demo.mapInfos = [{
-        //   //id: "f8c4d99deb3c483cac296cc261e18a25", //blank no layers
-        //   //id: "a7e880f7afbb471991d43c8c4f1438ac" // Se mapping
-        //   //id: "c720e337ff814fe4a83bc244c46f8e43" //15 Layers
-        //   //id: "f5186c798b9e40dab1078658ddbc28cf" // 30K features
-        //   //id: "dda88d905a6748a5ab46bea5be795f33" // screening layers
-        //   id: "b5bdcb1e5d684dd3b21a2d44b8e4f928" //Popup content
-        // }];
-        // //if id is passed in the url parameter use that mapInfos
-        // if (custom?.length > 0) {
-        //   demo.mapInfos = custom;
-        // }
-
-        //esriConfig.portalUrl = "https://solutions.mapsdevext.arcgis.com";
-        var webMap = new WebMap({
-          portalItem: {
-            id: "b5bdcb1e5d684dd3b21a2d44b8e4f928"
+        let custom = null;
+        let portal;
+        //Support webmap and portal URL parameter
+        var vars = window.location.search.substring(1).split("&");
+        vars.forEach((param) => {
+          let vals = param.split("=");
+          const v = vals[1];
+          switch (vals[0]) {
+            case "webmap":
+              custom = {
+                id: v
+              };
+              break;
+            case "portal":
+              portal = v;
+            default:
+              break;
           }
+        });
+        //update the portalUrl if found in urlParams
+        //esriConfig.portalUrl = "https://solutions.mapsdevext.arcgis.com";
+        if (portal) {
+          esriConfig.portalUrl = portal;
+        }
+
+        let portalItem = {
+          //id: "b5bdcb1e5d684dd3b21a2d44b8e4f928"
+          //id: "f8c4d99deb3c483cac296cc261e18a25", //blank no layers
+          //id: "a7e880f7afbb471991d43c8c4f1438ac" // Se mapping
+          //id: "c720e337ff814fe4a83bc244c46f8e43" //15 Layers
+          //id: "f5186c798b9e40dab1078658ddbc28cf" // 30K features
+          //id: "dda88d905a6748a5ab46bea5be795f33" // screening layers
+          id: "b5bdcb1e5d684dd3b21a2d44b8e4f928" //Popup content
+          //id: "d399ec39959a4aac8617ae4f05dd6785" //Arcade
+        }
+        const webMap = new WebMap({
+          portalItem: custom ?? portalItem
         });
 
         demo.mapView = new MapView({
@@ -122,24 +136,44 @@
         });
 
         demo.mapView.when(() => {
-        //   const legend = new Legend({
-        //     view: demo.mapView
-        //   });
-        //   demo.mapView.ui.add(legend, "top-left");
+          // const legend = new Legend({
+          //   view: demo.mapView
+          // });
+          // demo.mapView.ui.add(legend, "top-left");
         });
-
-        // demo.enableHome = true;
-        // demo.enableSearch = true;
-        // demo.enableZoom = true;
         demo.reportsHeader = "Reports";
         demo.reportButtonText = "Report an incident";
         demo.enableNewReports = true;
-        //Select reporting layers -
-        //demo.layers = ['SE_field_mapping_9688', 'SE_field_mapping_5784', 'SE_field_mapping_1853'];
-        //demo.layers = ['Three_Layers_nested_4042', 'SE_sort_2889', 'SE_sort_756']; //screening layers
         demo.theme = "light";
         demo.reportSubmittedMessage = "Thank you";
+        //Select reporting layers -
+        //demo.layers = ['SE_field_mapping_9688', 'SE_field_mapping_5784', 'SE_field_mapping_1853']; //Se mapping
+        //demo.layers = ['Three_Layers_nested_4042', 'SE_sort_2889', 'SE_sort_756']; //screening layers
+
+        //Update isMobile property of the reporter component
+        const mediaQueryList = window.matchMedia("screen and (max-width: 600px)");
+        demo.isMobile = mediaQueryList.matches;
+        //on change update the prop for is mobile
+        mediaQueryList.onchange = (e) => {
+          demo.isMobile = e.matches;
+          togglePanel({detail:false})
+        }
+        //listen to togglePanel event
+        demo.addEventListener('togglePanel', togglePanel);
       });
+
+      function togglePanel(evt){
+        const state = evt.detail;
+        const viewDiv = document.getElementById("viewDiv");
+        const demo = document.getElementById("demo");
+        if(state){
+          demo.classList.add("column-collapsed");
+          viewDiv.classList.add("map-with-panel-collapsed");
+        } else{
+          demo.classList.remove("column-collapsed");
+          viewDiv.classList.remove("map-with-panel-collapsed");
+        }
+      }
     </script>
   </head>
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Prop, VNode, State, Watch } from "@stencil/core";
+import { Component, Element, Host, h, Prop, VNode, State, Watch, Event, EventEmitter } from "@stencil/core";
 import { IMapChange, IMapInfo, ISearchConfiguration, theme } from "../../utils/interfaces";
 import { getLocaleComponentStrings } from "../../utils/locale";
 import CrowdsourceReporter_T9n from "../../assets/t9n/crowdsource-reporter/resources.json";
@@ -222,9 +222,7 @@ export class CrowdsourceReporter {
    */
   @Watch("isMobile")
   async isMobileWatchHandler(): Promise<void> {
-    if (this.isMobile) {
       this._sidePanelCollapsed = false;
-    }
   }
 
   /**
@@ -248,6 +246,11 @@ export class CrowdsourceReporter {
   //  Events (public)
   //
   //--------------------------------------------------------------------------
+
+   /**
+   * Emitted when toggle panel button is clicked in reporter
+   */
+   @Event() togglePanel: EventEmitter<boolean>;
 
   //--------------------------------------------------------------------------
   //
@@ -305,14 +308,9 @@ export class CrowdsourceReporter {
 
       }
     });
-    let sidePanelClass = "side-panel";
-    //in case of mobile handle for collapsed styles of the panel
-    if (this.isMobile && this._sidePanelCollapsed) {
-      sidePanelClass += " collapsed-side-panel";
-    }
     const themeClass = this.theme === "dark" ? "calcite-mode-dark" : "calcite-mode-light";
     return (
-      <calcite-panel class={sidePanelClass + " width-full " + themeClass}>
+      <calcite-panel class={"width-full " + themeClass}>
         {this.mapView
           ? <calcite-flow>
             {renderLists?.length > 0 && renderLists}
@@ -398,6 +396,7 @@ export class CrowdsourceReporter {
    */
   protected toggleSidePanel(): void {
     this._sidePanelCollapsed = !this._sidePanelCollapsed;
+    this.togglePanel.emit(this._sidePanelCollapsed)
   }
 
   /**

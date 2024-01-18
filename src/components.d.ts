@@ -1260,6 +1260,10 @@ export interface BufferToolsCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLBufferToolsElement;
 }
+export interface CrowdsourceReporterCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLCrowdsourceReporterElement;
+}
 export interface DeductCalculatorCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLDeductCalculatorElement;
@@ -1396,7 +1400,18 @@ declare global {
         prototype: HTMLCrowdsourceManagerElement;
         new (): HTMLCrowdsourceManagerElement;
     };
+    interface HTMLCrowdsourceReporterElementEventMap {
+        "togglePanel": boolean;
+    }
     interface HTMLCrowdsourceReporterElement extends Components.CrowdsourceReporter, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLCrowdsourceReporterElementEventMap>(type: K, listener: (this: HTMLCrowdsourceReporterElement, ev: CrowdsourceReporterCustomEvent<HTMLCrowdsourceReporterElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLCrowdsourceReporterElementEventMap>(type: K, listener: (this: HTMLCrowdsourceReporterElement, ev: CrowdsourceReporterCustomEvent<HTMLCrowdsourceReporterElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLCrowdsourceReporterElement: {
         prototype: HTMLCrowdsourceReporterElement;
@@ -2234,6 +2249,10 @@ declare namespace LocalJSX {
           * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
+        /**
+          * Emitted when toggle panel button is clicked in reporter
+         */
+        "onTogglePanel"?: (event: CrowdsourceReporterCustomEvent<boolean>) => void;
         /**
           * string: The word(s) to display in the reports submit button
          */
