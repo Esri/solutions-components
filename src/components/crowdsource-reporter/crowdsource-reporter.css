@@ -44,27 +44,6 @@
   border: 1px solid var(--calcite-color-border-3);
 }
 
-.map-container {
-  position: absolute;
-  width: calc(100% - 390px);
-  left: 390px;
-}
-
-.side-panel {
-  padding: 2px;
-  width: 390px;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 60;
-}
-
 .error-msg{
   padding: 10px;
-}
-
-.collapsed-side-panel {
-  top: calc(100% - 55px);
-  height: 54px;
 }

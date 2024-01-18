@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Prop, VNode, h, State, Event, EventEmitter } from "@stencil/core";
+import { Component, Element, Prop, VNode, h, State, Event, Watch, EventEmitter } from "@stencil/core";
 import { PopupUtils } from "../../utils/popupUtils";
 import { IPopupUtils } from "../../utils/interfaces";
 import { getFeatureLayerView, getLayerOrTable, highlightFeatures } from "../../utils/mapViewUtils";
@@ -120,6 +120,15 @@ export class FeatureList {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * Watch for selectedLayerId change and update layer instance and features list for new layerId 
+   */
+  @Watch("selectedLayerId")
+  async selectedLayerWatchHandler(): Promise<void> {
+    this._selectedLayer = await getLayerOrTable(this.mapView, this.selectedLayerId);
+    await this.initializeFeatureItems();
+  }
+
   //--------------------------------------------------------------------------
   //
   //  Methods (public)
@@ -151,18 +160,16 @@ export class FeatureList {
     await this._getTranslations();
     this._isLoading = true;
     this._popupUtils = new PopupUtils();
-    this._selectedLayer = await getLayerOrTable(this.mapView, this.selectedLayerId);
+    if(this.mapView && this.selectedLayerId){
+      this._selectedLayer = await getLayerOrTable(this.mapView, this.selectedLayerId);
+    }
   }
 
   /**
    * StencilJS: Called once just after the component is fully loaded and the first render() occurs.
    */
   async componentDidLoad() {
-    if (this._selectedLayer) {
-      this._featureItems = await this.queryPage(0);
-      this._featuresCount = await this._selectedLayer.queryFeatureCount();
-      this._isLoading = false;
-    }
+    await this.initializeFeatureItems()
   }
 
   /**
@@ -170,17 +177,33 @@ export class FeatureList {
    */
   render() {
     return (
-      <calcite-panel full-height full-width>
+      <calcite-panel
+        full-height
+        full-width>
         {this._isLoading && <calcite-loader scale="m" />}
-        {this._featureItems.length === 0 && !this._isLoading && <calcite-notice class="error-msg" icon="feature-details" kind="info" open>
-          <div slot="message">{this.noFeaturesFoundMsg ? this.noFeaturesFoundMsg : this._translations.featureErrorMsg}</div>
-        </calcite-notice>}
-        <calcite-list selection-appearance="border" selection-mode="single" >
+        {this._featureItems.length === 0 && !this._isLoading &&
+          <calcite-notice
+            class="error-msg"
+            icon="feature-details"
+            kind="info"
+            open>
+            <div slot="message">
+              {this.noFeaturesFoundMsg ? this.noFeaturesFoundMsg : this._translations.featureErrorMsg}
+            </div>
+          </calcite-notice>}
+        <calcite-list
+          selection-appearance="border"
+          selection-mode="single" >
           {!this._isLoading && this._featureItems.length > 0 && this._featureItems}
         </calcite-list>
         {this._featuresCount > this.pageSize &&
-          <div class="width-full" slot="footer">
-            <calcite-pagination class="pagination" full-width onCalcitePaginationChange={this.pageChanged.bind(this)}
+          <div
+            class="width-full"
+            slot="footer">
+            <calcite-pagination
+              class="pagination"
+              full-width
+              onCalcitePaginationChange={this.pageChanged.bind(this)}
               page-size={this.pageSize} start-item="1" total-items={this._featuresCount} />
           </div>
         }
@@ -192,6 +215,18 @@ export class FeatureList {
   //  Functions (protected)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Initialize the features list using the selected layer
+   */
+  protected async initializeFeatureItems(): Promise<void> {
+    if (this._selectedLayer) {
+      this._isLoading = true;
+      this._featureItems = await this.queryPage(0);
+      this._featuresCount = await this._selectedLayer.queryFeatureCount();
+      this._isLoading = false;
+    }
+  }
 
   /**
    * On page change get the next updated feature list
@@ -239,14 +274,19 @@ export class FeatureList {
    */
   protected async queryPage(page: number): Promise<VNode[]> {
     const featureLayer = this._selectedLayer;
-    const query = {
+    const objectIdField = featureLayer.objectIdField;
+    const query: any = {
       start: page,
       num: this.pageSize,
       outFields: ["*"],
-      orderByFields: [featureLayer.objectIdField + " DESC"],
       returnGeometry: true,
-      where: featureLayer.definitionExpression
+      where: featureLayer.definitionExpression,
+      outSpatialReference: this.mapView.spatialReference.toJSON()
     };
+    //sort only when objectId field is found
+    if (objectIdField) {
+      query.orderByFields = [objectIdField.toString() + " DESC"];
+    }
     const featureSet =  await featureLayer.queryFeatures(query);
     return await this.createFeatureItem(featureSet);
   }
@@ -260,7 +300,7 @@ export class FeatureList {
   protected async createFeatureItem(featureSet: any): Promise<VNode[]> {
     const currentFeatures = featureSet?.features;
     const items = currentFeatures.map(async (feature) => {
-      const popupTitle = await this._popupUtils.getPopupTitle(feature);
+      const popupTitle = await this._popupUtils.getPopupTitle(feature, this.mapView.map);
       return this.getFeatureItem(feature, popupTitle);
     });
     return Promise.all(items);
@@ -279,10 +319,19 @@ export class FeatureList {
     //use object id if popupTitle is null or undefined
     popupTitle = popupTitle ?? oId;
     return (
-      <calcite-list-item onCalciteListItemSelect={(e) => { void this.featureClicked(e, selectedFeature) }} value={oId}>
+      <calcite-list-item
+        onCalciteListItemSelect={(e) => { void this.featureClicked(e, selectedFeature) }}
+        value={oId}>
         {/* --TODO ellipsis-- */}
-        <div class="popup-title" slot="content-start">{popupTitle}</div>
-        <calcite-icon icon="chevron-right" scale="s" slot="content-end" />
+        <div
+          class="popup-title"
+          slot="content-start">
+          {popupTitle}
+        </div>
+        <calcite-icon
+          icon="chevron-right"
+          scale="s"
+          slot="content-end" />
       </calcite-list-item>);
   }
 

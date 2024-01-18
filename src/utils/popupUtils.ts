@@ -23,15 +23,17 @@ export class PopupUtils {
 	 */
 	arcade: typeof import("esri/arcade");
 
-  /**
-   * Get the popup title that honors arcade expressions
-   *
-   * @returns Promise resolving with the popup title
-   *
-   * @protected
-   */
+	/**
+	 * Get the popup title that honors arcade expressions
+	 * @param graphic selected graphic
+	 * @param map __esri.Map
+	 * @returns Promise resolving with the popup title
+	 *
+	 * @protected
+	 */
 	public async getPopupTitle(
-		graphic: __esri.Graphic
+		graphic: __esri.Graphic,
+		map: __esri.Map
 	): Promise<string> {
 		if (!this.arcade) {
 			await this._initModules()
@@ -48,21 +50,17 @@ export class PopupUtils {
 		if (popupTitle.includes("{expression/expr") && layer?.popupTemplate?.expressionInfos != null) {
 			for (let i = 0; i < layer.popupTemplate?.expressionInfos.length; i++) {
 				const info = layer.popupTemplate.expressionInfos[i];
-				const profile = {
-					variables: [
-						{
-							name: "$feature",
-							type: "feature"
-						}
-					]
-				} as __esri.Profile;
+				//create arcade profile for popup
+				const profile = this.arcade.createArcadeProfile('popup');
 				try {
 					const arcadeExecutor = await this.arcade.createArcadeExecutor(info.expression, profile);
-					const arcadeTitle = arcadeExecutor.execute({ $feature: graphic });
+					const arcadeTitle = await arcadeExecutor.executeAsync({ $feature: graphic, $layer: layer, $map: map });
 					if (arcadeTitle != null || arcadeTitle !== "") {
 						attributes[`{expression/${info.name}}`.toUpperCase()] = arcadeTitle;
 					}
-				} catch {
+				} catch (e) {
+					//log error in console to understand if the arcade expressions are failing
+					console.error(e);
 					continue;
 				}
 			}
@@ -73,13 +71,13 @@ export class PopupUtils {
 		});
 	}
 
-  /**
-   * Remove any tags from the title
-   *
-   * @returns title string without tags
-   *
-   * @protected
-   */
+	/**
+	 * Remove any tags from the title
+	 *
+	 * @returns title string without tags
+	 *
+	 * @protected
+	 */
 	protected _removeTags(str: string): string {
 		if (str == null || str === "") {
 			return "";
@@ -87,13 +85,13 @@ export class PopupUtils {
 		return str.toString().replace(/(<([^>]+)>)/gi, "");
 	}
 
-  /**
-   * Load esri javascript api modules
-   *
-   * @returns Promise resolving when function is done
-   *
-   * @protected
-   */
+	/**
+	 * Load esri javascript api modules
+	 *
+	 * @returns Promise resolving when function is done
+	 *
+	 * @protected
+	 */
 	protected async _initModules(): Promise<void> {
 		const [arcade] = await loadModules([
 			"esri/arcade"
