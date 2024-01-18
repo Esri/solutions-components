@@ -22,9 +22,32 @@
     | limitations under the License.
     -->
     <style>
+      #viewDiv {
+        padding: 0;
+        margin: 0;
+        height: 100%;
+        width: calc(50% - 2px);
+      }
+      .over-map {
+        position: absolute;
+        top:0;
+        right: 0px;
+        background-color: var(--calcite-color-foreground-1);
+      }
+      .column {
+        width: 50%;
+        height: 100%;
+        border: 1px solid var(--calcite-color-border-2);
+      }
+      .column[dir="rtl"] {
+        float: left;
+      }
+      .full-height {
+        height: 100%;
+      }
     </style>
 
-    <link rel="stylesheet" href="https://jsdev.arcgis.com/4.29/esri/themes/light/main.css"/>
+    <link rel="stylesheet" href="https://jsdev.arcgis.com/4.29/esri/themes/light/main.css" />
     <link rel="stylesheet" href="https://webapps-cdn.esri.com/CDN/fonts/v1.4.1/fonts.css" />
     <link rel="stylesheet" href="../solutions-components.css" type="text/css">
     <link rel="stylesheet" type="text/css" href="https://js.arcgis.com/calcite-components/2.0.0/calcite.css" />
@@ -33,11 +56,28 @@
     <script type="module" src="../solutions-components.esm.js"></script>
 
     <script>
+      require(["esri/WebMap", "esri/views/MapView"], (
+        WebMap,
+        MapView
+      ) => {
+        var webMap = new WebMap({
+          portalItem: {
+            id: "b5bdcb1e5d684dd3b21a2d44b8e4f928"
+          }
+        });
+
+        const demo = document.getElementById("demo");
+        demo.mapView = new MapView({
+          container: "viewDiv",
+          map: webMap
+        });
+      });
     </script>
   </head>
 
-  <!-- <body class="calcite-mode-dark"> -->
   <body>
-    <layer-list/>
+    <div id="viewDiv"></div>
+    <layer-list id="demo" class="over-map column full-height">
+    </layer-list>
   </body>
 </html>

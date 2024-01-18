@@ -299,9 +299,9 @@ export class CrowdsourceReporter {
         case "feature-list":
           renderLists.push(this.getFeatureListFlowItem(this._selectedLayerId, this._selectedLayerName));
           break;
-          case "feature-details":
-            renderLists.push(this.getFeatureDetailsFlowItem());
-            break;
+        case "feature-details":
+          renderLists.push(this.getFeatureDetailsFlowItem());
+          break;
 
       }
     });
@@ -329,17 +329,30 @@ export class CrowdsourceReporter {
    */
   protected getLayerListFlowItem(): Node {
     return (
-      <calcite-flow-item collapsed={this.isMobile && this._sidePanelCollapsed} heading={this.reportsHeader}>
-        {this._hasValidLayers && <calcite-action icon="sort-ascending-arrow" slot={this.isMobile ? "header-menu-actions" : "header-actions-end"}
-          text={this._translations.sort} text-enabled={this.isMobile} />}
-        {this._hasValidLayers && <calcite-action icon="filter" slot={this.isMobile ? "header-menu-actions" : "header-actions-end"}
-          text={this._translations.filter} text-enabled={this.isMobile} />}
+      <calcite-flow-item
+        collapsed={this.isMobile && this._sidePanelCollapsed}
+        heading={this.reportsHeader}>
+        {this._hasValidLayers &&
+          <calcite-action
+            icon="sort-ascending-arrow"
+            slot={this.isMobile ? "header-menu-actions" : "header-actions-end"}
+            text={this._translations.sort} text-enabled={this.isMobile} />}
+        {this._hasValidLayers &&
+          <calcite-action
+            icon="filter"
+            slot={this.isMobile ? "header-menu-actions" : "header-actions-end"}
+            text={this._translations.filter} text-enabled={this.isMobile} />}
         {this.isMobile && this.getActionToExpandCollapsePanel()}
-        {this._hasValidLayers && this.enableNewReports && <calcite-button appearance="secondary" slot="footer" width="full">
-          {this.reportButtonText}
-        </calcite-button>}
+        {this._hasValidLayers && this.enableNewReports &&
+          <calcite-button
+            appearance="secondary"
+            slot="footer"
+            width="full">
+            {this.reportButtonText}
+          </calcite-button>}
         <calcite-panel full-height full-width>
-          <layer-list class="height-full"
+          <layer-list
+            class="height-full"
             layers={this.layers}
             mapView={this.mapView}
             noLayerErrorMsg={this._translations.noLayerToDisplayErrorMsg}
@@ -404,22 +417,34 @@ export class CrowdsourceReporter {
    */
   protected getFeatureListFlowItem(layerId: string, layerName: string): Node {
     return (
-      <calcite-flow-item collapsed={this.isMobile && this._sidePanelCollapsed} heading={layerName} onCalciteFlowItemBack={this.backFromFeatureList.bind(this)}>
-        <calcite-action icon="sort-ascending-arrow" slot={this.isMobile ? "header-menu-actions" : "header-actions-end"}
+      <calcite-flow-item
+        collapsed={this.isMobile && this._sidePanelCollapsed}
+        heading={layerName}
+        onCalciteFlowItemBack={this.backFromFeatureList.bind(this)}>
+        <calcite-action
+          icon="sort-ascending-arrow"
+          slot={this.isMobile ? "header-menu-actions" : "header-actions-end"}
           text={this._translations.sort} text-enabled={this.isMobile} />
-        <calcite-action icon="filter" slot={this.isMobile ? "header-menu-actions" : "header-actions-end"}
+        <calcite-action
+          icon="filter"
+          slot={this.isMobile ? "header-menu-actions" : "header-actions-end"}
           text={this._translations.filter} text-enabled={this.isMobile} />
         {this.isMobile && this.getActionToExpandCollapsePanel()}
-        {this.enableNewReports && <calcite-button appearance="secondary" slot="footer" width="full">
-          {this.reportButtonText}
-        </calcite-button>}
+        {this.enableNewReports &&
+          <calcite-button
+            appearance="secondary"
+            slot="footer"
+            width="full">
+            {this.reportButtonText}
+          </calcite-button>}
         <calcite-panel full-height>
-          {<feature-list class="height-full"
+          {<feature-list
+            class="height-full"
             highlightOnMap
             mapView={this.mapView}
             noFeaturesFoundMsg={this._translations.featureErrorMsg}
             onFeatureSelect={this.onFeatureSelectFromList.bind(this)}
-            pageSize={100}
+            pageSize={30}
             selectedLayerId={layerId}
           />}
         </calcite-panel>
@@ -432,9 +457,15 @@ export class CrowdsourceReporter {
    */
   protected getFeatureDetailsFlowItem(): Node {
     return (
-      <calcite-flow-item collapsed={this.isMobile && this._sidePanelCollapsed} heading={this._selectedLayerName} onCalciteFlowItemBack={this.backFromFeatureList.bind(this)}>
+      <calcite-flow-item
+        collapsed={this.isMobile && this._sidePanelCollapsed}
+        heading={this._selectedLayerName}
+        onCalciteFlowItemBack={this.backFromFeatureList.bind(this)}>
         {this.isMobile && this.getActionToExpandCollapsePanel()}
-        <calcite-action icon="share" slot={"header-actions-end"} text={this._translations.share} />
+        <calcite-action
+          icon="share"
+          slot={"header-actions-end"}
+          text={this._translations.share} />
         <calcite-panel full-height>
           <info-card
             allowEditing={false}
@@ -454,7 +485,9 @@ export class CrowdsourceReporter {
    */
   protected getActionToExpandCollapsePanel(): Node {
     return (
-      <calcite-action icon={this._sidePanelCollapsed ? "chevrons-up" : "chevrons-down"} onClick={this.toggleSidePanel.bind(this)} slot="header-actions-end"
+      <calcite-action
+        icon={this._sidePanelCollapsed ? "chevrons-up" : "chevrons-down"}
+        onClick={this.toggleSidePanel.bind(this)} slot="header-actions-end"
         text={this._sidePanelCollapsed ? this._translations.expand : this._translations.collapse} />
     );
   }

@@ -161,10 +161,15 @@ export class LayerList {
     return (
       <Fragment>
         {this._isLoading && <calcite-loader scale="m" />}
-        {!this._isLoading && this.mapView && this._noLayersToDisplay && <calcite-notice class="error-msg" icon="layers-reference" kind="danger" open>
-          <div slot="title">{this._translations.error}</div>
-          <div slot="message">{this.noLayerErrorMsg ? this.noLayerErrorMsg : this._translations.noLayerToDisplayErrorMsg}</div>
-        </calcite-notice>}
+        {!this._isLoading && this.mapView && this._noLayersToDisplay &&
+          <calcite-notice
+            class="error-msg"
+            icon="layers-reference"
+            kind="danger"
+            open>
+            <div slot="title">{this._translations.error}</div>
+            <div slot="message">{this.noLayerErrorMsg ? this.noLayerErrorMsg : this._translations.noLayerToDisplayErrorMsg}</div>
+          </calcite-notice>}
         {!this._isLoading && this.mapView &&
           <calcite-list>
             {this.renderLayerList()}
@@ -283,7 +288,10 @@ export class LayerList {
         {/* --TODO ellipsis--*/}
         <div class="layer-name" slot="content-start">{layerName}</div>
         {featureCount !== "" && <div slot="content-end">{"(" + featureCount + ")"}</div>}
-        <calcite-icon icon="chevron-right" scale="s" slot="content-end" />
+        <calcite-icon
+          icon="chevron-right"
+          scale="s"
+          slot="content-end" />
       </calcite-list-item>
     );
   }
