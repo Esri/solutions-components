@@ -1768,7 +1768,7 @@ export class LayerTable {
         </div>
         <div slot="content">
           <instant-apps-filter-list
-            autoUpdateUrl={true}
+            autoUpdateUrl={false}
             closeBtn={true}
             closeBtnOnClick={async () => this._closeFilter()}
             layerExpressions={this._layerExpressions}
@@ -1889,6 +1889,8 @@ export class LayerTable {
     const layerExpressions = this.mapInfo?.filterConfig?.layerExpressions;
     this._layerExpressions = layerExpressions ? layerExpressions.filter(
       (exp) => exp.id === this._layer.id) : [];
+    this._filterList.layerExpressions = this._layerExpressions;
+    this._filterActive = false;
   }
 
   /**
