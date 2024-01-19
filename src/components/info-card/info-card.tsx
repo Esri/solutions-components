@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Listen, Method, Prop, State, Watch } from "@stencil/core";
+import { Component, Element, Event, EventEmitter, Host, h, Listen, Method, Prop, State, VNode, Watch } from "@stencil/core";
 import InfoCard_T9n from "../../assets/t9n/info-card/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { loadModules } from "../../utils/loadModules";
@@ -281,33 +281,13 @@ export class InfoCard {
     const editButtonClass = (!this.isLoading && this._editRecordOpen) || this._showListView ? "display-none" : "";
     const nextBackDisabled = this._features?.features?.length < 2;
     const nextBackClass = this.isMobile ? "display-none" : "";
-    const shellClass = this.isMobile && !this._editRecordOpen ? "padding-top-46" : "";
     const id = this._features?.selectedFeature?.getObjectId();
     const ids = parseInt(id?.toString(), 10) > -1 ? [id] : [];
     const deleteEnabled = this._layer?.editingEnabled && this._layer?.capabilities?.operations?.supportsDelete;
     return (
       <Host>
-        {this.isMobile && !this._editRecordOpen ? (
-          <calcite-panel>
-            <calcite-action
-              class="end-border"
-              icon={"chevron-left"}
-              iconFlipRtl={true}
-              onClick={() => this._closePopup()}
-              scale="s"
-              slot="header-actions-start"
-              text=""
-            />
-            <span
-              class="font-bold"
-              slot="header-content"
-            >
-              {this._mobileTitle}
-            </span>
-          </calcite-panel>
-        ) : undefined
-        }
-        <calcite-shell class={shellClass}>
+        <calcite-shell>
+          {this._getHeader()}
           <calcite-loader
             class={loadingClass}
             label={this._translations.fetchingData}
@@ -440,7 +420,7 @@ export class InfoCard {
 
   /**
    * Initializes the features widget if not created and updates the feature widget and other required states
-   * 
+   *
    * @protected
    */
   protected async setGraphics(): Promise<void> {
@@ -504,6 +484,38 @@ export class InfoCard {
         this._features.visibleElements.heading = !this.isMobile;
       }
     }) : Promise.resolve();
+  }
+
+  /**
+   * Get the mobile header
+   *
+   * @returns the header node to display when in mobile mode
+   *
+   * @protected
+   */
+  protected _getHeader(): VNode {
+    return this.isMobile && !this._editRecordOpen ? (
+      <calcite-panel
+        class="border-width-0"
+        slot="header"
+      >
+        <calcite-action
+          class="end-border"
+          icon={"chevron-left"}
+          iconFlipRtl={true}
+          onClick={() => this._closePopup()}
+          scale="s"
+          slot="header-actions-start"
+          text=""
+        />
+        <span
+          class="font-bold"
+          slot="header-content"
+        >
+          {this._mobileTitle}
+        </span>
+      </calcite-panel>
+    ) : undefined;
   }
 
   /**
