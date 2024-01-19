@@ -471,11 +471,12 @@ export class CrowdsourceManager {
    * Renders the component.
    */
   render() {
+    const borderClass = this._isMobile && this._hideTable ? "border-width-0" : "";
     return (
       <Host>
         <calcite-shell class="position-relative">
           <calcite-panel
-            class="width-full height-full"
+            class={`width-full height-full ${borderClass}`}
           >
             {this._getBody(this._layoutMode, this._panelOpen, this._hideTable)}
           </calcite-panel>
@@ -575,18 +576,20 @@ export class CrowdsourceManager {
    *
    * @param layoutMode ELayoutMode the current layout mode
    * @param panelOpen boolean indicates if all panels are open
+   * @param hideTable boolean when true the layer table is hidden
    *
    * @returns the css selectors
    * @protected
    */
   protected _getMapSizeClass(
     layoutMode: ELayoutMode,
-    panelOpen: boolean
+    panelOpen: boolean,
+    hideTable: boolean
   ): string {
     let sizeClass = "";
     switch (layoutMode) {
       case ELayoutMode.HORIZONTAL:
-        sizeClass = `${panelOpen ? "height-1-2 display-grid" : "height-0"} width-full position-relative`;
+        sizeClass = `${panelOpen && !hideTable ? "height-1-2 display-grid" : panelOpen && hideTable ? "height-full" : "height-0"} width-full position-relative`;
         break;
       case ELayoutMode.GRID:
         sizeClass = `height-full position-relative ${panelOpen ? "width-1-3" : "width-0"}`;
@@ -644,7 +647,7 @@ export class CrowdsourceManager {
     return (
       <calcite-panel class={"width-full height-full"}>
         <div class={`width-full height-full overflow-hidden ${contentClass}`}>
-          {this._getMapAndCard(layoutMode, panelOpen)}
+          {this._getMapAndCard(layoutMode, panelOpen, hideTable)}
           {this._getTable(layoutMode, panelOpen, hideTable)}
         </div>
       </calcite-panel>
@@ -656,15 +659,17 @@ export class CrowdsourceManager {
    *
    * @param layoutMode ELayoutMode the current layout mode
    * @param panelOpen boolean indicates if all panels are open
+   * @param hideTable boolean when true the layer table is hidden
    *
    * @returns the map node
    * @protected
    */
   protected _getMapAndCard(
     layoutMode: ELayoutMode,
-    panelOpen: boolean
+    panelOpen: boolean,
+    hideTable: boolean
   ): VNode {
-    const mapSizeClass = this._getMapSizeClass(layoutMode, panelOpen);
+    const mapSizeClass = this._getMapSizeClass(layoutMode, panelOpen, hideTable);
     return (
       <div class={`${mapSizeClass} overflow-hidden`}>
         {this._getMapNode(layoutMode, panelOpen)}
@@ -731,7 +736,7 @@ export class CrowdsourceManager {
     const popupNodeClass = !this._expandPopup ? "height-full" : this.mapInfos?.length === 1 || this._isMobile ? "position-absolute-0" : "position-absolute-50";
     const headerClass = this._isMobile ? "display-none height-0" : "";
     const headerTheme = !this._isMobile ? "calcite-mode-dark" : "calcite-mode-light";
-    const containerClass = this._isMobile && this._hideTable ? "position-fixed width-full height-full" : this._isMobile ? "display-none height-0" : "";
+    const containerClass = this._isMobile && this._hideTable ? "position-absolute-0 width-full height-full" : this._isMobile ? "display-none height-0" : "";
     return (
       <div class={`${headerTheme} ${popupNodeClass} ${containerClass}`}>
         <calcite-panel>
