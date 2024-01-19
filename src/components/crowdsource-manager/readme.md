@@ -117,15 +117,15 @@ graph TD;
   card-manager --> calcite-shell
   card-manager --> info-card
   card-manager --> calcite-notice
-  info-card --> calcite-panel
-  info-card --> calcite-action
   info-card --> calcite-shell
   info-card --> calcite-loader
   info-card --> calcite-button
   info-card --> delete-button
   info-card --> calcite-tooltip
+  info-card --> calcite-action
   info-card --> edit-card
   info-card --> calcite-alert
+  info-card --> calcite-panel
   edit-card --> calcite-notice
   edit-card --> calcite-loader
   calcite-notice --> calcite-icon

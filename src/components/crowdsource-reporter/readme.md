@@ -105,15 +105,15 @@ graph TD;
   feature-list --> calcite-list-item
   feature-list --> calcite-icon
   calcite-pagination --> calcite-icon
-  info-card --> calcite-panel
-  info-card --> calcite-action
   info-card --> calcite-shell
   info-card --> calcite-loader
   info-card --> calcite-button
   info-card --> delete-button
   info-card --> calcite-tooltip
+  info-card --> calcite-action
   info-card --> edit-card
   info-card --> calcite-alert
+  info-card --> calcite-panel
   delete-button --> calcite-button
   delete-button --> calcite-action
   delete-button --> calcite-modal

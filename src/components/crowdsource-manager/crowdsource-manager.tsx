@@ -471,7 +471,8 @@ export class CrowdsourceManager {
    * Renders the component.
    */
   render() {
-    const borderClass = this._isMobile && this._hideTable ? "border-width-0" : "";
+    const borderClass = this._isMobile && this._hideTable ? "border-width-0" :
+      this._isMobile ? "border-bottom-width-0" : "";
     return (
       <Host>
         <calcite-shell class="position-relative">
