@@ -334,12 +334,14 @@ export class CrowdsourceReporter {
           <calcite-action
             icon="sort-ascending-arrow"
             slot={this.isMobile ? "header-menu-actions" : "header-actions-end"}
-            text={this._translations.sort} text-enabled={this.isMobile} />}
+            text={this._translations.sort}
+            text-enabled={this.isMobile} />}
         {this._hasValidLayers &&
           <calcite-action
             icon="filter"
             slot={this.isMobile ? "header-menu-actions" : "header-actions-end"}
-            text={this._translations.filter} text-enabled={this.isMobile} />}
+            text={this._translations.filter}
+            text-enabled={this.isMobile} />}
         {this.isMobile && this.getActionToExpandCollapsePanel()}
         {this._hasValidLayers && this.enableNewReports &&
           <calcite-button
@@ -348,7 +350,9 @@ export class CrowdsourceReporter {
             width="full">
             {this.reportButtonText}
           </calcite-button>}
-        <calcite-panel full-height full-width>
+        <calcite-panel
+          full-height
+          full-width>
           <layer-list
             class="height-full"
             layers={this.layers}
@@ -396,7 +400,7 @@ export class CrowdsourceReporter {
    */
   protected toggleSidePanel(): void {
     this._sidePanelCollapsed = !this._sidePanelCollapsed;
-    this.togglePanel.emit(this._sidePanelCollapsed)
+    this.togglePanel.emit(this._sidePanelCollapsed);
   }
 
   /**
@@ -411,6 +415,7 @@ export class CrowdsourceReporter {
   /**
    * Get feature list of the selected feature layer
    * @param layerId Layer id
+   * @param layerName Layer name
    * @returns feature list node
    * @protected
    */
@@ -423,11 +428,13 @@ export class CrowdsourceReporter {
         <calcite-action
           icon="sort-ascending-arrow"
           slot={this.isMobile ? "header-menu-actions" : "header-actions-end"}
-          text={this._translations.sort} text-enabled={this.isMobile} />
+          text={this._translations.sort}
+          text-enabled={this.isMobile} />
         <calcite-action
           icon="filter"
           slot={this.isMobile ? "header-menu-actions" : "header-actions-end"}
-          text={this._translations.filter} text-enabled={this.isMobile} />
+          text={this._translations.filter}
+          text-enabled={this.isMobile} />
         {this.isMobile && this.getActionToExpandCollapsePanel()}
         {this.enableNewReports &&
           <calcite-button
@@ -486,7 +493,8 @@ export class CrowdsourceReporter {
     return (
       <calcite-action
         icon={this._sidePanelCollapsed ? "chevrons-up" : "chevrons-down"}
-        onClick={this.toggleSidePanel.bind(this)} slot="header-actions-end"
+        onClick={this.toggleSidePanel.bind(this)}
+        slot="header-actions-end"
         text={this._sidePanelCollapsed ? this._translations.expand : this._translations.collapse} />
     );
   }

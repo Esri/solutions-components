@@ -156,20 +156,20 @@
         //on change update the prop for is mobile
         mediaQueryList.onchange = (e) => {
           demo.isMobile = e.matches;
-          togglePanel({detail:false})
+          togglePanel({ detail: false })
         }
         //listen to togglePanel event
         demo.addEventListener('togglePanel', togglePanel);
       });
 
-      function togglePanel(evt){
+      function togglePanel(evt) {
         const state = evt.detail;
         const viewDiv = document.getElementById("viewDiv");
         const demo = document.getElementById("demo");
-        if(state){
+        if (state) {
           demo.classList.add("column-collapsed");
           viewDiv.classList.add("map-with-panel-collapsed");
-        } else{
+        } else {
           demo.classList.remove("column-collapsed");
           viewDiv.classList.remove("map-with-panel-collapsed");
         }
