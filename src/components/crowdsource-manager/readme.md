@@ -147,8 +147,8 @@ graph TD;
   layer-table --> delete-button
   layer-table --> calcite-modal
   layer-table --> instant-apps-filter-list
-  map-layer-picker --> calcite-tooltip
   map-layer-picker --> calcite-notice
+  map-layer-picker --> calcite-tooltip
   map-layer-picker --> calcite-icon
   map-layer-picker --> calcite-label
   map-layer-picker --> calcite-select
