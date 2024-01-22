@@ -429,6 +429,7 @@ export class LayerTable {
     if (this._toolInfos?.length > 0) {
       this._initToolInfos();
     }
+    this._initLayerExpressions();
   }
 
   /**

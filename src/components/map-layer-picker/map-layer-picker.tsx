@@ -271,13 +271,6 @@ export class MapLayerPicker {
                 this.type === "combobox" ? this._getCombobox(id) :
                 this.type === "select" ? this._getSelect(id) : this._getDropdown(id)
             }
-            <calcite-tooltip
-              label=""
-              placement="bottom"
-              reference-element={id}
-            >
-              <span>{this._translations.switchLayer}</span>
-            </calcite-tooltip>
           </div>
         </div>
       </Host>
