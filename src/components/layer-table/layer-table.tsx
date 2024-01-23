@@ -470,8 +470,8 @@ export class LayerTable {
   /**
    * watch for selection changes
    */
-  @Watch("_selectedIds")
-  async _selectedIdsWatchHandler(): Promise<void> {
+  @Watch("selectedIds")
+  async selectedIdsWatchHandler(): Promise<void> {
     this._updateShareUrl();
     this._validateEnabledActions();
     if (this._selectAllActive && this.selectedIds.length !== this._allIds.length) {
@@ -1889,7 +1889,7 @@ export class LayerTable {
   protected _initLayerExpressions(): void {
     const layerExpressions = this.mapInfo?.filterConfig?.layerExpressions;
     this._layerExpressions = layerExpressions ? layerExpressions.filter(
-      (exp) => exp.id === this._layer.id) : [];
+      (exp) => exp.id === this._layer?.id) : [];
     this._filterList.layerExpressions = this._layerExpressions;
     this._filterActive = false;
   }
