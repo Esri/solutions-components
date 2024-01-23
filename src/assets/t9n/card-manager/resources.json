@@ -1,6 +1,3 @@
 {
-  "information": "Information",
-  "media": "Media",
-  "comments": "Comments",
-  "selectFeaturesToStart": "Select a record to get started"
+  "selectFeaturesToStart": "Select a record to get started. Click while pressing the Ctrl key to select multiple records in the table."
 }
