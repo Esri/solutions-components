@@ -45,8 +45,8 @@
 
 ### Depends on
 
-- calcite-tooltip
 - calcite-notice
+- calcite-tooltip
 - calcite-icon
 - calcite-label
 - calcite-select
@@ -62,8 +62,8 @@
 ### Graph
 ```mermaid
 graph TD;
-  map-layer-picker --> calcite-tooltip
   map-layer-picker --> calcite-notice
+  map-layer-picker --> calcite-tooltip
   map-layer-picker --> calcite-icon
   map-layer-picker --> calcite-label
   map-layer-picker --> calcite-select
