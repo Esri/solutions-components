@@ -17,7 +17,9 @@
 import { Component, Element, Host, h, Prop, VNode, State, Watch, Event, EventEmitter } from "@stencil/core";
 import { IMapChange, IMapInfo, ISearchConfiguration, theme } from "../../utils/interfaces";
 import { getLocaleComponentStrings } from "../../utils/locale";
+import { loadModules } from "../../utils/loadModules";
 import CrowdsourceReporter_T9n from "../../assets/t9n/crowdsource-reporter/resources.json";
+import { getAllLayers } from "../../utils/mapViewUtils";
 
 @Component({
   tag: "crowdsource-reporter",
@@ -176,6 +178,11 @@ export class CrowdsourceReporter {
    */
   @State() _hasValidLayers = false;
 
+  /**
+   * string: The selected feature layer's name from the layer's list
+   */
+  @State() _selectedLayerName: string;
+
   //--------------------------------------------------------------------------
   //
   //  Properties (protected)
@@ -203,14 +210,20 @@ export class CrowdsourceReporter {
   protected _selectedLayerId: string;
 
   /**
-   * string: The selected feature layer's name from the layer's list
-   */
-  protected _selectedLayerName: string;
-
-  /**
    * __esri.Graphic: The selected feature
    */
   protected _selectedFeature: __esri.Graphic[];
+
+  /**
+   * esri/core/reactiveUtils: https://developers.arcgis.com/javascript/latest/api-reference/esri-core-reactiveUtils.html
+   */
+  protected reactiveUtils: typeof import("esri/core/reactiveUtils");
+
+  /**
+   * IHandle: The map click handle
+   */
+  protected _mapClickHandle: IHandle;
+
   //--------------------------------------------------------------------------
   //
   //  Watch handlers
@@ -264,6 +277,7 @@ export class CrowdsourceReporter {
    * @returns Promise when complete
    */
   async componentWillLoad(): Promise<void> {
+    await this._initModules();
     await this._getTranslations();
   }
 
@@ -287,6 +301,20 @@ export class CrowdsourceReporter {
   //  Functions (protected)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Load esri javascript api modules
+   *
+   * @returns Promise resolving when function is done
+   *
+   * @protected
+   */
+  protected async _initModules(): Promise<void> {
+    const [reactiveUtils] = await loadModules([
+      "esri/core/reactiveUtils"
+    ]);
+    this.reactiveUtils = reactiveUtils;
+  }
 
   /**
    * Get the reporter app functionality
@@ -373,6 +401,7 @@ export class CrowdsourceReporter {
    */
   protected layerListLoaded(evt: CustomEvent): void {
     const layersListed = evt.detail;
+    this.handleMapClick(layersListed);
     this._hasValidLayers = layersListed.length > 0;
   }
 
@@ -481,11 +510,21 @@ export class CrowdsourceReporter {
             isLoading={false}
             isMobile={false}
             mapView={this.mapView}
+            onSelectionChanged={this.featureDetailsChanged.bind(this)}
             zoomAndScrollToSelected={true}
           />
         </calcite-panel>
       </calcite-flow-item>
     );
+  }
+
+  /**
+   * On Feature details change update the Layer title and the current selected layer id
+   * @param evt Event hold the details of current feature graphic in the info-card
+   */
+  protected featureDetailsChanged(evt: any): void {
+    this._selectedLayerId = evt.detail[0].layer.id;
+    this._selectedLayerName = evt.detail[0].layer.title;
   }
 
   /**
@@ -514,6 +553,68 @@ export class CrowdsourceReporter {
       });
       this._defaultCenter = undefined;
       this._defaultLevel = undefined;
+    }
+  }
+
+  /**
+   * Handle map click event 
+   * @param layers Array of layerIds
+   * 
+   *  @protected
+   */
+  protected handleMapClick(layers: string[]): void {
+    if (this._mapClickHandle) {
+      this._mapClickHandle.remove();
+    }
+    this._mapClickHandle = this.reactiveUtils.on(
+      () => this.mapView,
+      "click",
+      (event) => {
+        void this.onMapClick(event, layers)
+      }
+    );
+  }
+
+  /**
+   * On map click do hitTest and get the clicked graphics of valid layers and show feature details
+   * @param event 
+   * @param layers 
+   * 
+   * @protected
+   */
+  protected async onMapClick(event:any, layers:string[]): Promise<void> {
+    //disable map popup
+    this.mapView.popupEnabled = false;
+    // only include graphics from valid layers listed in the layer list widget
+    const allMapLayers = await getAllLayers(this.mapView);
+    const validLayers = []
+    allMapLayers.forEach((eachLayer: __esri.FeatureLayer) => {
+      if (layers.includes(eachLayer.id)) {
+        validLayers.push(eachLayer)
+      }
+    })
+    const opts = {
+      include: validLayers
+    };
+    // Perform a hitTest on the View
+    const hitTest = await this.mapView.hitTest(event, opts);
+    if (hitTest.results.length > 0) {
+      const clickedGraphics = []
+      hitTest.results.forEach(function (result) {
+        // check if the result type is graphic
+        if (result.type === 'graphic') {
+          clickedGraphics.push(result.graphic)
+        }
+      });
+      //update the selectedFeature
+      this._selectedFeature = clickedGraphics;
+      //if featureDetails not open then add it to the list else just reInit flowItems which will update details with newly selected features
+      // eslint-disable-next-line unicorn/prefer-ternary
+      if (this._flowItems.length && this._flowItems[this._flowItems.length - 1] !== "feature-details") {
+        this._flowItems = [...this._flowItems, "feature-details"];
+      } else {
+        this._flowItems = [...this._flowItems];
+      }
     }
   }
 
