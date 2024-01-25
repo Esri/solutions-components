@@ -359,7 +359,9 @@ export class CrowdsourceReporter {
             mapView={this.mapView}
             noLayerErrorMsg={this._translations.noLayerToDisplayErrorMsg}
             onLayerSelect={this.displayFeaturesList.bind(this)}
-            onLayersListLoaded={this.layerListLoaded.bind(this)} />
+            onLayersListLoaded={this.layerListLoaded.bind(this)} 
+            showFeatureCount
+            showNextIcon/>
         </calcite-panel>
       </calcite-flow-item>);
   }

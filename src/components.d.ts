@@ -452,6 +452,14 @@ export namespace Components {
           * string: Error message to be displayed when no layers found
          */
         "noLayerErrorMsg"?: string;
+        /**
+          * boolean: if true display's feature count for each layer
+         */
+        "showFeatureCount"?: boolean;
+        /**
+          * boolean: If true display's arrow icon on each layer item
+         */
+        "showNextIcon"?: boolean;
     }
     interface LayerTable {
         /**
@@ -2463,6 +2471,14 @@ declare namespace LocalJSX {
           * Emitted on demand when list of layers to be listed are created. When empty array received in this event means no valid layers are found to be listed
          */
         "onLayersListLoaded"?: (event: LayerListCustomEvent<string[]>) => void;
+        /**
+          * boolean: if true display's feature count for each layer
+         */
+        "showFeatureCount"?: boolean;
+        /**
+          * boolean: If true display's arrow icon on each layer item
+         */
+        "showNextIcon"?: boolean;
     }
     interface LayerTable {
         /**
