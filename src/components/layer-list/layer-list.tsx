@@ -65,6 +65,16 @@ export class LayerList {
    */
   @Prop() noLayerErrorMsg?: string
 
+  /**
+   * boolean: if true display's feature count for each layer
+   */
+  @Prop() showFeatureCount?: boolean = true
+
+  /**
+   * boolean: If true display's arrow icon on each layer item
+   */
+  @Prop() showNextIcon?: boolean = false
+
   //--------------------------------------------------------------------------
   //
   //  State (internal)
@@ -171,7 +181,9 @@ export class LayerList {
             <div slot="message">{this.noLayerErrorMsg ? this.noLayerErrorMsg : this._translations.noLayerToDisplayErrorMsg}</div>
           </calcite-notice>}
         {!this._isLoading && this.mapView &&
-          <calcite-list>
+          <calcite-list
+            selection-appearance="border"
+            selection-mode={this.showNextIcon ? "none" : "single"}>
             {this.renderLayerList()}
           </calcite-list>}
       </Fragment>
@@ -205,7 +217,7 @@ export class LayerList {
     this._layerItemsHash = await getMapLayerHash(this.mapView, true) as ILayerItemsHash;
     const allMapLayers = await getAllLayers(this.mapView);
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
-    allMapLayers.forEach(async (eachLayer: __esri.FeatureLayer) => {
+    this.showFeatureCount && allMapLayers.forEach(async (eachLayer: __esri.FeatureLayer) => {
       //TODO: checking editable condition could be configurable
       if (eachLayer?.type === "feature" && eachLayer?.editingEnabled && eachLayer?.capabilities?.operations?.supportsUpdate) {
         const q = eachLayer.createQuery();
@@ -284,23 +296,23 @@ export class LayerList {
     const layerName = this._layerItemsHash[layerId].name;
     const featureCount = this._layerItemsHash[layerId].formattedFeatureCount;
     return (
-      <calcite-list-item onCalciteListItemSelect={() => { this.showFeaturesList(layerId) }}>
+      <calcite-list-item onCalciteListItemSelect={() => { this.onLayerItemSelected(layerId) }}>
         {/* --TODO ellipsis--*/}
         <div class="layer-name" slot="content-start">{layerName}</div>
-        {featureCount !== "" && <div slot="content-end">{"(" + featureCount + ")"}</div>}
-        <calcite-icon
+        {this.showFeatureCount && featureCount !== undefined && featureCount !== "" && <div class={!this.showNextIcon ? "feature-count" : ""} slot="content-end">{"(" + featureCount + ")"}</div>}
+        {this.showNextIcon && <calcite-icon
           icon="chevron-right"
           scale="s"
-          slot="content-end" />
+          slot="content-end" />}
       </calcite-list-item>
     );
   }
 
-  /**On click of layer list item show feature list
+  /**On click of layer list item emit the event along with the selected layerId and layerName
    * @param layerId Layer id
    * @protected
    */
-  protected showFeaturesList(layerId: string): void {
+  protected onLayerItemSelected(layerId: string): void {
     this.layerSelect.emit({layerId, layerName: this._layerItemsHash[layerId].name});
   }
 

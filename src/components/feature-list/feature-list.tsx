@@ -160,7 +160,7 @@ export class FeatureList {
     await this._getTranslations();
     this._isLoading = true;
     this._popupUtils = new PopupUtils();
-    if(this.mapView && this.selectedLayerId){
+    if (this.mapView && this.selectedLayerId) {
       this._selectedLayer = await getLayerOrTable(this.mapView, this.selectedLayerId);
     }
   }
@@ -247,6 +247,7 @@ export class FeatureList {
  /**
   * On feature click in feature list highlight the feature on the map
   * @param event feature clicked event
+  * @param selectedFeature selected feature graphic
   * @protected
   */
   protected async featureClicked(event: any, selectedFeature: __esri.Graphic): Promise<void> {
