@@ -1,23 +1,19 @@
 {
   "clearSelection": "Очистити вибір",
-  "delete": "Видалити",
-  "editMultiple": "Редагувати декілька елементів",
   "exportCSV": "Експорт в CSV",
+  "filter": "ґ_Filter: {{title}}__________________Ї",
   "filters": "Фільтри",
+  "hideField": "ґ_Hide field_____________________Ї",
   "more": "Більше",
   "selectAll": "Вибрати всі",
+  "share": "ґ_Share___________Ї",
   "showSelected": "Показати вибране",
   "switchSelected": "Переключити вибране",
   "zoom": "Масштабування",
   "fetchingData": "Отримання даних",
   "refresh": "Оновити",
-  "enableEditing": "Для шару має бути активовано редагування.",
-  "confirm": "Ці об'єкти будуть вилучені остаточно.",
-  "deleteFeature": "Видалити об'єкт",
-  "deleteDisabled": "Видалити вимкнені елементи",
-  "editMultipleDisabled": "Редагувати декілька вимкнених елементів",
   "showAll": "Показати всі",
   "recordsSelected": "Усього: {{total}} | Вибірка: {{selected}}",
-  "cancel": "Скасувати",
-  "moreOptions": "Інші опції таблиці"
+  "moreOptions": "Інші опції таблиці",
+  "showHideColumns": "ґ_Show/hide columns__________________Ї"
 }

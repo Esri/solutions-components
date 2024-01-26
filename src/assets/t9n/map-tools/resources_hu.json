@@ -4,7 +4,7 @@
   "expand": "Kibontás",
   "basemap": "Alaptérkép",
   "collapse": "Összecsukás",
-  "enterFullscreen": "Belépés a teljes képernyős nézetbe",
-  "exitFullscreen": "Kilépés a teljes képernyős nézetből",
+  "enterFullscreen": "í_Enter full screen__________________ő",
+  "exitFullscreen": "í_Exit full screen_________________ő",
   "floorFilter": "Emelet szűrő"
 }

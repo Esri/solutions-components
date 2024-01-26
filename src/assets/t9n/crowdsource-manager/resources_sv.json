@@ -1,8 +1,8 @@
 {
-  "header": "Crowdsourcehanteraren",
   "open": "Öppna",
   "close": "Stäng",
   "information": "Information",
   "expandPopup": "Expandera popup-fönster",
-  "collapsePopup": "Dölj popup-fönster"
+  "collapsePopup": "Dölj popup-fönster",
+  "view": "Å_View ({{n}})_____________ö"
 }

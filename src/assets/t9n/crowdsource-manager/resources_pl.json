@@ -1,8 +1,8 @@
 {
-  "header": "Menedżer zgłoszeń użytkowników",
   "open": "Otwórz",
   "close": "Zamknij",
   "information": "Informacje",
   "expandPopup": "Rozwiń okno podręczne",
-  "collapsePopup": "Zwiń okno podręczne"
+  "collapsePopup": "Zwiń okno podręczne",
+  "view": "ł_View ({{n}})_____________ą"
 }

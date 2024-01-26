@@ -1,23 +1,19 @@
 {
   "clearSelection": "Изчистване на избора",
-  "delete": "Изтриване",
-  "editMultiple": "Редактиране на множество",
   "exportCSV": "Експортиране в CSV",
+  "filter": "й_Filter: {{title}}__________________й",
   "filters": "Филтри",
+  "hideField": "й_Hide field_____________________й",
   "more": "Още",
   "selectAll": "Избиране на всички",
+  "share": "й_Share___________й",
   "showSelected": "Показване на избраните",
   "switchSelected": "Превключване на избрани",
   "zoom": "Мащабиране",
   "fetchingData": "Извличане на данни",
   "refresh": "Обновяване",
-  "enableEditing": "За този слой трябва да бъде активирана опцията за редактиране.",
-  "confirm": "Тези обекти ще бъдат премахнати завинаги.",
-  "deleteFeature": "Изтриване на обект",
-  "deleteDisabled": "Изтриването е деактивирано",
-  "editMultipleDisabled": "Редактиране на множество е деактивирано",
   "showAll": "Показване на всички",
   "recordsSelected": "Общо: {{total}} | Избор: {{selected}}",
-  "cancel": "Отказ",
-  "moreOptions": "Още опции за таблица"
+  "moreOptions": "Още опции за таблица",
+  "showHideColumns": "й_Show/hide columns__________________й"
 }

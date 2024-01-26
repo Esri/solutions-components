@@ -1,8 +1,8 @@
 {
-  "header": "Crowdsource Manager",
   "open": "Obre",
   "close": "Tanca",
   "information": "Informació",
   "expandPopup": "Amplia la finestra emergent",
-  "collapsePopup": "Contrau la finestra emergent"
+  "collapsePopup": "Contrau la finestra emergent",
+  "view": "ó_View ({{n}})_____________à"
 }

@@ -1,23 +1,19 @@
 {
   "clearSelection": "Esborra la selecció",
-  "delete": "Suprimeix",
-  "editMultiple": "Edició múltiple",
   "exportCSV": "Exporta a CSV",
+  "filter": "ó_Filter: {{title}}__________________à",
   "filters": "Filtres",
+  "hideField": "ó_Hide field_____________________à",
   "more": "Més",
   "selectAll": "Selecciona-ho tot",
+  "share": "ó_Share___________à",
   "showSelected": "Mostra els seleccionats",
   "switchSelected": "Canvia la selecció",
   "zoom": "Zoom",
   "fetchingData": "S'estan recuperant les dades",
   "refresh": "Actualitza",
-  "enableEditing": "Heu de tenir l'edició habilitada a la capa.",
-  "confirm": "Aquestes entitats s'eliminaran permanentment.",
-  "deleteFeature": "Suprimeix l'entitat",
-  "deleteDisabled": "Supressió deshabilitada",
-  "editMultipleDisabled": "Edició múltiple deshabilitada",
   "showAll": "Mostra-ho tot",
   "recordsSelected": "Total: {{total}} | Selecció: {{selected}}",
-  "cancel": "Cancel·la",
-  "moreOptions": "Més opcions de taula"
+  "moreOptions": "Més opcions de taula",
+  "showHideColumns": "ó_Show/hide columns__________________à"
 }

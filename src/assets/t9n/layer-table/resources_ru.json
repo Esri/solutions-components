@@ -1,23 +1,19 @@
 {
   "clearSelection": "Очистить выборку",
-  "delete": "Удалить",
-  "editMultiple": "Редактировать несколько",
   "exportCSV": "Экспорт в CSV",
+  "filter": "Ж_Filter: {{title}}__________________Я",
   "filters": "Фильтры",
+  "hideField": "Ж_Hide field_____________________Я",
   "more": "Больше",
   "selectAll": "Выбрать все",
+  "share": "Ж_Share___________Я",
   "showSelected": "Показать выбранные",
   "switchSelected": "Переключить выбранные",
   "zoom": "Масштабировать",
   "fetchingData": "Извлечение данных",
   "refresh": "Обновить",
-  "enableEditing": "Для слоя должно быть включено редактирование.",
-  "confirm": "Эти объекты будут удалены навсегда.",
-  "deleteFeature": "Удалить объект",
-  "deleteDisabled": "Удаление отключено",
-  "editMultipleDisabled": "Редактировать несколько отключено",
   "showAll": "Показать все",
   "recordsSelected": "Всего: {{total}} | Выборка: {{selected}}",
-  "cancel": "Отмена",
-  "moreOptions": "Дополнительные опции таблицы"
+  "moreOptions": "Дополнительные опции таблицы",
+  "showHideColumns": "Ж_Show/hide columns__________________Я"
 }

@@ -4,7 +4,7 @@
   "expand": "Разгъване",
   "basemap": "Базова карта",
   "collapse": "Сгъване",
-  "enterFullscreen": "Въвеждане на цял екран",
-  "exitFullscreen": "Изход от цял екран",
+  "enterFullscreen": "й_Enter full screen__________________й",
+  "exitFullscreen": "й_Exit full screen_________________й",
   "floorFilter": "Филтър за етаж"
 }

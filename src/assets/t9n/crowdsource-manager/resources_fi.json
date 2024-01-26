@@ -1,8 +1,8 @@
 {
-  "header": "Crowdsource Manager",
   "open": "Avaa",
   "close": "Sulje",
   "information": "Tiedot",
   "expandPopup": "Laajenna ponnahdusikkuna",
-  "collapsePopup": "Pienennä ponnahdusikkuna"
+  "collapsePopup": "Pienennä ponnahdusikkuna",
+  "view": "Å_View ({{n}})_____________ö"
 }

@@ -1,23 +1,19 @@
 {
   "clearSelection": "Απαλοιφή επιλογών",
-  "delete": "Διαγραφή",
-  "editMultiple": "Επεξεργασία πολλαπλών",
   "exportCSV": "Εξαγωγή σε CSV",
+  "filter": "Đ_Filter: {{title}}__________________ớ",
   "filters": "Φίλτρα",
+  "hideField": "Đ_Hide field_____________________ớ",
   "more": "Περισσότερα",
   "selectAll": "Επιλογή όλων",
+  "share": "Đ_Share___________ớ",
   "showSelected": "Εμφάνιση επιλεγμένων",
   "switchSelected": "Επιλογή Αλλαγής",
   "zoom": "Εστίαση",
   "fetchingData": "Ανάκτηση Δεδομένων",
   "refresh": "Ανανέωση",
-  "enableEditing": "Πρέπει να είναι ενεργοποιημένη η δυνατότητα επεξεργασίας σε αυτό το θεματικό επίπεδο.",
-  "confirm": "Αυτά τα στοιχεία θα καταργηθούν οριστικά.",
-  "deleteFeature": "Διαγραφή στοιχείου",
-  "deleteDisabled": "Διαγραφή Απενεργοποιημένων",
-  "editMultipleDisabled": "Επεξεργασία Πολλαπλών Απενεργοποιημένων",
   "showAll": "Εμφάνιση όλων",
   "recordsSelected": "Σύνολο: {{total}} | Επιλογή: {{selected}}",
-  "cancel": "Ακύρωση",
-  "moreOptions": "Περισσότερες επιλογές πίνακα"
+  "moreOptions": "Περισσότερες επιλογές πίνακα",
+  "showHideColumns": "Đ_Show/hide columns__________________ớ"
 }

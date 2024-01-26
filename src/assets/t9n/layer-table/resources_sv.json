@@ -1,23 +1,19 @@
 {
   "clearSelection": "Rensa markering",
-  "delete": "Ta bort",
-  "editMultiple": "Redigera flera",
   "exportCSV": "Exportera till CSV",
+  "filter": "Å_Filter: {{title}}__________________ö",
   "filters": "Filter",
+  "hideField": "Å_Hide field_____________________ö",
   "more": "Mer",
   "selectAll": "Markera alla",
+  "share": "Å_Share___________ö",
   "showSelected": "Visa valda",
   "switchSelected": "Växla valda",
   "zoom": "Zooma",
   "fetchingData": "Hämtar data",
   "refresh": "Uppdatera",
-  "enableEditing": "Redigering måste vara aktiverad på lagret.",
-  "confirm": "Dessa geoobjekt tas bort permanent.",
-  "deleteFeature": "Ta bort geoobjekt",
-  "deleteDisabled": "Ta bort inaktiverat",
-  "editMultipleDisabled": "Redigera flera inaktiverat",
   "showAll": "Visa alla",
   "recordsSelected": "Totalt: {{total}} | Urval: {{selected}}",
-  "cancel": "Avbryt",
-  "moreOptions": "Fler tabellalternativ"
+  "moreOptions": "Fler tabellalternativ",
+  "showHideColumns": "Å_Show/hide columns__________________ö"
 }

@@ -1,23 +1,19 @@
 {
   "clearSelection": "Notīrīt izvēli",
-  "delete": "Dzēst",
-  "editMultiple": "Rediģēt vairākus",
   "exportCSV": "Eksportēt kā CSV failu",
+  "filter": "ķ_Filter: {{title}}__________________ū",
   "filters": "Filtri",
+  "hideField": "ķ_Hide field_____________________ū",
   "more": "Vairāk",
   "selectAll": "Izvēlēties visu",
+  "share": "ķ_Share___________ū",
   "showSelected": "Rādīt izvēlēto",
   "switchSelected": "Pārslēgt izvēlēto",
   "zoom": "Tālummaiņa",
   "fetchingData": "Tvert datus",
   "refresh": "Atsvaidzināt",
-  "enableEditing": "Slānī ir jāiespējo rediģēšana.",
-  "confirm": "Šie elementi tiks neatgriezeniski noņemti.",
-  "deleteFeature": "Dzēst elementu",
-  "deleteDisabled": "Dzēst atspējotos",
-  "editMultipleDisabled": "Rediģēt vairākus atspējotos",
   "showAll": "Rādīt visu",
   "recordsSelected": "Kopā: {{total}} | Izvēle: {{selected}}",
-  "cancel": "Atcelt",
-  "moreOptions": "Citas tabulas opcijas"
+  "moreOptions": "Citas tabulas opcijas",
+  "showHideColumns": "ķ_Show/hide columns__________________ū"
 }

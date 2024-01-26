@@ -1,23 +1,19 @@
 {
   "clearSelection": "Tøm utvalg",
-  "delete": "Slett",
-  "editMultiple": "Rediger flere",
   "exportCSV": "Eksporter til CSV",
+  "filter": "å_Filter: {{title}}__________________ø",
   "filters": "Filtre",
+  "hideField": "å_Hide field_____________________ø",
   "more": "Mer",
   "selectAll": "Velg alle",
+  "share": "å_Share___________ø",
   "showSelected": "Vis valgte",
   "switchSelected": "Bytt valgte",
   "zoom": "Zoom",
   "fetchingData": "Henter data",
   "refresh": "Oppdater",
-  "enableEditing": "Redigering må være aktivert i laget.",
-  "confirm": "Disse geoobjektene slettes for godt.",
-  "deleteFeature": "Slett geoobjekt",
-  "deleteDisabled": "Sletting deaktivert",
-  "editMultipleDisabled": "Rediger flere er deaktivert",
   "showAll": "Vis alle",
   "recordsSelected": "Totalt: {{total}} | Utvalg: {{selected}}",
-  "cancel": "Avbryt",
-  "moreOptions": "Flere tabellalternativer"
+  "moreOptions": "Flere tabellalternativer",
+  "showHideColumns": "å_Show/hide columns__________________ø"
 }

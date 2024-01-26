@@ -1,23 +1,19 @@
 {
   "clearSelection": "Auswahl aufheben",
-  "delete": "Löschen",
-  "editMultiple": "Mehrere bearbeiten",
   "exportCSV": "In CSV exportieren",
+  "filter": "ä_Filter: {{title}}__________________Ü",
   "filters": "Filter",
+  "hideField": "ä_Hide field_____________________Ü",
   "more": "Mehr",
   "selectAll": "Alle auswählen",
+  "share": "ä_Share___________Ü",
   "showSelected": "Ausgewählte anzeigen",
   "switchSelected": "Auswahl umkehren",
   "zoom": "Zoomen",
   "fetchingData": "Daten werden abgerufen",
   "refresh": "Aktualisieren",
-  "enableEditing": "Die Bearbeitungsfunktion muss für den Layer aktiviert sein.",
-  "confirm": "Diese Features werden dauerhaft entfernt.",
-  "deleteFeature": "Feature löschen",
-  "deleteDisabled": "\"Löschen\" ist deaktiviert",
-  "editMultipleDisabled": "\"Mehrere bearbeiten\" ist deaktiviert",
   "showAll": "Alle anzeigen",
   "recordsSelected": "Gesamt: {{total}} | Auswahl: {{selected}}",
-  "cancel": "Abbrechen",
-  "moreOptions": "Weitere Tabellenoptionen"
+  "moreOptions": "Weitere Tabellenoptionen",
+  "showHideColumns": "ä_Show/hide columns__________________Ü"
 }

@@ -5,5 +5,6 @@
   "editDisabled": "Modifica disabilitata",
   "next": "Avanti",
   "back": "Indietro",
-  "indexOfTotal": "{{index}} di {{total}}"
+  "indexOfTotal": "{{index}} di {{total}}",
+  "delete": "é_Delete_____________È"
 }

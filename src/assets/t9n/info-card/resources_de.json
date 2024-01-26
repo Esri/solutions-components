@@ -5,5 +5,6 @@
   "editDisabled": "Bearbeitung ist deaktiviert",
   "next": "Weiter",
   "back": "Zurück",
-  "indexOfTotal": "{{index}} von {{total}}"
+  "indexOfTotal": "{{index}} von {{total}}",
+  "delete": "ä_Delete_____________Ü"
 }

@@ -1,8 +1,8 @@
 {
-  "header": "تطبيق Crowdsource Manager",
   "open": "فتح",
   "close": "إغلاق",
   "information": "معلومات",
   "expandPopup": "توسيع النافذة المنبثقة",
-  "collapsePopup": "طي النافذة المنبثقة"
+  "collapsePopup": "طي النافذة المنبثقة",
+  "view": "بيت_View ({{n}})_____________لاحقة"
 }

@@ -1,23 +1,19 @@
 {
   "clearSelection": "Wyczyść wybór",
-  "delete": "Usuń",
-  "editMultiple": "Edytuj wiele",
   "exportCSV": "Eksportuj do CSV",
+  "filter": "ł_Filter: {{title}}__________________ą",
   "filters": "Filtry",
+  "hideField": "ł_Hide field_____________________ą",
   "more": "Więcej",
   "selectAll": "Wybierz wszystkie",
+  "share": "ł_Share___________ą",
   "showSelected": "Pokaż wybrane",
   "switchSelected": "Przełącz wybrane",
   "zoom": "Powiększ",
   "fetchingData": "Pobieranie danych",
   "refresh": "Odśwież",
-  "enableEditing": "Edycja musi być włączona dla warstwy.",
-  "confirm": "Te obiekty zostaną trwale usunięte.",
-  "deleteFeature": "Usuń obiekt",
-  "deleteDisabled": "Usuwanie wyłączone",
-  "editMultipleDisabled": "Edycja wielu wyłączona",
   "showAll": "Pokaż wszystko",
   "recordsSelected": "Łącznie: {{total}} | Wybrane: {{selected}}",
-  "cancel": "Anuluj",
-  "moreOptions": "Więcej opcji tabeli"
+  "moreOptions": "Więcej opcji tabeli",
+  "showHideColumns": "ł_Show/hide columns__________________ą"
 }

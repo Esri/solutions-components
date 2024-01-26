@@ -1,23 +1,19 @@
 {
   "clearSelection": "Borrar selección",
-  "delete": "Eliminar",
-  "editMultiple": "Editar varios",
   "exportCSV": "Exportar a CSV",
+  "filter": "á_Filter: {{title}}__________________Ó",
   "filters": "Filtros",
+  "hideField": "á_Hide field_____________________Ó",
   "more": "Más",
   "selectAll": "Seleccionar todo",
+  "share": "á_Share___________Ó",
   "showSelected": "Mostrar seleccionado",
   "switchSelected": "Alternar seleccionado",
   "zoom": "Zoom",
   "fetchingData": "Obteniendo datos",
   "refresh": "Actualizar",
-  "enableEditing": "La edición debe estar habilitada en la capa.",
-  "confirm": "Estas entidades se eliminarán de forma permanente.",
-  "deleteFeature": "Eliminar entidad",
-  "deleteDisabled": "Eliminar deshabilitado",
-  "editMultipleDisabled": "Editar varios deshabilitado",
   "showAll": "Mostrar todo",
   "recordsSelected": "Total: {{total}} | Selección: {{selected}}",
-  "cancel": "Cancelar",
-  "moreOptions": "Más opciones de tabla"
+  "moreOptions": "Más opciones de tabla",
+  "showHideColumns": "á_Show/hide columns__________________Ó"
 }

@@ -5,5 +5,6 @@
   "editDisabled": "Η επεξεργασία απενεργοποιήθηκε",
   "next": "Επόμενο",
   "back": "Πίσω",
-  "indexOfTotal": "{{index}} από {{total}}"
+  "indexOfTotal": "{{index}} από {{total}}",
+  "delete": "Đ_Delete_____________ớ"
 }

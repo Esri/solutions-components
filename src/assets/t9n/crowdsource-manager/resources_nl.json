@@ -1,8 +1,8 @@
 {
-  "header": "Crowdsource Manager",
   "open": "Openen",
   "close": "Sluiten",
   "information": "Informatie",
   "expandPopup": "Pop-up uitvouwen",
-  "collapsePopup": "Pop-up samenvouwen"
+  "collapsePopup": "Pop-up samenvouwen",
+  "view": "Ĳ_View ({{n}})_____________ä"
 }

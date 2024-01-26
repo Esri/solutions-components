@@ -1,23 +1,19 @@
 {
   "clearSelection": "清除选择内容",
-  "delete": "删除",
-  "editMultiple": "编辑多个",
   "exportCSV": "导出到 CSV",
+  "filter": "试_Filter: {{title}}__________________验",
   "filters": "过滤器",
+  "hideField": "试_Hide field_____________________验",
   "more": "更多",
   "selectAll": "全选",
+  "share": "试_Share___________验",
   "showSelected": "显示所选",
   "switchSelected": "切换所选",
   "zoom": "缩放",
   "fetchingData": "正在获取数据",
   "refresh": "刷新",
-  "enableEditing": "必须在图层上启用编辑。",
-  "confirm": "这些要素将永久移除。",
-  "deleteFeature": "删除要素",
-  "deleteDisabled": "删除已禁用",
-  "editMultipleDisabled": "编辑多个禁用",
   "showAll": "显示全部",
   "recordsSelected": "总数：{{total}} | 选择：{{selected}}",
-  "cancel": "取消",
-  "moreOptions": "更多表选项"
+  "moreOptions": "更多表选项",
+  "showHideColumns": "试_Show/hide columns__________________验"
 }
