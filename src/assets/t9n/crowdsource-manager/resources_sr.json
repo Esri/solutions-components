@@ -1,8 +1,8 @@
 {
-  "header": "Menadžer za Crowdsource",
   "open": "Otvori",
   "close": "Zatvori",
   "information": "Informacije",
   "expandPopup": "Proširi iskačući prozor",
-  "collapsePopup": "Spusti iskačući prozor"
+  "collapsePopup": "Spusti iskačući prozor",
+  "view": "Č_View ({{n}})_____________ž"
 }

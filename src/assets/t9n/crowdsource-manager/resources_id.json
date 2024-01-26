@@ -1,8 +1,8 @@
 {
-  "header": "Crowdsource Manager",
   "open": "Buka",
   "close": "Tutup",
   "information": "Informasi",
   "expandPopup": "Perluas pop-up",
-  "collapsePopup": "Perkecil pop-up"
+  "collapsePopup": "Perkecil pop-up",
+  "view": "ng_View ({{n}})_____________ny"
 }

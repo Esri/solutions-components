@@ -1,8 +1,8 @@
 {
-  "header": "Crowdsource Manager",
   "open": "Ava",
   "close": "Sule",
   "information": "Teave",
   "expandPopup": "Laienda hüpikaken",
-  "collapsePopup": "Ahenda hüpikaken"
+  "collapsePopup": "Ahenda hüpikaken",
+  "view": "Š_View ({{n}})_____________ä"
 }

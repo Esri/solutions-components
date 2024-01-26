@@ -5,5 +5,6 @@
   "editDisabled": "Redigering inaktiverat",
   "next": "Nästa",
   "back": "Bakåt",
-  "indexOfTotal": "{{index}} av {{total}}"
+  "indexOfTotal": "{{index}} av {{total}}",
+  "delete": "Å_Delete_____________ö"
 }

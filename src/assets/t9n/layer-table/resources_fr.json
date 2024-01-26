@@ -1,23 +1,19 @@
 {
   "clearSelection": "Effacer la sélection",
-  "delete": "Supprimer",
-  "editMultiple": "Mise à jour multiple",
   "exportCSV": "Exporter au format CSV",
+  "filter": "æ_Filter: {{title}}__________________Â",
   "filters": "Filtres",
+  "hideField": "æ_Hide field_____________________Â",
   "more": "Plus",
   "selectAll": "Sélectionner tout",
+  "share": "æ_Share___________Â",
   "showSelected": "Afficher la sélection",
   "switchSelected": "Inverser la sélection",
   "zoom": "Zoom",
   "fetchingData": "Récupération des données",
   "refresh": "Actualiser",
-  "enableEditing": "La mise à jour doit être activée sur la couche.",
-  "confirm": "Ces entités seront définitivement supprimées.",
-  "deleteFeature": "Supprimer l’entité",
-  "deleteDisabled": "Suppression désactivée",
-  "editMultipleDisabled": "Mise à jour multiple désactivée",
   "showAll": "Afficher tout",
   "recordsSelected": "Total : {{total}} | Sélection : {{selected}}",
-  "cancel": "Annuler",
-  "moreOptions": "Autres options de la table"
+  "moreOptions": "Autres options de la table",
+  "showHideColumns": "æ_Show/hide columns__________________Â"
 }

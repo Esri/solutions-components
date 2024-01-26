@@ -1,8 +1,8 @@
 {
-  "header": "Közösségi ötletbörze-kezelő",
   "open": "Megnyitás",
   "close": "Bezárás",
   "information": "Információ",
   "expandPopup": "Felugró ablak kiterjesztése",
-  "collapsePopup": "Felugró ablak összecsukása"
+  "collapsePopup": "Felugró ablak összecsukása",
+  "view": "í_View ({{n}})_____________ő"
 }

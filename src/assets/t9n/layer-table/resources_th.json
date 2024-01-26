@@ -1,23 +1,19 @@
 {
   "clearSelection": "ล้างการเลือก",
-  "delete": "ลบ",
-  "editMultiple": "แก้ไขหลายรายการ",
   "exportCSV": "ส่งออกเป็น CSV",
+  "filter": "ก้_Filter: {{title}}__________________ษฺ",
   "filters": "ตัวกรอง",
+  "hideField": "ก้_Hide field_____________________ษฺ",
   "more": "กว่า",
   "selectAll": "เลือกทั้งหมด",
+  "share": "ก้_Share___________ษฺ",
   "showSelected": "แสดงที่เลือก",
   "switchSelected": "สลับรายการที่เลือก",
   "zoom": "ขยาย",
   "fetchingData": "กำลังดึงข้อมูล",
   "refresh": "รีเฟรช",
-  "enableEditing": "ต้องเปิดใช้งานการแก้ไขบนชั้นข้อมูล",
-  "confirm": "ฟีเจอร์เหล่านี้จะถูกลบออกอย่างถาวร",
-  "deleteFeature": "ลบข้อมูลนี้",
-  "deleteDisabled": "การลบถูกปิดใช้งาน",
-  "editMultipleDisabled": "การแก้ไขหลายรายการถูกปิดใช้งาน",
   "showAll": "แสดงทั้งหมด",
   "recordsSelected": "รวม: {{total}} | ที่เลือก: {{selected}}",
-  "cancel": "ยกเลิก",
-  "moreOptions": "ตัวเลือกตารางเพิ่มเติม"
+  "moreOptions": "ตัวเลือกตารางเพิ่มเติม",
+  "showHideColumns": "ก้_Show/hide columns__________________ษฺ"
 }

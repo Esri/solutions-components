@@ -1,8 +1,8 @@
 {
-  "header": "Gerenciador de Informações Coletivas",
   "open": "Abrir",
   "close": "Fechar",
   "information": "Informações",
   "expandPopup": "Expandir pop-up",
-  "collapsePopup": "Recolher pop-up"
+  "collapsePopup": "Recolher pop-up",
+  "view": "ã_View ({{n}})_____________Ç"
 }

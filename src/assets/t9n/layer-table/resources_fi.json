@@ -1,23 +1,19 @@
 {
   "clearSelection": "Tyhjennä valinnat",
-  "delete": "Poista",
-  "editMultiple": "Muokkaa useaa",
   "exportCSV": "Vie CSV-tiedostoon",
+  "filter": "Å_Filter: {{title}}__________________ö",
   "filters": "Suodattimet",
+  "hideField": "Å_Hide field_____________________ö",
   "more": "Enemmän",
   "selectAll": "Valitse kaikki",
+  "share": "Å_Share___________ö",
   "showSelected": "Näytä valitut",
   "switchSelected": "Vaihda valitut",
   "zoom": "Tarkenna",
   "fetchingData": "Noudetaan aineistoa",
   "refresh": "Päivitä",
-  "enableEditing": "Muokkaus on otettava käyttöön karttatasossa.",
-  "confirm": "Nämä kohteet poistetaan pysyvästi.",
-  "deleteFeature": "Poista kohde",
-  "deleteDisabled": "Poista käytöstä poistetut",
-  "editMultipleDisabled": "Muokkaa useaa käytöstä poistettua",
   "showAll": "Näytä kaikki",
   "recordsSelected": "Yhteensä: {{total}} | Valinta: {{selected}}",
-  "cancel": "Peruuta",
-  "moreOptions": "Muut taulun asetukset"
+  "moreOptions": "Muut taulun asetukset",
+  "showHideColumns": "Å_Show/hide columns__________________ö"
 }

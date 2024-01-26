@@ -1,23 +1,19 @@
 {
   "clearSelection": "Počisti izbiro",
-  "delete": "Izbriši",
-  "editMultiple": "Uredi več",
   "exportCSV": "Izvozi v CSV",
+  "filter": "Š_Filter: {{title}}__________________č",
   "filters": "Filtri",
+  "hideField": "Š_Hide field_____________________č",
   "more": "Več",
   "selectAll": "Izberi vse",
+  "share": "Š_Share___________č",
   "showSelected": "Prikaži izbrano",
   "switchSelected": "Preklopi izbrano",
   "zoom": "Povečava",
   "fetchingData": "Pridobivanje podatkov",
   "refresh": "Osveži",
-  "enableEditing": "Urejanje mora biti omogočeno na sloju.",
-  "confirm": "Ti geoobjekti bodo trajno odstranjeni.",
-  "deleteFeature": "Izbriši geoobjekt",
-  "deleteDisabled": "Izbriši onemogočeno",
-  "editMultipleDisabled": "Uredi več onemogočenih",
   "showAll": "Prikaži vse",
   "recordsSelected": "Skupno: {{total}} | Selection: {{selected}}",
-  "cancel": "Prekliči",
-  "moreOptions": "Več možnosti tabele"
+  "moreOptions": "Več možnosti tabele",
+  "showHideColumns": "Š_Show/hide columns__________________č"
 }

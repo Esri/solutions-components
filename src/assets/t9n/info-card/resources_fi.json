@@ -5,5 +5,6 @@
   "editDisabled": "Muokkaaminen on poistettu käytöstä",
   "next": "Seuraava",
   "back": "Takaisin",
-  "indexOfTotal": "{{index}}/{{total}}"
+  "indexOfTotal": "{{index}}/{{total}}",
+  "delete": "Å_Delete_____________ö"
 }

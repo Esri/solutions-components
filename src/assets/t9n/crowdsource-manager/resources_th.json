@@ -1,8 +1,8 @@
 {
-  "header": "Crowdsource Manager",
   "open": "เปิด",
   "close": "ปิด",
   "information": "ข้อมูล",
   "expandPopup": "ขยายป็อปอัพ",
-  "collapsePopup": "ย่อป็อปอัพ"
+  "collapsePopup": "ย่อป็อปอัพ",
+  "view": "ก้_View ({{n}})_____________ษฺ"
 }

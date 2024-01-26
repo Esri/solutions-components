@@ -1,8 +1,8 @@
 {
-  "header": "Crowdsource Manager",
   "open": "Открыть",
   "close": "Закрыть",
   "information": "Информация",
   "expandPopup": "Развернуть всплывающее окно",
-  "collapsePopup": "Свернуть всплывающее окно"
+  "collapsePopup": "Свернуть всплывающее окно",
+  "view": "Ж_View ({{n}})_____________Я"
 }

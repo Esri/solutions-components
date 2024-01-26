@@ -1,8 +1,8 @@
 {
-  "header": "Crowdsource Manager",
   "open": "Aç",
   "close": "Kapat",
   "information": "Bilgi",
   "expandPopup": "Açılır pencereyi genişlet",
-  "collapsePopup": "Açılır pencereyi daralt"
+  "collapsePopup": "Açılır pencereyi daralt",
+  "view": "ı_View ({{n}})_____________İ"
 }

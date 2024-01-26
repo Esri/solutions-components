@@ -1,23 +1,19 @@
 {
   "clearSelection": "נקה בחירה",
-  "delete": "מחיקה",
-  "editMultiple": "ערוך פריטים מרובים",
   "exportCSV": "יצוא ל-CSV",
+  "filter": "כן_Filter: {{title}}__________________ש",
   "filters": "סינונים",
+  "hideField": "כן_Hide field_____________________ש",
   "more": "עוד",
   "selectAll": "בחר הכול",
+  "share": "כן_Share___________ש",
   "showSelected": "הצג פריטים שנבחרו",
   "switchSelected": "החלף פריטים שנבחרו.",
   "zoom": "זום",
   "fetchingData": "מאחזר נתונים",
   "refresh": "רענן",
-  "enableEditing": "יש לאפשר עריכה בשכבה זו.",
-  "confirm": "ישויות אלה יוסרו לצמיתות.",
-  "deleteFeature": "מחק ישות",
-  "deleteDisabled": "המחיקה מושבתת",
-  "editMultipleDisabled": "עריכת פריטים מרובים מושבתת",
   "showAll": "הצג הכול",
   "recordsSelected": "(סה\"כ: {{total}} | בחירה: {{selected}})",
-  "cancel": "ביטול",
-  "moreOptions": "אפשרויות טבלה נוספות"
+  "moreOptions": "אפשרויות טבלה נוספות",
+  "showHideColumns": "כן_Show/hide columns__________________ש"
 }

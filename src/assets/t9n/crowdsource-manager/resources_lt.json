@@ -1,8 +1,8 @@
 {
-  "header": "Sutelktinių išteklių vadovas",
   "open": "Atverti",
   "close": "Uždaryti",
   "information": "Informacija",
   "expandPopup": "Išskleisti iškylantįjį langą",
-  "collapsePopup": "Suskleisti iškylantįjį langą"
+  "collapsePopup": "Suskleisti iškylantįjį langą",
+  "view": "Į_View ({{n}})_____________š"
 }

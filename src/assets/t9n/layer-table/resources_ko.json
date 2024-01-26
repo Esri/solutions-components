@@ -1,23 +1,19 @@
 {
   "clearSelection": "선택 해제",
-  "delete": "삭제",
-  "editMultiple": "복수 편집",
   "exportCSV": "CSV로 내보내기",
+  "filter": "한_Filter: {{title}}__________________빠",
   "filters": "필터",
+  "hideField": "한_Hide field_____________________빠",
   "more": "더 보기",
   "selectAll": "모두 선택",
+  "share": "한_Share___________빠",
   "showSelected": "선택한 항목 보기",
   "switchSelected": "선택한 항목 전환",
   "zoom": "확대/축소",
   "fetchingData": "데이터 가져오기",
   "refresh": "새로 고침",
-  "enableEditing": "레이어에 편집이 활성화되어 있어야 합니다.",
-  "confirm": "해당 피처가 영구적으로 제거됩니다.",
-  "deleteFeature": "피처 삭제",
-  "deleteDisabled": "삭제가 비활성화됨",
-  "editMultipleDisabled": "복수 편집이 비활성화됨",
   "showAll": "모두 보기",
   "recordsSelected": "총: {{total}}개 | 선택: {{selected}}개",
-  "cancel": "취소",
-  "moreOptions": "추가 테이블 옵션"
+  "moreOptions": "추가 테이블 옵션",
+  "showHideColumns": "한_Show/hide columns__________________빠"
 }

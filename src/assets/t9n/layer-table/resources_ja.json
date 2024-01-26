@@ -1,23 +1,19 @@
 {
   "clearSelection": "選択の解除",
-  "delete": "削除",
-  "editMultiple": "複数を編集",
   "exportCSV": "CSV にエクスポート",
+  "filter": "須_Filter: {{title}}__________________鷗",
   "filters": "フィルター",
+  "hideField": "須_Hide field_____________________鷗",
   "more": "その他",
   "selectAll": "すべて選択",
+  "share": "須_Share___________鷗",
   "showSelected": "選択の表示",
   "switchSelected": "選択の切り替え",
   "zoom": "ズーム",
   "fetchingData": "データを取得しています",
   "refresh": "更新",
-  "enableEditing": "編集をレイヤーに対して有効化する必要があります。",
-  "confirm": "これらのフィーチャは完全に削除されます。",
-  "deleteFeature": "フィーチャの削除",
-  "deleteDisabled": "削除が無効になっています",
-  "editMultipleDisabled": "複数を編集が無効になっています",
   "showAll": "すべて表示",
   "recordsSelected": "合計: {{total}} | 選択: {{selected}}",
-  "cancel": "キャンセル",
-  "moreOptions": "その他のテーブル オプション"
+  "moreOptions": "その他のテーブル オプション",
+  "showHideColumns": "須_Show/hide columns__________________鷗"
 }

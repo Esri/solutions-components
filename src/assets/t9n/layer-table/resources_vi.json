@@ -1,23 +1,19 @@
 {
   "clearSelection": "Xóa lựa chọn",
-  "delete": "Xóa",
-  "editMultiple": "Chỉnh sửa Nhiều mục",
   "exportCSV": "Xuất thành CSV",
+  "filter": "Đ_Filter: {{title}}__________________ớ",
   "filters": "Bộ lọc",
+  "hideField": "Đ_Hide field_____________________ớ",
   "more": "Thêm",
   "selectAll": "Chọn tất cả",
+  "share": "Đ_Share___________ớ",
   "showSelected": "Hiển thị mục được chọn",
   "switchSelected": "Chuyển đổi mục được chọn",
   "zoom": "Thu phóng",
   "fetchingData": "Đang tìm nạp Dữ liệu",
   "refresh": "Làm mới",
-  "enableEditing": "Tính năng Chỉnh sửa phải được bật trên lớp.",
-  "confirm": "Những đối tượng này sẽ bị xóa vĩnh viễn.",
-  "deleteFeature": "Xóa đối tượng",
-  "deleteDisabled": "Xóa Mục đã tắt",
-  "editMultipleDisabled": "Chỉnh sửa Nhiều Mục đã tắt",
   "showAll": "Hiện tất cả",
   "recordsSelected": "Tổng: {{total}} | Lựa chọn: {{selected}}",
-  "cancel": "Hủy",
-  "moreOptions": "Các tùy chọn bảng khác"
+  "moreOptions": "Các tùy chọn bảng khác",
+  "showHideColumns": "Đ_Show/hide columns__________________ớ"
 }

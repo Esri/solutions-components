@@ -1,23 +1,19 @@
 {
   "clearSelection": "Cancella selezione",
-  "delete": "Elimina",
-  "editMultiple": "Modifica multipla",
   "exportCSV": "Esporta in CSV",
+  "filter": "é_Filter: {{title}}__________________È",
   "filters": "Filtri",
+  "hideField": "é_Hide field_____________________È",
   "more": "Maggiori informazioni",
   "selectAll": "Seleziona tutto",
+  "share": "é_Share___________È",
   "showSelected": "Mostra selezionati",
   "switchSelected": "Cambia selezionati",
   "zoom": "Zoom",
   "fetchingData": "Recupero dei dati",
   "refresh": "Aggiorna",
-  "enableEditing": "La modifica deve essere abilitata nel layer.",
-  "confirm": "Queste feature saranno rimosse in modo permanente.",
-  "deleteFeature": "Elimina feature",
-  "deleteDisabled": "Eliminazione disabilitata",
-  "editMultipleDisabled": "Modifica multipla disabilitata",
   "showAll": "Mostra tutto",
   "recordsSelected": "Totale: {{total}} | Selezione: {{selected}}",
-  "cancel": "Annulla",
-  "moreOptions": "Altre opzioni tabella"
+  "moreOptions": "Altre opzioni tabella",
+  "showHideColumns": "é_Show/hide columns__________________È"
 }
