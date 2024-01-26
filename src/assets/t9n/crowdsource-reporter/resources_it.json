@@ -1,0 +1,20 @@
+{
+  "createReportHeader": "é_Create a Report________________È",
+  "share": "é_Share___________È",
+  "sort": "é_Sort_________È",
+  "filter": "é_Filter_____________È",
+  "expand": "é_Expand_____________È",
+  "collapse": "é_Collapse_________________È",
+  "next": "é_Next_________È",
+  "cancel": "é_Cancel_____________È",
+  "back": "é_Back_________È",
+  "error": "é_Error___________È",
+  "invalidConfigurationErrorMsg": "é_Invalid configuration______________________È",
+  "noLayerToDisplayErrorMsg": "é_Configured web map don't have any editable feature layer_____________________________È",
+  "chooseCategoryMsg": "é_Choose a category for the problem you're reporting__________________________È",
+  "featureErrorMsg": "é_Features not found___________________È",
+  "featureEditFormInfoMsg": "é_Please provide the details for the incident you are reporting________________________________È.",
+  "currentLocationMsg": "é_Use my current location________________________È",
+  "reportSubmit": "é_Report Submitted__________________È.",
+  "submitMsg": "é_Thank you! Your report was successfully submitted__________________________È"
+}
