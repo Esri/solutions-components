@@ -15,7 +15,7 @@
  */
 
 import { Component, Element, Host, h, Prop, VNode, State, Watch, Event, EventEmitter } from "@stencil/core";
-import { IMapChange, IMapInfo, ISearchConfiguration, theme } from "../../utils/interfaces";
+import { IMapChange, IMapClick, IMapInfo, ISearchConfiguration, theme } from "../../utils/interfaces";
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { loadModules } from "../../utils/loadModules";
 import CrowdsourceReporter_T9n from "../../assets/t9n/crowdsource-reporter/resources.json";
@@ -203,6 +203,11 @@ export class CrowdsourceReporter {
    * number: zoom level the map should go to
    */
   protected _defaultLevel: number;
+
+  /**
+   * __esri.FeatureLayer[]: Valid layers from the current map
+   */
+  protected _validLayers: __esri.FeatureLayer []
 
   /**
    * string: The selected feature layer's id from the layer's list
@@ -399,9 +404,19 @@ export class CrowdsourceReporter {
    * @param evt Event which has list of layers
    * @protected
    */
-  protected layerListLoaded(evt: CustomEvent): void {
+  protected async layerListLoaded(evt: CustomEvent): Promise<void> {
     const layersListed = evt.detail;
-    this.handleMapClick(layersListed);
+    //consider only the layers listed in the layer-list component  
+    const allMapLayers = await getAllLayers(this.mapView);
+    this._validLayers = []
+    allMapLayers.forEach((eachLayer: __esri.FeatureLayer) => {
+      if (layersListed.includes(eachLayer.id)) {
+        this._validLayers.push(eachLayer)
+      }
+    })
+    //handleMap click on layer list loaded
+    this.handleMapClick();
+    //update the has valid layer state
     this._hasValidLayers = layersListed.length > 0;
   }
 
@@ -522,7 +537,7 @@ export class CrowdsourceReporter {
    * On Feature details change update the Layer title and the current selected layer id
    * @param evt Event hold the details of current feature graphic in the info-card
    */
-  protected featureDetailsChanged(evt: any): void {
+  protected featureDetailsChanged(evt: CustomEvent): void {
     this._selectedLayerId = evt.detail[0].layer.id;
     this._selectedLayerName = evt.detail[0].layer.title;
   }
@@ -560,41 +575,31 @@ export class CrowdsourceReporter {
    * Handle map click event 
    * @param layers Array of layerIds
    * 
-   *  @protected
+   * @protected
    */
-  protected handleMapClick(layers: string[]): void {
+  protected handleMapClick(): void {
     if (this._mapClickHandle) {
       this._mapClickHandle.remove();
     }
     this._mapClickHandle = this.reactiveUtils.on(
       () => this.mapView,
       "click",
-      (event) => {
-        void this.onMapClick(event, layers)
-      }
+      this.onMapClick.bind(this)
     );
   }
 
   /**
    * On map click do hitTest and get the clicked graphics of valid layers and show feature details
-   * @param event 
-   * @param layers 
+   * @param event IMapClick map click event details
    * 
    * @protected
    */
-  protected async onMapClick(event:any, layers:string[]): Promise<void> {
+  protected async onMapClick(event: IMapClick): Promise<void> {
     //disable map popup
     this.mapView.popupEnabled = false;
     // only include graphics from valid layers listed in the layer list widget
-    const allMapLayers = await getAllLayers(this.mapView);
-    const validLayers = []
-    allMapLayers.forEach((eachLayer: __esri.FeatureLayer) => {
-      if (layers.includes(eachLayer.id)) {
-        validLayers.push(eachLayer)
-      }
-    })
     const opts = {
-      include: validLayers
+      include: this._validLayers
     };
     // Perform a hitTest on the View
     const hitTest = await this.mapView.hitTest(event, opts);
