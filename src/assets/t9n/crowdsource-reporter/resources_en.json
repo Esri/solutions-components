@@ -6,15 +6,17 @@
   "expand": "Expand",
   "collapse": "Collapse",
   "next": "Next",
+  "submit": "Submit",
   "cancel": "Cancel",
   "back": "Back",
   "error": "Error",
   "invalidConfigurationErrorMsg": "Invalid configuration",
-  "noLayerToDisplayErrorMsg": "Configured web map don't have any editable feature layer",
-  "chooseCategoryMsg": "Choose a category for the problem you're reporting",
-  "featureErrorMsg": "Features not found",
+  "noLayerToDisplayErrorMsg": "Configured web map don't have any editable feature layer.",
+  "chooseCategoryMsg": "Choose a category for the problem you're reporting.",
+  "featureErrorMsg": "Features not found.",
   "featureEditFormInfoMsg": "Please provide the details for the incident you are reporting.",
   "currentLocationMsg": "Use my current location",
+  "addLocationMsg": "Add the location where the incident occurred.",
   "reportSubmit": "Report Submitted.",
-  "submitMsg": "Thank you! Your report was successfully submitted"
+  "submitMsg": "Thank you! Your report was successfully submitted."
 }
