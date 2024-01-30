@@ -183,7 +183,7 @@ export class LayerList {
         {!this._isLoading && this.mapView &&
           <calcite-list
             selection-appearance="border"
-            selection-mode={this.showNextIcon ? "none" : "single"}>
+            selection-mode={this.showNextIcon ? "none" : "single-persist"}>
             {this.renderLayerList()}
           </calcite-list>}
       </Fragment>
