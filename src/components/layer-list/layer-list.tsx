@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Prop, VNode, h, State, Fragment, Event, EventEmitter } from "@stencil/core";
+import { Component, Element, Prop, VNode, h, State, Fragment, Event, EventEmitter, Method } from "@stencil/core";
 import { getAllLayers, getMapLayerHash } from "../../utils/mapViewUtils";
 import LayerList_T9n from "../../assets/t9n/layer-list/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
@@ -124,6 +124,15 @@ export class LayerList {
   //  Methods (public)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Refresh the layer list which will fetch the latest layer count and update the list
+   * @returns Promise that resolves when the operation is complete
+   */
+  @Method()
+  async refresh(): Promise<void> {
+    await this.setLayers();
+  }
 
   //--------------------------------------------------------------------------
   //
