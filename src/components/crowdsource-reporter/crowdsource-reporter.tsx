@@ -207,7 +207,7 @@ export class CrowdsourceReporter {
   /**
    * __esri.FeatureLayer[]: Valid layers from the current map
    */
-  protected _validLayers: __esri.FeatureLayer []
+  protected _validLayers: __esri.FeatureLayer[];
 
   /**
    * string: The selected feature layer's id from the layer's list
@@ -604,11 +604,11 @@ export class CrowdsourceReporter {
     // Perform a hitTest on the View
     const hitTest = await this.mapView.hitTest(event, opts);
     if (hitTest.results.length > 0) {
-      const clickedGraphics = []
+      const clickedGraphics = [];
       hitTest.results.forEach(function (result) {
         // check if the result type is graphic
         if (result.type === 'graphic') {
-          clickedGraphics.push(result.graphic)
+          clickedGraphics.push(result.graphic);
         }
       });
       //update the selectedFeature

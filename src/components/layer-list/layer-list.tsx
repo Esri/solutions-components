@@ -64,17 +64,17 @@ export class LayerList {
   /**
    * string: Error message to be displayed when no layers found
    */
-  @Prop() noLayerErrorMsg?: string
+  @Prop() noLayerErrorMsg?: string;
 
   /**
    * boolean: if true display's feature count for each layer
    */
-  @Prop() showFeatureCount?: boolean = true
+  @Prop() showFeatureCount?: boolean = true;
 
   /**
    * boolean: If true display's arrow icon on each layer item
    */
-  @Prop() showNextIcon?: boolean = false
+  @Prop() showNextIcon?: boolean = false;
 
   //--------------------------------------------------------------------------
   //
