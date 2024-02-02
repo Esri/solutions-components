@@ -20,10 +20,12 @@
 | `enableSearch`            | `enable-search`             | boolean: when true the search widget will be available                                                    | `boolean`              | `true`      |
 | `enableZoom`              | `enable-zoom`               | boolean: when true the zoom widget will be available                                                      | `boolean`              | `true`      |
 | `isMobile`                | `is-mobile`                 | boolean: When true the application will be in mobile mode, controls the mobile or desktop view            | `boolean`              | `undefined` |
+| `layerId`                 | `layer-id`                  | string: Layer id of the feature from URL params                                                           | `string`               | `undefined` |
 | `layers`                  | --                          | string[]: list of layer ids                                                                               | `string[]`             | `undefined` |
 | `loginTitle`              | `login-title`               | string: The text that will display at the top of the landing page                                         | `string`               | `undefined` |
 | `mapInfos`                | --                          | IMapInfo[]: array of map infos (name and id)                                                              | `IMapInfo[]`           | `[]`        |
 | `mapView`                 | --                          | esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html | `MapView`              | `undefined` |
+| `objectId`                | `object-id`                 | string: Object id of the feature from URL params                                                          | `string`               | `undefined` |
 | `reportButtonText`        | `report-button-text`        | string: The word(s) to display in the reports submit button                                               | `string`               | `undefined` |
 | `reportSubmittedMessage`  | `report-submitted-message`  | string: The message to display when the report has been submitted                                         | `string`               | `undefined` |
 | `reportsHeader`           | `reports-header`            | string: The word(s) to display in the reports header                                                      | `string`               | `undefined` |
@@ -43,6 +45,7 @@
 
 ### Depends on
 
+- calcite-alert
 - calcite-shell
 - calcite-panel
 - calcite-flow
@@ -51,12 +54,16 @@
 - calcite-action
 - calcite-button
 - [layer-list](../layer-list)
+- calcite-notice
+- [create-feature](../create-feature)
 - [feature-list](../feature-list)
+- instant-apps-social-share
 - [info-card](../info-card)
 
 ### Graph
 ```mermaid
 graph TD;
+  crowdsource-reporter --> calcite-alert
   crowdsource-reporter --> calcite-shell
   crowdsource-reporter --> calcite-panel
   crowdsource-reporter --> calcite-flow
@@ -65,8 +72,14 @@ graph TD;
   crowdsource-reporter --> calcite-action
   crowdsource-reporter --> calcite-button
   crowdsource-reporter --> layer-list
+  crowdsource-reporter --> calcite-notice
+  crowdsource-reporter --> create-feature
   crowdsource-reporter --> feature-list
+  crowdsource-reporter --> instant-apps-social-share
   crowdsource-reporter --> info-card
+  calcite-alert --> calcite-icon
+  calcite-alert --> calcite-chip
+  calcite-chip --> calcite-icon
   calcite-panel --> calcite-action
   calcite-panel --> calcite-action-menu
   calcite-panel --> calcite-scrim
@@ -105,6 +118,10 @@ graph TD;
   feature-list --> calcite-list-item
   feature-list --> calcite-icon
   calcite-pagination --> calcite-icon
+  instant-apps-social-share --> calcite-popover
+  instant-apps-social-share --> calcite-button
+  instant-apps-social-share --> calcite-icon
+  instant-apps-social-share --> calcite-action
   info-card --> calcite-shell
   info-card --> calcite-loader
   info-card --> calcite-button
@@ -121,9 +138,6 @@ graph TD;
   calcite-modal --> calcite-icon
   edit-card --> calcite-notice
   edit-card --> calcite-loader
-  calcite-alert --> calcite-icon
-  calcite-alert --> calcite-chip
-  calcite-chip --> calcite-icon
   style crowdsource-reporter fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

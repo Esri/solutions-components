@@ -769,7 +769,7 @@ export function _prepareAttributeValue(
   if (attributeDomain && (attributeDomain as __esri.CodedValueDomain).type === "coded-value") {
     // "coded-value" domain field
     const value = (attributeDomain as __esri.CodedValueDomain).getName(attributeValue);
-    return value.toString();
+    return value?.toString();
   } else {
     // Non-domain field or unsupported domain type
     let value = attributeValue;

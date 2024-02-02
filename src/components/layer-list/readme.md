@@ -24,6 +24,19 @@
 | `layersListLoaded` | Emitted on demand when list of layers to be listed are created. When empty array received in this event means no valid layers are found to be listed | `CustomEvent<string[]>`                                |
 
 
+## Methods
+
+### `refresh() => Promise<void>`
+
+Refresh the layer list which will fetch the latest layer count and update the list
+
+#### Returns
+
+Type: `Promise<void>`
+
+Promise that resolves when the operation is complete
+
+
 ## Dependencies
 
 ### Used by
