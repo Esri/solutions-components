@@ -54,7 +54,7 @@ export class FeatureList {
   /**
    * string: Message to be displayed when features are not found
    */
-  @Prop() noFeaturesFoundMsg?: string
+  @Prop() noFeaturesFoundMsg?: string;
 
   /**
    * number: Number features to be fetched per page, by default 100 features will be fetched
@@ -218,6 +218,7 @@ export class FeatureList {
 
   /**
    * Initialize the features list using the selected layer
+   * @protected
    */
   protected async initializeFeatureItems(): Promise<void> {
     if (this._selectedLayer) {

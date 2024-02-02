@@ -86,6 +86,26 @@ export namespace Components {
          */
         "zoomAndScrollToSelected": boolean;
     }
+    interface CreateFeature {
+        /**
+          * Destroy the Editor widget instance
+          * @returns Promise that resolves when the operation is complete
+         */
+        "close": () => Promise<void>;
+        /**
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.MapView;
+        /**
+          * string: Layer id of the feature layer in which the new feature is to be created
+         */
+        "selectedLayerId": string;
+        /**
+          * Submit the created feature
+          * @returns Promise that resolves when the operation is complete
+         */
+        "submit": () => Promise<void>;
+    }
     interface CrowdsourceManager {
         /**
           * IBasemapConfig: List of any basemaps to filter out from the basemap widget
@@ -246,6 +266,10 @@ export namespace Components {
          */
         "isMobile": boolean;
         /**
+          * string: Layer id of the feature from URL params
+         */
+        "layerId": string;
+        /**
           * string[]: list of layer ids
          */
         "layers": string[];
@@ -261,6 +285,10 @@ export namespace Components {
           * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
+        /**
+          * string: Object id of the feature from URL params
+         */
+        "objectId": string;
         /**
           * string: The word(s) to display in the reports submit button
          */
@@ -452,6 +480,11 @@ export namespace Components {
           * string: Error message to be displayed when no layers found
          */
         "noLayerErrorMsg"?: string;
+        /**
+          * Refresh the layer list which will fetch the latest layer count and update the list
+          * @returns Promise that resolves when the operation is complete
+         */
+        "refresh": () => Promise<void>;
         /**
           * boolean: if true display's feature count for each layer
          */
@@ -1268,6 +1301,10 @@ export interface BufferToolsCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLBufferToolsElement;
 }
+export interface CreateFeatureCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLCreateFeatureElement;
+}
 export interface CrowdsourceReporterCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLCrowdsourceReporterElement;
@@ -1401,6 +1438,25 @@ declare global {
     var HTMLCardManagerElement: {
         prototype: HTMLCardManagerElement;
         new (): HTMLCardManagerElement;
+    };
+    interface HTMLCreateFeatureElementEventMap {
+        "success": void;
+        "fail": Error;
+        "drawComplete": void;
+    }
+    interface HTMLCreateFeatureElement extends Components.CreateFeature, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLCreateFeatureElementEventMap>(type: K, listener: (this: HTMLCreateFeatureElement, ev: CreateFeatureCustomEvent<HTMLCreateFeatureElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLCreateFeatureElementEventMap>(type: K, listener: (this: HTMLCreateFeatureElement, ev: CreateFeatureCustomEvent<HTMLCreateFeatureElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLCreateFeatureElement: {
+        prototype: HTMLCreateFeatureElement;
+        new (): HTMLCreateFeatureElement;
     };
     interface HTMLCrowdsourceManagerElement extends Components.CrowdsourceManager, HTMLStencilElement {
     }
@@ -1953,6 +2009,7 @@ declare global {
         "basemap-gallery": HTMLBasemapGalleryElement;
         "buffer-tools": HTMLBufferToolsElement;
         "card-manager": HTMLCardManagerElement;
+        "create-feature": HTMLCreateFeatureElement;
         "crowdsource-manager": HTMLCrowdsourceManagerElement;
         "crowdsource-reporter": HTMLCrowdsourceReporterElement;
         "deduct-calculator": HTMLDeductCalculatorElement;
@@ -2081,6 +2138,28 @@ declare namespace LocalJSX {
           * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
          */
         "zoomAndScrollToSelected"?: boolean;
+    }
+    interface CreateFeature {
+        /**
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView"?: __esri.MapView;
+        /**
+          * Emitted on demand when drawing is completed
+         */
+        "onDrawComplete"?: (event: CreateFeatureCustomEvent<void>) => void;
+        /**
+          * Emitted on demand when the feature creation is failed
+         */
+        "onFail"?: (event: CreateFeatureCustomEvent<Error>) => void;
+        /**
+          * Emitted on demand when the feature is created successfully
+         */
+        "onSuccess"?: (event: CreateFeatureCustomEvent<void>) => void;
+        /**
+          * string: Layer id of the feature layer in which the new feature is to be created
+         */
+        "selectedLayerId"?: string;
     }
     interface CrowdsourceManager {
         /**
@@ -2242,6 +2321,10 @@ declare namespace LocalJSX {
          */
         "isMobile"?: boolean;
         /**
+          * string: Layer id of the feature from URL params
+         */
+        "layerId"?: string;
+        /**
           * string[]: list of layer ids
          */
         "layers"?: string[];
@@ -2257,6 +2340,10 @@ declare namespace LocalJSX {
           * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
+        /**
+          * string: Object id of the feature from URL params
+         */
+        "objectId"?: string;
         /**
           * Emitted when toggle panel button is clicked in reporter
          */
@@ -3302,6 +3389,7 @@ declare namespace LocalJSX {
         "basemap-gallery": BasemapGallery;
         "buffer-tools": BufferTools;
         "card-manager": CardManager;
+        "create-feature": CreateFeature;
         "crowdsource-manager": CrowdsourceManager;
         "crowdsource-reporter": CrowdsourceReporter;
         "deduct-calculator": DeductCalculator;
@@ -3357,6 +3445,7 @@ declare module "@stencil/core" {
             "basemap-gallery": LocalJSX.BasemapGallery & JSXBase.HTMLAttributes<HTMLBasemapGalleryElement>;
             "buffer-tools": LocalJSX.BufferTools & JSXBase.HTMLAttributes<HTMLBufferToolsElement>;
             "card-manager": LocalJSX.CardManager & JSXBase.HTMLAttributes<HTMLCardManagerElement>;
+            "create-feature": LocalJSX.CreateFeature & JSXBase.HTMLAttributes<HTMLCreateFeatureElement>;
             "crowdsource-manager": LocalJSX.CrowdsourceManager & JSXBase.HTMLAttributes<HTMLCrowdsourceManagerElement>;
             "crowdsource-reporter": LocalJSX.CrowdsourceReporter & JSXBase.HTMLAttributes<HTMLCrowdsourceReporterElement>;
             "deduct-calculator": LocalJSX.DeductCalculator & JSXBase.HTMLAttributes<HTMLDeductCalculatorElement>;

@@ -19,7 +19,8 @@ import { IMapChange, IMapClick, IMapInfo, ISearchConfiguration, theme } from "..
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { loadModules } from "../../utils/loadModules";
 import CrowdsourceReporter_T9n from "../../assets/t9n/crowdsource-reporter/resources.json";
-import { getAllLayers } from "../../utils/mapViewUtils";
+import { getAllLayers, getLayerOrTable } from "../../utils/mapViewUtils";
+import { queryFeaturesByID } from "../../utils/queryUtils";
 
 @Component({
   tag: "crowdsource-reporter",
@@ -90,6 +91,16 @@ export class CrowdsourceReporter {
    * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
    */
   @Prop() mapView: __esri.MapView;
+
+  /**
+   * string: Layer id of the feature from URL params
+   */
+  @Prop() layerId: string;
+
+  /**
+   * string: Object id of the feature from URL params
+   */
+  @Prop() objectId: string;
 
   /**
    * string: The word(s) to display in the reports submit button
@@ -177,11 +188,26 @@ export class CrowdsourceReporter {
    * boolean: When true show the sort and filter icon
    */
   @State() _hasValidLayers = false;
-
-  /**
+  
+   /**
    * string: The selected feature layer's name from the layer's list
    */
   @State() _selectedLayerName: string;
+
+  /**
+   * boolean: When true show the success message in the panel
+   */
+  @State() _reportSubmitted = false;
+
+  /**
+   * boolean: When true show the submit and cancel button
+   */
+  @State() _showSubmitCancelButton = false;
+
+  /**
+   * string: Error message when feature creation fails
+   */
+  @State() _featureCreationFailedErrorMsg: string;
 
   //--------------------------------------------------------------------------
   //
@@ -207,7 +233,7 @@ export class CrowdsourceReporter {
   /**
    * __esri.FeatureLayer[]: Valid layers from the current map
    */
-  protected _validLayers: __esri.FeatureLayer []
+  protected _validLayers: __esri.FeatureLayer[];
 
   /**
    * string: The selected feature layer's id from the layer's list
@@ -228,6 +254,26 @@ export class CrowdsourceReporter {
    * IHandle: The map click handle
    */
   protected _mapClickHandle: IHandle;
+
+  /**
+   * HTMLCreateFeatureElement: Create Feature component instance 
+   */
+  protected _createFeature: HTMLCreateFeatureElement;
+
+  /**
+   * HTMLLayerListElement: Create Layer list component instance
+   */
+  protected _layerList: HTMLLayerListElement;
+
+  /**
+   * HTMLInstantAppsSocialShareElement: Share element
+   */
+  protected _shareNode: HTMLInstantAppsSocialShareElement;
+
+  /**
+   * ObjectId of the feature currently shown in the details
+   */
+  protected _currentFeatureId: string;
 
   //--------------------------------------------------------------------------
   //
@@ -290,8 +336,33 @@ export class CrowdsourceReporter {
    * Renders the component.
    */
   render() {
+    const themeClass = this.theme === "dark" ? "calcite-mode-dark" : "calcite-mode-light";
     return (
       <Host>
+        {this._reportSubmitted && <calcite-alert
+          auto-close
+          class={themeClass}
+          closable
+          icon="check-circle"
+          kind="success"
+          onCalciteAlertClose={() => { this._reportSubmitted = false }}
+          open
+          placement={"top"}>
+          <div slot="title">{this._translations.reportSubmit}</div>
+          <div slot="message">{this._translations.submitMsg}</div>
+        </calcite-alert>}
+        {this._featureCreationFailedErrorMsg && <calcite-alert
+          auto-close
+          class={themeClass}
+          closable
+          icon="x-octagon"
+          kind="danger"
+          onCalciteAlertClose={() => { this._featureCreationFailedErrorMsg = "" }}
+          open
+          placement={"top"}>
+          <div slot="title">{this._translations.error}</div>
+          <div slot="message">{this._featureCreationFailedErrorMsg}</div>
+        </calcite-alert>}
         <div>
           <calcite-shell content-behind >
             {this._getReporter()}
@@ -322,6 +393,16 @@ export class CrowdsourceReporter {
   }
 
   /**
+   * Set the selected layer id and layer name
+   * @param layerId string layerId of the selected layer
+   * @param layerName string layerName of the selected layer
+   */
+  protected setSelectedLayer(layerId: string, layerName: string): void {
+    this._selectedLayerId = layerId;
+    this._selectedLayerName = layerName;
+  }
+
+  /**
    * Get the reporter app functionality
    * @protected
    */
@@ -338,7 +419,12 @@ export class CrowdsourceReporter {
         case "feature-details":
           renderLists.push(this.getFeatureDetailsFlowItem());
           break;
-
+        case "reporting-layer-list":
+          renderLists.push(this.getChooseCategoryFlowItem());
+          break;
+        case "feature-create":
+          renderLists.push(this.getFeatureCreateFlowItem());
+          break;
       }
     });
     const themeClass = this.theme === "dark" ? "calcite-mode-dark" : "calcite-mode-light";
@@ -379,6 +465,7 @@ export class CrowdsourceReporter {
         {this._hasValidLayers && this.enableNewReports &&
           <calcite-button
             appearance="secondary"
+            onClick={this.navigateToChooseCategory.bind(this)}
             slot="footer"
             width="full">
             {this.reportButtonText}
@@ -392,11 +479,192 @@ export class CrowdsourceReporter {
             mapView={this.mapView}
             noLayerErrorMsg={this._translations.noLayerToDisplayErrorMsg}
             onLayerSelect={this.displayFeaturesList.bind(this)}
-            onLayersListLoaded={this.layerListLoaded.bind(this)} 
+            onLayersListLoaded={this.layerListLoaded.bind(this)}
+            ref={el => this._layerList = el as HTMLLayerListElement}
             showFeatureCount
-            showNextIcon/>
+            showNextIcon />
         </calcite-panel>
       </calcite-flow-item>);
+  }
+
+  /**
+   * Get the layer list for creating a report
+   * @returns Choose category flow item
+   * @protected
+   */
+  protected getChooseCategoryFlowItem(): Node {
+    return (
+      <calcite-flow-item
+        collapsed={this.isMobile && this._sidePanelCollapsed}
+        heading={this._translations.createReportHeader}
+        onCalciteFlowItemBack={this.backFromSelectedPanel.bind(this)}>
+        {this.isMobile && this.getActionToExpandCollapsePanel()}
+        <div class={"width-full"}
+             slot="footer">
+          <calcite-button
+            appearance="secondary"
+            class={"footer-top-button footer-button"}
+            disabled={!this._selectedLayerId}
+            onClick={this.navigateToCreateFeature.bind(this)}
+            width="full">
+            {this._translations.next}
+          </calcite-button>
+          <calcite-button
+            appearance="outline"
+            class={"footer-button"}
+            onClick={this.backFromSelectedPanel.bind(this)}
+            width="full">
+            {this._translations.cancel}
+          </calcite-button>
+        </div>
+        <calcite-panel
+          full-height
+          full-width>
+          <calcite-notice
+            class="notice-msg"
+            icon="lightbulb"
+            kind="success"
+            open>
+            <div slot="message">{this._translations.chooseCategoryMsg}</div>
+          </calcite-notice>
+          <layer-list
+            class="height-full"
+            layers={this.layers}
+            mapView={this.mapView}
+            noLayerErrorMsg={this._translations.noLayerToDisplayErrorMsg}
+            onLayerSelect={this.highlightSelectedLayer.bind(this)}
+            showFeatureCount={false}
+            showNextIcon={false} />
+        </calcite-panel>
+      </calcite-flow-item>);
+  }
+
+  /**
+   * Get Feature create form of the selected feature layer
+   * @returns feature create form
+   * @protected
+   */
+  protected getFeatureCreateFlowItem(): Node {
+    return (
+      <calcite-flow-item
+        collapsed={this.isMobile && this._sidePanelCollapsed}
+        heading={this._selectedLayerName}
+        onCalciteFlowItemBack={this.backFromCreateFeaturePanel.bind(this)}>
+        {this.isMobile && this.getActionToExpandCollapsePanel()}
+        {this._showSubmitCancelButton && <div class={"width-full"}
+          slot="footer">
+          <calcite-button
+            appearance="secondary"
+            class={"footer-top-button footer-button"}
+            onClick={this.onSubmitButtonClick.bind(this)}
+            width="full">
+            {this._translations.submit}
+          </calcite-button>
+          <calcite-button
+            appearance="outline"
+            class={"footer-button"}
+            onClick={this.backFromCreateFeaturePanel.bind(this)}
+            width="full">
+            {this._translations.cancel}
+          </calcite-button>
+        </div>}
+        <calcite-panel
+          full-height
+          full-width>
+          <calcite-notice
+            class="notice-msg"
+            icon="lightbulb"
+            kind="success"
+            open>
+            <div slot="message">{this._translations.featureEditFormInfoMsg}</div>
+          </calcite-notice>
+          <create-feature
+            mapView={this.mapView}
+            onDrawComplete={this.showSubmitCancelButton.bind(this)}
+            onFail={this.createFeatureFailed.bind(this)}
+            onSuccess={this.navigateHomePage.bind(this)}
+            ref={el => this._createFeature = el as HTMLCreateFeatureElement}
+            selectedLayerId={this._selectedLayerId}
+          />
+        </calcite-panel>
+      </calcite-flow-item>);
+  }
+
+  /**
+   * When drawing of incident location completed on map show the submit and cancel button
+   * @protected
+   */
+  protected showSubmitCancelButton(): void {
+    this._showSubmitCancelButton = true;
+  }
+
+  /**
+   * On back from create feature, call submit editor to destroy the Editor widget instance
+   * @protected
+   */
+  protected onSubmitButtonClick(): void {
+    if (this._createFeature) {
+      this._createFeature.submit();
+    }
+  }
+
+  /**
+   * On back from create feature, call close editor to destroy the Editor widget instance
+   * @protected
+   */
+  protected backFromCreateFeaturePanel(): void {
+    if(this._createFeature){
+      this._createFeature.close();
+    }
+    this.backFromSelectedPanel();
+  }
+
+  /**
+   * On creating the feature is failed, show the error message
+   * @param evt Event which has feature failed message
+   * @protected
+   */
+  protected createFeatureFailed(evt: CustomEvent): void {
+    console.error(evt.detail);
+    this._featureCreationFailedErrorMsg = evt.detail.message;
+  }
+
+  /**
+   * On submit report navigate to the layer list home page and refresh the layer list
+   * @protected
+   */
+  protected navigateHomePage(): void {
+    this._reportSubmitted = true;
+    if (this._layerList) {
+      this._layerList.refresh();
+    }
+    this._flowItems = ["layer-list"];
+  }
+
+  /**
+   * Update the selected layer id and name
+   * @param evt Event which has details of selected layerId and layerName
+   * @protected
+   */
+  protected highlightSelectedLayer(evt: CustomEvent): void {
+    this.setSelectedLayer(evt.detail.layerId, evt.detail.layerName);
+  }
+
+  /**
+   * On next button click open the feature create flow item
+   * @protected
+   */
+  protected async navigateToCreateFeature(): Promise<void> {
+    this._showSubmitCancelButton = false;
+    this._flowItems = [...this._flowItems, "feature-create"];
+  }
+
+  /**
+   * On report an incident button click open the create a report panel with the layer list
+   * @protected
+   */
+  protected navigateToChooseCategory(): void {
+    this._flowItems = [...this._flowItems, "reporting-layer-list"];
   }
 
   /**
@@ -408,16 +676,18 @@ export class CrowdsourceReporter {
     const layersListed = evt.detail;
     //consider only the layers listed in the layer-list component  
     const allMapLayers = await getAllLayers(this.mapView);
-    this._validLayers = []
+    this._validLayers = [];
     allMapLayers.forEach((eachLayer: __esri.FeatureLayer) => {
       if (layersListed.includes(eachLayer.id)) {
-        this._validLayers.push(eachLayer)
+        this._validLayers.push(eachLayer);
       }
     })
     //handleMap click on layer list loaded
     this.handleMapClick();
     //update the has valid layer state
     this._hasValidLayers = layersListed.length > 0;
+    //navigate to the feature details if URL params found
+    await this.loadFeatureFromURLParams();
   }
 
   /**On click of layer list item show feature list
@@ -425,18 +695,23 @@ export class CrowdsourceReporter {
    * @protected
    */
   protected displayFeaturesList(evt: CustomEvent): void {
-    this._selectedLayerId = evt.detail.layerId;
-    this._selectedLayerName = evt.detail.layerName;
+    this.setSelectedLayer(evt.detail.layerId, evt.detail.layerName);
     this._flowItems = [...this._flowItems, "feature-list"];
   }
 
   /**
-   * On back from feature list navigate to the Layer list panel
+   * On back from selected panel navigate to the previous panel
    * @protected
    */
-  protected backFromFeatureList(): void {
+  protected backFromSelectedPanel(): void {
     const updatedFlowItems = [...this._flowItems];
     updatedFlowItems.pop();
+    //clear the selected layer and feature when back to layer list
+    if (updatedFlowItems.length === 1) {
+      this.setSelectedLayer('', '');
+      this.setSelectedFeatures([]);
+    }
+    
     this._flowItems = [...updatedFlowItems];
   }
 
@@ -454,7 +729,7 @@ export class CrowdsourceReporter {
    * @param evt Event which has details of selected feature
    */
   protected async onFeatureSelectFromList(evt: CustomEvent): Promise<void> {
-    this._selectedFeature = [evt.detail];
+    this.setSelectedFeatures([evt.detail]);
     this._flowItems = [...this._flowItems, "feature-details"];
   }
 
@@ -470,7 +745,7 @@ export class CrowdsourceReporter {
       <calcite-flow-item
         collapsed={this.isMobile && this._sidePanelCollapsed}
         heading={layerName}
-        onCalciteFlowItemBack={this.backFromFeatureList.bind(this)}>
+        onCalciteFlowItemBack={this.backFromSelectedPanel.bind(this)}>
         <calcite-action
           icon="sort-ascending-arrow"
           slot={this.isMobile ? "header-menu-actions" : "header-actions-end"}
@@ -485,6 +760,7 @@ export class CrowdsourceReporter {
         {this.enableNewReports &&
           <calcite-button
             appearance="secondary"
+            onClick={this.navigateToCreateFeature.bind(this)}
             slot="footer"
             width="full">
             {this.reportButtonText}
@@ -512,12 +788,21 @@ export class CrowdsourceReporter {
       <calcite-flow-item
         collapsed={this.isMobile && this._sidePanelCollapsed}
         heading={this._selectedLayerName}
-        onCalciteFlowItemBack={this.backFromFeatureList.bind(this)}>
+        onCalciteFlowItemBack={this.backFromSelectedPanel.bind(this)}>
         {this.isMobile && this.getActionToExpandCollapsePanel()}
-        <calcite-action
-          icon="share"
+        {/* Create share button */}
+        <instant-apps-social-share
+          autoUpdateShareUrl={false}
+          embed={false}
+          popoverButtonIconScale="s"
+          ref={el => this._shareNode = el}
+          scale="m"
+          shareButtonColor="neutral"
+          shareButtonType="action"
           slot={"header-actions-end"}
-          text={this._translations.share} />
+          socialMedia={true}
+          view={this.mapView}
+        />
         <calcite-panel full-height>
           <info-card
             allowEditing={false}
@@ -534,16 +819,41 @@ export class CrowdsourceReporter {
   }
 
   /**
+   * Sets the selected features and updates the first feature as the current selected feature
+   * @param features Graphics array of the features selected
+   */
+  protected setSelectedFeatures(features: __esri.Graphic[]): void {
+    this._selectedFeature = features;
+    this.setCurrentFeature(this._selectedFeature.length ? this._selectedFeature[0] : null)
+  }
+
+  /**
+   * Set the object id of the current selected feature, and also updates the current selected layer details
+   * @param selectedFeature Graphic currently shown in feature details
+   */
+  protected setCurrentFeature(selectedFeature?: __esri.Graphic): void {
+    if (selectedFeature && selectedFeature.layer) {
+      const layer = selectedFeature.layer as __esri.FeatureLayer;
+      this.setSelectedLayer(layer.id, layer.title);
+      this._currentFeatureId = selectedFeature.attributes[layer.objectIdField]
+    } else {
+      this.setSelectedLayer('', '');
+      this._currentFeatureId = ''
+    }
+    this._updateShareURL()
+  }
+
+  /**
    * On Feature details change update the Layer title and the current selected layer id
    * @param evt Event hold the details of current feature graphic in the info-card
    */
   protected featureDetailsChanged(evt: CustomEvent): void {
-    this._selectedLayerId = evt.detail[0].layer.id;
-    this._selectedLayerName = evt.detail[0].layer.title;
+    this.setCurrentFeature(evt.detail[0]);
   }
 
   /**
    * Returns the action button to Expand/Collapse side panel in mobile mode
+   * @protected
    */
   protected getActionToExpandCollapsePanel(): Node {
     return (
@@ -604,15 +914,15 @@ export class CrowdsourceReporter {
     // Perform a hitTest on the View
     const hitTest = await this.mapView.hitTest(event, opts);
     if (hitTest.results.length > 0) {
-      const clickedGraphics = []
+      const clickedGraphics = [];
       hitTest.results.forEach(function (result) {
         // check if the result type is graphic
         if (result.type === 'graphic') {
-          clickedGraphics.push(result.graphic)
+          clickedGraphics.push(result.graphic);
         }
       });
       //update the selectedFeature
-      this._selectedFeature = clickedGraphics;
+      this.setSelectedFeatures(clickedGraphics)
       //if featureDetails not open then add it to the list else just reInit flowItems which will update details with newly selected features
       // eslint-disable-next-line unicorn/prefer-ternary
       if (this._flowItems.length && this._flowItems[this._flowItems.length - 1] !== "feature-details") {
@@ -631,5 +941,56 @@ export class CrowdsourceReporter {
   protected async _getTranslations(): Promise<void> {
     const messages = await getLocaleComponentStrings(this.el);
     this._translations = messages[0] as typeof CrowdsourceReporter_T9n;
+  }
+
+   /**
+    * Updates the share url for current selected feature
+    * @returns
+    * @protected
+   */
+   protected _updateShareURL(): string {
+    const url = this._shareNode?.shareUrl;
+    if (!url) {
+      return;
+    }
+    const urlObj = new URL(url);
+    //set the selected layers id
+    if (this._selectedLayerId) {
+      urlObj.searchParams.set("layerid", this._selectedLayerId);
+    } else {
+      urlObj.searchParams.delete("layerid");
+    }
+    //Set the selected features objectid
+    if (this._selectedFeature?.length) {
+      urlObj.searchParams.set("oid", this._currentFeatureId);
+    } else {
+      urlObj.searchParams.delete("oid");
+    }
+    //update the url in share component
+    this._shareNode.shareUrl = urlObj.href;
+  }
+
+  /**
+   * Navigates to selected features detail based on the URL params
+   */
+  protected async loadFeatureFromURLParams(): Promise<void> {
+    if (this.layerId && this.objectId) {
+      const layer = await getLayerOrTable(this.mapView, this.layerId)
+      if (layer) {
+        // only query if we have some ids...query with no ids will result in all features being returned
+        const featureSet = await queryFeaturesByID([Number(this.objectId)], layer, [], false, this.mapView.spatialReference);
+        if (featureSet.length) {
+          //update the selectedFeature
+          this._selectedFeature = featureSet;
+          //if featureDetails not open then add it to the list else just reInit flowItems which will update details with newly selected features
+          // eslint-disable-next-line unicorn/prefer-ternary
+          if (this._flowItems.length && this._flowItems[this._flowItems.length - 1] !== "feature-details") {
+            this._flowItems = [...this._flowItems, "feature-details"];
+          } else {
+            this._flowItems = [...this._flowItems];
+          }
+        }
+      }
+    }
   }
 }

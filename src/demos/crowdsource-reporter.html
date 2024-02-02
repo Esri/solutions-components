@@ -93,23 +93,38 @@
         const demo = document.getElementById("demo");
         let custom = null;
         let portal;
-        //Support webmap and portal URL parameter
-        var vars = window.location.search.substring(1).split("&");
-        vars.forEach((param) => {
-          let vals = param.split("=");
-          const v = vals[1];
-          switch (vals[0]) {
+        let locale = 'en'
+        //Support webmap, portal and locale URL parameter
+        //Also, set search params to reporter component - layerId, objectId, center, level etc.
+        let urlObj = new URL(window.location)
+        for (const [key, value] of urlObj.searchParams.entries()) {
+          switch (key) {
             case "webmap":
               custom = {
-                id: v
+                id: value
               };
               break;
             case "portal":
-              portal = v;
-            default:
+              portal = value;
+              break;
+            case "locale":
+              locale = value;
+              break;
+            case 'layerid':
+              demo.layerId = value;
+              break;
+            case 'oid':
+              demo.objectId = value;
+            case 'center' || 'level':
+              demo[key] = value;
               break;
           }
-        });
+        }
+
+        // Set the locale before the JSAPI loads
+        esriConfig.locale = locale;
+        demo.lang = locale;
+        
         //update the portalUrl if found in urlParams
         //esriConfig.portalUrl = "https://solutions.mapsdevext.arcgis.com";
         if (portal) {
@@ -117,7 +132,6 @@
         }
 
         let portalItem = {
-          //id: "b5bdcb1e5d684dd3b21a2d44b8e4f928"
           //id: "f8c4d99deb3c483cac296cc261e18a25", //blank no layers
           //id: "a7e880f7afbb471991d43c8c4f1438ac" // Se mapping
           //id: "c720e337ff814fe4a83bc244c46f8e43" //15 Layers
@@ -125,6 +139,7 @@
           //id: "dda88d905a6748a5ab46bea5be795f33" // screening layers
           id: "b5bdcb1e5d684dd3b21a2d44b8e4f928" //Popup content
           //id: "d399ec39959a4aac8617ae4f05dd6785" //Arcade
+          //id: "024e8a5e73a34c5aade9632d651c5750" //Attachments
         }
         const webMap = new WebMap({
           portalItem: custom ?? portalItem
