@@ -27,6 +27,7 @@ interface ILayerDetailsHash {
   name: string;
   formattedFeatureCount: string;
   supportsUpdate: boolean;
+  supportsAdd: boolean;
 }
 
 @Component({
@@ -217,20 +218,23 @@ export class LayerList {
     this._layerItemsHash = await getMapLayerHash(this.mapView, true) as ILayerItemsHash;
     const allMapLayers = await getAllLayers(this.mapView);
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
-    this.showFeatureCount && allMapLayers.forEach(async (eachLayer: __esri.FeatureLayer) => {
+    allMapLayers.forEach(async (eachLayer: __esri.FeatureLayer) => {
       //TODO: checking editable condition could be configurable
-      if (eachLayer?.type === "feature" && eachLayer?.editingEnabled && eachLayer?.capabilities?.operations?.supportsUpdate) {
-        const q = eachLayer.createQuery();
-        const result = eachLayer.queryFeatureCount(q);
-        def.push(result);
-        void result.then(async (resCount) => {
-          const formattedCount = !isNaN(resCount) ? await formatNumber(resCount, {
-            places: 0,
-            api: 4,
-            type: "decimal"
-          }) : ""
-          this._layerItemsHash[eachLayer.id].formattedFeatureCount = formattedCount;
-        });
+      if (eachLayer?.type === "feature" && eachLayer?.editingEnabled && eachLayer?.capabilities?.operations?.supportsAdd) {
+        this._layerItemsHash[eachLayer.id].supportsAdd = true;
+        if (this.showFeatureCount) {
+          const q = eachLayer.createQuery();
+          const result = eachLayer.queryFeatureCount(q);
+          def.push(result);
+          void result.then(async (resCount) => {
+            const formattedCount = !isNaN(resCount) ? await formatNumber(resCount, {
+              places: 0,
+              api: 4,
+              type: "decimal"
+            }) : ""
+            this._layerItemsHash[eachLayer.id].formattedFeatureCount = formattedCount;
+          });
+        }
       }
     });
     await Promise.all(def).then(() => {
@@ -261,9 +265,9 @@ export class LayerList {
   ): string[] {
     const configuredLayers = this.layers?.length > 0 ? this.layers : [];
     return Object.keys(hash).reduce((prev, cur) => {
-      let showLayer = hash[cur].supportsUpdate;
+      let showLayer = hash[cur].supportsAdd;
       if (configuredLayers?.length > 0) {
-        showLayer = configuredLayers.indexOf(cur) > -1 ? hash[cur].supportsUpdate : false;
+        showLayer = configuredLayers.indexOf(cur) > -1 ? hash[cur].supportsAdd : false;
       }
       if (showLayer) {
         prev.push(cur);
