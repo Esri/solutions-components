@@ -453,6 +453,11 @@ export namespace Components {
          */
         "noLayerErrorMsg"?: string;
         /**
+          * Refresh the layer list which will fetch the latest layer count and update the list
+          * @returns Promise that resolves when the operation is complete
+         */
+        "refresh": () => Promise<void>;
+        /**
           * boolean: if true display's feature count for each layer
          */
         "showFeatureCount"?: boolean;
