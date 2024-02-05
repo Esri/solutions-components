@@ -1051,7 +1051,7 @@ export async function _prepareLabelsFromPattern(
         const match: string = arcadeExpressionMatches[i];
         const expressionName = match.substring(match.indexOf("/") + 1, match.length - 1);
         const value = await arcadeExecutors[expressionName].executeAsync({"$feature": feature, "$layer": layer});
-        labelPrep = labelPrep.replace(match, value);
+        labelPrep = labelPrep.replace(match, value).replace(/\n/gi, "|");
       }
 
       // Replace non-Arcade fields in this feature
