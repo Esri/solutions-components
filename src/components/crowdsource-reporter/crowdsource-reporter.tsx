@@ -275,6 +275,11 @@ export class CrowdsourceReporter {
    */
   protected _currentFeatureId: string;
 
+  /**
+   * boolean: Maintains a flag to know if urls params are loaded or not
+   */
+  protected _urlParamsLoaded: boolean;
+
   //--------------------------------------------------------------------------
   //
   //  Watch handlers
@@ -328,6 +333,7 @@ export class CrowdsourceReporter {
    * @returns Promise when complete
    */
   async componentWillLoad(): Promise<void> {
+    this._urlParamsLoaded = false;
     await this._initModules();
     await this._getTranslations();
   }
@@ -400,6 +406,11 @@ export class CrowdsourceReporter {
   protected setSelectedLayer(layerId: string, layerName: string): void {
     this._selectedLayerId = layerId;
     this._selectedLayerName = layerName;
+    //show only current layer on map and hide other valid editable layers
+    //if layerId is empty then show all the layers on map
+    this._validLayers.forEach(layer => {
+      layer.set('visible', !layerId || (layer.id === layerId))
+    })
   }
 
   /**
@@ -579,10 +590,12 @@ export class CrowdsourceReporter {
             <div slot="message">{this._translations.featureEditFormInfoMsg}</div>
           </calcite-notice>
           <create-feature
+            customizeSubmit
             mapView={this.mapView}
-            onDrawComplete={this.showSubmitCancelButton.bind(this)}
+            onDrawComplete={this.onDrawComplete.bind(this)}
+            onEditingAttachment={this.showSubmitCancelButton.bind(this)}
             onFail={this.createFeatureFailed.bind(this)}
-            onSuccess={this.navigateHomePage.bind(this)}
+            onSuccess={this.onReportSubmitted.bind(this)}
             ref={el => this._createFeature = el as HTMLCreateFeatureElement}
             selectedLayerId={this._selectedLayerId}
           />
@@ -594,8 +607,16 @@ export class CrowdsourceReporter {
    * When drawing of incident location completed on map show the submit and cancel button
    * @protected
    */
-  protected showSubmitCancelButton(): void {
+  protected onDrawComplete(): void {
     this._showSubmitCancelButton = true;
+  }
+
+  /**
+   * When Add attachment panel is enabled hide the submit and cancel button
+   * @protected
+   */
+  protected showSubmitCancelButton(evt: CustomEvent): void {
+    this._showSubmitCancelButton = !evt.detail;
   }
 
   /**
@@ -633,11 +654,23 @@ export class CrowdsourceReporter {
    * On submit report navigate to the layer list home page and refresh the layer list
    * @protected
    */
-  protected navigateHomePage(): void {
+  protected onReportSubmitted(): void {
     this._reportSubmitted = true;
+    this.navigateToHomePage()
+  }
+
+  /**
+   * Navigates to layer-list
+   * @protected
+   */
+  protected navigateToHomePage(): void {
+    if (this._createFeature) {
+      this._createFeature.close();
+    }
     if (this._layerList) {
       this._layerList.refresh();
     }
+    this.setSelectedFeatures([]);
     this._flowItems = ["layer-list"];
   }
 
@@ -687,7 +720,10 @@ export class CrowdsourceReporter {
     //update the has valid layer state
     this._hasValidLayers = layersListed.length > 0;
     //navigate to the feature details if URL params found
-    await this.loadFeatureFromURLParams();
+    if (!this._urlParamsLoaded) {
+      this._urlParamsLoaded = true;
+      await this.loadFeatureFromURLParams();
+    }
   }
 
   /**On click of layer list item show feature list
@@ -706,12 +742,11 @@ export class CrowdsourceReporter {
   protected backFromSelectedPanel(): void {
     const updatedFlowItems = [...this._flowItems];
     updatedFlowItems.pop();
-    //clear the selected layer and feature when back to layer list
+    //Back to layer list, and return as the flowItems will be reset in navigateToHomePage
     if (updatedFlowItems.length === 1) {
-      this.setSelectedLayer('', '');
-      this.setSelectedFeatures([]);
+      this.navigateToHomePage();
+      return;
     }
-    
     this._flowItems = [...updatedFlowItems];
   }
 
@@ -824,7 +859,7 @@ export class CrowdsourceReporter {
    */
   protected setSelectedFeatures(features: __esri.Graphic[]): void {
     this._selectedFeature = features;
-    this.setCurrentFeature(this._selectedFeature.length ? this._selectedFeature[0] : null)
+    this.setCurrentFeature(this._selectedFeature.length ? this._selectedFeature[0] : null);
   }
 
   /**
@@ -835,12 +870,12 @@ export class CrowdsourceReporter {
     if (selectedFeature && selectedFeature.layer) {
       const layer = selectedFeature.layer as __esri.FeatureLayer;
       this.setSelectedLayer(layer.id, layer.title);
-      this._currentFeatureId = selectedFeature.attributes[layer.objectIdField]
+      this._currentFeatureId = selectedFeature.attributes[layer.objectIdField];
     } else {
       this.setSelectedLayer('', '');
-      this._currentFeatureId = ''
+      this._currentFeatureId = '';
     }
-    this._updateShareURL()
+    this._updateShareURL();
   }
 
   /**
@@ -922,7 +957,7 @@ export class CrowdsourceReporter {
         }
       });
       //update the selectedFeature
-      this.setSelectedFeatures(clickedGraphics)
+      this.setSelectedFeatures(clickedGraphics);
       //if featureDetails not open then add it to the list else just reInit flowItems which will update details with newly selected features
       // eslint-disable-next-line unicorn/prefer-ternary
       if (this._flowItems.length && this._flowItems[this._flowItems.length - 1] !== "feature-details") {
@@ -945,10 +980,9 @@ export class CrowdsourceReporter {
 
    /**
     * Updates the share url for current selected feature
-    * @returns
     * @protected
    */
-   protected _updateShareURL(): string {
+   protected _updateShareURL(): void {
     const url = this._shareNode?.shareUrl;
     if (!url) {
       return;
@@ -972,10 +1006,11 @@ export class CrowdsourceReporter {
 
   /**
    * Navigates to selected features detail based on the URL params
+   * @protected
    */
   protected async loadFeatureFromURLParams(): Promise<void> {
     if (this.layerId && this.objectId) {
-      const layer = await getLayerOrTable(this.mapView, this.layerId)
+      const layer = await getLayerOrTable(this.mapView, this.layerId);
       if (layer) {
         // only query if we have some ids...query with no ids will result in all features being returned
         const featureSet = await queryFeaturesByID([Number(this.objectId)], layer, [], false, this.mapView.spatialReference);

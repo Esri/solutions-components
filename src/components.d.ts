@@ -93,6 +93,10 @@ export namespace Components {
          */
         "close": () => Promise<void>;
         /**
+          * boolean: Set this to true when have a custom submit button in the app. This will hide the header and footer elements of the editor and user needs to execute the submit method manually.
+         */
+        "customizeSubmit"?: boolean;
+        /**
           * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
@@ -1443,6 +1447,7 @@ declare global {
         "success": void;
         "fail": Error;
         "drawComplete": void;
+        "editingAttachment": boolean;
     }
     interface HTMLCreateFeatureElement extends Components.CreateFeature, HTMLStencilElement {
         addEventListener<K extends keyof HTMLCreateFeatureElementEventMap>(type: K, listener: (this: HTMLCreateFeatureElement, ev: CreateFeatureCustomEvent<HTMLCreateFeatureElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2141,6 +2146,10 @@ declare namespace LocalJSX {
     }
     interface CreateFeature {
         /**
+          * boolean: Set this to true when have a custom submit button in the app. This will hide the header and footer elements of the editor and user needs to execute the submit method manually.
+         */
+        "customizeSubmit"?: boolean;
+        /**
           * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
@@ -2148,6 +2157,10 @@ declare namespace LocalJSX {
           * Emitted on demand when drawing is completed
          */
         "onDrawComplete"?: (event: CreateFeatureCustomEvent<void>) => void;
+        /**
+          * Emitted on demand when editing attachments
+         */
+        "onEditingAttachment"?: (event: CreateFeatureCustomEvent<boolean>) => void;
         /**
           * Emitted on demand when the feature creation is failed
          */
