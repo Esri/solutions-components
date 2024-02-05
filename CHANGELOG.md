@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.7.32] - Feb 5th 2024
+Reporter updates create feature
+
 ## [0.7.31] - Feb 2nd 2024
 Reporter adds create feature
 
@@ -414,4 +417,5 @@ Recover from test releases
 [0.7.29]: https://github.com/Esri/solution.js/compare/v0.7.28...v0.7.29 "v0.7.29"
 [0.7.30]: https://github.com/Esri/solution.js/compare/v0.7.29...v0.7.30 "v0.7.30"
 [0.7.31]: https://github.com/Esri/solution.js/compare/v0.7.30...v0.7.31 "v0.7.31"
-[Unreleased]: https://github.com/Esri/solution.js/compare/v0.7.31...HEAD "Unreleased Changes"
+[0.7.32]: https://github.com/Esri/solution.js/compare/v0.7.31...v0.7.32 "v0.7.32"
+[Unreleased]: https://github.com/Esri/solution.js/compare/v0.7.32...HEAD "Unreleased Changes"
