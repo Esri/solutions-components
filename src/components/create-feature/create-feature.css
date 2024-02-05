@@ -18,6 +18,33 @@
   display: block;
 }
 
+/* Override to hide Editor settings panel collapsible */
 .esri-editor__panel-toolbar {
   display: none !important;
+}
+
+/* Override to hide the Select section from Editor template */
+.esri-editor__update-actions {
+  display: none !important;
+}
+
+/* Override to reduce the padding of panel content*/
+.esri-editor__panel-content {
+  padding-block: 0px !important;
+}
+
+/* Override to hide header */
+.esri-editor .esri-item-list__group__header {
+  display: none !important;
+}
+
+/* Override to hide the create feature heading title */
+.esri-editor__panel-content__section .esri-widget__heading {
+  display: none !important;
+}
+
+/* Override to reduce padding for the template filter*/
+.esri-editor .esri-item-list__filter-container--sticky {
+  padding-block: 0px !important;
+  padding-inline: 10px !important;
 }
