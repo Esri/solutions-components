@@ -275,6 +275,11 @@ export class CrowdsourceReporter {
    */
   protected _currentFeatureId: string;
 
+  /**
+   * boolean: Maintains a flag to know if urls params are loaded or not
+   */
+  protected _urlParamsLoaded: boolean;
+
   //--------------------------------------------------------------------------
   //
   //  Watch handlers
@@ -328,6 +333,7 @@ export class CrowdsourceReporter {
    * @returns Promise when complete
    */
   async componentWillLoad(): Promise<void> {
+    this._urlParamsLoaded = false;
     await this._initModules();
     await this._getTranslations();
   }
@@ -709,7 +715,10 @@ export class CrowdsourceReporter {
     //update the has valid layer state
     this._hasValidLayers = layersListed.length > 0;
     //navigate to the feature details if URL params found
-    await this.loadFeatureFromURLParams();
+    if (!this._urlParamsLoaded) {
+      this._urlParamsLoaded = true;
+      await this.loadFeatureFromURLParams();
+    }
   }
 
   /**On click of layer list item show feature list
