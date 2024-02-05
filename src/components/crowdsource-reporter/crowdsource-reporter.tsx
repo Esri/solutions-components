@@ -406,6 +406,11 @@ export class CrowdsourceReporter {
   protected setSelectedLayer(layerId: string, layerName: string): void {
     this._selectedLayerId = layerId;
     this._selectedLayerName = layerName;
+    //show only current layer on map and hide other valid editable layers
+    //if layerId is empty then show all the layers on map
+    this._validLayers.forEach(layer => {
+      layer.set('visible', !layerId || (layer.id === layerId))
+    })
   }
 
   /**
