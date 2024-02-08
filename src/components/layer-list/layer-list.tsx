@@ -83,7 +83,7 @@ export class LayerList {
   //--------------------------------------------------------------------------
 
   /**
-   * boolean: When true will display message no layers found 
+   * boolean: When true will display message no layers found
    */
   @State() _noLayersToDisplay = false;
 
@@ -180,7 +180,7 @@ export class LayerList {
   render() {
     return (
       <Fragment>
-        {this._isLoading && <calcite-loader scale="m" />}
+        {this._isLoading && <calcite-loader label="" scale="m" />}
         {!this._isLoading && this.mapView && this._noLayersToDisplay &&
           <calcite-notice
             class="error-msg"

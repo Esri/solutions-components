@@ -161,6 +161,7 @@ graph TD;
   map-layer-picker --> calcite-option
   map-layer-picker --> calcite-dropdown-item
   calcite-select --> calcite-icon
+  calcite-combobox --> calcite-combobox-item
   calcite-combobox --> calcite-chip
   calcite-combobox --> calcite-icon
   calcite-combobox-item --> calcite-icon

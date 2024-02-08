@@ -406,7 +406,6 @@ export class MapLayerPicker {
   ): VNode {
     return (
       <calcite-dropdown
-        calciteDropdownOpen={() => alert("open")}
         class="layer-picker-dropdown"
         onCalciteDropdownBeforeClose={() => this._isDropdownOpen = false}
         onCalciteDropdownBeforeOpen={() => this._isDropdownOpen = true}

@@ -85,6 +85,11 @@ export type DistanceUnit = "feet"|"meters"|"miles"|"kilometers";
 
 export type theme = "light" | "dark";
 
+export type TooltipPlacement = "auto" | "top" | "right" | "bottom" | "left" | "top-start"
+  | "top-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end" | "left-start"
+  | "left-end" | "auto-start" | "auto-end" | "leading-start" | "leading" | "leading-end"
+  | "trailing-end" | "trailing" | "trailing-start";
+
 export interface IMapClick {
   mapPoint: __esri.Point,
   screenPoint: __esri.MapViewScreenPoint,

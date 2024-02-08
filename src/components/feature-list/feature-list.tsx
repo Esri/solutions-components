@@ -121,7 +121,7 @@ export class FeatureList {
   //--------------------------------------------------------------------------
 
   /**
-   * Watch for selectedLayerId change and update layer instance and features list for new layerId 
+   * Watch for selectedLayerId change and update layer instance and features list for new layerId
    */
   @Watch("selectedLayerId")
   async selectedLayerWatchHandler(): Promise<void> {
@@ -180,7 +180,7 @@ export class FeatureList {
       <calcite-panel
         full-height
         full-width>
-        {this._isLoading && <calcite-loader scale="m" />}
+        {this._isLoading && <calcite-loader label="" scale="m" />}
         {this._featureItems.length === 0 && !this._isLoading &&
           <calcite-notice
             class="error-msg"

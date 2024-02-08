@@ -21,7 +21,7 @@ import { getLocaleComponentStrings } from "../../utils/locale";
 import { getLayerOrTable, goToSelection } from "../../utils/mapViewUtils";
 import { queryAllIds, queryFeatureIds, queryFeaturesByGlobalID } from "../../utils/queryUtils";
 import * as downloadUtils from "../../utils/downloadUtils";
-import { EditType, IColumnsInfo, IExportInfos, ILayerDef, IMapClick, IMapInfo, IToolInfo, IToolSizeInfo } from "../../utils/interfaces";
+import { EditType, IColumnsInfo, IExportInfos, ILayerDef, IMapClick, IMapInfo, IToolInfo, IToolSizeInfo, TooltipPlacement } from "../../utils/interfaces";
 import "@esri/instant-apps-components/dist/components/instant-apps-social-share";
 import { LayerExpression } from "@esri/instant-apps-components";
 
@@ -804,7 +804,7 @@ export class LayerTable {
               <calcite-dropdown-item
                 id={k}
                 onClick={(e) => {
-                  const target = e.target;
+                  const target = e.target as HTMLCalciteDropdownItemElement;
                   this._columnsInfo[target.id] = target.selected;
                   if (!target.selected) {
                     this._table.hideColumn(target.id);
@@ -1336,7 +1336,7 @@ export class LayerTable {
    * @returns VNode The tooltip node
    */
   protected _getToolTip(
-    placement: string,
+    placement: TooltipPlacement,
     referenceElement: string,
     text: string
   ): VNode {
@@ -1756,7 +1756,7 @@ export class LayerTable {
         aria-labelledby="modal-title"
         class="modal"
         kind="brand"
-        onCalciteModalClose={async () => this._closeFilter()}
+        onCalciteModalClose={() => void this._closeFilter()}
         open={this._filterOpen}
         widthScale="s"
       >
