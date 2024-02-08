@@ -453,11 +453,24 @@ export interface IMapInfo {
   layerInfos?: ILayerInfo[];
   _hasValidLayers?: boolean;
   visible?: boolean;
+  layerOptions: ILayerOptions;
 }
 
 export interface ILayerInfo {
   id: string;
   columnTemplates: __esri.FieldColumnTemplate[];
+}
+
+export interface ILayerOptions {
+  layers: ILayerDef[];
+  mapId?: string;
+}
+
+export interface ILayerDef {
+  id: string;
+  sublayerId?: number;
+  fields?: string[];
+  fieldOrder?: string[];
 }
 
 export interface IMapChange {
