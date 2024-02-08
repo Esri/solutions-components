@@ -357,15 +357,6 @@ export class CrowdsourceManager {
     this._initMapZoom();
   }
 
-  /**
-   *
-   */
-  @Watch("mapInfos")
-  mapInfosWatchHandler(): void {
-    console.log("mapInfos")
-    console.log(this.mapInfos)
-  }
-
   //--------------------------------------------------------------------------
   //
   //  Methods (public)
