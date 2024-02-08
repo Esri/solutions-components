@@ -20,7 +20,8 @@
     "node"
   ],
   "include": [
-    "src"
+    "src",
+    "node_modules/arcgis-js-api/index.d.ts"
   ],
   "exclude": [
     "node_modules"
