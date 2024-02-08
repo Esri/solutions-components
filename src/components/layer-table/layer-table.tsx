@@ -21,7 +21,7 @@ import { getLocaleComponentStrings } from "../../utils/locale";
 import { getLayerOrTable, goToSelection } from "../../utils/mapViewUtils";
 import { queryAllIds, queryFeatureIds, queryFeaturesByGlobalID } from "../../utils/queryUtils";
 import * as downloadUtils from "../../utils/downloadUtils";
-import { EditType, IColumnsInfo, IExportInfos, ILayerInfo, IMapClick, IMapInfo, IToolInfo, IToolSizeInfo } from "../../utils/interfaces";
+import { EditType, IColumnsInfo, IExportInfos, ILayerDef, IMapClick, IMapInfo, IToolInfo, IToolSizeInfo } from "../../utils/interfaces";
 import "@esri/instant-apps-components/dist/components/instant-apps-social-share";
 import { LayerExpression } from "@esri/instant-apps-components";
 
@@ -1990,35 +1990,53 @@ export class LayerTable {
     id: string,
     fieldInfos: __esri.Field[]
   ): __esri.FieldColumnTemplate[] {
-    let layerInfo: ILayerInfo;
-    this.mapInfo.layerInfos?.some(li => {
-      if (li.id === id) {
-        layerInfo = li;
+    let layerOption: ILayerDef;
+    this.mapInfo?.layerOptions?.layers.some(l => {
+      if (l.id === id) {
+        layerOption = l;
         return true;
       }
     });
+    const fieldOrder = layerOption?.fields && layerOption?.fieldOrder ?
+      layerOption.fieldOrder.filter(f => layerOption.fields.indexOf(f) > -1) :
+      undefined;
 
-    let columnTemplates = layerInfo?.columnTemplates;
+    let columnTemplates;
     if (fieldInfos) {
-      columnTemplates = columnTemplates ? columnTemplates.map(columnTemplate => {
-        fieldInfos.some(fieldInfo => {
-          if (fieldInfo.name === columnTemplate.fieldName) {
-            columnTemplate.label = fieldInfo.alias;
-            columnTemplate.menuConfig = this._getMenuConfig(fieldInfo.name);
-            return true;
-          }
-        });
-        return columnTemplate;
-      }) : fieldInfos.map(fieldInfo => {
+      columnTemplates = layerOption && layerOption?.fields
+        ? fieldInfos.reduce((prev, cur) => {
+        if (layerOption.fields.indexOf(cur.name) > -1) {
+          const template = {
+            type: "field",
+            fieldName: cur.name,
+            label: cur.alias,
+            menuConfig: this._getMenuConfig(cur.name)
+          } as __esri.FieldColumnTemplate;
+          prev.push(template);
+        }
+        return prev;
+      }, []).sort(this._sortFields.bind(this, layerOption?.fieldOrder))
+      : fieldInfos.map(fieldInfo => {
         return {
           type: "field",
           fieldName: fieldInfo.name,
           label: fieldInfo.alias,
           menuConfig: this._getMenuConfig(fieldInfo.name)
         } as __esri.FieldColumnTemplate;
-      })
+      });
     }
-    return columnTemplates;
+
+    return fieldOrder ?
+      columnTemplates?.sort(this._sortFields.bind(this, fieldOrder)) :
+      columnTemplates;
+  }
+
+  private _sortFields(
+    sorter: string[],
+    a: __esri.FieldColumnTemplate,
+    b: __esri.FieldColumnTemplate,
+  ): number {
+    return sorter?.indexOf(a.fieldName) - sorter.indexOf(b.fieldName);
   }
 
   /**

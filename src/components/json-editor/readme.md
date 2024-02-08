@@ -48,6 +48,12 @@ Type: `Promise<void>`
 
 Replaces the current selection with the supplied text, inserting if nothing is selected.
 
+#### Parameters
+
+| Name          | Type     | Description                              |
+| ------------- | -------- | ---------------------------------------- |
+| `replacement` | `string` | Text to use for replacement or insertion |
+
 #### Returns
 
 Type: `Promise<any>`

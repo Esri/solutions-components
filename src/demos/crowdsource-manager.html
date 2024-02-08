@@ -1,12 +1,10 @@
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="initial-scale=1,maximum-scale=1,user-scalable=no"
-    />
-    <title>Crowdsource Manager</title>
-    <!--
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <title>Crowdsource Manager</title>
+  <!--
     | Copyright 2022 Esri
     |
     | Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,164 +19,188 @@
     | See the License for the specific language governing permissions and
     | limitations under the License.
     -->
-    <style>
-      .crowdsource {
-        height: 100vh;
-        width: 100vw;
-        display: flex;
-      }
-    </style>
+  <style>
+    .crowdsource {
+      height: 100vh;
+      width: 100vw;
+      display: flex;
+    }
+  </style>
 
-    <link rel="stylesheet" href="https://jsdev.arcgis.com/4.29/esri/themes/light/main.css" />
-    <!-- <link rel="stylesheet" href="https://jsdev.arcgis.com/4.29/esri/themes/dark/main.css" /> -->
-    <link rel="stylesheet" type="text/css" href="https://js.arcgis.com/calcite-components/2.0.0/calcite.css" />
+  <link rel="stylesheet" href="https://jsdev.arcgis.com/4.29/esri/themes/light/main.css" />
+  <!-- <link rel="stylesheet" href="https://jsdev.arcgis.com/4.29/esri/themes/dark/main.css" /> -->
+  <link rel="stylesheet" type="text/css" href="https://js.arcgis.com/calcite-components/2.0.0/calcite.css" />
 
-    <link rel="stylesheet" href="https://webapps-cdn.esri.com/CDN/fonts/v1.4.1/fonts.css" />
-    <link rel="stylesheet" href="../solutions-components.css" type="text/css">
+  <link rel="stylesheet" href="https://webapps-cdn.esri.com/CDN/fonts/v1.4.1/fonts.css" />
+  <link rel="stylesheet" href="../solutions-components.css" type="text/css">
 
-    <script src="https://jsdev.arcgis.com/4.29/"></script>
-    <script type="module" src="../solutions-components.esm.js"></script>
+  <script src="https://jsdev.arcgis.com/4.29/"></script>
+  <script type="module" src="../solutions-components.esm.js"></script>
 
-    <script>
-      function addValues() {
-        const demo = document.getElementById("demo");
+  <script>
+    function addValues() {
+      const demo = document.getElementById("demo");
 
-        let headerSet = false;
-        let custom = [];
-        var vars = window.location.search.substring(1).split('&');
-        vars.forEach((param) => {
-          let vals = param.split('=');
-          const v = vals[1];
-          switch (vals[0]) {
-            case "id":
-              custom = [{
-                id: v,
-                name: "Map from URL"
-              }];
-              break;
-            case "zoomAndScrollToSelected":
-              demo.zoomAndScrollToSelected = v.toLocaleLowerCase() === "true";
-              break;
-            case "hideHeader":
-              demo.hideHeader = v.toLocaleLowerCase() === "true";
-              headerSet = true;
-              break;
-            default:
-              break;
-          }
-        });
-
-        if (!headerSet) {
-          // Want the header to be disabled by default for IA
-          // Want the header to be enabled by default for the demo app
-          demo.hideHeader = false;
+      let headerSet = false;
+      let custom = [];
+      var vars = window.location.search.substring(1).split('&');
+      vars.forEach((param) => {
+        let vals = param.split('=');
+        const v = vals[1];
+        switch (vals[0]) {
+          case "id":
+            custom = [{
+              id: v,
+              name: "Map from URL"
+            }];
+            break;
+          case "zoomAndScrollToSelected":
+            demo.zoomAndScrollToSelected = v.toLocaleLowerCase() === "true";
+            break;
+          case "hideHeader":
+            demo.hideHeader = v.toLocaleLowerCase() === "true";
+            headerSet = true;
+            break;
+          default:
+            break;
         }
+      });
 
-        demo.mapInfos = [
-          ...custom,
-          ...[{
-            id: "ce3dec81bf714d3bb71da9691ab686d1",
-            name: "Popup Configured Map",
-            filterConfig: {
-              mapId: "ce3dec81bf714d3bb71da9691ab686d1",
-              layerExpressions: [
-                {
-                  id: "Requests_681",
-                  title: "Requests",
-                  operator: " AND ",
-                  expressions: [
-                    {
-                      definitionExpression: "OBJECTID > 690",
-                      id: 1701793260225,
-                      index: 0,
-                      name: "greater than 690",
-                      active: false
-                    }
-                  ]
-                }, {
-                  id: "Requets_6608",
-                  title: "Comments",
-                  operator: " AND ",
-                  expressions: [
-                    {
-                      definitionExpression: "OBJECTID > 1",
-                      id: 1701793260226,
-                      index: 0,
-                      name: "greater than 1",
-                      active: false
-                    }
-                  ]
-                }
-              ]
-            }
-            // filters: {},
-            // layerInfos: [{
-            //   id: "Requests_681",
-            //   columnTemplates: [{
-            //     type: "field",
-            //     fieldName: "ObjectId",
-            //     visible: false
-            //   }, {
-            //     type: "field",
-            //     fieldName: "reqcategory",
-            //     label: "Request ID",
-            //     visible: true
-            //   }]
-            // }, {
-            //   id: "Requets_6608",
-            //   columnTemplates: [{
-            //     type: "field",
-            //     fieldName: "requestglobalid",
-            //     visible: false
-            //   }, {
-            //     type: "field",
-            //     fieldName: "comments",
-            //     label: "Comments",
-            //     visible: true
-            //   }]
-            // }]
-          }, {
-            id: "863e4f6f2a7840db896cc1b1606d552d",
-            name: "IA map"
-          }, {
-            id: "3715f4899bea4b2a948347c5c2357e58",
-            name: "PN Map"
-          }, {
-            id: "4fa949c89bb04ecb8a9f5ad119448333",
-            name: "CS TIL DATA"
-          }, {
-            id: "f5b01c17a09941eaad63e7b4e6c7d880",
-            name: "Attachments Map"
-          }, {
-            id: "b422923b7a4c4958b9788118255f2f0a",
-            name: "Floor aware map"
-          }, {
-            id: "5dc8ae351ff34280a75f7ffe1115b36b",
-            name: "Standalone table",
-            filterConfig: {
-              "mapId": "5dc8ae351ff34280a75f7ffe1115b36b",
-              "layerExpressions": [{
-                "id": "18c4a8cda15-layer-2",
-                "title": "Table_1",
-                "operator": " AND ",
-                "expressions": [{
-                  "definitionExpression": "OBJECTID > 14",
-                  "id": 1702486334825,
-                  "index": 0,
-                  "name": "> 14",
-                  "active": false
-                }]
-              }]
-            }
-          }]
-        ];
+      if (!headerSet) {
+        // Want the header to be disabled by default for IA
+        // Want the header to be enabled by default for the demo app
+        demo.hideHeader = false;
       }
-    </script>
-  </head>
 
-  <!-- <body class="calcite-mode-dark" onload="addValues()"> -->
-  <body onload="addValues()">
-    <crowdsource-manager id="demo" class="crowdsource"/>
-    <!-- <crowdsource-manager id="demo" class="crowdsource" theme="dark"/> -->
-  </body>
+      demo.mapInfos = [
+        ...custom,
+        ...[{
+          id: "ce3dec81bf714d3bb71da9691ab686d1",
+          name: "Popup Configured Map",
+          filterConfig: {
+            mapId: "ce3dec81bf714d3bb71da9691ab686d1",
+            layerExpressions: [
+              {
+                id: "Requests_681",
+                title: "Requests",
+                operator: " AND ",
+                expressions: [
+                  {
+                    definitionExpression: "OBJECTID > 690",
+                    id: 1701793260225,
+                    index: 0,
+                    name: "greater than 690",
+                    active: false
+                  }
+                ]
+              }, {
+                id: "Requets_6608",
+                title: "Comments",
+                operator: " AND ",
+                expressions: [
+                  {
+                    definitionExpression: "OBJECTID > 1",
+                    id: 1701793260226,
+                    index: 0,
+                    name: "greater than 1",
+                    active: false
+                  }
+                ]
+              }
+            ]
+          }
+        }, {
+          id: "863e4f6f2a7840db896cc1b1606d552d",
+          name: "IA map"
+        }, {
+          id: "3715f4899bea4b2a948347c5c2357e58",
+          name: "PN Map"
+        }, {
+          id: "4fa949c89bb04ecb8a9f5ad119448333",
+          name: "CS TIL DATA"
+        }, {
+          id: "f5b01c17a09941eaad63e7b4e6c7d880",
+          name: "Attachments Map"
+        }, {
+          id: "b422923b7a4c4958b9788118255f2f0a",
+          name: "Floor aware map"
+        }, {
+          id: "5dc8ae351ff34280a75f7ffe1115b36b",
+          name: "Standalone table",
+          filterConfig: {
+            mapId: "5dc8ae351ff34280a75f7ffe1115b36b",
+            layerExpressions: [{
+              id: "18c4a8cda15-layer-2",
+              title: "Table_1",
+              operator: " AND ",
+              expressions: [{
+                definitionExpression: "OBJECTID > 14",
+                id: 1702486334825,
+                index: 0,
+                name: "> 14",
+                active: false
+              }]
+            }]
+          }
+        }, {
+          id: "91e220910a994da4abfb0d1763d64ecb",
+          name: "EditMultiLayers",
+          visible: true,
+          layerOptions: {
+            layers: [{
+              id: "18b1fb85a29-layer-3",
+              fields: [
+                "OBJECTID", "a", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "c"
+              ],
+              fieldOrder: [
+                "c", "b", "a", "OBJECTID", "Shape__Area", "Shape__Length", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n"
+              ]
+            }, {
+              id: "18b1fb862df-layer-4",
+              fields: ["OBJECTID", "test"],
+              fieldOrder: ["test", "OBJECTID"]
+            }, {
+              id: "18b1fb82f0e-layer-2",
+              fields: [
+                "URL", "Avg_Stars", "Your_Stars", "Route_Type", "Rating", "Pitches", "Length", "Area_Latitude", "Area_Longitude", "ObjectId"
+              ],
+              fieldOrder: [
+                "Your_Stars", "Route", "Location", "URL", "Avg_Stars", "Route_Type", "Rating", "Pitches", "Length", "Area_Latitude", "Area_Longitude", "ObjectId"
+              ]
+            }],
+            mapId: "91e220910a994da4abfb0d1763d64ecb"
+          }
+        }, {
+          id: "7197542839d948258c7862b33f9d96ad",
+          name: "EditPolymap",
+          visible: true
+        }, {
+          id: "fbe7bb1907f34d5aa8771ad6475a1dfe",
+          name: "Mountain Project",
+          visible: true,
+          layerOptions: {
+            layers: [{
+              id: "18a6ffdeae9-layer-2",
+              fields: [
+                "URL", "Avg_Stars", "Your_Stars", "Route_Type", "Rating", "Pitches", "Length", "Area_Latitude", "Area_Longitude", "ObjectId"
+              ],
+              fieldOrder: [
+                "Avg_Stars", "Route", "Location", "URL", "Your_Stars", "Route_Type", "Rating", "Pitches", "Length", "Area_Latitude", "Area_Longitude", "ObjectId"
+              ]
+            }],
+            mapId: "fbe7bb1907f34d5aa8771ad6475a1dfe"
+          }
+        }]
+      ];
+    }
+  </script>
+</head>
+
+<!-- <body class="calcite-mode-dark" onload="addValues()"> -->
+
+<body onload="addValues()">
+  <crowdsource-manager id="demo" class="crowdsource" />
+  <!-- <crowdsource-manager id="demo" class="crowdsource" theme="dark"/> -->
+</body>
+
 </html>

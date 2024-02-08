@@ -450,15 +450,9 @@ export interface IMapInfo {
   name: string;
   searchConfiguration?: ISearchConfiguration;
   filterConfig?: IFilterConfig;
-  layerInfos?: ILayerInfo[];
   _hasValidLayers?: boolean;
   visible?: boolean;
-  layerOptions: ILayerOptions;
-}
-
-export interface ILayerInfo {
-  id: string;
-  columnTemplates: __esri.FieldColumnTemplate[];
+  layerOptions?: ILayerOptions;
 }
 
 export interface ILayerOptions {
