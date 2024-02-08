@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.7.34] - Feb 8th 2024
+Support field order and visibility from config app
+
 ## [0.7.33] - Feb 5th 2024
 Handle newline inserted via Arcade expression in Public Notification
 
@@ -422,4 +425,5 @@ Recover from test releases
 [0.7.31]: https://github.com/Esri/solution.js/compare/v0.7.30...v0.7.31 "v0.7.31"
 [0.7.32]: https://github.com/Esri/solution.js/compare/v0.7.31...v0.7.32 "v0.7.32"
 [0.7.33]: https://github.com/Esri/solution.js/compare/v0.7.32...v0.7.32 "v0.7.33"
-[Unreleased]: https://github.com/Esri/solution.js/compare/v0.7.33...HEAD "Unreleased Changes"
+[0.7.34]: https://github.com/Esri/solution.js/compare/v0.7.33...v0.7.34 "v0.7.34"
+[Unreleased]: https://github.com/Esri/solution.js/compare/v0.7.34...HEAD "Unreleased Changes"
