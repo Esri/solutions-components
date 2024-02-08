@@ -450,14 +450,21 @@ export interface IMapInfo {
   name: string;
   searchConfiguration?: ISearchConfiguration;
   filterConfig?: IFilterConfig;
-  layerInfos?: ILayerInfo[];
   _hasValidLayers?: boolean;
   visible?: boolean;
+  layerOptions?: ILayerOptions;
 }
 
-export interface ILayerInfo {
+export interface ILayerOptions {
+  layers: ILayerDef[];
+  mapId?: string;
+}
+
+export interface ILayerDef {
   id: string;
-  columnTemplates: __esri.FieldColumnTemplate[];
+  sublayerId?: number;
+  fields?: string[];
+  fieldOrder?: string[];
 }
 
 export interface IMapChange {

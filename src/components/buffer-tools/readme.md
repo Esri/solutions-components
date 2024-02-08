@@ -35,6 +35,12 @@
 
 Get the translated unit for display
 
+#### Parameters
+
+| Name   | Type     | Description |
+| ------ | -------- | ----------- |
+| `unit` | `string` |             |
+
 #### Returns
 
 Type: `Promise<string>`
