@@ -143,10 +143,11 @@ graph TD;
   map-layer-picker --> calcite-option
   map-layer-picker --> calcite-dropdown-item
   calcite-notice --> calcite-icon
+  calcite-combobox --> calcite-combobox-item
   calcite-combobox --> calcite-chip
   calcite-combobox --> calcite-icon
-  calcite-chip --> calcite-icon
   calcite-combobox-item --> calcite-icon
+  calcite-chip --> calcite-icon
   calcite-dropdown-item --> calcite-icon
   calcite-input-message --> calcite-icon
   calcite-segmented-control-item --> calcite-icon

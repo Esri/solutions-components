@@ -28,6 +28,12 @@
 Returns the spatial reference description of the supplied value.
 (Exposes protected method `_createSpatialRefDisplay` for testing.)
 
+#### Parameters
+
+| Name    | Type     | Description                     |
+| ------- | -------- | ------------------------------- |
+| `value` | `string` | WKID or WKT or null for default |
+
 #### Returns
 
 Type: `Promise<ISpatialRefRepresentation>`
@@ -49,6 +55,12 @@ Type: `Promise<ISpatialRefRepresentation>`
 
 Converts a WKID into a spatial reference description.
 (Exposes protected method `_wkidToDisplay` for testing.)
+
+#### Parameters
+
+| Name   | Type     | Description     |
+| ------ | -------- | --------------- |
+| `wkid` | `number` | WKID to look up |
 
 #### Returns
 

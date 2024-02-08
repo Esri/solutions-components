@@ -19,6 +19,15 @@
 
 Downloads csv of mailing labels for the provided list of ids
 
+#### Parameters
+
+| Name               | Type           | Description                                                                             |
+| ------------------ | -------------- | --------------------------------------------------------------------------------------- |
+| `webmap`           | `Map`          | Webmap containing layer                                                                 |
+| `exportInfos`      | `IExportInfos` | Information about items to be exported                                                  |
+| `removeDuplicates` | `boolean`      | When true a single label is generated when multiple featues have a shared address value |
+| `addColumnTitle`   | `boolean`      | Indicates if column headings should be included in output                               |
+
 #### Returns
 
 Type: `Promise<void>`
@@ -28,6 +37,16 @@ Promise resolving when function is done
 ### `downloadPDF(webmap: __esri.Map, exportInfos: IExportInfos, removeDuplicates?: boolean, title?: string, initialImageDataUrl?: string) => Promise<void>`
 
 Downloads pdf of mailing labels for the provided list of ids
+
+#### Parameters
+
+| Name                  | Type           | Description                                                                             |
+| --------------------- | -------------- | --------------------------------------------------------------------------------------- |
+| `webmap`              | `Map`          | Webmap containing layer                                                                 |
+| `exportInfos`         | `IExportInfos` | Information about items to be exported                                                  |
+| `removeDuplicates`    | `boolean`      | When true a single label is generated when multiple featues have a shared address value |
+| `title`               | `string`       | Title for each page                                                                     |
+| `initialImageDataUrl` | `string`       | Data URL of image for first page                                                        |
 
 #### Returns
 

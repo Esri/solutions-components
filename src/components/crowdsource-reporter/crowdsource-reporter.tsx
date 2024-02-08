@@ -188,7 +188,7 @@ export class CrowdsourceReporter {
    * boolean: When true show the sort and filter icon
    */
   @State() _hasValidLayers = false;
-  
+
    /**
    * string: The selected feature layer's name from the layer's list
    */
@@ -256,7 +256,7 @@ export class CrowdsourceReporter {
   protected _mapClickHandle: IHandle;
 
   /**
-   * HTMLCreateFeatureElement: Create Feature component instance 
+   * HTMLCreateFeatureElement: Create Feature component instance
    */
   protected _createFeature: HTMLCreateFeatureElement;
 
@@ -348,9 +348,9 @@ export class CrowdsourceReporter {
         {this._reportSubmitted && <calcite-alert
           auto-close
           class={themeClass}
-          closable
           icon="check-circle"
           kind="success"
+          label=""
           onCalciteAlertClose={() => { this._reportSubmitted = false }}
           open
           placement={"top"}>
@@ -360,9 +360,9 @@ export class CrowdsourceReporter {
         {this._featureCreationFailedErrorMsg && <calcite-alert
           auto-close
           class={themeClass}
-          closable
           icon="x-octagon"
           kind="danger"
+          label=""
           onCalciteAlertClose={() => { this._featureCreationFailedErrorMsg = "" }}
           open
           placement={"top"}>
@@ -445,7 +445,7 @@ export class CrowdsourceReporter {
           ? <calcite-flow>
             {renderLists?.length > 0 && renderLists}
           </calcite-flow>
-          : <calcite-loader scale="m" />}
+          : <calcite-loader label="" scale="m" />}
       </calcite-panel>
     );
   }
@@ -475,7 +475,7 @@ export class CrowdsourceReporter {
         {this.isMobile && this.getActionToExpandCollapsePanel()}
         {this._hasValidLayers && this.enableNewReports &&
           <calcite-button
-            appearance="secondary"
+            appearance="solid"
             onClick={this.navigateToChooseCategory.bind(this)}
             slot="footer"
             width="full">
@@ -513,7 +513,7 @@ export class CrowdsourceReporter {
         <div class={"width-full"}
              slot="footer">
           <calcite-button
-            appearance="secondary"
+            appearance="solid"
             class={"footer-top-button footer-button"}
             disabled={!this._selectedLayerId}
             onClick={this.navigateToCreateFeature.bind(this)}
@@ -565,7 +565,7 @@ export class CrowdsourceReporter {
         {this._showSubmitCancelButton && <div class={"width-full"}
           slot="footer">
           <calcite-button
-            appearance="secondary"
+            appearance="solid"
             class={"footer-top-button footer-button"}
             onClick={this.onSubmitButtonClick.bind(this)}
             width="full">
@@ -707,7 +707,7 @@ export class CrowdsourceReporter {
    */
   protected async layerListLoaded(evt: CustomEvent): Promise<void> {
     const layersListed = evt.detail;
-    //consider only the layers listed in the layer-list component  
+    //consider only the layers listed in the layer-list component
     const allMapLayers = await getAllLayers(this.mapView);
     this._validLayers = [];
     allMapLayers.forEach((eachLayer: __esri.FeatureLayer) => {
@@ -794,7 +794,7 @@ export class CrowdsourceReporter {
         {this.isMobile && this.getActionToExpandCollapsePanel()}
         {this.enableNewReports &&
           <calcite-button
-            appearance="secondary"
+            appearance="solid"
             onClick={this.navigateToCreateFeature.bind(this)}
             slot="footer"
             width="full">
@@ -917,9 +917,9 @@ export class CrowdsourceReporter {
   }
 
   /**
-   * Handle map click event 
+   * Handle map click event
    * @param layers Array of layerIds
-   * 
+   *
    * @protected
    */
   protected handleMapClick(): void {
@@ -936,7 +936,7 @@ export class CrowdsourceReporter {
   /**
    * On map click do hitTest and get the clicked graphics of valid layers and show feature details
    * @param event IMapClick map click event details
-   * 
+   *
    * @protected
    */
   protected async onMapClick(event: IMapClick): Promise<void> {

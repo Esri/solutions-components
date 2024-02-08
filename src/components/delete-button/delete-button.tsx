@@ -180,6 +180,7 @@ export class DeleteButton {
             id={this.icon}
             onClick={() => this._delete()}
             scale="s"
+            text={this._translations.delete}
           >
             <calcite-button
               appearance="transparent"
