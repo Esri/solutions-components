@@ -1937,7 +1937,8 @@ export class LayerTable {
       false, // formatUsingLayerPopup
       false, // removeDuplicates
       true, // addColumnTitle
-      fields
+      fields,
+      true
     );
   }
 
