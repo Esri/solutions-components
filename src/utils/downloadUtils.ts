@@ -126,14 +126,15 @@ export async function consolidateLabels(
   formatUsingLayerPopup = true,
   includeHeaderNames = false,
   isCSVExport = false,
-  fields = []
+  fields = [],
+  useFieldAliasNames = false
 ): Promise<string[][]> {
   const labelRequests = [];
 
   Object.keys(exportInfos).forEach(k => {
     const labelInfo: IExportInfo = exportInfos[k];
     labelRequests.push(
-      _prepareLabels(webmap, labelInfo.layerView?.layer || labelInfo.layer, labelInfo.ids, formatUsingLayerPopup, includeHeaderNames, fields)
+      _prepareLabels(webmap, labelInfo.layerView?.layer || labelInfo.layer, labelInfo.ids, formatUsingLayerPopup, includeHeaderNames, fields, useFieldAliasNames)
     );
     if (isCSVExport) {
       // add the layer id as a temp value separator that we can use to split values for CSV export
@@ -162,9 +163,11 @@ export async function downloadCSV(
   formatUsingLayerPopup: boolean,
   removeDuplicates = false,
   addColumnTitle = false,
-  fields = []
+  fields = [],
+  useFieldAliasNames = false
 ): Promise<void> {
-  let labels = await consolidateLabels(webmap, exportInfos, formatUsingLayerPopup, addColumnTitle, true, fields);
+  console.log("download utils")
+  let labels = await consolidateLabels(webmap, exportInfos, formatUsingLayerPopup, addColumnTitle, true, fields, useFieldAliasNames);
   labels = removeDuplicates ? removeDuplicateLabels(labels) : labels;
 
   const layerIds = Object.keys(exportInfos);
@@ -841,7 +844,8 @@ export async function _prepareLabels(
   ids: number[],
   formatUsingLayerPopup = true,
   includeHeaderNames = false,
-  fields = []
+  fields = [],
+  useFieldAliasNames = false
 ): Promise<string[][]> {
   // Get the label formatting, if any
   const labelFormatProps: ILabelFormatProps = await _getLabelFormat(webmap, layer, formatUsingLayerPopup);
@@ -957,7 +961,7 @@ export async function _prepareLabels(
 
     :
     // Export all attributes
-    await _prepareLabelsFromAll(featureSet, attributeTypes, attributeDomains, includeHeaderNames);
+    await _prepareLabelsFromAll(featureSet, attributeTypes, attributeDomains, includeHeaderNames, useFieldAliasNames);
 
   return Promise.resolve(labels);
 }
@@ -975,7 +979,8 @@ export async function _prepareLabelsFromAll(
   featureSet: __esri.Graphic[],
   attributeTypes: IAttributeTypes,
   attributeDomains: IAttributeDomains,
-  includeHeaderNames = false
+  includeHeaderNames = false,
+  useFieldAliasNames = false
 ): Promise<string[][]> {
   const [intl] = await loadModules(["esri/intl"]);
 
@@ -997,8 +1002,13 @@ export async function _prepareLabelsFromAll(
   if (includeHeaderNames) {
     const headerNames = [];
     const featuresAttrs = featureSet[0].attributes;
+    const fieldHash = (featureSet[0]?.layer as __esri.FeatureLayer)?.fields.reduce((prev, cur) => {
+      prev[cur.name] = cur.alias;
+      return prev;
+    }, {});
+    console.log("header names")
     Object.keys(featuresAttrs).forEach(k => {
-      headerNames.push(k);
+      headerNames.push(useFieldAliasNames && fieldHash ? fieldHash[k] : k);
     });
     labels.unshift(headerNames);
   }
