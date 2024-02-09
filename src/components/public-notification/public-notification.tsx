@@ -972,6 +972,7 @@ export class PublicNotification {
                   <calcite-segmented-control
                     class="w-100"
                     onCalciteSegmentedControlChange={(evt) => this._exportTypeChange(evt)}
+                    width="full"
                   >
                     <calcite-segmented-control-item
                       checked={this._exportType === EExportType.PDF}
