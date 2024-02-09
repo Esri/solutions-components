@@ -229,6 +229,7 @@ export class RefineSelection {
           <div class="padding-bottom-1">
             <calcite-segmented-control
               class="w-100"
+              width="full"
             >
               <calcite-segmented-control-item
                 checked={this._addEnabled}
