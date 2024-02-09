@@ -166,7 +166,6 @@ export async function downloadCSV(
   fields = [],
   useFieldAliasNames = false
 ): Promise<void> {
-  console.log("download utils")
   let labels = await consolidateLabels(webmap, exportInfos, formatUsingLayerPopup, addColumnTitle, true, fields, useFieldAliasNames);
   labels = removeDuplicates ? removeDuplicateLabels(labels) : labels;
 
@@ -1006,7 +1005,6 @@ export async function _prepareLabelsFromAll(
       prev[cur.name] = cur.alias;
       return prev;
     }, {});
-    console.log("header names")
     Object.keys(featuresAttrs).forEach(k => {
       headerNames.push(useFieldAliasNames && fieldHash ? fieldHash[k] : k);
     });
