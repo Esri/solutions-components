@@ -355,7 +355,7 @@ export class CrowdsourceReporter {
           open
           placement={"top"}>
           <div slot="title">{this._translations.reportSubmit}</div>
-          <div slot="message">{this._translations.submitMsg}</div>
+          <div slot="message">{this.reportSubmittedMessage ? this.reportSubmittedMessage : this._translations.submitMsg}</div>
         </calcite-alert>}
         {this._featureCreationFailedErrorMsg && <calcite-alert
           auto-close
