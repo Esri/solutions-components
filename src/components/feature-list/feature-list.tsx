@@ -193,7 +193,7 @@ export class FeatureList {
           </calcite-notice>}
         <calcite-list
           selection-appearance="border"
-          selection-mode="single" >
+          selection-mode="none" >
           {!this._isLoading && this._featureItems.length > 0 && this._featureItems}
         </calcite-list>
         {this._featuresCount > this.pageSize &&
@@ -258,14 +258,12 @@ export class FeatureList {
       this._highlightHandle = null;
     }
     //highlight on map only if it is selected item
-    if (event.target.selected) {
-      if (this.highlightOnMap) {
-        const selectedFeatureObjectId = Number(event.target.value);
-        const selectedLayerView = await getFeatureLayerView(this.mapView, this.selectedLayerId);
-        this._highlightHandle = await highlightFeatures([selectedFeatureObjectId], selectedLayerView, this.mapView, true);
-      }
-      this.featureSelect.emit(selectedFeature);
+    if (this.highlightOnMap) {
+      const selectedFeatureObjectId = Number(event.target.value);
+      const selectedLayerView = await getFeatureLayerView(this.mapView, this.selectedLayerId);
+      this._highlightHandle = await highlightFeatures([selectedFeatureObjectId], selectedLayerView, this.mapView, true);
     }
+    this.featureSelect.emit(selectedFeature);
   }
 
   /**

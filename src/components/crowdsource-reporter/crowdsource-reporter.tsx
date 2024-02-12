@@ -355,7 +355,7 @@ export class CrowdsourceReporter {
           open
           placement={"top"}>
           <div slot="title">{this._translations.reportSubmit}</div>
-          <div slot="message">{this._translations.submitMsg}</div>
+          <div slot="message">{this.reportSubmittedMessage ? this.reportSubmittedMessage : this._translations.submitMsg}</div>
         </calcite-alert>}
         {this._featureCreationFailedErrorMsg && <calcite-alert
           auto-close
@@ -460,7 +460,7 @@ export class CrowdsourceReporter {
       <calcite-flow-item
         collapsed={this.isMobile && this._sidePanelCollapsed}
         heading={this.reportsHeader}>
-        {this._hasValidLayers &&
+        {/* {this._hasValidLayers &&
           <calcite-action
             icon="sort-ascending-arrow"
             slot={this.isMobile ? "header-menu-actions" : "header-actions-end"}
@@ -471,7 +471,7 @@ export class CrowdsourceReporter {
             icon="filter"
             slot={this.isMobile ? "header-menu-actions" : "header-actions-end"}
             text={this._translations.filter}
-            text-enabled={this.isMobile} />}
+            text-enabled={this.isMobile} />} */}
         {this.isMobile && this.getActionToExpandCollapsePanel()}
         {this._hasValidLayers && this.enableNewReports &&
           <calcite-button
@@ -781,7 +781,7 @@ export class CrowdsourceReporter {
         collapsed={this.isMobile && this._sidePanelCollapsed}
         heading={layerName}
         onCalciteFlowItemBack={this.backFromSelectedPanel.bind(this)}>
-        <calcite-action
+        {/* <calcite-action
           icon="sort-ascending-arrow"
           slot={this.isMobile ? "header-menu-actions" : "header-actions-end"}
           text={this._translations.sort}
@@ -790,7 +790,7 @@ export class CrowdsourceReporter {
           icon="filter"
           slot={this.isMobile ? "header-menu-actions" : "header-actions-end"}
           text={this._translations.filter}
-          text-enabled={this.isMobile} />
+          text-enabled={this.isMobile} /> */}
         {this.isMobile && this.getActionToExpandCollapsePanel()}
         {this.enableNewReports &&
           <calcite-button
