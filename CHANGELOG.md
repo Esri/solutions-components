@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.7.36] - Feb 12th 2024
+Reporter AGOL-2024.R01-UAT, only force map panel open when switching to mobile mode
+
 ## [0.7.35] - Feb 9th 2024
 Calcite upgrade, js api types, csv alias
 
@@ -430,4 +433,5 @@ Recover from test releases
 [0.7.33]: https://github.com/Esri/solution.js/compare/v0.7.32...v0.7.33 "v0.7.33"
 [0.7.34]: https://github.com/Esri/solution.js/compare/v0.7.33...v0.7.34 "v0.7.34"
 [0.7.35]: https://github.com/Esri/solution.js/compare/v0.7.34...v0.7.35 "v0.7.35"
-[Unreleased]: https://github.com/Esri/solution.js/compare/v0.7.35...HEAD "Unreleased Changes"
+[0.7.36]: https://github.com/Esri/solution.js/compare/v0.7.35...v0.7.36 "v0.7.36"
+[Unreleased]: https://github.com/Esri/solution.js/compare/v0.7.36...HEAD "Unreleased Changes"

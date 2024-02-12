@@ -51,7 +51,6 @@
 - calcite-flow
 - calcite-loader
 - calcite-flow-item
-- calcite-action
 - calcite-button
 - [layer-list](../layer-list)
 - calcite-notice
@@ -59,6 +58,7 @@
 - [feature-list](../feature-list)
 - instant-apps-social-share
 - [info-card](../info-card)
+- calcite-action
 
 ### Graph
 ```mermaid
@@ -69,7 +69,6 @@ graph TD;
   crowdsource-reporter --> calcite-flow
   crowdsource-reporter --> calcite-loader
   crowdsource-reporter --> calcite-flow-item
-  crowdsource-reporter --> calcite-action
   crowdsource-reporter --> calcite-button
   crowdsource-reporter --> layer-list
   crowdsource-reporter --> calcite-notice
@@ -77,6 +76,7 @@ graph TD;
   crowdsource-reporter --> feature-list
   crowdsource-reporter --> instant-apps-social-share
   crowdsource-reporter --> info-card
+  crowdsource-reporter --> calcite-action
   calcite-alert --> calcite-icon
   calcite-alert --> calcite-chip
   calcite-chip --> calcite-icon
