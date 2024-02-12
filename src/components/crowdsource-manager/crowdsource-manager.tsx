@@ -886,8 +886,9 @@ export class CrowdsourceManager {
    * Update the component layout when its size changes
    */
   protected _onResize(): void {
-    const forceOpen = !this._isMobile && this.el.offsetWidth < 1024;
-    this._isMobile = this.el.offsetWidth < 1024;
+    const isMobile = this.el.offsetWidth < 1024;
+    const forceOpen = !this._isMobile && isMobile;
+    this._isMobile = isMobile;
     this._layoutMode = this._isMobile ? ELayoutMode.HORIZONTAL : ELayoutMode.GRID;
     if (forceOpen) {
       this._panelOpen = true;
