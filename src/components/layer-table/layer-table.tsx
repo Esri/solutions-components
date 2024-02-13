@@ -1663,7 +1663,7 @@ export class LayerTable {
     // tableTemplate.columnTemplates have been defined on an existing FeatureTable
     // TODO review for better solution post 2024 R01 release
     const columnsInfo = this._table?.columns.reduce((prev, cur: any) => {
-      if (!fieldNames || (fieldNames && fieldNames.indexOf(cur.name) > -1)) {
+      if (!fieldNames || (fieldNames?.indexOf(cur.name) > -1)) {
         prev[cur.name] = !cur.hidden;
       }
       return prev;
