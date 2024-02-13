@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.7.37] - Feb 13th 2024
+Reporter update, field order update
+
 ## [0.7.36] - Feb 12th 2024
 Reporter AGOL-2024.R01-UAT, only force map panel open when switching to mobile mode
 
@@ -434,4 +437,5 @@ Recover from test releases
 [0.7.34]: https://github.com/Esri/solution.js/compare/v0.7.33...v0.7.34 "v0.7.34"
 [0.7.35]: https://github.com/Esri/solution.js/compare/v0.7.34...v0.7.35 "v0.7.35"
 [0.7.36]: https://github.com/Esri/solution.js/compare/v0.7.35...v0.7.36 "v0.7.36"
-[Unreleased]: https://github.com/Esri/solution.js/compare/v0.7.36...HEAD "Unreleased Changes"
+[0.7.37]: https://github.com/Esri/solution.js/compare/v0.7.36...v0.7.37 "v0.7.37"
+[Unreleased]: https://github.com/Esri/solution.js/compare/v0.7.37...HEAD "Unreleased Changes"
