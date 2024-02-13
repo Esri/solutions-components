@@ -193,6 +193,8 @@ export async function highlightFeatures(
 ): Promise<__esri.Handle> {
   if (updateExtent) {
     await goToSelection(ids, layerView, mapView, false);
+    //wait for sometime to load the feature in layerView then only the highlight will work
+    await new Promise(resolve => setTimeout(resolve, 1000));
   }
   return layerView.highlight(ids);
 }

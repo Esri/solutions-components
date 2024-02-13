@@ -19,7 +19,7 @@ import { IMapChange, IMapClick, IMapInfo, ISearchConfiguration, theme } from "..
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { loadModules } from "../../utils/loadModules";
 import CrowdsourceReporter_T9n from "../../assets/t9n/crowdsource-reporter/resources.json";
-import { getAllLayers, getLayerOrTable } from "../../utils/mapViewUtils";
+import { getAllLayers, getFeatureLayerView, getLayerOrTable, highlightFeatures } from "../../utils/mapViewUtils";
 import { queryFeaturesByID } from "../../utils/queryUtils";
 
 @Component({
@@ -279,6 +279,11 @@ export class CrowdsourceReporter {
    * boolean: Maintains a flag to know if urls params are loaded or not
    */
   protected _urlParamsLoaded: boolean;
+
+  /**
+   * __esri.Handle: Highlight handles of the selections
+   */
+  protected _highlightHandle: __esri.Handle;
 
   //--------------------------------------------------------------------------
   //
@@ -742,6 +747,7 @@ export class CrowdsourceReporter {
   protected backFromSelectedPanel(): void {
     const updatedFlowItems = [...this._flowItems];
     updatedFlowItems.pop();
+    this.clearHighlights();
     //Back to layer list, and return as the flowItems will be reset in navigateToHomePage
     if (updatedFlowItems.length === 1) {
       this.navigateToHomePage();
@@ -803,7 +809,6 @@ export class CrowdsourceReporter {
         <calcite-panel full-height>
           {<feature-list
             class="height-full"
-            highlightOnMap
             mapView={this.mapView}
             noFeaturesFoundMsg={this._translations.featureErrorMsg}
             onFeatureSelect={this.onFeatureSelectFromList.bind(this)}
@@ -842,6 +847,7 @@ export class CrowdsourceReporter {
           <info-card
             allowEditing={false}
             graphics={this._selectedFeature}
+            highlightEnabled={false}
             isLoading={false}
             isMobile={false}
             mapView={this.mapView}
@@ -884,6 +890,37 @@ export class CrowdsourceReporter {
    */
   protected featureDetailsChanged(evt: CustomEvent): void {
     this.setCurrentFeature(evt.detail[0]);
+    void this.highlightOnMap(evt.detail[0]);
+  }
+
+  /**
+   * Highlights the feature on map
+   * @param selectedFeature Graphic currently shown in feature details
+   */
+  protected async highlightOnMap(selectedFeature?: __esri.Graphic): Promise<void> {
+    // if a feature is already highlighted, remove the previous highlight
+    this.clearHighlights();
+    // highlight the newly selected feature only when it has valid geometry
+    if (selectedFeature && selectedFeature.geometry && selectedFeature.layer) {
+      const selectedLayerView = await getFeatureLayerView(this.mapView, selectedFeature.layer.id);
+      this._highlightHandle = await highlightFeatures(
+        [selectedFeature.getObjectId()],
+        selectedLayerView,
+        this.mapView,
+        true
+      )
+    }
+  }
+
+  /**
+   * Clears the highlight
+   * @protected
+   */
+  protected clearHighlights():void {
+    //if a feature is already highlighted, then remove the highlight
+    if(this._highlightHandle) {
+      this._highlightHandle.remove();
+     }
   }
 
   /**
@@ -964,6 +1001,7 @@ export class CrowdsourceReporter {
         this._flowItems = [...this._flowItems, "feature-details"];
       } else {
         this._flowItems = [...this._flowItems];
+        void this.highlightOnMap(clickedGraphics[0]);
       }
     }
   }

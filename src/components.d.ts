@@ -417,6 +417,10 @@ export namespace Components {
          */
         "graphics": __esri.Graphic[];
         /**
+          * boolean: If true will highlights the features on map using Features Widget
+         */
+        "highlightEnabled"?: boolean;
+        /**
           * boolean: when true a loading indicator will be shown
          */
         "isLoading": boolean;
@@ -2507,6 +2511,10 @@ declare namespace LocalJSX {
           * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
          */
         "graphics"?: __esri.Graphic[];
+        /**
+          * boolean: If true will highlights the features on map using Features Widget
+         */
+        "highlightEnabled"?: boolean;
         /**
           * boolean: when true a loading indicator will be shown
          */
