@@ -203,6 +203,11 @@ export class LayerTable {
   protected FeatureTable: typeof import("esri/widgets/FeatureTable");
 
   /**
+   * esri/widgets/FeatureTable/support/TableTemplate: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-FeatureTable-support-TableTemplate.html
+   */
+  protected TableTemplate: typeof import("esri/widgets/FeatureTable/support/TableTemplate");
+
+  /**
    * number[]: A list of all IDs for the current layer
    */
   protected _allIds: number[] = [];
@@ -430,6 +435,7 @@ export class LayerTable {
       this._initToolInfos();
     }
     this._initLayerExpressions();
+    this._resetColumnTemplates();
   }
 
   /**
@@ -669,12 +675,14 @@ export class LayerTable {
    * @protected
    */
   protected async _initModules(): Promise<void> {
-    const [FeatureTable, reactiveUtils] = await loadModules([
+    const [FeatureTable, reactiveUtils, TableTemplate] = await loadModules([
       "esri/widgets/FeatureTable",
-      "esri/core/reactiveUtils"
+      "esri/core/reactiveUtils",
+      "esri/widgets/FeatureTable/support/TableTemplate"
     ]);
     this.FeatureTable = FeatureTable;
     this.reactiveUtils = reactiveUtils;
+    this.TableTemplate = TableTemplate;
   }
 
   /**
@@ -1579,6 +1587,18 @@ export class LayerTable {
   }
 
   /**
+   * Reset the tables column templates when we get new column config
+   */
+  protected _resetColumnTemplates(): void {
+    const columnTemplates = this._getColumnTemplates(this._layer?.id, this._layer?.fields);
+    this._table.tableTemplate = new this.TableTemplate({
+      columnTemplates
+    });
+    const fieldNames = columnTemplates.map(f => f.fieldName);
+    this._initColumnsInfo(fieldNames);
+  }
+
+  /**
    * Reset basic table props
    */
   protected async _resetTable(): Promise<void> {
@@ -1634,12 +1654,31 @@ export class LayerTable {
 
   /**
    * Store the column names and current hidden status to support show/hide of columns
+   * @param fieldNames optional list of names from new config options
    */
-  protected _initColumnsInfo(): void {
-    this._columnsInfo = this._table.columns.reduce((prev, cur: any) => {
-      prev[cur.name] = !cur.hidden;
+  protected _initColumnsInfo(
+    fieldNames?: string[]
+  ): void {
+    // this._table.columns is not reflecting correct list when new
+    // tableTemplate.columnTemplates have been defined on an existing FeatureTable
+    // TODO review for better solution post 2024 R01 release
+    const columnsInfo = this._table?.columns.reduce((prev, cur: any) => {
+      if (!fieldNames || (fieldNames && fieldNames.indexOf(cur.name) > -1)) {
+        prev[cur.name] = !cur.hidden;
+      }
       return prev;
     }, {});
+
+    const oldColumnNames = this._table?.columns.map((c: any) => c.name);
+    const newColumnNames = fieldNames ? fieldNames.filter(n => oldColumnNames.indexOf(n) < 0) : [];
+    newColumnNames.forEach(c => {
+      columnsInfo[c] = true;
+    });
+
+    this._columnsInfo = fieldNames ? fieldNames.reduce((prev, cur) => {
+      prev[cur] = columnsInfo[cur]
+      return prev;
+    }, {}) : columnsInfo;
   }
 
   /**
