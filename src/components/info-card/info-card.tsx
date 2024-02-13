@@ -71,6 +71,11 @@ export class InfoCard {
    */
   @Prop() allowEditing?: boolean = true;
 
+  /**
+   * boolean: If true will highlights the features on map using Features Widget
+   */
+  @Prop() highlightEnabled?: boolean = true;
+
   //--------------------------------------------------------------------------
   //
   //  State (internal)
@@ -460,6 +465,7 @@ export class InfoCard {
             heading: !this.isMobile
           }
         });
+        this._features.viewModel.highlightEnabled = this.highlightEnabled;
         this.reactiveUtils.watch(
           () => (this._features.viewModel as any).featureMenuOpen,
           (isOpen) => {
