@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.7.38] - Feb 14th 2024
+map collapsed edit issue
+
 ## [0.7.37] - Feb 13th 2024
 Reporter update, field order update
 
@@ -438,4 +441,5 @@ Recover from test releases
 [0.7.35]: https://github.com/Esri/solution.js/compare/v0.7.34...v0.7.35 "v0.7.35"
 [0.7.36]: https://github.com/Esri/solution.js/compare/v0.7.35...v0.7.36 "v0.7.36"
 [0.7.37]: https://github.com/Esri/solution.js/compare/v0.7.36...v0.7.37 "v0.7.37"
-[Unreleased]: https://github.com/Esri/solution.js/compare/v0.7.37...HEAD "Unreleased Changes"
+[0.7.38]: https://github.com/Esri/solution.js/compare/v0.7.37...v0.7.38 "v0.7.38"
+[Unreleased]: https://github.com/Esri/solution.js/compare/v0.7.38...HEAD "Unreleased Changes"
