@@ -1,0 +1,11 @@
+{
+  "export": "Экспорт",
+  "exportPopover": "Всплывающее окно экспорта",
+  "includeExtraContent": "Включить результаты",
+  "includeHeaderTheme": "Включить тему заголовка",
+  "includeLegend": "Включать легенду",
+  "includeMap": "Включить карту",
+  "includePopup": "Включить всплывающие окна",
+  "title": "Заголовок",
+  "toggleExport": "Переключить Экспорт"
+}

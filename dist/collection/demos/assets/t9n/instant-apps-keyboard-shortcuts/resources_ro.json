@@ -1,0 +1,30 @@
+{
+  "mapShortcuts": {
+    "arrowKeys": "Taste săgeți",
+    "nudge": "Împingeți la stânga, la dreapta, sus sau jos",
+    "N": "Reglați la punctul nord",
+    "A": "Rotire în sens invers acelor de ceasornic",
+    "D": "Rotire în sensul acelor de ceasornic",
+    "plus": "Transfocați în centru",
+    "minus": "Îndepărtați de centru"
+  },
+  "sceneShortcuts": {
+    "P": "Mutați camera pentru a privi perpendicular la datele afișate în hartă",
+    "N": "Reglați harta la punctul nord",
+    "W": "Înclinați camera în sus",
+    "A": "Rotiți camera în sens invers acelor de ceasornic",
+    "D": "Rotiți camera în sensu acelor de ceasornic",
+    "S": "Înclinați camera în jos",
+    "globalCommands": {
+      "J": "Mutați în jos mai aproape de hartă",
+      "U": "Mutați în sus mai departe de hartă"
+    }
+  },
+  "generalShortcuts": {
+    "menu": "meniu de scurtături",
+    "shortcut": "Scurtătură",
+    "action": "Acțiune",
+    "title": "Selectați harta",
+    "label": "Scurtături pe tastatură"
+  }
+}

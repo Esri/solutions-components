@@ -1,0 +1,11 @@
+{
+  "export": "Vie",
+  "exportPopover": "Vie ponnahdus",
+  "includeExtraContent": "Sisällytä tulokset",
+  "includeHeaderTheme": "Sisällytä ylätunnisteen teema",
+  "includeLegend": "Sisällytä selite",
+  "includeMap": "Sisällytä kartta",
+  "includePopup": "Sisällytä ponnahdusikkuna",
+  "title": "Otsikko",
+  "toggleExport": "Vaihda vienti"
+}

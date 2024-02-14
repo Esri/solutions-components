@@ -1,0 +1,15 @@
+{
+  "noLegend": "Nema legende.",
+  "loading": "Učitavanje interaktivne legende",
+  "open": "Otvori",
+  "close": "Zatvori",
+  "expand": "Proširi",
+  "collapse": "Sažmi",
+  "totalFeatureCount": "Ukupni zbroj geoobjekata",
+  "showAll": "Prikaži sve",
+  "zoomTo": "Povećaj na",
+  "relationship": {
+    "instructionalText": "Kliknite na kvadrate u boji za filtriranje karte",
+    "notSupported": "Stil crtanja odnosa trenutno nije podržan."
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "andOperator": "Rezultatuose bus rodomi VISI atitinkami filtrai",
+  "andOperator2": "AND: rezultatuose bus rodomi VISI atitinkami filtrai",
+  "close": "Uždaryti",
+  "maxSlider": "{field}, viršutinė riba",
+  "minSlider": "{field}, apatinė riba",
+  "nextMonth": "Kitas mėnuo",
+  "orOperator": "Rezultatuose bus rodomi BET KURIE atitinkami filtrai",
+  "orOperator2": "OR: rezultatuose bus rodomi BET KURIE atitinkami filtrai",
+  "previousMonth": "Ankstesnis mėnuo",
+  "resetDatePicker": "Iš naujo nustatyti datos parinkiklį",
+  "resetFilter": "Iš naujo nustatyti filtrą",
+  "selectFilter": "Pasirinkti filtrą",
+  "zoomTo": "Parodyti visą",
+  "zoomToExtent": "Artinti prie aprėpties"
+}

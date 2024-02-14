@@ -347,6 +347,12 @@ export class CrowdsourceReporter {
    * Renders the component.
    */
   render() {
+    console.log("==============================Reporter render===================================")
+    console.log("this.layerId")
+    console.log(this.layerId)
+    console.log("this.objectId")
+    console.log(this.objectId)
+
     const themeClass = this.theme === "dark" ? "calcite-mode-dark" : "calcite-mode-light";
     return (
       <Host>
@@ -1021,6 +1027,7 @@ export class CrowdsourceReporter {
     * @protected
    */
    protected _updateShareURL(): void {
+    console.log("update share url")
     const url = this._shareNode?.shareUrl;
     if (!url) {
       return;
@@ -1040,6 +1047,9 @@ export class CrowdsourceReporter {
     }
     //update the url in share component
     this._shareNode.shareUrl = urlObj.href;
+
+    console.log("this._shareNode.shareUrl")
+    console.log(this._shareNode.shareUrl)
   }
 
   /**
@@ -1047,6 +1057,7 @@ export class CrowdsourceReporter {
    * @protected
    */
   protected async loadFeatureFromURLParams(): Promise<void> {
+    console.log("loadFeatureFromURLParams")
     if (this.layerId && this.objectId) {
       const layer = await getLayerOrTable(this.mapView, this.layerId);
       if (layer) {

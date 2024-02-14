@@ -1,0 +1,30 @@
+{
+  "mapShortcuts": {
+    "arrowKeys": "Tasti freccia",
+    "nudge": "Spingi a sinistra, a destra, in alto o in basso",
+    "N": "Regolare per puntare a nord",
+    "A": "Ruotare in senso antiorario",
+    "D": "Ruotare in senso orario",
+    "plus": "Zoom avanti al centro",
+    "minus": "Zoom indietro al centro"
+  },
+  "sceneShortcuts": {
+    "P": "Sposta la telecamera per guardare perpendicolarmente ai dati visualizzati nella mappa",
+    "N": "Regola la mappa per puntare a nord",
+    "W": "Inclina la telecamera verso l'alto",
+    "A": "Ruota la telecamera in senso antiorario",
+    "D": "Ruota la telecamera in senso orario",
+    "S": "Inclina la telecamera verso il basso",
+    "globalCommands": {
+      "J": "Avvicinati alla mappa",
+      "U": "Sali più in alto nella mappa"
+    }
+  },
+  "generalShortcuts": {
+    "menu": "menu scorciatoie",
+    "shortcut": "Scorciatoia",
+    "action": "Azione",
+    "title": "Seleziona la mappa",
+    "label": "Tasti di scelta rapida"
+  }
+}

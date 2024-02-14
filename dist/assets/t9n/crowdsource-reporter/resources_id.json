@@ -1,0 +1,20 @@
+{
+  "createReportHeader": "ng_Create a Report________________ny",
+  "share": "ng_Share___________ny",
+  "sort": "ng_Sort_________ny",
+  "filter": "ng_Filter_____________ny",
+  "expand": "ng_Expand_____________ny",
+  "collapse": "ng_Collapse_________________ny",
+  "next": "ng_Next_________ny",
+  "cancel": "ng_Cancel_____________ny",
+  "back": "ng_Back_________ny",
+  "error": "ng_Error___________ny",
+  "invalidConfigurationErrorMsg": "ng_Invalid configuration______________________ny",
+  "noLayerToDisplayErrorMsg": "ng_Configured web map don't have any editable feature layer_____________________________ny",
+  "chooseCategoryMsg": "ng_Choose a category for the problem you're reporting__________________________ny",
+  "featureErrorMsg": "ng_Features not found___________________ny",
+  "featureEditFormInfoMsg": "ng_Please provide the details for the incident you are reporting________________________________ny.",
+  "currentLocationMsg": "ng_Use my current location________________________ny",
+  "reportSubmit": "ng_Report Submitted__________________ny.",
+  "submitMsg": "ng_Thank you! Your report was successfully submitted__________________________ny"
+}

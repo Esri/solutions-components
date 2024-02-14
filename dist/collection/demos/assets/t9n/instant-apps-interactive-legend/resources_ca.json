@@ -1,0 +1,15 @@
+{
+  "noLegend": "Sense llegenda.",
+  "loading": "S'està carregant la llegenda interactiva",
+  "open": "Obre",
+  "close": "Tanca",
+  "expand": "Amplia",
+  "collapse": "Redueix",
+  "totalFeatureCount": "Nombre total d'entitats",
+  "showAll": "Mostra-ho tot",
+  "zoomTo": "Aplica el zoom a",
+  "relationship": {
+    "instructionalText": "Feu clic als quadres de color per filtrar el mapa",
+    "notSupported": "Actualment no s'admet l'estil de dibuix de relacions."
+  }
+}

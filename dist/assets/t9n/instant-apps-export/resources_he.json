@@ -1,0 +1,11 @@
+{
+  "export": "ייצא",
+  "exportPopover": "חלן קופץ של ייצוא",
+  "includeExtraContent": "כלול תוצאות",
+  "includeHeaderTheme": "כלול ערכת נושא של כותרת עליונה",
+  "includeLegend": "כלול מקרא",
+  "includeMap": "כלול מפה",
+  "includePopup": "כלול חלון קופץ",
+  "title": "כותרת",
+  "toggleExport": "שנה מצב ייצוא"
+}

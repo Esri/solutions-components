@@ -1,0 +1,10 @@
+{
+  "fetchingData": "Andmete toomine",
+  "edit": "Muuda",
+  "enableEditing": "Uuendusvõimalus peab olema kihis lubatud.",
+  "editDisabled": "Redigeerimine keelatud",
+  "next": "Edasi",
+  "back": "Tagasi",
+  "indexOfTotal": "{{index}} /{{total}}",
+  "delete": "Š_Delete_____________ä"
+}

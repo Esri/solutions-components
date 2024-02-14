@@ -1,0 +1,15 @@
+{
+  "noLegend": "Žiadna legenda.",
+  "loading": "Načítanie interaktívnej legendy",
+  "open": "Otvoriť",
+  "close": "Zatvoriť",
+  "expand": "Rozbaliť",
+  "collapse": "Zbaliť",
+  "totalFeatureCount": "Celkový počet prvkov",
+  "showAll": "Zobraziť všetko",
+  "zoomTo": "Priblížiť na",
+  "relationship": {
+    "instructionalText": "Kliknite na farebné štvorčeky pre filtrovanie mapy",
+    "notSupported": "Štýl kreslenia väzieb nie je v súčasnosti podporovaný."
+  }
+}

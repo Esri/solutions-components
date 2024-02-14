@@ -1,0 +1,9 @@
+{
+  "add": "Adicionar",
+  "remove": "Remover",
+  "featuresAdded": "Elementos adicionados: {{n}}",
+  "featuresRemoved": "Elementos removidos: {{n}}",
+  "totalSelected": "Total de selecionados: {{n}}",
+  "inputLayer": "Camada de entrada",
+  "inputLayerTip": "Escolha a camada de entrada a partir da qual pretende rever os elementos selecionados. Atualize os elementos selecionados a partir de uma camada de entrada de cada vez."
+}

@@ -1,0 +1,9 @@
+{
+  "add": "Ekle",
+  "remove": "Kaldır",
+  "featuresAdded": "Eklenen detaylar: {{n}}",
+  "featuresRemoved": "Kaldırılan detaylar: {{n}}",
+  "totalSelected": "Toplam seçili: {{n}}",
+  "inputLayer": "Girdi katman",
+  "inputLayerTip": "Seçili detayların inceleneceği girdi katmanını seçin, her seferinde tek bir girdi katmanında seçili detayları güncelleyin."
+}

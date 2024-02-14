@@ -1,0 +1,20 @@
+{
+  "createReportHeader": "한_Create a Report________________빠",
+  "share": "한_Share___________빠",
+  "sort": "한_Sort_________빠",
+  "filter": "한_Filter_____________빠",
+  "expand": "한_Expand_____________빠",
+  "collapse": "한_Collapse_________________빠",
+  "next": "한_Next_________빠",
+  "cancel": "한_Cancel_____________빠",
+  "back": "한_Back_________빠",
+  "error": "한_Error___________빠",
+  "invalidConfigurationErrorMsg": "한_Invalid configuration______________________빠",
+  "noLayerToDisplayErrorMsg": "한_Configured web map don't have any editable feature layer_____________________________빠",
+  "chooseCategoryMsg": "한_Choose a category for the problem you're reporting__________________________빠",
+  "featureErrorMsg": "한_Features not found___________________빠",
+  "featureEditFormInfoMsg": "한_Please provide the details for the incident you are reporting________________________________빠.",
+  "currentLocationMsg": "한_Use my current location________________________빠",
+  "reportSubmit": "한_Report Submitted__________________빠.",
+  "submitMsg": "한_Thank you! Your report was successfully submitted__________________________빠"
+}

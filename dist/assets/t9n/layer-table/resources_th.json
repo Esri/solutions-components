@@ -1,0 +1,19 @@
+{
+  "clearSelection": "ล้างการเลือก",
+  "exportCSV": "ส่งออกเป็น CSV",
+  "filter": "ก้_Filter: {{title}}__________________ษฺ",
+  "filters": "ตัวกรอง",
+  "hideField": "ก้_Hide field_____________________ษฺ",
+  "more": "กว่า",
+  "selectAll": "เลือกทั้งหมด",
+  "share": "ก้_Share___________ษฺ",
+  "showSelected": "แสดงที่เลือก",
+  "switchSelected": "สลับรายการที่เลือก",
+  "zoom": "ขยาย",
+  "fetchingData": "กำลังดึงข้อมูล",
+  "refresh": "รีเฟรช",
+  "showAll": "แสดงทั้งหมด",
+  "recordsSelected": "รวม: {{total}} | ที่เลือก: {{selected}}",
+  "moreOptions": "ตัวเลือกตารางเพิ่มเติม",
+  "showHideColumns": "ก้_Show/hide columns__________________ษฺ"
+}

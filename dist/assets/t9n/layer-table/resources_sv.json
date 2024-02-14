@@ -1,0 +1,19 @@
+{
+  "clearSelection": "Rensa markering",
+  "exportCSV": "Exportera till CSV",
+  "filter": "Å_Filter: {{title}}__________________ö",
+  "filters": "Filter",
+  "hideField": "Å_Hide field_____________________ö",
+  "more": "Mer",
+  "selectAll": "Markera alla",
+  "share": "Å_Share___________ö",
+  "showSelected": "Visa valda",
+  "switchSelected": "Växla valda",
+  "zoom": "Zooma",
+  "fetchingData": "Hämtar data",
+  "refresh": "Uppdatera",
+  "showAll": "Visa alla",
+  "recordsSelected": "Totalt: {{total}} | Urval: {{selected}}",
+  "moreOptions": "Fler tabellalternativ",
+  "showHideColumns": "Å_Show/hide columns__________________ö"
+}

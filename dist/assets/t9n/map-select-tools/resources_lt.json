@@ -1,0 +1,16 @@
+{
+  "listName": "Sąrašo pavadinimas",
+  "listNamePlaceholder": "Įrašykite pavadinimą čia",
+  "searchDistance": "Paieškos atstumas",
+  "select": "Sluoksnis",
+  "selectedFeatures": "Pasirinkta elementų: {{n}}",
+  "selectionLoading": "Įkeliamas pasirinkimas",
+  "sketch": "Eskizas",
+  "bufferLayer": "Buferio sluoksnis",
+  "sketchLayer": "Eskizo sluoksnis",
+  "useLayerFeatures": "Naudoti sluoksnio elementus",
+  "inputLayer": "Įvesties sluoksnis",
+  "useLayerFeaturesTooltip": "Pasirinkite sluoksnį ir naudokite eskizavimo įrankius, kad nurodytumėte elementus, kurie gali būti naudojami kaip riba, norint pasirinkti susikertančius įvesties sluoksnio elementus.",
+  "useSearchDistanceTootip": "Apibrėžkite paieškos buferio zonos atstumą, kuriuo bus pasirenkami įvesties elementai, susikertantys su buferio zona.",
+  "placeholder": "Surasti adresą arba vietą"
+}

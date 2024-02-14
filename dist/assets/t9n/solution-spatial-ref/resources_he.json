@@ -1,0 +1,6 @@
+{
+    "paramDescription": "חשוף את הפרמטר Spatial Reference ואפשר למשתמשים לשנות את ההתייחסות המרחבית לשכבות בעת פריסת הפתרון.",
+    "specifyParam": "פרמטר התייחסות מרחבית",
+    "spatialReferencePlaceholder": "חפש הפניה מרחבית באמצעות שם או WKID",
+    "spatialReferenceInfo": "בחר ברירת המחדל של הפניה מרחבית."
+}

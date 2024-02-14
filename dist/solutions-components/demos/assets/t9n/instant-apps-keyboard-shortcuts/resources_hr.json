@@ -1,0 +1,30 @@
+{
+  "mapShortcuts": {
+    "arrowKeys": "Strelice",
+    "nudge": "Pogurni u lijevo, desno, prema gore ili dolje",
+    "N": "Podesi prema sjeveru",
+    "A": "Zakreni suprotno od smjera kazaljke na satu",
+    "D": "Zakreni u smjeru kazaljke na satu",
+    "plus": "Povećaj sredinu",
+    "minus": "Umanji sredinu"
+  },
+  "sceneShortcuts": {
+    "P": "Pomakni kameru da izgleda okomito na podatke prikazane na karti",
+    "N": "Podesi kartu prema sjeveru",
+    "W": "Nagni kameru prema gore",
+    "A": "Zakreni kameru suprotno od smjera kazaljke na satu",
+    "D": "Zakreni kameru u smjeru kazaljke na satu",
+    "S": "Nagni kameru prema dolje",
+    "globalCommands": {
+      "J": "Pomakni dolje bliže karti",
+      "U": "Pomakni gore podalje od karte"
+    }
+  },
+  "generalShortcuts": {
+    "menu": "izbornik prečaca",
+    "shortcut": "Prečac",
+    "action": "Radnja",
+    "title": "Odaberi kartu",
+    "label": "Prečaci tipkovnice"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "cancel": "ng_Cancel_____________ny",
+  "confirmMultiple": "ng_These features will be permanently removed_______________________ny.",
+  "confirmSingle": "ng_This feature will be permanently removed______________________ny.",
+  "delete": "ng_Delete_____________ny",
+  "deleteCount": "ng_Delete ({{n}})_______________ny",
+  "deleteFeature": "ng_Delete feature_______________ny"
+}

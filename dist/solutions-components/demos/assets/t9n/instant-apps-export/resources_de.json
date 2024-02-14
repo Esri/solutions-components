@@ -1,0 +1,11 @@
+{
+  "export": "Exportieren",
+  "exportPopover": "Popover exportieren",
+  "includeExtraContent": "Ergebnisse einbeziehen",
+  "includeHeaderTheme": "Kopfzeilendesign einbeziehen",
+  "includeLegend": "Legende einbeziehen",
+  "includeMap": "Karte einbeziehen",
+  "includePopup": "Pop-up einbeziehen",
+  "title": "Titel",
+  "toggleExport": "Export ein/aus"
+}

@@ -1,0 +1,16 @@
+{
+  "andOperator": "Tulokset näyttävät KAIKKI täsmäävät suodattimet",
+  "andOperator2": "JA: tulokset näyttävät KAIKKI täsmäävät suodattimet",
+  "close": "Sulje",
+  "maxSlider": "{field}, yläraja",
+  "minSlider": "{field}, alaraja",
+  "nextMonth": "Seuraava kuukausi",
+  "orOperator": "Tulokset näyttävät MITKÄ TAHANSA täsmäävät suodattimet",
+  "orOperator2": "TAI: tulokset näyttävät MITKÄ TAHANSA täsmäävät suodattimet",
+  "previousMonth": "Edellinen kuukausi",
+  "resetDatePicker": "Nollaa päivämäärävalitsin",
+  "resetFilter": "Nollaa suodatin",
+  "selectFilter": "Valitse suodatin",
+  "zoomTo": "Tarkenna kohteeseen",
+  "zoomToExtent": "Tarkenna laajuuteen"
+}

@@ -1,0 +1,30 @@
+{
+  "mapShortcuts": {
+    "arrowKeys": "Piletaster",
+    "nudge": "Skub til venstre, højre, op eller ned",
+    "N": "Justér til at pege mod nord",
+    "A": "Rotér mod uret",
+    "D": "Rotér med uret",
+    "plus": "Zoom ind på centrum",
+    "minus": "Zoom ud fra centrum"
+  },
+  "sceneShortcuts": {
+    "P": "Bevæg kameraet for at få en lodret visning af de data, der vises på kortet",
+    "N": "Justér kortet, så det peger mod nord",
+    "W": "Vip kameraet op",
+    "A": "Rotér kameraet mod uret",
+    "D": "Rotér kameraet med uret",
+    "S": "Vip kameraet ned",
+    "globalCommands": {
+      "J": "Bevæg nedad – tættere på kortet",
+      "U": "Bevæg opad – højere op fra kortet"
+    }
+  },
+  "generalShortcuts": {
+    "menu": "genvejsmenu",
+    "shortcut": "Genvej",
+    "action": "Handling",
+    "title": "Vælg kortet",
+    "label": "Tastaturgenveje"
+  }
+}

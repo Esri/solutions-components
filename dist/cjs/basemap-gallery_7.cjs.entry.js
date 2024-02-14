@@ -1,0 +1,1090 @@
+/*!
+ * Copyright 2022 Esri
+ * Licensed under the Apache License, Version 2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
+ */
+'use strict';
+
+Object.defineProperty(exports, '__esModule', { value: true });
+
+const index = require('./index-105cf2b9.js');
+const locale = require('./locale-8c42ba7a.js');
+require('./esri-loader-a91c0ec1.js');
+require('./_commonjsHelpers-384729db.js');
+
+const basemapGalleryCss = ":host{display:block}";
+
+const BasemapGallery = class {
+    constructor(hostRef) {
+        index.registerInstance(this, hostRef);
+        this.mapView = undefined;
+        this.basemapConfig = undefined;
+        this.basemapWidget = undefined;
+    }
+    //--------------------------------------------------------------------------
+    //
+    //  Watch handlers
+    //
+    //--------------------------------------------------------------------------
+    async mapViewWatchHandler() {
+        await this.mapView.when(() => {
+            void this._initBaseMapGallery(this.mapView);
+        });
+    }
+    //--------------------------------------------------------------------------
+    //
+    //  Methods (public)
+    //
+    //--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    //
+    //  Events (public)
+    //
+    //--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    //
+    //  Functions (lifecycle)
+    //
+    //--------------------------------------------------------------------------
+    /**
+     * StencilJS: Called once just after the component is first connected to the DOM.
+     */
+    async componentWillLoad() {
+        return this._initModules();
+    }
+    /**
+     * StencilJS: Renders the component.
+     */
+    render() {
+        return (index.h(index.Host, null, index.h("div", { ref: (el) => { this._basemapElement = el; } })));
+    }
+    /**
+     * StencilJS: Called once just after the component is fully loaded and the first render() occurs.
+     */
+    async componentDidLoad() {
+        if (this.mapView) {
+            await this.mapViewWatchHandler();
+        }
+    }
+    //--------------------------------------------------------------------------
+    //
+    //  Functions (protected)
+    //
+    //--------------------------------------------------------------------------
+    /**
+     * Load esri javascript api modules
+     *
+     * @returns Promise resolving when function is done
+     *
+     * @protected
+     */
+    async _initModules() {
+        const [BasemapGallery, PortalBasemapsSource] = await locale.loadModules([
+            "esri/widgets/BasemapGallery",
+            "esri/widgets/BasemapGallery/support/PortalBasemapsSource"
+        ]);
+        this.BasemapGallery = BasemapGallery;
+        this.PortalBasemapsSource = PortalBasemapsSource;
+    }
+    /**
+     * Initialize the basemap gallery or reset the current view if it already exists
+     *
+     * @protected
+     */
+    async _initBaseMapGallery(view) {
+        var _a;
+        if (this.BasemapGallery) {
+            if (this.basemapWidget) {
+                this.basemapWidget.destroy();
+            }
+            const source = new this.PortalBasemapsSource({
+                query: ((_a = this.basemapConfig) === null || _a === void 0 ? void 0 : _a.basemapGroupId) ? `id:${this.basemapConfig.basemapGroupId}` : null,
+                filterFunction: this.basemapConfig ? (basemap) => {
+                    return !this.basemapConfig.basemapIdsToFilter.includes(basemap.portalItem.id);
+                } : () => true
+            });
+            await source.refresh();
+            this.basemapWidget = new this.BasemapGallery({
+                container: this._basemapElement,
+                view,
+                source
+            });
+        }
+    }
+    get el() { return index.getElement(this); }
+    static get watchers() { return {
+        "mapView": ["mapViewWatchHandler"]
+    }; }
+};
+BasemapGallery.style = basemapGalleryCss;
+
+const floorFilterCss = ":host{display:block}";
+
+const FloorFilter = class {
+    constructor(hostRef) {
+        index.registerInstance(this, hostRef);
+        this.levelChanged = index.createEvent(this, "levelChanged", 7);
+        this.enabled = undefined;
+        this.floorFilterWidget = undefined;
+        this.mapView = undefined;
+    }
+    //--------------------------------------------------------------------------
+    //
+    //  Watch handlers
+    //
+    //--------------------------------------------------------------------------
+    async mapViewWatchHandler() {
+        await this.mapView.when(() => {
+            this._initFloorFilter(this.mapView);
+        });
+    }
+    //--------------------------------------------------------------------------
+    //
+    //  Functions (lifecycle)
+    //
+    //--------------------------------------------------------------------------
+    /**
+     * StencilJS: Called once just after the component is first connected to the DOM.
+     */
+    async componentWillLoad() {
+        return this._initModules();
+    }
+    render() {
+        return (index.h(index.Host, null, index.h("div", { ref: (el) => { this._floorFilterElement = el; } })));
+    }
+    //--------------------------------------------------------------------------
+    //
+    //  Functions (protected)
+    //
+    //--------------------------------------------------------------------------
+    /**
+     * Load esri javascript api modules
+     *
+     * @returns Promise resolving when function is done
+     *
+     * @protected
+     */
+    async _initModules() {
+        const [FloorFilter, reactiveUtils] = await locale.loadModules([
+            "esri/widgets/FloorFilter",
+            "esri/core/reactiveUtils"
+        ]);
+        this.FloorFilter = FloorFilter;
+        this.reactiveUtils = reactiveUtils;
+    }
+    /**
+     * Initialize the floor filter or reset the current view if it already exists
+     */
+    _initFloorFilter(view) {
+        var _a;
+        if (view && this.enabled && this.FloorFilter && ((_a = view === null || view === void 0 ? void 0 : view.map) === null || _a === void 0 ? void 0 : _a.floorInfo)) {
+            if (!this.floorFilterWidget) {
+                this.floorFilterWidget = new this.FloorFilter({
+                    container: this._floorFilterElement,
+                    view
+                });
+                if (this._levelHandle) {
+                    this._levelHandle.remove();
+                }
+                this._levelHandle = this.reactiveUtils.watch(() => this.floorFilterWidget.level, (level) => {
+                    this.levelChanged.emit(level);
+                });
+            }
+            else {
+                this.floorFilterWidget.view = view;
+            }
+        }
+    }
+    get el() { return index.getElement(this); }
+    static get watchers() { return {
+        "mapView": ["mapViewWatchHandler"]
+    }; }
+};
+FloorFilter.style = floorFilterCss;
+
+const mapFullscreenCss = ":host{display:block}";
+
+const MapFullscreen = class {
+    constructor(hostRef) {
+        index.registerInstance(this, hostRef);
+        this.fullscreenStateChange = index.createEvent(this, "fullscreenStateChange", 7);
+        this.mapView = undefined;
+        this.fullscreenWidget = undefined;
+    }
+    //--------------------------------------------------------------------------
+    //
+    //  Watch handlers
+    //
+    //--------------------------------------------------------------------------
+    /**
+     * Called each time the mapView prop is changed.
+     *
+     * @returns Promise when complete
+     */
+    async mapViewWatchHandler() {
+        await this.mapView.when(async () => {
+            await this._initFullscreenWidget();
+        });
+    }
+    //--------------------------------------------------------------------------
+    //
+    //  Functions (lifecycle)
+    //
+    //--------------------------------------------------------------------------
+    /**
+     * StencilJS: Called once just after the component is first connected to the DOM.
+     */
+    async componentWillLoad() {
+        await this._initModules();
+    }
+    /**
+     * Renders the component.
+     */
+    render() {
+        return (index.h(index.Host, null, index.h("div", { class: "fullscreen-widget", ref: (el) => { this._fullscreenElement = el; } })));
+    }
+    /**
+     * StencilJS: Called just after the component updates.
+     * It's never called during the first render().
+     */
+    async componentDidUpdate() {
+        await this._initFullscreenWidget();
+    }
+    /**
+     * StencilJS: Called once just after the component is fully loaded and the first render() occurs.
+     */
+    async componentDidLoad() {
+        await this._initFullscreenWidget();
+    }
+    //--------------------------------------------------------------------------
+    //
+    //  Functions (protected)
+    //
+    //--------------------------------------------------------------------------
+    /**
+     * Load esri javascript api modules
+     *
+     * @returns Promise resolving when function is done
+     *
+     * @protected
+     */
+    async _initModules() {
+        const [Fullscreen, reactiveUtils] = await locale.loadModules([
+            "esri/widgets/Fullscreen",
+            "esri/core/reactiveUtils"
+        ]);
+        this.Fullscreen = Fullscreen;
+        this.reactiveUtils = reactiveUtils;
+    }
+    /**
+     * Initialize the search widget
+     *
+     * @protected
+     */
+    async _initFullscreenWidget() {
+        if (this.mapView && this._fullscreenElement && !this.fullscreenWidget) {
+            this.fullscreenWidget = new this.Fullscreen({
+                view: this.mapView
+            });
+            await this.fullscreenWidget.when(() => {
+                if (this._fullscreenStateChangeHandle) {
+                    this._fullscreenStateChangeHandle.remove();
+                }
+                this._fullscreenStateChangeHandle = this.reactiveUtils.watch(() => this.fullscreenWidget.viewModel.state, (state) => this.fullscreenStateChange.emit(state));
+            });
+        }
+        else if (this.fullscreenWidget) {
+            this.fullscreenWidget.view = this.mapView;
+        }
+    }
+    static get watchers() { return {
+        "mapView": ["mapViewWatchHandler"]
+    }; }
+};
+MapFullscreen.style = mapFullscreenCss;
+
+const mapLegendCss = ":host{display:block}";
+
+const MapLegend = class {
+    constructor(hostRef) {
+        index.registerInstance(this, hostRef);
+        this.mapView = undefined;
+        this.legendWidget = undefined;
+    }
+    //--------------------------------------------------------------------------
+    //
+    //  Watch handlers
+    //
+    //--------------------------------------------------------------------------
+    async mapViewWatchHandler() {
+        await this.mapView.when(() => {
+            this._initLegend(this.mapView);
+        });
+    }
+    //--------------------------------------------------------------------------
+    //
+    //  Methods (public)
+    //
+    //--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    //
+    //  Events (public)
+    //
+    //--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    //
+    //  Functions (lifecycle)
+    //
+    //--------------------------------------------------------------------------
+    /**
+     * StencilJS: Called once just after the component is first connected to the DOM.
+     */
+    async componentWillLoad() {
+        return this._initModules();
+    }
+    /**
+     * StencilJS: Renders the component.
+     */
+    render() {
+        return (index.h(index.Host, null, index.h("div", { ref: (el) => { this._legendElement = el; } })));
+    }
+    /**
+     * StencilJS: Called once just after the component is fully loaded and the first render() occurs.
+     */
+    async componentDidLoad() {
+        if (this.mapView) {
+            await this.mapViewWatchHandler();
+        }
+    }
+    //--------------------------------------------------------------------------
+    //
+    //  Functions (protected)
+    //
+    //--------------------------------------------------------------------------
+    /**
+     * Load esri javascript api modules
+     *
+     * @returns Promise resolving when function is done
+     *
+     * @protected
+     */
+    async _initModules() {
+        const [Legend] = await locale.loadModules([
+            "esri/widgets/Legend"
+        ]);
+        this.Legend = Legend;
+    }
+    /**
+     * Initialize the basemap gallery or reset the current view if it already exists
+     */
+    _initLegend(view) {
+        if (view && this.Legend) {
+            if (!this.legendWidget) {
+                this.legendWidget = new this.Legend({
+                    container: this._legendElement,
+                    view
+                });
+            }
+            else {
+                this.legendWidget.view = view;
+            }
+        }
+    }
+    get el() { return index.getElement(this); }
+    static get watchers() { return {
+        "mapView": ["mapViewWatchHandler"]
+    }; }
+};
+MapLegend.style = mapLegendCss;
+
+const mapPickerCss = ":host{display:block;--solutions-theme-foreground-color:var(--calcite-color-foreground-1)}.width-full{width:100%}.height-full{height:100%}.display-flex{display:flex}.border-bottom-1{border-width:0px;border-bottom-width:1px;border-style:solid;border-color:var(--calcite-color-border-3)}.action-bar-size{height:51px;width:100%}.map-list{position:absolute;display:flex;flex-direction:column;overflow:hidden;animation:calcite-scrim-fade-in var(--calcite-internal-animation-timing-medium) ease-in-out;background-color:var(--calcite-color-background);z-index:1000;width:100%;height:-moz-fit-content;height:fit-content}.display-none{display:none}.align-center{align-items:center}";
+
+const MapPicker = class {
+    constructor(hostRef) {
+        index.registerInstance(this, hostRef);
+        this.mapInfoChange = index.createEvent(this, "mapInfoChange", 7);
+        /**
+         * string: the id of map currently displayed
+         */
+        this._loadedId = "";
+        this.mapInfos = [];
+        this._mapListExpanded = false;
+        this._translations = undefined;
+        this._webMapInfo = undefined;
+    }
+    //--------------------------------------------------------------------------
+    //
+    //  Watch handlers
+    //
+    //--------------------------------------------------------------------------
+    /**
+     * Called each time the _webMapInfo prop is changed.
+     */
+    _webMapInfoWatchHandler(v, oldV) {
+        if (v && JSON.stringify(v) !== JSON.stringify(oldV)) {
+            this._loadedId = v === null || v === void 0 ? void 0 : v.id;
+            this.mapInfoChange.emit(v);
+        }
+    }
+    /**
+     * Called each time the mapInfos prop is changed.
+     */
+    async mapInfosWatchHandler(v, oldV) {
+        if (v && JSON.stringify(v) !== JSON.stringify(oldV)) {
+            this._webMapSelected(v[0]);
+        }
+    }
+    //--------------------------------------------------------------------------
+    //
+    //  Methods (public)
+    //
+    //--------------------------------------------------------------------------
+    async setMapByID(id) {
+        var _a;
+        const mapInfos = (_a = this.mapInfos) === null || _a === void 0 ? void 0 : _a.filter(i => i.id === id);
+        if (id && (mapInfos === null || mapInfos === void 0 ? void 0 : mapInfos.length) > 0) {
+            this._webMapSelected(mapInfos[0]);
+        }
+    }
+    //--------------------------------------------------------------------------
+    //
+    //  Functions (lifecycle)
+    //
+    //--------------------------------------------------------------------------
+    /**
+     * StencilJS: Called once just after the component is first connected to the DOM.
+     *
+     * @returns Promise when complete
+     */
+    async componentWillLoad() {
+        await this._getTranslations();
+    }
+    /**
+     * Renders the component.
+     */
+    render() {
+        return (index.h(index.Host, null, this._getToolbar(), this._getMapNameList(this._mapListExpanded)));
+    }
+    /**
+     * Called once after the component has loaded
+     */
+    async componentDidLoad() {
+        const webMapInfo = this.mapInfos && this.mapInfos.length > 0 ? this.mapInfos[0] : undefined;
+        if (webMapInfo) {
+            this._webMapSelected(webMapInfo);
+        }
+    }
+    //--------------------------------------------------------------------------
+    //
+    //  Functions (protected)
+    //
+    //--------------------------------------------------------------------------
+    /**
+     * Get a calcite action group for the map list
+     * Actions do not support multiple icons so this uses a block
+     *
+     * @returns the dom node for the action group
+     *
+     * @protected
+     */
+    _getMapPicker() {
+        var _a;
+        const id = "map-picker-expand-toggle";
+        const mapListIcon = this._mapListExpanded ? "chevron-up" : "chevron-down";
+        return (index.h("div", { class: "width-full" }, index.h("calcite-button", { alignment: "icon-end-space-between", appearance: "transparent", class: "width-full height-full", iconEnd: mapListIcon, id: id, kind: "neutral", onClick: () => this._chooseMap(), width: "full" }, (_a = this._webMapInfo) === null || _a === void 0 ? void 0 : _a.name), index.h("calcite-tooltip", { label: "", placement: "bottom", "reference-element": id }, index.h("span", null, this._translations.switchMap))));
+    }
+    /**
+     * Create the toolbar (controls used for map and app interactions)
+     *
+     * @returns The dom node with the toolbar
+     *
+     * @protected
+     */
+    _getToolbar() {
+        return (index.h("div", { class: "display-flex" }, index.h("calcite-action-bar", { class: "border-bottom-1 action-bar-size", "expand-disabled": true, layout: "horizontal", slot: "header" }, this._getMapPicker())));
+    }
+    /**
+     * Get a pick list for all maps in mapInfos
+     *
+     * @param show boolean to indicate if the list should be shown or hidden
+     *
+     * @returns the dom node for the list of maps
+     *
+     * @protected
+     */
+    _getMapNameList(show) {
+        const listClass = show ? "map-list border-bottom-1" : "display-none";
+        return (index.h("div", { class: listClass }, index.h("calcite-list", { id: "mapList", ref: (el) => this._list = el, selectionAppearance: "border", selectionMode: "single" }, this.mapInfos.map(mapInfo => {
+            return (index.h("calcite-list-item", { label: mapInfo.name, onClick: () => this._webMapSelected(mapInfo), selected: mapInfo.id === this._loadedId, value: mapInfo.id }));
+        }))));
+    }
+    /**
+     * Fired when the user clicks on the map list
+     *
+     * @param webMapInfo the web map id and name selected from the list
+     */
+    _webMapSelected(webMapInfo) {
+        this._mapListExpanded = false;
+        this._webMapInfo = webMapInfo;
+    }
+    /**
+     * Toggles the open/close state of the map list
+     *
+     * @returns the dom node for the action group
+     *
+     * @protected
+     */
+    _chooseMap() {
+        this._mapListExpanded = !this._mapListExpanded;
+    }
+    /**
+     * Fetches the component's translations
+     *
+     * @returns Promise when complete
+     * @protected
+     */
+    async _getTranslations() {
+        const messages = await locale.getLocaleComponentStrings(this.el);
+        this._translations = messages[0];
+    }
+    get el() { return index.getElement(this); }
+    static get watchers() { return {
+        "_webMapInfo": ["_webMapInfoWatchHandler"],
+        "mapInfos": ["mapInfosWatchHandler"]
+    }; }
+};
+MapPicker.style = mapPickerCss;
+
+const mapSearchCss = ":host{display:block}.search-widget{width:100% !important;border:1px solid var(--calcite-color-border-input)}";
+
+const MapSearch = class {
+    constructor(hostRef) {
+        index.registerInstance(this, hostRef);
+        this.mapView = undefined;
+        this.popupEnabled = false;
+        this.resultGraphicEnabled = false;
+        this.searchConfiguration = undefined;
+        this.searchTerm = undefined;
+        this.searchWidget = undefined;
+    }
+    //--------------------------------------------------------------------------
+    //
+    //  Watch handlers
+    //
+    //--------------------------------------------------------------------------
+    /**
+     * Called each time the searchConfiguration prop is changed.
+     *
+     * @returns Promise when complete
+     */
+    async watchSearchConfigurationHandler() {
+        this._initSearchWidget();
+    }
+    /**
+     * Called each time the mapView prop is changed.
+     *
+     * @returns Promise when complete
+     */
+    async mapViewWatchHandler() {
+        await this.mapView.when(() => {
+            this._initSearchWidget();
+        });
+    }
+    //--------------------------------------------------------------------------
+    //
+    //  Methods (public)
+    //
+    //--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    //
+    //  Events (public)
+    //
+    //--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    //
+    //  Functions (lifecycle)
+    //
+    //--------------------------------------------------------------------------
+    /**
+     * StencilJS: Called once just after the component is first connected to the DOM.
+     */
+    async componentWillLoad() {
+        await this._initModules();
+    }
+    /**
+     * StencilJS: Called once just after the component is fully loaded and the first render() occurs.
+     */
+    async componentDidLoad() {
+        return this._initSearchWidget();
+    }
+    /**
+     * Renders the component.
+     */
+    render() {
+        return (index.h(index.Host, null, index.h("div", { class: "search-widget", ref: (el) => { this._searchElement = el; } })));
+    }
+    //--------------------------------------------------------------------------
+    //
+    //  Functions (protected)
+    //
+    //--------------------------------------------------------------------------
+    /**
+     * Load esri javascript api modules
+     *
+     * @returns Promise resolving when function is done
+     *
+     * @protected
+     */
+    async _initModules() {
+        const [Search, FeatureLayer] = await locale.loadModules([
+            "esri/widgets/Search",
+            "esri/layers/FeatureLayer"
+        ]);
+        this.Search = Search;
+        this.FeatureLayer = FeatureLayer;
+    }
+    /**
+     * Initialize the search widget
+     *
+     * @protected
+     */
+    _initSearchWidget() {
+        if (this.mapView && this._searchElement && !this.searchWidget) {
+            let searchOptions = {
+                view: this.mapView,
+                container: this._searchElement,
+                searchTerm: this.searchTerm
+            };
+            if (this.searchConfiguration) {
+                const searchConfiguration = this._getSearchConfig(this.searchConfiguration, this.mapView);
+                searchOptions = Object.assign({}, searchConfiguration);
+            }
+            this.searchWidget = new this.Search(searchOptions);
+            this.searchWidget.popupEnabled = this.popupEnabled;
+            this.searchWidget.resultGraphicEnabled = this.resultGraphicEnabled;
+        }
+        else {
+            if (this.searchWidget) {
+                this.searchWidget.view = this.mapView;
+            }
+        }
+    }
+    /**
+     * Initialize the search widget based on user defined configuration
+     *
+     * @param searchConfiguration search configuration defined by the user
+     * @param view the current map view
+     *
+     * @protected
+     */
+    _getSearchConfig(searchConfiguration, view) {
+        const INCLUDE_DEFAULT_SOURCES = "includeDefaultSources";
+        const sources = searchConfiguration.sources;
+        if ((sources === null || sources === void 0 ? void 0 : sources.length) > 0) {
+            searchConfiguration[INCLUDE_DEFAULT_SOURCES] = false;
+            sources.forEach((source) => {
+                var _a, _b;
+                const isLayerSource = source.hasOwnProperty("layer");
+                if (isLayerSource) {
+                    const layerSource = source;
+                    const layerId = (_a = layerSource.layer) === null || _a === void 0 ? void 0 : _a.id;
+                    const layerFromMap = layerId ? view.map.findLayerById(layerId) : null;
+                    const layerUrl = (_b = layerSource === null || layerSource === void 0 ? void 0 : layerSource.layer) === null || _b === void 0 ? void 0 : _b.url;
+                    if (layerFromMap) {
+                        layerSource.layer = layerFromMap;
+                    }
+                    else if (layerUrl) {
+                        layerSource.layer = new this.FeatureLayer(layerUrl);
+                    }
+                }
+            });
+            sources === null || sources === void 0 ? void 0 : sources.forEach((source) => {
+                const isLocatorSource = source.hasOwnProperty("locator");
+                if (isLocatorSource) {
+                    const locatorSource = source;
+                    if ((locatorSource === null || locatorSource === void 0 ? void 0 : locatorSource.name) === "ArcGIS World Geocoding Service") {
+                        const outFields = locatorSource.outFields || ["Addr_type", "Match_addr", "StAddr", "City"];
+                        locatorSource.outFields = outFields;
+                        locatorSource.singleLineFieldName = "SingleLine";
+                    }
+                    locatorSource.url = locatorSource.url;
+                    delete locatorSource.url;
+                }
+            });
+        }
+        else {
+            searchConfiguration = Object.assign(Object.assign({}, searchConfiguration), { includeDefaultSources: true });
+        }
+        return searchConfiguration;
+    }
+    static get watchers() { return {
+        "searchConfiguration": ["watchSearchConfigurationHandler"],
+        "mapView": ["mapViewWatchHandler"]
+    }; }
+};
+MapSearch.style = mapSearchCss;
+
+const mapToolsCss = ":host{display:block}.display-none{display:none}.margin-top-1-2{margin-top:0.5rem}.square-32{width:32px;height:32px}.square-40{width:40px;height:40px}.square-48{width:48px;height:48px}.width-40{width:40px}.square-40-41{width:40px;height:41px}.border-bottom{border-bottom:1px solid var(--calcite-color-border-3)}.box-shadow{box-shadow:0 1px 2px rgba(0, 0, 0, 0.3)}.margin-bottom-1-2{margin-bottom:0.5rem}";
+
+const MapTools = class {
+    constructor(hostRef) {
+        index.registerInstance(this, hostRef);
+        /**
+         * string[]: List of widget names that have been added to the UI
+         * This prop is only used when enableSingleExpand is false
+         */
+        this._widgets = [];
+        this.basemapConfig = undefined;
+        this.enableLegend = undefined;
+        this.enableFloorFilter = undefined;
+        this.enableFullscreen = undefined;
+        this.enableSearch = undefined;
+        this.enableBasemap = undefined;
+        this.enableHome = undefined;
+        this.enableSingleExpand = undefined;
+        this.homeZoomToolsSize = "m";
+        this.layout = "vertical";
+        this.mapView = undefined;
+        this.mapWidgetsSize = "m";
+        this.position = "top-right";
+        this.searchConfiguration = undefined;
+        this.stackTools = true;
+        this.toolOrder = undefined;
+        this._hasFloorInfo = false;
+        this._translations = undefined;
+        this._showTools = true;
+        this._showBasemapWidget = false;
+        this._showFloorFilter = false;
+        this._showFullscreen = false;
+        this._showLegendWidget = false;
+        this._showSearchWidget = false;
+    }
+    //--------------------------------------------------------------------------
+    //
+    //  Watch handlers
+    //
+    //--------------------------------------------------------------------------
+    /**
+     * When the mapView loads check if it supports floor awareness
+     */
+    async mapViewWatchHandler() {
+        await this.mapView.when(() => {
+            var _a, _b;
+            this._hasFloorInfo = (_b = (_a = this.mapView) === null || _a === void 0 ? void 0 : _a.map) === null || _b === void 0 ? void 0 : _b.floorInfo;
+        });
+    }
+    /**
+     * When the _showBasemapWidget property is true display the basemap gallery
+     */
+    async _showBasemapWidgetWatchHandler(v) {
+        if (v) {
+            this.mapView.ui.add(this._basemapElement.basemapWidget, {
+                position: this.position,
+                index: 1
+            });
+        }
+        else {
+            this.mapView.ui.remove(this._basemapElement.basemapWidget);
+        }
+    }
+    /**
+     * When the _showBasemapWidget property is true display the basemap gallery
+     */
+    async _showFloorFilterWatchHandler(v) {
+        const widget = this._floorFilterElement.floorFilterWidget;
+        if (v) {
+            this.mapView.ui.add(widget, {
+                position: this.position,
+                index: 1
+            });
+        }
+        else {
+            this.mapView.ui.remove(widget);
+        }
+    }
+    /**
+     * When the _showFullscreen property is true the app will consume the full screen
+     */
+    async _showFullscreenWatchHandler(v) {
+        const fs = this._fullscreenElement.fullscreenWidget;
+        if (v) {
+            if (fs.viewModel.state === "ready") {
+                fs.viewModel.enter();
+            }
+        }
+        else {
+            if (fs.viewModel.state === "active") {
+                fs.viewModel.exit();
+            }
+        }
+    }
+    /**
+     * When the _showLegendWidget property is true display the search widget
+     */
+    async _showLegendWidgetWatchHandler(v) {
+        if (v) {
+            this.mapView.ui.add(this._legendElement.legendWidget, {
+                position: this.position,
+                index: 1
+            });
+        }
+        else {
+            this.mapView.ui.remove(this._legendElement.legendWidget);
+        }
+    }
+    /**
+     * When the _showSearchWidget property is true display the search widget
+     */
+    async _showSearchWidgetWatchHandler(v) {
+        if (v) {
+            this.mapView.ui.add(this._searchElement.searchWidget, {
+                position: this.position,
+                index: 1
+            });
+        }
+        else {
+            this.mapView.ui.remove(this._searchElement.searchWidget);
+        }
+    }
+    //--------------------------------------------------------------------------
+    //
+    //  Methods (public)
+    //
+    //--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    //
+    //  Events (public)
+    //
+    //--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    //
+    //  Functions (lifecycle)
+    //
+    //--------------------------------------------------------------------------
+    /**
+     * StencilJS: Called once just after the component is first connected to the DOM.
+     */
+    async componentWillLoad() {
+        await this._getTranslations();
+        await this._initModules();
+    }
+    /**
+     * StencilJS: Renders the component.
+     */
+    render() {
+        this._setZoomToolsSize();
+        const toggleIcon = this._showTools ? "chevrons-up" : "chevrons-down";
+        const toolsClass = this._showTools ? "" : "display-none";
+        const searchClass = this._showSearchWidget ? "" : "display-none";
+        const basemapClass = this._showBasemapWidget ? "" : "display-none";
+        const legendClass = this._showLegendWidget ? "" : "display-none";
+        const floorFilterClass = this._showFloorFilter ? "" : "display-none";
+        const fullscreenClass = this._showFullscreen ? "" : "display-none";
+        const expandTip = this._showTools ? this._translations.collapse : this._translations.expand;
+        const containerClass = !this.enableBasemap && !this.enableFullscreen && !this.enableLegend && !this.enableSearch ? "display-none" : "";
+        const toolMarginClass = this.enableSingleExpand ? "margin-top-1-2" : "";
+        const toolOrder = this.toolOrder ? this.toolOrder : ["legend", "search", "fullscreen", "floorfilter"];
+        const shadowClass = this.stackTools ? "box-shadow" : "";
+        return (index.h(index.Host, null, index.h("div", { class: containerClass }, this.enableSingleExpand ? (index.h("div", { class: "box-shadow" }, this._getActionGroup(toggleIcon, false, expandTip, () => this._toggleTools()))) : undefined, index.h("div", { class: `${toolMarginClass} ${shadowClass} ${toolsClass}` }, this._getMapWidgets(toolOrder))), index.h("basemap-gallery", { basemapConfig: this.basemapConfig, class: basemapClass, mapView: this.mapView, ref: (el) => { this._basemapElement = el; } }), index.h("map-search", { class: searchClass, mapView: this.mapView, ref: (el) => { this._searchElement = el; }, resultGraphicEnabled: true, searchConfiguration: this.searchConfiguration }), index.h("map-legend", { class: legendClass, mapView: this.mapView, ref: (el) => { this._legendElement = el; } }), index.h("map-fullscreen", { class: fullscreenClass, mapView: this.mapView, onFullscreenStateChange: (evt) => this._fullscreenStateChange(evt.detail), ref: (el) => { this._fullscreenElement = el; } }), index.h("floor-filter", { class: floorFilterClass, enabled: this.enableFloorFilter, mapView: this.mapView, ref: (el) => { this._floorFilterElement = el; } })));
+    }
+    //--------------------------------------------------------------------------
+    //
+    //  Functions (protected)
+    //
+    //--------------------------------------------------------------------------
+    /**
+     * Load esri javascript api modules
+     *
+     * @returns Promise resolving when function is done
+     *
+     * @protected
+     */
+    async _initModules() {
+        const [Expand] = await locale.loadModules([
+            "esri/widgets/Expand"
+        ]);
+        this.Expand = Expand;
+    }
+    /**
+     * Set the size of the zoom tools based on the user defined homeZoomToolsSize variable.
+     *
+     * @protected
+     */
+    _setZoomToolsSize() {
+        var _a, _b;
+        const zoomIn = (_a = document.getElementsByClassName("esri-zoom")[0]) === null || _a === void 0 ? void 0 : _a.children[0];
+        const zoomOut = (_b = document.getElementsByClassName("esri-zoom")[0]) === null || _b === void 0 ? void 0 : _b.children[1];
+        if (zoomIn && zoomOut) {
+            const size = this.homeZoomToolsSize === "s" ? "32px" : this.homeZoomToolsSize === "m" ? "40px" : "48px";
+            zoomIn.style.width = size;
+            zoomIn.style.height = size;
+            zoomOut.style.width = size;
+            zoomOut.style.height = size;
+        }
+    }
+    /**
+     * Get the map widgets considering the user defined enabled values and tool order
+     *
+     * @protected
+     */
+    _getMapWidgets(toolOrder) {
+        const fullscreenIcon = this._showFullscreen ? "full-screen-exit" : "full-screen";
+        const fullscreenTip = this._showFullscreen ? this._translations.exitFullscreen : this._translations.enterFullscreen;
+        return toolOrder.map(t => {
+            var _a, _b, _c, _d, _e;
+            switch (t) {
+                case "legend":
+                    return this.enableLegend && this.enableSingleExpand ?
+                        this._getActionGroup("legend", false, this._translations.legend, () => this._showLegend()) :
+                        this.enableLegend ? this._getWidget(t, (_a = this._legendElement) === null || _a === void 0 ? void 0 : _a.legendWidget, true) : undefined;
+                case "search":
+                    return this.enableSearch && this.enableSingleExpand ?
+                        this._getActionGroup("magnifying-glass", false, this._translations.search, () => this._search()) :
+                        this.enableSearch ? this._getWidget(t, (_b = this._searchElement) === null || _b === void 0 ? void 0 : _b.searchWidget, true) : undefined;
+                case "fullscreen":
+                    return this.enableFullscreen && this.enableSingleExpand ?
+                        this._getActionGroup(fullscreenIcon, false, fullscreenTip, () => this._expand()) :
+                        this.enableFullscreen ? this._getWidget(t, (_c = this._fullscreenElement) === null || _c === void 0 ? void 0 : _c.fullscreenWidget, false) : undefined;
+                case "basemap":
+                    return this.enableBasemap && this.enableSingleExpand ?
+                        this._getActionGroup("basemap", false, this._translations.basemap, () => this._toggleBasemapPicker()) :
+                        this.enableBasemap ? this._getWidget(t, (_d = this._basemapElement) === null || _d === void 0 ? void 0 : _d.basemapWidget, true) : undefined;
+                case "floorfilter":
+                    return this.enableFloorFilter && this._hasFloorInfo && this.enableSingleExpand ?
+                        this._getActionGroup("urban-model", false, this._translations.floorFilter, () => this._toggleFloorFilter()) :
+                        this.enableFloorFilter && this._hasFloorInfo ? this._getWidget(t, (_e = this._floorFilterElement) === null || _e === void 0 ? void 0 : _e.floorFilterWidget, true) : undefined;
+            }
+        });
+    }
+    /**
+     * Respond to fullscreen state change and ensure our state var is in sync
+     *
+     * @param state The fullscreen view model's state.
+     *
+     * @protected
+     */
+    _fullscreenStateChange(state) {
+        if (state === "ready" && this._showFullscreen) {
+            this._showFullscreen = false;
+        }
+        else if (state === "active" && !this._showFullscreen) {
+            this._showFullscreen = true;
+        }
+    }
+    /**
+     * Get a calcite action group for the current action
+     *
+     * @param icon the icon to display for the current action
+     * @param disabled should the action be disabled
+     * @param tip information tip to display helpful details to end user
+     * @param func the associated onClick function to execute
+     *
+     * @returns the dom node for the action group
+     *
+     * @protected
+     */
+    _getActionGroup(icon, disabled, tip, func) {
+        const sizeClass = this.mapWidgetsSize === "s" ? "square-32" : this.mapWidgetsSize === "m" ? "square-40" : "square-48";
+        const stackClass = this.stackTools ? "" : "margin-bottom-1-2";
+        const shadowClass = this.stackTools ? "" : "box-shadow";
+        return (index.h("div", null, index.h("calcite-action", { alignment: "center", class: `${sizeClass} ${stackClass} border-bottom ${shadowClass}`, compact: false, disabled: disabled, icon: icon, id: icon, onClick: func, scale: "s", text: "" }, index.h("calcite-icon", { icon: "cheveron-up", scale: "s", slot: "icon" })), index.h("calcite-tooltip", { label: "", placement: "trailing", "reference-element": icon }, index.h("span", null, tip))));
+    }
+    /**
+     * Add the widget to the UI and optionally to an Expand widget
+     *
+     * @param name the icon to display for the current action
+     * @param content the widget to display
+     * @param internalExpand when true the widget will be added to an Expand widget
+     *
+     * @protected
+     */
+    _getWidget(name, content, internalExpand) {
+        if (this._widgets.indexOf(name) < 0 && this.mapView && content) {
+            const i = this.toolOrder.indexOf(name);
+            const exp = new this.Expand({
+                view: this.mapView,
+                content
+            });
+            const v = this.enableHome ? 2 : 1;
+            this.mapView.ui.add(internalExpand ? exp : content, {
+                position: this.position,
+                index: i > -1 ? i + v : 1
+            });
+            this._widgets.push(name);
+        }
+    }
+    /**
+     * Show/Hide the legend widget
+     */
+    _showLegend() {
+        this._showLegendWidget = !this._showLegendWidget;
+        this._showTools = false;
+    }
+    /**
+     * Show/Hide the search widget
+     */
+    _search() {
+        this._showSearchWidget = !this._showSearchWidget;
+        this._showTools = false;
+    }
+    /**
+     * Show/Hide the basemap picker
+     */
+    _toggleBasemapPicker() {
+        this._showBasemapWidget = !this._showBasemapWidget;
+        this._showTools = false;
+    }
+    /**
+     * Show/Hide the floor filter
+     */
+    _toggleFloorFilter() {
+        this._showFloorFilter = !this._showFloorFilter;
+        this._showTools = false;
+    }
+    /**
+     * Enter/Exit fullscreen mode
+     */
+    _expand() {
+        this._showFullscreen = !this._showFullscreen;
+    }
+    /**
+     * Show/Hide the map tools
+     */
+    _toggleTools() {
+        if (!this._showTools) {
+            this._showBasemapWidget = false;
+            this._showSearchWidget = false;
+            this._showLegendWidget = false;
+            this._showFloorFilter = false;
+        }
+        this._showTools = !this._showTools;
+    }
+    /**
+     * Fetches the component's translations
+     *
+     * @returns Promise when complete
+     * @protected
+     */
+    async _getTranslations() {
+        const messages = await locale.getLocaleComponentStrings(this.el);
+        this._translations = messages[0];
+    }
+    get el() { return index.getElement(this); }
+    static get watchers() { return {
+        "mapView": ["mapViewWatchHandler"],
+        "_showBasemapWidget": ["_showBasemapWidgetWatchHandler"],
+        "_showFloorFilter": ["_showFloorFilterWatchHandler"],
+        "_showFullscreen": ["_showFullscreenWatchHandler"],
+        "_showLegendWidget": ["_showLegendWidgetWatchHandler"],
+        "_showSearchWidget": ["_showSearchWidgetWatchHandler"]
+    }; }
+};
+MapTools.style = mapToolsCss;
+
+exports.basemap_gallery = BasemapGallery;
+exports.floor_filter = FloorFilter;
+exports.map_fullscreen = MapFullscreen;
+exports.map_legend = MapLegend;
+exports.map_picker = MapPicker;
+exports.map_search = MapSearch;
+exports.map_tools = MapTools;

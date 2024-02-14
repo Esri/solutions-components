@@ -1,0 +1,38 @@
+{
+  "share": {
+    "label": "공유"
+  },
+  "embed": {
+    "label": "임베드",
+    "copy": "복사",
+    "width": "너비",
+    "height": "높이"
+  },
+  "info": {
+    "label": "알고 계십니까?",
+    "tooltip": "링크를 복사하면 현재 맵 뷰, 표시되는 레이어, 열린 팝업이 유지됩니다. 이 옵션을 사용하여 앱에 표시되는 내용을 공유할 수 있습니다."
+  },
+  "success": {
+    "label": "수고하셨습니다!",
+    "url": "앱 URL이 클립보드에 복사되었습니다.",
+    "embed": "임베드 코드가 클립보드에 복사되었습니다."
+  },
+  "options": {
+    "link": {
+      "label": "링크 복사",
+      "tooltip": "클릭하여 클립보드에 링크 복사"
+    },
+    "facebook": {
+      "label": "Facebook",
+      "tooltip": "클릭하여 Facebook 계정에 공유"
+    },
+    "twitter": {
+      "label": "Twitter",
+      "tooltip": "클릭하여 Twitter 계정에 공유"
+    },
+    "linkedIn": {
+      "label": "LinkedIn",
+      "tooltip": "클릭하여 LinkedIn 계정에 공유"
+    }
+  }
+}

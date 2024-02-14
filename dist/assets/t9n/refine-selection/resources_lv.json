@@ -1,0 +1,9 @@
+{
+  "add": "Pievienot",
+  "remove": "Noņemt",
+  "featuresAdded": "Pievienotie elementi: {{n}}",
+  "featuresRemoved": "Noņemtie elementi: {{n}}",
+  "totalSelected": "Kopā atlasīts: {{n}}",
+  "inputLayer": "Ievades slānis",
+  "inputLayerTip": "Izvēlieties ievades slāni, kurā pārskatīt izvēlētos elementus, atjauniniet izvēlētos elelemtus pa vienam ievades slānim."
+}
