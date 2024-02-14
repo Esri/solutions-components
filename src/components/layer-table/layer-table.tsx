@@ -464,7 +464,7 @@ export class LayerTable {
   @Watch("_layer")
   async _layerWatchHandler(): Promise<void> {
     this._fetchingData = true;
-    this._definitionExpression = this._layer.definitionExpression;
+    this._definitionExpression = this._layer?.definitionExpression;
     this._floorField = this._layer?.floorInfo?.floorField;
     this._updateFloorDefinitionExpression();
     await this._resetTable();
