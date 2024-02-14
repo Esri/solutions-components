@@ -32,8 +32,9 @@
   box-shadow: none !important;
 }
 
-.visibility-hidden {
+.visibility-hidden-1 {
   visibility: hidden;
+  height: 1px; /* setting to 1 as 0 would cause the editor to not load in some cases */
 }
 
 .display-none {

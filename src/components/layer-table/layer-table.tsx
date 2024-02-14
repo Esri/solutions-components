@@ -1591,11 +1591,13 @@ export class LayerTable {
    */
   protected _resetColumnTemplates(): void {
     const columnTemplates = this._getColumnTemplates(this._layer?.id, this._layer?.fields);
-    this._table.tableTemplate = new this.TableTemplate({
-      columnTemplates
-    });
-    const fieldNames = columnTemplates.map(f => f.fieldName);
-    this._initColumnsInfo(fieldNames);
+    if (this._table && columnTemplates) {
+      this._table.tableTemplate = new this.TableTemplate({
+        columnTemplates
+      });
+      const fieldNames = columnTemplates.map(f => f.fieldName);
+      this._initColumnsInfo(fieldNames);
+    }
   }
 
   /**
