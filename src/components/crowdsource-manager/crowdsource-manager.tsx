@@ -673,7 +673,7 @@ export class CrowdsourceManager {
     const mapSizeClass = this._getMapSizeClass(layoutMode, panelOpen, hideTable);
     return (
       <div class={`${mapSizeClass} overflow-hidden`}>
-        {this._getMapNode(layoutMode, panelOpen)}
+        {this._getMapNode(panelOpen)}
         {this._getPopupExpandNode()}
       </div>
     );
@@ -689,13 +689,11 @@ export class CrowdsourceManager {
    * @protected
    */
   protected _getMapNode(
-    layoutMode: ELayoutMode,
     panelOpen: boolean
   ): VNode {
-    const mapDisplayClass = layoutMode === ELayoutMode.HORIZONTAL ? "" : layoutMode === ELayoutMode.GRID ? "" : "visibility-hidden";
     const mapContainerClass = this._layoutMode === ELayoutMode.HORIZONTAL && (!this._isMobile || panelOpen) ? "" : "adjusted-height-50";
     return (
-      <div class={`${mapContainerClass} overflow-hidden ${mapDisplayClass}`} >
+      <div class={`${mapContainerClass} overflow-hidden`} >
         <map-card
           basemapConfig={this.basemapConfig}
           class="width-full"
@@ -707,7 +705,7 @@ export class CrowdsourceManager {
           enableLegend={this.enableLegend}
           enableSearch={this.enableSearch}
           enableSingleExpand={true}
-          hidden={this._expandPopup}
+          hidden={this._expandPopup && !this._isMobile}
           homeZoomIndex={3}
           homeZoomPosition={"top-left"}
           homeZoomToolsSize={"s"}

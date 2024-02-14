@@ -287,7 +287,7 @@ export class MapCard {
    * Renders the component.
    */
   render() {
-    const mapClass = this.hidden ? "visibility-hidden" : "";
+    const mapClass = this.hidden ? "visibility-hidden-1" : "";
     const themeClass = this.theme === "dark" ? "calcite-mode-dark" : "calcite-mode-light";
     const mapPickerClass = this.mapInfos?.length > 1 ? "" : "display-none";
     const mapHeightClass = this.mapInfos?.length > 1 ? "map-height" : "height-full";
