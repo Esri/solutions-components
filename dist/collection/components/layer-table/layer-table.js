@@ -858,6 +858,7 @@ export class LayerTable {
                     container: node
                 });
                 this._table.columnPerformanceModeEnabled = false;
+                console.log("columnPerformanceModeEnabled set");
             });
             this._initColumnsInfo();
             this._checkEditEnabled();

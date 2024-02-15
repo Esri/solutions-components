@@ -887,6 +887,7 @@ const LayerTable = /*@__PURE__*/ proxyCustomElement(class LayerTable extends HTM
                     container: node
                 });
                 this._table.columnPerformanceModeEnabled = false;
+                console.log("columnPerformanceModeEnabled set");
             });
             this._initColumnsInfo();
             this._checkEditEnabled();
