@@ -1470,6 +1470,8 @@ export class LayerTable {
           },
           container: node
         } as __esri.FeatureTableProperties);
+        (this._table as any).columnPerformanceModeEnabled = false;
+        console.log("columnPerformanceModeEnabled set");
       });
 
       this._initColumnsInfo();
