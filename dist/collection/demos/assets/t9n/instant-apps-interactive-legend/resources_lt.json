@@ -1,0 +1,15 @@
+{
+  "noLegend": "Nėra legendos.",
+  "loading": "Įkeliama interaktyvi legenda",
+  "open": "Atverti",
+  "close": "Uždaryti",
+  "expand": "Išskleisti",
+  "collapse": "Suskleisti",
+  "totalFeatureCount": "Visas elementų skaičius",
+  "showAll": "Rodyti visus",
+  "zoomTo": "Parodyti visą",
+  "relationship": {
+    "instructionalText": "Spustelėkite spalvotus kvadratus, jei norite filtruoti žemėlapį",
+    "notSupported": "Ryšių braižymo stilius šiuo metu nepalaikomas."
+  }
+}

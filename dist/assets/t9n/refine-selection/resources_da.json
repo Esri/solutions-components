@@ -1,0 +1,9 @@
+{
+  "add": "Tilføj",
+  "remove": "Fjern",
+  "featuresAdded": "Objekter tilføjet: {{n}}",
+  "featuresRemoved": "Objekter fjernet: {{n}}",
+  "totalSelected": "I alt markeret: {{n}}",
+  "inputLayer": "Input-lag",
+  "inputLayerTip": "Vælg inputlag til at gennemgå de valgte objekter, opdater de valgte objekter fra ét inputlag ad gangen."
+}

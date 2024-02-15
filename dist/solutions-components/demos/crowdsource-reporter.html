@@ -1,0 +1,200 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="initial-scale=1,maximum-scale=1,user-scalable=no"
+    />
+    <title>Crowdsource Reporter</title>
+    <!--
+    | Copyright 2022 Esri
+    |
+    | Licensed under the Apache License, Version 2.0 (the "License");
+    | you may not use this file except in compliance with the License.
+    | You may obtain a copy of the License at
+    |
+    |    http://www.apache.org/licenses/LICENSE-2.0
+    |
+    | Unless required by applicable law or agreed to in writing, software
+    | distributed under the License is distributed on an "AS IS" BASIS,
+    | WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    | See the License for the specific language governing permissions and
+    | limitations under the License.
+    -->
+    <style>
+      #viewDiv {
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        bottom: 0px;
+        left: 361px;
+      }
+      #viewDiv[dir="rtl"] {
+        right: 361px;
+        left: 0px;
+      }
+      .over-map {
+        position: absolute;
+        left: 0px;
+        background-color: var(--calcite-color-foreground-1);
+      }
+      .over-map[dir="rtl"] {
+        right: 0px;
+      }
+      .column {
+        width: 360px;
+        border: 1px solid var(--calcite-color-border-2);
+        height: -webkit-fill-available;
+        height: 100%;
+      }
+      .column[dir="rtl"] {
+        float: right;
+      }
+
+      @media screen and (max-width: 600px) {
+        #viewDiv {
+          left: 0;
+          height: 50%;
+          width: 100%;
+        }
+
+        .column {
+          height: 50%;
+          top: 50%;
+          width: calc(100% - 2px);
+        }
+
+        .map-with-panel-collapsed {
+          height: calc(100% - 100px) !important;
+        }
+
+        .column-collapsed {
+          top: calc(100% - 100px);
+          height: 100px;
+        }
+      }
+    </style>
+
+    <link rel="stylesheet" href="https://jsdev.arcgis.com/4.29/esri/themes/light/main.css"/>
+    <link rel="stylesheet" href="https://webapps-cdn.esri.com/CDN/fonts/v1.4.1/fonts.css" />
+    <link rel="stylesheet" href="../solutions-components.css" type="text/css">
+    <link rel="stylesheet" type="text/css" href="https://js.arcgis.com/calcite-components/2.0.0/calcite.css" />
+
+    <script src="https://jsdev.arcgis.com/4.29/"></script>
+    <script type="module" src="../solutions-components.esm.js"></script>
+
+    <script>
+      require(["esri/WebMap", "esri/views/MapView", "esri/widgets/Legend", "esri/config"], (
+        WebMap,
+        MapView,
+        Legend,
+        esriConfig
+      ) => {
+        const demo = document.getElementById("demo");
+        let custom = null;
+        let portal;
+        let locale = 'en'
+        //Support webmap, portal and locale URL parameter
+        //Also, set search params to reporter component - layerId, objectId, center, level etc.
+        let urlObj = new URL(window.location)
+        for (const [key, value] of urlObj.searchParams.entries()) {
+          switch (key) {
+            case "webmap":
+              custom = {
+                id: value
+              };
+              break;
+            case "portal":
+              portal = value;
+              break;
+            case "locale":
+              locale = value;
+              break;
+            case 'layerid':
+              demo.layerId = value;
+              break;
+            case 'oid':
+              demo.objectId = value;
+            case 'center' || 'level':
+              demo[key] = value;
+              break;
+          }
+        }
+
+        // Set the locale before the JSAPI loads
+        esriConfig.locale = locale;
+        demo.lang = locale;
+        
+        //update the portalUrl if found in urlParams
+        //esriConfig.portalUrl = "https://solutions.mapsdevext.arcgis.com";
+        if (portal) {
+          esriConfig.portalUrl = portal;
+        }
+
+        let portalItem = {
+          //id: "f8c4d99deb3c483cac296cc261e18a25", //blank no layers
+          //id: "a7e880f7afbb471991d43c8c4f1438ac" // Se mapping
+          //id: "c720e337ff814fe4a83bc244c46f8e43" //15 Layers
+          //id: "f5186c798b9e40dab1078658ddbc28cf" // 30K features
+          //id: "dda88d905a6748a5ab46bea5be795f33" // screening layers
+          id: "b5bdcb1e5d684dd3b21a2d44b8e4f928" //Popup content
+          //id: "d399ec39959a4aac8617ae4f05dd6785" //Arcade
+          //id: "024e8a5e73a34c5aade9632d651c5750" //Attachments
+        }
+        const webMap = new WebMap({
+          portalItem: custom ?? portalItem
+        });
+
+        demo.mapView = new MapView({
+          container: "viewDiv",
+          map: webMap
+        });
+
+        demo.mapView.when(() => {
+          // const legend = new Legend({
+          //   view: demo.mapView
+          // });
+          // demo.mapView.ui.add(legend, "top-left");
+        });
+        demo.reportsHeader = "Reports";
+        demo.reportButtonText = "Report an incident";
+        demo.enableNewReports = true;
+        demo.theme = "light";
+        demo.reportSubmittedMessage = "Thank you";
+        //Select reporting layers -
+        //demo.layers = ['SE_field_mapping_9688', 'SE_field_mapping_5784', 'SE_field_mapping_1853']; //Se mapping
+        //demo.layers = ['Three_Layers_nested_4042', 'SE_sort_2889', 'SE_sort_756']; //screening layers
+
+        //Update isMobile property of the reporter component
+        const mediaQueryList = window.matchMedia("screen and (max-width: 600px)");
+        demo.isMobile = mediaQueryList.matches;
+        //on change update the prop for is mobile
+        mediaQueryList.onchange = (e) => {
+          demo.isMobile = e.matches;
+          togglePanel({ detail: false })
+        }
+        //listen to togglePanel event
+        demo.addEventListener('togglePanel', togglePanel);
+      });
+
+      function togglePanel(evt) {
+        const state = evt.detail;
+        const viewDiv = document.getElementById("viewDiv");
+        const demo = document.getElementById("demo");
+        if (state) {
+          demo.classList.add("column-collapsed");
+          viewDiv.classList.add("map-with-panel-collapsed");
+        } else {
+          demo.classList.remove("column-collapsed");
+          viewDiv.classList.remove("map-with-panel-collapsed");
+        }
+      }
+    </script>
+  </head>
+
+  <!-- <body class="calcite-mode-dark"> -->
+  <body>
+    <div id="viewDiv"></div>
+    <crowdsource-reporter id="demo" class="over-map column"></crowdsource-reporter>
+  </body>
+</html>

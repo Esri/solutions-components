@@ -1,0 +1,16 @@
+{
+  "listName": "Nume listă",
+  "listNamePlaceholder": "Introduceți numele aici",
+  "searchDistance": "Căutare distanţă",
+  "select": "Strat tematic",
+  "selectedFeatures": "{{n}} obiecte spațiale selectate",
+  "selectionLoading": "Încărcare selecție",
+  "sketch": "Schiţă",
+  "bufferLayer": "Strat tematic buffer",
+  "sketchLayer": "Strat tematic schiță",
+  "useLayerFeatures": "Utilizare obiecte spațiale strat tematic",
+  "inputLayer": "Strat tematic de intrare",
+  "useLayerFeaturesTooltip": "Alegeți un strat tematic și folosiți instrumente de trasare pentru a indica obiecte spațiale care pot fi utilizate ca limită pentru a selecta obiecte spațiale care se intersectează din stratul tematic de intrare.",
+  "useSearchDistanceTootip": "Definiți o distanță pentru un buffer de căutare care va selecta obiectele spațiale de intrare care intersectează bufferul.",
+  "placeholder": "Găsire adresă sau loc"
+}

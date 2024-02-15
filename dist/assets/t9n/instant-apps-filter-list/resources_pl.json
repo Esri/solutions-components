@@ -1,0 +1,16 @@
+{
+  "andOperator": "Wyświetlane będą wyniki pasujące do WSZYSTKICH filtrów",
+  "andOperator2": "AND: Wyświetlane będą wyniki pasujące do WSZYSTKICH filtrów",
+  "close": "Zamknij",
+  "maxSlider": "{field}, górna granica",
+  "minSlider": "{field}, dolna granica",
+  "nextMonth": "Przyszły miesiąc",
+  "orOperator": "Wyświetlane będą wyniki pasujące do DOWOLNYCH filtrów",
+  "orOperator2": "OR: Wyświetlane będą wyniki pasujące do DOWOLNYCH filtrów",
+  "previousMonth": "Ubiegły miesiąc",
+  "resetDatePicker": "Resetuj wybór daty",
+  "resetFilter": "Resetuj filtr",
+  "selectFilter": "Wybierz filtr",
+  "zoomTo": "Powiększ do",
+  "zoomToExtent": "Powiększ do zasięgu"
+}

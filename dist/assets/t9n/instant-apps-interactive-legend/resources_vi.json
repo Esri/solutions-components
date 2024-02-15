@@ -1,0 +1,15 @@
+{
+  "noLegend": "Không có chú giải.",
+  "loading": "Đang tải chú giải tương tác",
+  "open": "Mở",
+  "close": "Đóng",
+  "expand": "Mở rộng",
+  "collapse": "Thu gọn",
+  "totalFeatureCount": "Tổng số lượng đối tượng",
+  "showAll": "Hiện tất cả",
+  "zoomTo": "Phóng tới",
+  "relationship": {
+    "instructionalText": "Bấm vào các ô vuông màu để lọc bản đồ",
+    "notSupported": "Kiểu vẽ mối quan hệ hiện không được hỗ trợ."
+  }
+}

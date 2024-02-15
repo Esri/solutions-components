@@ -1,0 +1,38 @@
+{
+  "share": {
+    "label": "Partager"
+  },
+  "embed": {
+    "label": "Incorporer",
+    "copy": "Copier",
+    "width": "Largeur",
+    "height": "Hauteur"
+  },
+  "info": {
+    "label": "Le saviez-vous ?",
+    "tooltip": "Copier le lien permet de conserver la vue cartographique actuelle, les couches visibles et les fenêtres contextuelles ouvertes. Utilisez cette option pour partager ce que vous voyez dans l’application."
+  },
+  "success": {
+    "label": "Opération réussie !",
+    "url": "URL de l’application copiée dans le Presse-papiers.",
+    "embed": "Code incorporé copié dans le Presse-papiers."
+  },
+  "options": {
+    "link": {
+      "label": "Copier le lien",
+      "tooltip": "Cliquer pour copier le lien dans le Presse-papiers"
+    },
+    "facebook": {
+      "label": "Facebook",
+      "tooltip": "Cliquer pour partager dans votre compte Facebook"
+    },
+    "twitter": {
+      "label": "Twitter",
+      "tooltip": "Cliquer pour partager dans votre compte Twitter"
+    },
+    "linkedIn": {
+      "label": "LinkedIn",
+      "tooltip": "Cliquer pour partager dans votre compte LinkedIn"
+    }
+  }
+}

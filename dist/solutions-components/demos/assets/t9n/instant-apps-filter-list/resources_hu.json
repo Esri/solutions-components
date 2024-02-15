@@ -1,0 +1,16 @@
+{
+  "andOperator": "Az eredmények az ÖSSZES egyező szűrőt megjelenítik",
+  "andOperator2": "ÉS: Az eredmények az ÖSSZES egyező szűrőt megjelenítik",
+  "close": "Bezárás",
+  "maxSlider": "{field}, felső határ",
+  "minSlider": "{field}, alsó határ",
+  "nextMonth": "Következő hónap",
+  "orOperator": "Az eredmények a BÁRMELY egyező szűrőt megjelenítik",
+  "orOperator2": "VAGY: Az eredmények a BÁRMELY egyező szűrőt megjelenítik",
+  "previousMonth": "Előző hónap",
+  "resetDatePicker": "Dátumválasztó visszaállítása",
+  "resetFilter": "Szűrő alaphelyzetbe állítása",
+  "selectFilter": "Szűrő kiválasztása",
+  "zoomTo": "Nagyítás erre",
+  "zoomToExtent": "Nagyítás/kicsinyítés a kiterjedésre"
+}

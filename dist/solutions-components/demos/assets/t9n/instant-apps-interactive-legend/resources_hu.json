@@ -1,0 +1,15 @@
+{
+  "noLegend": "Nincs jelmagyarázat.",
+  "loading": "Interaktív jelmagyarázat betöltése",
+  "open": "Megnyitás",
+  "close": "Bezárás",
+  "expand": "Kibontás",
+  "collapse": "Összecsukás",
+  "totalFeatureCount": "Vektoros elemek teljes száma",
+  "showAll": "Összes megjelenítése",
+  "zoomTo": "Nagyítás erre",
+  "relationship": {
+    "instructionalText": "A térkép szűréséhez kattintson a színes négyzetekre",
+    "notSupported": "Az adatkapcsolat rajzolási stílus jelenleg nem támogatott."
+  }
+}

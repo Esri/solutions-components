@@ -1,0 +1,15 @@
+{
+  "noLegend": "Aucune légende.",
+  "loading": "Chargement de la légende interactive",
+  "open": "Ouvrir",
+  "close": "Fermer",
+  "expand": "Développer",
+  "collapse": "Réduire",
+  "totalFeatureCount": "Nombre total d’entités",
+  "showAll": "Afficher tout",
+  "zoomTo": "Zoom sur",
+  "relationship": {
+    "instructionalText": "Cliquez sur les carrés de couleur pour filtrer la carte",
+    "notSupported": "Le style d’affichage des relations n’est actuellement pas pris en charge."
+  }
+}

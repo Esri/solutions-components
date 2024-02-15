@@ -1,0 +1,16 @@
+{
+  "andOperator": "Rezultātos tiks rādīti VISI atbilstošie filtri",
+  "andOperator2": "UN: rezultātos tiks rādīti VISI atbilstošie filtri",
+  "close": "Aizvērt",
+  "maxSlider": "{field}, augšējā robeža",
+  "minSlider": "{field}, apakšējā robeža",
+  "nextMonth": "Nākamais mēnesis",
+  "orOperator": "Rezultātos tiks rādīti JEBKURI atbilstošie filtri",
+  "orOperator2": "VAI: rezultātos tiks rādīti JEBKURI atbilstošie filtri",
+  "previousMonth": "Iepriekšējais mēnesis",
+  "resetDatePicker": "Atiestatīt datumu atlasītāju",
+  "resetFilter": "Atiestatīt filtru",
+  "selectFilter": "Atlasīt filtru",
+  "zoomTo": "Tuvināt",
+  "zoomToExtent": "Tuvināt līdz pārklājumam"
+}

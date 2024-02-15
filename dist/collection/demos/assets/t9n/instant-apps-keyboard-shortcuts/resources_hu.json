@@ -1,0 +1,30 @@
+{
+  "mapShortcuts": {
+    "arrowKeys": "Navigációs billentyűk",
+    "nudge": "Balra, jobbra, felfelé vagy lefelé történő elmozdítás",
+    "N": "Beállítás észak felé",
+    "A": "Forgatás az óramutató járásával ellentétes irányba",
+    "D": "Forgatás az óramutató járásával megegyező irányba",
+    "plus": "Nagyítás középre",
+    "minus": "Kicsinyítés középre"
+  },
+  "sceneShortcuts": {
+    "P": "Mozgassa a kamerát úgy, hogy merőlegesen nézzen a térképen megjelenített adatokra.",
+    "N": "Térkép beállítása észak felé",
+    "W": "Kamera billentése felfelé",
+    "A": "Kamera forgatása az óramutató járásával ellentétes irányba",
+    "D": "Kamera forgatása az óramutató járásával megegyező irányba",
+    "S": "Kamera billentése lefelé",
+    "globalCommands": {
+      "J": "Mozgatás le, a térképhez közelebb",
+      "U": "Mozgatás fel, a térképtől távolabb"
+    }
+  },
+  "generalShortcuts": {
+    "menu": "gyosbillentyűk menü",
+    "shortcut": "Gyorsbillentyű",
+    "action": "Művelet",
+    "title": "Válassza ki a térképet",
+    "label": "Gyorsbillentyű kombinációk"
+  }
+}

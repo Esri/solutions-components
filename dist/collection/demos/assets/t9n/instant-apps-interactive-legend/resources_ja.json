@@ -1,0 +1,15 @@
+{
+  "noLegend": "凡例なし。",
+  "loading": "対話形式の凡例を読み込んでいます",
+  "open": "開く",
+  "close": "閉じる",
+  "expand": "展開",
+  "collapse": "折りたたむ",
+  "totalFeatureCount": "フィーチャ総数",
+  "showAll": "すべて表示",
+  "zoomTo": "ズーム",
+  "relationship": {
+    "instructionalText": "色の四角形をクリックしてマップをフィルター",
+    "notSupported": "リレーションシップ描画スタイルは現在サポートされていません。"
+  }
+}

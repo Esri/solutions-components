@@ -1,0 +1,30 @@
+{
+  "mapShortcuts": {
+    "arrowKeys": "Tasteri strelice",
+    "nudge": "Pomeri na levo, desno, gore ili dole",
+    "N": "Podesi prema tački sever",
+    "A": "Rotiraj suprotno od smera kretanja kazaljki na satu",
+    "D": "Rotiraj u smeru kretanja kazaljki na satu",
+    "plus": "Zumiranje u sredini",
+    "minus": "Smanjenje zumiranja u sredini"
+  },
+  "sceneShortcuts": {
+    "P": "Pomerite kameru da bi gledala normalno na podatke prikazane na mapi",
+    "N": "Podešavanje mape u pravcu severa",
+    "W": "Naginjanje kamere gore",
+    "A": "Rotiranje kamere suprotno kretanju kazaljke na satu",
+    "D": "Rotiranje kamere u smeru kretanja kazaljke na satu",
+    "S": "Naginjanje kamere dole",
+    "globalCommands": {
+      "J": "Pomeri na dole bliže mapi",
+      "U": "Pomeri na gore dalje od mape"
+    }
+  },
+  "generalShortcuts": {
+    "menu": "meni prečica",
+    "shortcut": "Prečica",
+    "action": "Akcija",
+    "title": "Izaberi mapu",
+    "label": "Prečice na tastaturi"
+  }
+}

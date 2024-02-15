@@ -1,0 +1,20 @@
+{
+  "createReportHeader": "بيت_Create a Report________________لاحقة",
+  "share": "بيت_Share___________لاحقة",
+  "sort": "بيت_Sort_________لاحقة",
+  "filter": "بيت_Filter_____________لاحقة",
+  "expand": "بيت_Expand_____________لاحقة",
+  "collapse": "بيت_Collapse_________________لاحقة",
+  "next": "بيت_Next_________لاحقة",
+  "cancel": "بيت_Cancel_____________لاحقة",
+  "back": "بيت_Back_________لاحقة",
+  "error": "بيت_Error___________لاحقة",
+  "invalidConfigurationErrorMsg": "بيت_Invalid configuration______________________لاحقة",
+  "noLayerToDisplayErrorMsg": "بيت_Configured web map don't have any editable feature layer_____________________________لاحقة",
+  "chooseCategoryMsg": "بيت_Choose a category for the problem you're reporting__________________________لاحقة",
+  "featureErrorMsg": "بيت_Features not found___________________لاحقة",
+  "featureEditFormInfoMsg": "بيت_Please provide the details for the incident you are reporting________________________________لاحقة.",
+  "currentLocationMsg": "بيت_Use my current location________________________لاحقة",
+  "reportSubmit": "بيت_Report Submitted__________________لاحقة.",
+  "submitMsg": "بيت_Thank you! Your report was successfully submitted__________________________لاحقة"
+}

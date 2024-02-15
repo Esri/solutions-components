@@ -1,0 +1,19 @@
+{
+  "clearSelection": "Kijelölés megszüntetése",
+  "exportCSV": "Exportálás CSV-fájlba",
+  "filter": "í_Filter: {{title}}__________________ő",
+  "filters": "Szűrők",
+  "hideField": "í_Hide field_____________________ő",
+  "more": "Továbbiak",
+  "selectAll": "Összes kiválasztása",
+  "share": "í_Share___________ő",
+  "showSelected": "Kiválasztott elemek megjelenítése",
+  "switchSelected": "Váltás a kiválasztott elemekre",
+  "zoom": "Nagyítás/kicsinyítés",
+  "fetchingData": "Adatok lekérése",
+  "refresh": "Frissítés",
+  "showAll": "Összes megjelenítése",
+  "recordsSelected": "Összesen: {{total}} | Kiválasztva: {{selected}}",
+  "moreOptions": "További táblázat beállítások",
+  "showHideColumns": "í_Show/hide columns__________________ő"
+}

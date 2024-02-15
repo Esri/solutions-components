@@ -1,0 +1,38 @@
+{
+  "share": {
+    "label": "Condividi"
+  },
+  "embed": {
+    "label": "Incorpora",
+    "copy": "Copia",
+    "width": "Larghezza",
+    "height": "Altezza"
+  },
+  "info": {
+    "label": "Lo sapevi?",
+    "tooltip": "Copiare il link manterrà la visualizzazione corrente della mappa, i layer visibili e i pop-up aperti maiuscola iniziale usa quest'opzione per condividere ciò che vedi nel'app"
+  },
+  "success": {
+    "label": "Successo!",
+    "url": "URL dell'app copiato negli appunti.",
+    "embed": "Codice incorpora copiato negli appunti."
+  },
+  "options": {
+    "link": {
+      "label": "Copia link",
+      "tooltip": "Clicca per copiare il link negli appunti"
+    },
+    "facebook": {
+      "label": "Facebook",
+      "tooltip": "Clicca per condividere sul tuo account Facebook"
+    },
+    "twitter": {
+      "label": "Twitter",
+      "tooltip": "Clicca per condividere sul tuo account Twitter"
+    },
+    "linkedIn": {
+      "label": "LinkedIn",
+      "tooltip": "Clicca per condividere sul tuo account LinkedIn"
+    }
+  }
+}

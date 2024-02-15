@@ -1,0 +1,38 @@
+{
+  "share": {
+    "label": "Megosztás"
+  },
+  "embed": {
+    "label": "Beágyazás",
+    "copy": "Másolás",
+    "width": "Szélesség",
+    "height": "Magasság"
+  },
+  "info": {
+    "label": "Tudta Ön?",
+    "tooltip": "A hivatkozás másolása megőrzi az aktuális térképnézetet, a látható rétegeket és a megnyitott felugró ablakokat. Ezzel a lehetőséggel megoszthatja az alkalmazásban látottakat."
+  },
+  "success": {
+    "label": "Sikerült!",
+    "url": "Alkalmazás URL-je a vágólapra másolva.",
+    "embed": "A beágyazott kód a vágólapra másolva."
+  },
+  "options": {
+    "link": {
+      "label": "Hivatkozás másolása",
+      "tooltip": "Kattintson a hivatkozás vágólapra másolásához"
+    },
+    "facebook": {
+      "label": "Facebook",
+      "tooltip": "Facebook-fiókjában történő megosztáshoz kattintson"
+    },
+    "twitter": {
+      "label": "Twitter",
+      "tooltip": "Twitter-fiókjában történő megosztáshoz kattintson"
+    },
+    "linkedIn": {
+      "label": "LinkedIn",
+      "tooltip": "LinkedIn-fiókjában történő megosztáshoz kattintson"
+    }
+  }
+}

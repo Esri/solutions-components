@@ -1,0 +1,16 @@
+{
+  "andOperator": "結果將顯示「全部」符合的篩選器",
+  "andOperator2": "AND: 結果將顯示「全部」符合的篩選器",
+  "close": "關閉",
+  "maxSlider": "{field}，上限",
+  "minSlider": "{field}，下限",
+  "nextMonth": "下個月",
+  "orOperator": "結果將顯示「任何」符合的篩選器",
+  "orOperator2": "OR: 結果將顯示「任何」符合的篩選器",
+  "previousMonth": "上個月",
+  "resetDatePicker": "重設日期選取器",
+  "resetFilter": "重設篩選器",
+  "selectFilter": "選擇篩選器",
+  "zoomTo": "縮放至",
+  "zoomToExtent": "縮放至範圍"
+}

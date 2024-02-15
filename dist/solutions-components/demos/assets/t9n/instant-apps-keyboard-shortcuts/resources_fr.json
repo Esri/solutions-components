@@ -1,0 +1,30 @@
+{
+  "mapShortcuts": {
+    "arrowKeys": "Touches de direction",
+    "nudge": "Repositionner à gauche, à droite, en haut ou en bas",
+    "N": "Ajuster pour pointer vers le nord",
+    "A": "Rotation anti-horaire",
+    "D": "Rotation horaire",
+    "plus": "Zoom avant au centre",
+    "minus": "Zoom arrière au centre"
+  },
+  "sceneShortcuts": {
+    "P": "Placer la caméra perpendiculairement aux données affichées dans la carte",
+    "N": "Ajuster la carte pour qu’elle pointe vers le nord",
+    "W": "Incliner la caméra vers le haut",
+    "A": "Rotation anti-horaire de la caméra",
+    "D": "Rotation horaire de la caméra",
+    "S": "Incliner la caméra vers le bas",
+    "globalCommands": {
+      "J": "Déplacer vers le bas en se rapprochant de la carte",
+      "U": "Déplacer vers le haut en s’éloignant de la carte"
+    }
+  },
+  "generalShortcuts": {
+    "menu": "menu des raccourcis",
+    "shortcut": "Raccourci",
+    "action": "Action",
+    "title": "Sélectionner la carte",
+    "label": "Raccourcis clavier"
+  }
+}

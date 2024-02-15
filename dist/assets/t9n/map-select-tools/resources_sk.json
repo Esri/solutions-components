@@ -1,0 +1,16 @@
+{
+  "listName": "Názov zoznamu",
+  "listNamePlaceholder": "Tu zadajte meno",
+  "searchDistance": "Vyhľadávacia vzdialenosť",
+  "select": "Vrstva",
+  "selectedFeatures": "{{n}} vybraných prvkov",
+  "selectionLoading": "Načítanie výberu",
+  "sketch": "Skica",
+  "bufferLayer": "Vrstva pre obalové zóny",
+  "sketchLayer": "Vrstva pre skice",
+  "useLayerFeatures": "Použiť prvky vrstvy",
+  "inputLayer": "Vstupná vrstva",
+  "useLayerFeaturesTooltip": "Vyberte vrstvu a pomocou nástrojov na skicovanie ukážte na prvky, ktoré možno použiť ako hranicu pre výber pretínajúcich sa prvkov zo vstupnej vrstvy.",
+  "useSearchDistanceTootip": "Definujte vzdialenosť pre obalovú zónu vyhľadávania, ktorá vyberie vstupné prvky pretínajúce zónu.",
+  "placeholder": "Vyhľadať adresu alebo miesto"
+}
