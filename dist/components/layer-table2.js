@@ -887,7 +887,6 @@ const LayerTable = /*@__PURE__*/ proxyCustomElement(class LayerTable extends HTM
                     container: node
                 });
                 this._table.columnPerformanceModeEnabled = false;
-                console.log("columnPerformanceModeEnabled set");
             });
             this._initColumnsInfo();
             this._checkEditEnabled();
@@ -1025,6 +1024,8 @@ const LayerTable = /*@__PURE__*/ proxyCustomElement(class LayerTable extends HTM
         }
         this._table.layer = this._layer;
         this._table.view = this.mapView;
+        this._table.tableTemplate.columnTemplates = columnTemplates.reverse();
+        console.log("reverse");
         this._checkEditEnabled();
         this._table.editingEnabled = this._editEnabled && this.enableInlineEdit;
         this._initToolInfos();
