@@ -1,0 +1,20 @@
+{
+  "createReportHeader": "試_Create a Report________________驗",
+  "share": "試_Share___________驗",
+  "sort": "試_Sort_________驗",
+  "filter": "試_Filter_____________驗",
+  "expand": "試_Expand_____________驗",
+  "collapse": "試_Collapse_________________驗",
+  "next": "試_Next_________驗",
+  "cancel": "試_Cancel_____________驗",
+  "back": "試_Back_________驗",
+  "error": "試_Error___________驗",
+  "invalidConfigurationErrorMsg": "試_Invalid configuration______________________驗",
+  "noLayerToDisplayErrorMsg": "試_Configured web map don't have any editable feature layer_____________________________驗",
+  "chooseCategoryMsg": "試_Choose a category for the problem you're reporting__________________________驗",
+  "featureErrorMsg": "試_Features not found___________________驗",
+  "featureEditFormInfoMsg": "試_Please provide the details for the incident you are reporting________________________________驗.",
+  "currentLocationMsg": "試_Use my current location________________________驗",
+  "reportSubmit": "試_Report Submitted__________________驗.",
+  "submitMsg": "試_Thank you! Your report was successfully submitted__________________________驗"
+}

@@ -1,0 +1,30 @@
+{
+  "mapShortcuts": {
+    "arrowKeys": "Bulttaustiņi",
+    "nudge": "Pavirzīt pa kreisi, pa labi, uz augšu vai uz leju",
+    "N": "Pielāgot uz ziemeļiem",
+    "A": "Griezt pretēji pulksteņrādītāju kustības virzienam",
+    "D": "Griezt pulksteņrādītāju kustības virzienā",
+    "plus": "Tuvināt centrā",
+    "minus": "Tālināt no centra"
+  },
+  "sceneShortcuts": {
+    "P": "Pārvietojiet kameru, lai skatītos perpendikulāri kartē redzamajiem datiem",
+    "N": "Pielāgot karti ziemeļu punktam",
+    "W": "Sasvērt kameru uz augšu",
+    "A": "Griezt kameru pretēji pulksteņrādītāju kustības virzienam",
+    "D": "Griezt kameru pulksteņrādītāju kustības virzienā",
+    "S": "Sasvērt kameru uz leju",
+    "globalCommands": {
+      "J": "Pārvietoties uz leju tuvāk kartei",
+      "U": "Pārvietoties augstāk no kartes"
+    }
+  },
+  "generalShortcuts": {
+    "menu": "īsinājumikonu izvēlne",
+    "shortcut": "Īsinājumikona",
+    "action": "Darbība",
+    "title": "Atlasīt karti",
+    "label": "Īsinājumtaustiņi"
+  }
+}

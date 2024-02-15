@@ -1,0 +1,10 @@
+{
+  "fetchingData": "S'estan recuperant les dades",
+  "edit": "Edita",
+  "enableEditing": "Cal haver habilitat la funció d'actualització a la capa.",
+  "editDisabled": "S'ha deshabilitat l'edició",
+  "next": "Següent",
+  "back": "Enrere",
+  "indexOfTotal": "{{index}} de {{total}}",
+  "delete": "ó_Delete_____________à"
+}

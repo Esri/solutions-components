@@ -1,0 +1,16 @@
+{
+  "andOperator": "Les résultats présentent les filtres respectant TOUTES les conditions",
+  "andOperator2": "AND : les résultats présentent les filtres respectant TOUTES les conditions",
+  "close": "Fermer",
+  "maxSlider": "{field}, limite supérieure",
+  "minSlider": "{field}, limite inférieure",
+  "nextMonth": "Mois suivant",
+  "orOperator": "Les résultats présentent les filtres respectant N’IMPORTE QUELLE condition",
+  "orOperator2": "OR : les résultats présentent les filtres respectant N’IMPORTE QUELLE condition",
+  "previousMonth": "Mois précédent",
+  "resetDatePicker": "Réinitialiser le sélecteur de date",
+  "resetFilter": "Réinitialiser le filtre",
+  "selectFilter": "Sélectionner un filtre",
+  "zoomTo": "Zoom sur",
+  "zoomToExtent": "Zoom sur l’étendue"
+}

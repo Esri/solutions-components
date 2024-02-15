@@ -1,0 +1,9 @@
+{
+  "add": "Lisää",
+  "remove": "Poista",
+  "featuresAdded": "Lisätyt kohteet: {{n}}",
+  "featuresRemoved": "Poistetut kohteet: {{n}}",
+  "totalSelected": "Valittu yhteensä: {{n}}",
+  "inputLayer": "Lähtöaineiston karttataso",
+  "inputLayerTip": "Valitse lähtöaineiston karttataso, josta voit tarkastella valittuja kohteita. Päivitä valitut kohteet yhdestä lähtöaineiston karttatasosta kerrallaan."
+}

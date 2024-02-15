@@ -1,0 +1,16 @@
+{
+  "listName": "Loendi nimi",
+  "listNamePlaceholder": "Sisestage nimi siia",
+  "searchDistance": "Otsitav vahemaa",
+  "select": "Kiht",
+  "selectedFeatures": "{{n}} valitud objektid",
+  "selectionLoading": "Valiku laadimine",
+  "sketch": "Visand",
+  "bufferLayer": "Puhvrikiht",
+  "sketchLayer": "Visandikiht",
+  "useLayerFeatures": "Kasuta kihi objekte",
+  "inputLayer": "Sisendkiht",
+  "useLayerFeaturesTooltip": "Valige kiht ja kasutage visandustööriistu, et osutada objektidele, mida saab kasutada piirina lõikuvate objektide valimiseks sisendkihilt.",
+  "useSearchDistanceTootip": "Määrake otsingupuhvri kaugus, millega valitakse puhvriga lõikuvad sisendobjektid.",
+  "placeholder": "Otsi aadressi või kohta"
+}

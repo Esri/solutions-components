@@ -1,0 +1,8 @@
+{
+  "cancel": "ĺ_Cancel_____________ľ",
+  "confirmMultiple": "ĺ_These features will be permanently removed_______________________ľ.",
+  "confirmSingle": "ĺ_This feature will be permanently removed______________________ľ.",
+  "delete": "ĺ_Delete_____________ľ",
+  "deleteCount": "ĺ_Delete ({{n}})_______________ľ",
+  "deleteFeature": "ĺ_Delete feature_______________ľ"
+}

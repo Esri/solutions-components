@@ -1,0 +1,19 @@
+{
+  "clearSelection": "Auswahl aufheben",
+  "exportCSV": "In CSV exportieren",
+  "filter": "ä_Filter: {{title}}__________________Ü",
+  "filters": "Filter",
+  "hideField": "ä_Hide field_____________________Ü",
+  "more": "Mehr",
+  "selectAll": "Alle auswählen",
+  "share": "ä_Share___________Ü",
+  "showSelected": "Ausgewählte anzeigen",
+  "switchSelected": "Auswahl umkehren",
+  "zoom": "Zoomen",
+  "fetchingData": "Daten werden abgerufen",
+  "refresh": "Aktualisieren",
+  "showAll": "Alle anzeigen",
+  "recordsSelected": "Gesamt: {{total}} | Auswahl: {{selected}}",
+  "moreOptions": "Weitere Tabellenoptionen",
+  "showHideColumns": "ä_Show/hide columns__________________Ü"
+}

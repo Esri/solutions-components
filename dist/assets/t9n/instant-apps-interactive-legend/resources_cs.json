@@ -1,0 +1,15 @@
+{
+  "noLegend": "Žádná legenda.",
+  "loading": "Nahrávání interaktivní legendy",
+  "open": "Otevřít",
+  "close": "Zavřít",
+  "expand": "Rozbalit",
+  "collapse": "Sbalit",
+  "totalFeatureCount": "Celkový počet prvků",
+  "showAll": "Zobrazit vše",
+  "zoomTo": "Přiblížit na",
+  "relationship": {
+    "instructionalText": "Kliknutím na barevné čtverce filtrujte mapu",
+    "notSupported": "Styl vykreslování relací není v současné době podporován."
+  }
+}

@@ -1,0 +1,125 @@
+/*!
+ * Copyright 2022 Esri
+ * Licensed under the Apache License, Version 2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
+ */
+'use strict';
+
+Object.defineProperty(exports, '__esModule', { value: true });
+
+const index = require('./index-105cf2b9.js');
+const locale = require('./locale-d237c9d5.js');
+const t9n = require('./t9n-993a84de.js');
+const observers = require('./observers-db4527e4.js');
+const dom = require('./dom-c9c2c835.js');
+require('./key-c5504030.js');
+require('./guid-ae73cd27.js');
+require('./resources-9447c777.js');
+
+/*!
+ * All material copyright ESRI, All Rights Reserved, unless otherwise specified.
+ * See https://github.com/Esri/calcite-design-system/blob/main/LICENSE.md for details.
+ * v2.4.0
+ */
+const CSS = {
+    scrim: "scrim",
+    content: "content",
+};
+const BREAKPOINTS = {
+    s: 72,
+    // medium is assumed default.
+    l: 480, // Greater than or equal to 480px.
+};
+
+const scrimCss = ":host{--calcite-scrim-background:var(--calcite-color-transparent-scrim);position:absolute;inset:0px;z-index:var(--calcite-z-index-overlay);display:flex;block-size:100%;inline-size:100%;flex-direction:column;align-items:stretch}@keyframes calcite-scrim-fade-in{0%{--tw-bg-opacity:0}100%{--tw-text-opacity:1}}.scrim{position:absolute;inset:0px;display:flex;flex-direction:column;align-content:center;align-items:center;justify-content:center;overflow:hidden;animation:calcite-scrim-fade-in var(--calcite-internal-animation-timing-medium) ease-in-out;background-color:var(--calcite-scrim-background, var(--calcite-color-transparent-scrim))}.content{padding:1rem}:host([hidden]){display:none}[hidden]{display:none}";
+
+const Scrim = class {
+    constructor(hostRef) {
+        index.registerInstance(this, hostRef);
+        this.resizeObserver = observers.createObserver("resize", () => this.handleResize());
+        // --------------------------------------------------------------------------
+        //
+        //  Private Methods
+        //
+        // --------------------------------------------------------------------------
+        this.handleDefaultSlotChange = (event) => {
+            this.hasContent = dom.slotChangeHasContent(event);
+        };
+        this.storeLoaderEl = (el) => {
+            this.loaderEl = el;
+            this.handleResize();
+        };
+        this.loading = false;
+        this.messages = undefined;
+        this.messageOverrides = undefined;
+        this.loaderScale = undefined;
+        this.defaultMessages = undefined;
+        this.effectiveLocale = "";
+        this.hasContent = false;
+    }
+    onMessagesChange() {
+        /* wired up by t9n util */
+    }
+    effectiveLocaleChange() {
+        t9n.updateMessages(this, this.effectiveLocale);
+    }
+    //--------------------------------------------------------------------------
+    //
+    //  Lifecycle
+    //
+    //--------------------------------------------------------------------------
+    connectedCallback() {
+        var _a;
+        locale.connectLocalized(this);
+        t9n.connectMessages(this);
+        (_a = this.resizeObserver) === null || _a === void 0 ? void 0 : _a.observe(this.el);
+    }
+    async componentWillLoad() {
+        await t9n.setUpMessages(this);
+    }
+    disconnectedCallback() {
+        var _a;
+        locale.disconnectLocalized(this);
+        t9n.disconnectMessages(this);
+        (_a = this.resizeObserver) === null || _a === void 0 ? void 0 : _a.disconnect();
+    }
+    // --------------------------------------------------------------------------
+    //
+    //  Render Method
+    //
+    // --------------------------------------------------------------------------
+    render() {
+        const { hasContent, loading, messages } = this;
+        return (index.h("div", { class: CSS.scrim }, loading ? (index.h("calcite-loader", { label: messages.loading, scale: this.loaderScale,
+            // eslint-disable-next-line react/jsx-sort-props -- ref should be last so node attrs/props are in sync (see https://github.com/Esri/calcite-design-system/pull/6530)
+            ref: this.storeLoaderEl })) : null, index.h("div", { class: CSS.content, hidden: !hasContent }, index.h("slot", { onSlotchange: this.handleDefaultSlotChange }))));
+    }
+    getScale(size) {
+        if (size < BREAKPOINTS.s) {
+            return "s";
+        }
+        else if (size >= BREAKPOINTS.l) {
+            return "l";
+        }
+        else {
+            return "m";
+        }
+    }
+    handleResize() {
+        var _a;
+        const { loaderEl, el } = this;
+        if (!loaderEl) {
+            return;
+        }
+        this.loaderScale = this.getScale((_a = Math.min(el.clientHeight, el.clientWidth)) !== null && _a !== void 0 ? _a : 0);
+    }
+    static get assetsDirs() { return ["assets"]; }
+    get el() { return index.getElement(this); }
+    static get watchers() { return {
+        "messageOverrides": ["onMessagesChange"],
+        "effectiveLocale": ["effectiveLocaleChange"]
+    }; }
+};
+Scrim.style = scrimCss;
+
+exports.calcite_scrim = Scrim;

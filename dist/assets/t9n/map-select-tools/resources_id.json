@@ -1,0 +1,16 @@
+{
+  "listName": "Nama daftar",
+  "listNamePlaceholder": "Masukkan nama di sini",
+  "searchDistance": "Jarak pencarian",
+  "select": "Layer",
+  "selectedFeatures": "{{n}} fitur yang dipilih",
+  "selectionLoading": "Pilihan dimuat",
+  "sketch": "Sketsa",
+  "bufferLayer": "Layer Buffer",
+  "sketchLayer": "Layer Sketsa",
+  "useLayerFeatures": "Gunakan fitur layer",
+  "inputLayer": "Layer input",
+  "useLayerFeaturesTooltip": "Pilih layer dan gunakan alat sketsa untuk menunjuk ke fitur yang dapat digunakan sebagai batas untuk memilih fitur yang berpotongan dari layer input.",
+  "useSearchDistanceTootip": "Tentukan jarak untuk buffer pencarian yang akan memilih fitur input yang memotong buffer.",
+  "placeholder": "Temukan alamat atau tempat"
+}

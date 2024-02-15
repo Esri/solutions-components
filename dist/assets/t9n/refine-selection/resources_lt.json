@@ -1,0 +1,9 @@
+{
+  "add": "Pridėti",
+  "remove": "Panaikinti",
+  "featuresAdded": "Pridėta elementų: {{n}}",
+  "featuresRemoved": "Pašalinta elementų: {{n}}",
+  "totalSelected": "Iš viso pasirinkta: {{n}}",
+  "inputLayer": "Įvesties sluoksnis",
+  "inputLayerTip": "Pasirinkite įvesties sluoksnį, jei norite peržiūrėti jame pasirinktus elementus. Vienu metu galima atnaujinti tik vieno įvesties sluoksnio pasirinktus elementus."
+}

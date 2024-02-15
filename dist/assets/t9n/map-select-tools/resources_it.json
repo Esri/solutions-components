@@ -1,0 +1,16 @@
+{
+  "listName": "Nome elenco",
+  "listNamePlaceholder": "Inserisci nome qui",
+  "searchDistance": "Distanza di ricerca",
+  "select": "Layer",
+  "selectedFeatures": "{{n}} feature selezionate",
+  "selectionLoading": "Caricamento selezione",
+  "sketch": "Schizzo",
+  "bufferLayer": "Layer buffer",
+  "sketchLayer": "Layer schizzo",
+  "useLayerFeatures": "Utilizza feature del layer",
+  "inputLayer": "Layer di input",
+  "useLayerFeaturesTooltip": "Scegliere un layer e utilizzare gli strumenti di schizzo per puntare alle feature che possono essere utilizzate come un confine per selezionare feature intersecanti dal layer di input.",
+  "useSearchDistanceTootip": "Definire una distanza per un buffer di ricerca che selezionerà le feature di input che intersecano il buffer.",
+  "placeholder": "Trova luogo o indirizzo"
+}

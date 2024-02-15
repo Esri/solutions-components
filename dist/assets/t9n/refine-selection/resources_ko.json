@@ -1,0 +1,9 @@
+{
+  "add": "추가",
+  "remove": "제거",
+  "featuresAdded": "추가된 피처 수: {{n}}",
+  "featuresRemoved": "제거된 피처 수: {{n}}",
+  "totalSelected": "선택한 총수: {{n}}",
+  "inputLayer": "입력 레이어",
+  "inputLayerTip": "선택한 피처를 검토할 입력 레이어를 선택하고, 선택한 피처를 한 번에 하나의 입력 레이어에서 업데이트합니다."
+}

@@ -1,0 +1,16 @@
+/*!
+ * Copyright 2022 Esri
+ * Licensed under the Apache License, Version 2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
+ */
+import{a as i,r as s,h as t,H as n,g as a}from"./p-7d280d8a.js";import{a as e,t as l}from"./p-3dd92f0d.js";import{c as o}from"./p-1f65ab1e.js";import"./p-5a9a971a.js";import"./p-7c2be8cc.js";
+/*!
+ * All material copyright ESRI, All Rights Reserved, unless otherwise specified.
+ * See https://github.com/Esri/calcite-design-system/blob/main/LICENSE.md for details.
+ * v2.4.0
+ */const c={},r={},h={s:16,m:24,l:32};
+/*!
+ * All material copyright ESRI, All Rights Reserved, unless otherwise specified.
+ * See https://github.com/Esri/calcite-design-system/blob/main/LICENSE.md for details.
+ * v2.4.0
+ */const p=class{constructor(i){s(this,i),this.icon=null,this.flipRtl=!1,this.scale="m",this.textLabel=void 0,this.pathData=void 0,this.visible=!1}connectedCallback(){this.waitUntilVisible((()=>{this.visible=!0,this.loadIconPathData()}))}disconnectedCallback(){var i;null===(i=this.intersectionObserver)||void 0===i||i.disconnect(),this.intersectionObserver=null}async componentWillLoad(){this.loadIconPathData()}render(){const{el:i,flipRtl:s,pathData:a,scale:o,textLabel:c}=this,r=e(i),p=h[o],d=!!c,u=[].concat(a||"");return t(n,{"aria-hidden":l(!d),"aria-label":d?c:null,role:d?"img":null},t("svg",{"aria-hidden":"true",class:{"flip-rtl":"rtl"===r&&s,svg:!0},fill:"currentColor",height:"100%",viewBox:`0 0 ${p} ${p}`,width:"100%",xmlns:"http://www.w3.org/2000/svg"},u.map((i=>t("path","string"==typeof i?{d:i}:{d:i.d,opacity:"opacity"in i?i.opacity:1})))))}async loadIconPathData(){const{icon:s,scale:t,visible:n}=this;if(!s||!n)return;const a=await async function({icon:s,scale:t}){const n=h[t],a=function(i){const s=!isNaN(Number(i.charAt(0))),t=i.split("-");if(t.length>0){const s=/[a-z]/i;i=t.map(((i,t)=>i.replace(s,(function(i,s){return 0===t&&0===s?i:i.toUpperCase()})))).join("")}return s?`i${i}`:i}(s),e="F"===a.charAt(a.length-1),l=`${e?a.substring(0,a.length-1):a}${n}${e?"F":""}`;if(c[l])return c[l];r[l]||(r[l]=fetch(i(`./assets/icon/${l}.json`)).then((i=>i.json())).catch((()=>(console.error(`"${l}" is not a valid calcite-ui-icon name`),""))));const o=await r[l];return c[l]=o,o}({icon:s,scale:t});s===this.icon&&(this.pathData=a)}waitUntilVisible(i){this.intersectionObserver=o("intersection",(s=>{s.forEach((s=>{s.isIntersecting&&(this.intersectionObserver.disconnect(),this.intersectionObserver=null,i())}))}),{rootMargin:"50px"}),this.intersectionObserver?this.intersectionObserver.observe(this.el):i()}static get assetsDirs(){return["assets"]}get el(){return a(this)}static get watchers(){return{icon:["loadIconPathData"],scale:["loadIconPathData"]}}};p.style=":host{display:inline-flex;color:var(--calcite-ui-icon-color)}:host([scale=s]){inline-size:16px;block-size:16px;min-inline-size:16px;min-block-size:16px}:host([scale=m]){inline-size:24px;block-size:24px;min-inline-size:24px;min-block-size:24px}:host([scale=l]){inline-size:32px;block-size:32px;min-inline-size:32px;min-block-size:32px}.flip-rtl{transform:scaleX(-1)}.svg{display:block}:host([hidden]){display:none}[hidden]{display:none}";export{p as calcite_icon}

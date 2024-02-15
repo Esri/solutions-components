@@ -1,0 +1,6 @@
+/*!
+ * Copyright 2022 Esri
+ * Licensed under the Apache License, Version 2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
+ */
+import{l as o}from"./p-a8a0187d.js";async function t(o,t){var n,a,e;try{const s=null===(e=null===(a=null===(n=null==t?void 0:t.portalItem)||void 0===n?void 0:n.portal)||void 0===a?void 0:a.credential)||void 0===e?void 0:e.token,i={responseType:"json"};s&&(i.query={token:s});var r="cacheBuster="+Date.now();const l=`${t.url}?${r}`,c=await o(l,i);return Promise.resolve(c.data)}catch(o){console.error("Unable to get resource t9n data.")}}async function n(t){if(!t)return null;const[n]=await o(["esri/portal/PortalItemResource"]),a=await t.fetchResources(),e=`t9n/${null==t?void 0:t.id}.json`,r=new n({path:e,portalItem:t}),s=a.resources.filter((o=>o.resource.path===e));if(0!==s.length)return Promise.resolve(s[0].resource);{const o="application/json",n=new Blob([JSON.stringify({})],{type:o});try{await t.addResource(r,n);const o=await t.fetchResources(),a=`t9n/${null==t?void 0:t.id}.json`,e=o.resources.filter((o=>o.resource.path===a));return Promise.resolve(e[0].resource)}catch(o){return console.error("ERROR: ",o),Promise.reject(null)}}}export{t as f,n as g}

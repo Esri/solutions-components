@@ -1,0 +1,6 @@
+/*!
+ * Copyright 2022 Esri
+ * Licensed under the Apache License, Version 2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
+ */
+import{d as _}from"./p-1065f4fa.js";import"./p-7d280d8a.js";import"./p-1f33a29d.js";import"./p-3dd92f0d.js";import"./p-5a9a971a.js";import"./p-7c2be8cc.js";import"./p-6d520a58.js";import"./p-ba7d55ea.js";import"./p-e7afc0a8.js";import"./p-9d53e0f2.js";import"./p-495e7b9d.js";import"./p-a4149333.js";import"./p-13f2d901.js";import"./p-1f65ab1e.js";import"./p-d7b02d3a.js";import"./p-8007ac36.js";import"./p-f0c7d964.js";import"./p-05cb50f9.js";import"./p-2b0454a0.js";import"./p-c94d2cec.js";var m={name:"ja",weekdays:"日曜日_月曜日_火曜日_水曜日_木曜日_金曜日_土曜日".split("_"),weekdaysShort:"日_月_火_水_木_金_土".split("_"),weekdaysMin:"日_月_火_水_木_金_土".split("_"),months:"1月_2月_3月_4月_5月_6月_7月_8月_9月_10月_11月_12月".split("_"),monthsShort:"1月_2月_3月_4月_5月_6月_7月_8月_9月_10月_11月_12月".split("_"),ordinal:function(_){return _+"日"},formats:{LT:"HH:mm",LTS:"HH:mm:ss",L:"YYYY/MM/DD",LL:"YYYY年M月D日",LLL:"YYYY年M月D日 HH:mm",LLLL:"YYYY年M月D日 dddd HH:mm",l:"YYYY/MM/DD",ll:"YYYY年M月D日",lll:"YYYY年M月D日 HH:mm",llll:"YYYY年M月D日(ddd) HH:mm"},meridiem:function(_){return _<12?"午前":"午後"},relativeTime:{future:"%s後",past:"%s前",s:"数秒",m:"1分",mm:"%d分",h:"1時間",hh:"%d時間",d:"1日",dd:"%d日",M:"1ヶ月",MM:"%dヶ月",y:"1年",yy:"%d年"}};_.locale(m,null,!0);export default m;

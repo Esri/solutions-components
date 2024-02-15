@@ -1,0 +1,19 @@
+{
+  "clearSelection": "Очистити вибір",
+  "exportCSV": "Експорт в CSV",
+  "filter": "ґ_Filter: {{title}}__________________Ї",
+  "filters": "Фільтри",
+  "hideField": "ґ_Hide field_____________________Ї",
+  "more": "Більше",
+  "selectAll": "Вибрати всі",
+  "share": "ґ_Share___________Ї",
+  "showSelected": "Показати вибране",
+  "switchSelected": "Переключити вибране",
+  "zoom": "Масштабування",
+  "fetchingData": "Отримання даних",
+  "refresh": "Оновити",
+  "showAll": "Показати всі",
+  "recordsSelected": "Усього: {{total}} | Вибірка: {{selected}}",
+  "moreOptions": "Інші опції таблиці",
+  "showHideColumns": "ґ_Show/hide columns__________________Ї"
+}
