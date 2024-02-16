@@ -103,6 +103,16 @@ export class CrowdsourceReporter {
   @Prop() objectId: string;
 
   /**
+   * string: Semicolon delimited numbers that will be used as the maps center point from URL params
+   */
+  @Prop() center: string;
+
+  /**
+   * string: Id of the zoom level from URL params
+   */
+  @Prop() level: string;
+
+  /**
    * string: The word(s) to display in the reports submit button
    */
   @Prop() reportButtonText: string;

@@ -9,6 +9,7 @@
 
 | Property                  | Attribute                   | Description                                                                                               | Type                   | Default     |
 | ------------------------- | --------------------------- | --------------------------------------------------------------------------------------------------------- | ---------------------- | ----------- |
+| `center`                  | `center`                    | string: Semicolon delimited numbers that will be used as the maps center point from URL params            | `string`               | `undefined` |
 | `defaultWebmap`           | `default-webmap`            | string: Item ID of the web map that should be selected by default                                         | `string`               | `""`        |
 | `description`             | `description`               | string: The text that will display under the title on the landing page                                    | `string`               | `undefined` |
 | `enableAnonymousAccess`   | `enable-anonymous-access`   | boolean: When true the anonymous users will be allowed to submit reports and comments                     | `boolean`              | `undefined` |
@@ -22,6 +23,7 @@
 | `isMobile`                | `is-mobile`                 | boolean: When true the application will be in mobile mode, controls the mobile or desktop view            | `boolean`              | `undefined` |
 | `layerId`                 | `layer-id`                  | string: Layer id of the feature from URL params                                                           | `string`               | `undefined` |
 | `layers`                  | --                          | string[]: list of layer ids                                                                               | `string[]`             | `undefined` |
+| `level`                   | `level`                     | string: Id of the zoom level from URL params                                                              | `string`               | `undefined` |
 | `loginTitle`              | `login-title`               | string: The text that will display at the top of the landing page                                         | `string`               | `undefined` |
 | `mapInfos`                | --                          | IMapInfo[]: array of map infos (name and id)                                                              | `IMapInfo[]`           | `[]`        |
 | `mapView`                 | --                          | esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html | `MapView`              | `undefined` |

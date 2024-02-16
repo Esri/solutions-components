@@ -226,6 +226,10 @@ export namespace Components {
     }
     interface CrowdsourceReporter {
         /**
+          * string: Semicolon delimited numbers that will be used as the maps center point from URL params
+         */
+        "center": string;
+        /**
           * string: Item ID of the web map that should be selected by default
          */
         "defaultWebmap": string;
@@ -277,6 +281,10 @@ export namespace Components {
           * string[]: list of layer ids
          */
         "layers": string[];
+        /**
+          * string: Id of the zoom level from URL params
+         */
+        "level": string;
         /**
           * string: The text that will display at the top of the landing page
          */
@@ -2294,6 +2302,10 @@ declare namespace LocalJSX {
     }
     interface CrowdsourceReporter {
         /**
+          * string: Semicolon delimited numbers that will be used as the maps center point from URL params
+         */
+        "center"?: string;
+        /**
           * string: Item ID of the web map that should be selected by default
          */
         "defaultWebmap"?: string;
@@ -2345,6 +2357,10 @@ declare namespace LocalJSX {
           * string[]: list of layer ids
          */
         "layers"?: string[];
+        /**
+          * string: Id of the zoom level from URL params
+         */
+        "level"?: string;
         /**
           * string: The text that will display at the top of the landing page
          */
