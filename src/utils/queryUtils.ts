@@ -114,6 +114,7 @@ export async function queryObjectIds(
 
 /**
  * Query the layer for features that have the provided OIDs
+ * If no ids are provided all features will be returned
  *
  * @param ids array of ObjectIDs to be used to query for features in a layer
  * @param layer the layer to retrieve features from
@@ -144,6 +145,10 @@ export async function queryFeaturesByID(
   }
   if (fields) {
     q.outFields = fields;
+  }
+
+  if (ids.length === 0) {
+    ids = await layer.queryObjectIds();
   }
 
   const result = await layer.queryFeatures(q);

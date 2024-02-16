@@ -146,6 +146,11 @@ export class LayerTable {
   @State() _controlsThatFit: IToolSizeInfo[];
 
   /**
+   * boolean: When true a loading indicator will be shown beside the button text
+   */
+  @State() _csvExporting = false;
+
+  /**
    * boolean: When true a loading indicator will be shown in place of the layer table
    */
   @State() _fetchingData = false;
@@ -782,12 +787,13 @@ export class LayerTable {
                   cur.label,
                   cur.func,
                   cur.disabled,
+                  cur.loading,
                   "trigger"
                 )}
                 {this._showHideOpen ? this._getFieldlist() : undefined}
               </calcite-dropdown>
             ) :
-            this._getAction(cur.active, cur.icon, cur.indicator, cur.label, cur.func, cur.disabled)
+            this._getAction(cur.active, cur.icon, cur.indicator, cur.label, cur.func, cur.disabled, cur.loading)
         )
       }
       return prev;
@@ -957,6 +963,7 @@ export class LayerTable {
         indicator: false,
         func: () => void this._exportToCSV(),
         label: this._translations.exportCSV,
+        loading: this._csvExporting,
         disabled: featuresEmpty,
         isOverflow: false
       } : undefined, {
@@ -1191,11 +1198,21 @@ export class LayerTable {
                 selectionMode={item.disabled ? "none" : "single"}
               >
                 <calcite-dropdown-item
-                  iconStart={item.isSublist && this._showHideOpen ? "chevron-down" : item.icon}
+                  disabled={item.loading}
+                  iconStart={item.isSublist && this._showHideOpen ? "chevron-down" : item.loading ? "" : item.icon}
                   id="solutions-subset-list"
                   onClick={item.func}
                 >
-                  {item.label}
+                  {item.loading ? (
+                    <div class={"display-flex"}>
+                      <calcite-loader
+                        inline={true}
+                        label={item.label}
+                        scale="m"
+                      />
+                      {item.label}
+                    </div>
+                  ) : item.label}
                 </calcite-dropdown-item>
               </calcite-dropdown-group>
             )
@@ -1233,6 +1250,7 @@ export class LayerTable {
     label: string,
     func: any,
     disabled: boolean,
+    loading: boolean,
     slot?: string
   ): VNode {
     const _disabled = this._layer === undefined ? true : disabled;
@@ -1246,6 +1264,7 @@ export class LayerTable {
           id={icon}
           indicator={indicator}
           label={label}
+          loading={loading}
           onClick={func}
           text={label}
           textEnabled={true}
@@ -1972,7 +1991,11 @@ export class LayerTable {
       }
       return prev;
     }, []);
-    void downloadUtils.downloadCSV(
+
+    this._updateToolInfoLoading("export", true);
+    this._csvExporting = true;
+
+    await downloadUtils.downloadCSV(
       null,//???
       exportInfos,
       false, // formatUsingLayerPopup
@@ -1981,6 +2004,24 @@ export class LayerTable {
       fields,
       true
     );
+
+    this._updateToolInfoLoading("export", false);
+    this._csvExporting = false;
+  }
+
+  /**
+   * Set the loading prop in the stored toolInfos
+   */
+  protected _updateToolInfoLoading(
+    name: string,
+    isLoading: boolean
+  ): void {
+    this._toolInfos.some(tool => {
+      if (tool?.icon === name) {
+        tool.loading = isLoading;
+        return true;
+      }
+    });
   }
 
   /**
