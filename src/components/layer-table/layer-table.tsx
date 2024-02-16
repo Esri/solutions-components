@@ -1867,18 +1867,17 @@ export class LayerTable {
     const hitTestResult = await this.mapView.hitTest(evt.screenPoint, opts);
     if (hitTestResult.results.length > 0) {
       hitTestResult.results.forEach((result: any) => {
-        this._clearSelection();
         const id = (result.graphic as __esri.Graphic).getObjectId();
         const index = this._table.highlightIds.indexOf(id);
-        if (index > -1) {
-          this._table.highlightIds.removeAt(index);
-        } else {
+        if (index < 0) {
           this._table.highlightIds.add(id);
         }
       });
       if (this._showOnlySelected) {
         this._table.filterBySelection();
       }
+    } else {
+      this._clearSelection();
     }
   }
 
