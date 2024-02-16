@@ -503,6 +503,7 @@ export interface IToolInfo {
   isDanger?: boolean;
   isOverflow: boolean;
   isSublist?: boolean;
+  loading?: boolean;
 }
 
 export interface IToolSizeInfo {
