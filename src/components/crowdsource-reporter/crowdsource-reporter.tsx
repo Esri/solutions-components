@@ -1057,11 +1057,17 @@ export class CrowdsourceReporter {
    * @protected
    */
   protected async loadFeatureFromURLParams(): Promise<void> {
+    if (this.center && this.level) {
+      await this.mapView.goTo({
+        center: this.center.split(';').map(Number),
+        zoom: this.level
+      });
+    }
     if (this.layerId && this.objectId) {
       const layer = await getLayerOrTable(this.mapView, this.layerId);
       if (layer) {
         // only query if we have some ids...query with no ids will result in all features being returned
-        const featureSet = await queryFeaturesByID([Number(this.objectId)], layer, [], false, this.mapView.spatialReference);
+        const featureSet = await queryFeaturesByID([Number(this.objectId)], layer, [], true, this.mapView.spatialReference);
         if (featureSet.length) {
           //update the selectedFeature
           this._selectedFeature = featureSet;
@@ -1072,6 +1078,7 @@ export class CrowdsourceReporter {
           } else {
             this._flowItems = [...this._flowItems];
           }
+          await this.highlightOnMap(featureSet[0]);
         }
       }
     }
