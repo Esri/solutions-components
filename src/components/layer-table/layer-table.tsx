@@ -404,6 +404,18 @@ export class LayerTable {
   }
 
   /**
+   * Update the toolbar when the share button is enabled/disabled
+   */
+  @Watch("enableShare")
+  enableShareWatchHandler(): void {
+    // this should be caught by component did render and is when I test locally
+    // however have had reported case where it is not somehow on devext so adding explicit check here
+    if (this._toolbar) {
+      this._updateToolbar();
+    }
+  }
+
+  /**
    * watch for changes to the list of controls that will currently fit in the display
    */
   @Watch("_controlsThatFit")
@@ -429,18 +441,6 @@ export class LayerTable {
     if (!this._toolInfos && !this.isMobile) {
       this._initToolInfos();
     }
-  }
-
-  /**
-   * watch for changes in map info and recheck the tool infos
-   */
-  @Watch("mapInfo")
-  async mapInfoWatchHandler(): Promise<void> {
-    if (this._toolInfos?.length > 0) {
-      this._initToolInfos();
-    }
-    this._initLayerExpressions();
-    this._resetColumnTemplates();
   }
 
   /**
@@ -1087,7 +1087,7 @@ export class LayerTable {
             this._setControlsThatFit(controlsThatFit, skipControls);
           }
         }
-      }, 5);
+      }, 250);
     }
   }
 
@@ -1489,7 +1489,6 @@ export class LayerTable {
           },
           container: node
         } as __esri.FeatureTableProperties);
-        (this._table as any).columnPerformanceModeEnabled = false;
       });
 
       this._initColumnsInfo();
@@ -1633,8 +1632,6 @@ export class LayerTable {
 
     if (!this._table) {
       await this._getTable(this._tableNode, columnTemplates);
-    } else if (columnTemplates) {
-      this._table.tableTemplate.columnTemplates = columnTemplates;
     }
 
     this._table.layer = this._layer;
@@ -1643,35 +1640,38 @@ export class LayerTable {
     this._table.editingEnabled = this._editEnabled && this.enableInlineEdit;
     this._initToolInfos();
 
-    await this._table.when(async () => {
-      this._table.highlightIds.removeAll();
-      this._table.clearSelectionFilter();
-      this._initColumnsInfo();
+    await this.reactiveUtils.once(
+      () => this._table.state === "loaded")
+      .then(async () => {
+        this._table.highlightIds.removeAll();
+        this._table.clearSelectionFilter();
+        this._resetColumnTemplates();
 
-      if (!this._defaultOidHonored && this.defaultOid?.length > 0 && this.defaultOid[0] > -1) {
-        this._selectDefaultFeature(this.defaultOid);
-        this._defaultOidHonored = true
-      }
-
-      if (!this._defaultGlobalIdHonored && this.defaultGlobalId?.length > 0) {
-        const features = await queryFeaturesByGlobalID(this.defaultGlobalId, this._layer);
-        const oids = features?.length > 0 ? features.map(f => f.getObjectId()) : undefined;
-        if (oids) {
-          this._selectDefaultFeature(oids);
+        if (!this._defaultOidHonored && this.defaultOid?.length > 0 && this.defaultOid[0] > -1) {
+          this._selectDefaultFeature(this.defaultOid);
+          this._defaultOidHonored = true
         }
-        this._defaultGlobalIdHonored = true;
-      }
 
-      if (!this._defaultFilterHonored && this.defaultFilter && this._filterList) {
-        this._layerExpressions = this.defaultFilter;
-        this._filterActive = true;
-        this._defaultFilterHonored = true;
-      }
-    });
+        if (!this._defaultGlobalIdHonored && this.defaultGlobalId?.length > 0) {
+          const features = await queryFeaturesByGlobalID(this.defaultGlobalId, this._layer);
+          const oids = features?.length > 0 ? features.map(f => f.getObjectId()) : undefined;
+          if (oids) {
+            this._selectDefaultFeature(oids);
+          }
+          this._defaultGlobalIdHonored = true;
+        }
 
-    this._showOnlySelected = false;
-    this._sortActive = false;
-    await this._sortTable();
+        if (!this._defaultFilterHonored && this.defaultFilter && this._filterList) {
+          this._layerExpressions = this.defaultFilter;
+          this._filterActive = true;
+          this._defaultFilterHonored = true;
+        }
+
+        this._showOnlySelected = false;
+        this._sortActive = false;
+        await this._sortTable();
+        this._updateToolbar();
+      });
   }
 
   /**
