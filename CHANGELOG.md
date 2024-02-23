@@ -6,6 +6,12 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.7.42] - Feb 23rd 2024
+Remove temp FeatureTable workaround
+Wait for table loaded when resetting the table
+Update toolbar when share is enable/disabled
+Use all fields when none are provided for PDF/CSV download
+
 ## [0.7.41] - Feb 22nd 2024
 Hardcoded strings for Reporter
 Handle center and level for Reporter
@@ -458,4 +464,5 @@ Recover from test releases
 [0.7.39]: https://github.com/Esri/solution.js/compare/v0.7.38...v0.7.39 "v0.7.39"
 [0.7.40]: https://github.com/Esri/solution.js/compare/v0.7.39...v0.7.40 "v0.7.40"
 [0.7.41]: https://github.com/Esri/solution.js/compare/v0.7.40...v0.7.41 "v0.7.41"
-[Unreleased]: https://github.com/Esri/solution.js/compare/v0.7.41...HEAD "Unreleased Changes"
+[0.7.42]: https://github.com/Esri/solution.js/compare/v0.7.41...v0.7.42 "v0.7.42"
+[Unreleased]: https://github.com/Esri/solution.js/compare/v0.7.42...HEAD "Unreleased Changes"
