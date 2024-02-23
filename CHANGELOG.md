@@ -6,6 +6,10 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.7.41] - Feb 22nd 2024
+Hardcoded strings for Reporter
+Handle center and level for Reporter
+
 ## [0.7.40] - Feb 15th 2024
 Add center and level url param props for Reporter
 update map click logic
@@ -453,4 +457,5 @@ Recover from test releases
 [0.7.38]: https://github.com/Esri/solution.js/compare/v0.7.37...v0.7.38 "v0.7.38"
 [0.7.39]: https://github.com/Esri/solution.js/compare/v0.7.38...v0.7.39 "v0.7.39"
 [0.7.40]: https://github.com/Esri/solution.js/compare/v0.7.39...v0.7.40 "v0.7.40"
-[Unreleased]: https://github.com/Esri/solution.js/compare/v0.7.40...HEAD "Unreleased Changes"
+[0.7.41]: https://github.com/Esri/solution.js/compare/v0.7.40...v0.7.41 "v0.7.41"
+[Unreleased]: https://github.com/Esri/solution.js/compare/v0.7.41...HEAD "Unreleased Changes"
