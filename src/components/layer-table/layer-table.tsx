@@ -663,7 +663,6 @@ export class LayerTable {
    * Called after the component is rendered
    */
   componentDidRender(): void {
-    console.log("componentDidRender")
     this._updateToolbar();
   }
 
@@ -1644,7 +1643,6 @@ export class LayerTable {
     await this.reactiveUtils.once(
       () => this._table.state === "loaded")
       .then(async () => {
-        console.log("inside table loaded...should init columns info")
         this._table.highlightIds.removeAll();
         this._table.clearSelectionFilter();
         this._resetColumnTemplates();
