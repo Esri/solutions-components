@@ -1076,7 +1076,7 @@ export class LayerTable {
             this._setControlsThatFit(controlsThatFit, skipControls);
           }
         }
-      }, 5);
+      }, 250);
     }
   }
 
