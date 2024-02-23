@@ -113,6 +113,9 @@ export class LayerList {
    */
   protected _layerItemsHash: ILayerItemsHash;
 
+  //HARDCODED IN EN
+  protected _noLayerToDisplayErrorMsg = "Web map does not contain any editable layers.";
+
   //--------------------------------------------------------------------------
   //
   //  Watch handlers
@@ -188,7 +191,7 @@ export class LayerList {
             kind="danger"
             open>
             <div slot="title">{this._translations.error}</div>
-            <div slot="message">{this.noLayerErrorMsg ? this.noLayerErrorMsg : this._translations.noLayerToDisplayErrorMsg}</div>
+            <div slot="message">{this.noLayerErrorMsg ? this.noLayerErrorMsg : this._noLayerToDisplayErrorMsg}</div>
           </calcite-notice>}
         {!this._isLoading && this.mapView &&
           <calcite-list

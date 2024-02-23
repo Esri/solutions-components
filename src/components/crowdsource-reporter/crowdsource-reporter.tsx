@@ -295,6 +295,9 @@ export class CrowdsourceReporter {
    */
   protected _highlightHandle: __esri.Handle;
 
+  //HARDCODED IN EN
+  protected _noLayerToDisplayErrorMsg = "Web map does not contain any editable layers.";
+
   //--------------------------------------------------------------------------
   //
   //  Watch handlers
@@ -503,7 +506,7 @@ export class CrowdsourceReporter {
             class="height-full"
             layers={this.layers}
             mapView={this.mapView}
-            noLayerErrorMsg={this._translations.noLayerToDisplayErrorMsg}
+            noLayerErrorMsg={this._noLayerToDisplayErrorMsg}
             onLayerSelect={this.displayFeaturesList.bind(this)}
             onLayersListLoaded={this.layerListLoaded.bind(this)}
             ref={el => this._layerList = el as HTMLLayerListElement}
@@ -557,7 +560,7 @@ export class CrowdsourceReporter {
             class="height-full"
             layers={this.layers}
             mapView={this.mapView}
-            noLayerErrorMsg={this._translations.noLayerToDisplayErrorMsg}
+            noLayerErrorMsg={this._noLayerToDisplayErrorMsg}
             onLayerSelect={this.highlightSelectedLayer.bind(this)}
             showFeatureCount={false}
             showNextIcon={false} />
