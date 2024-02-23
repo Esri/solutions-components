@@ -404,6 +404,18 @@ export class LayerTable {
   }
 
   /**
+   * Update the toolbar when the share button is enabled/disabled
+   */
+  @Watch("enableShare")
+  enableShareWatchHandler(): void {
+    // this should be caught by component did render and is when I test locally
+    // however have had reported case where it is not somehow on devext so adding explicit check here
+    if (this._toolbar) {
+      this._updateToolbar();
+    }
+  }
+
+  /**
    * watch for changes to the list of controls that will currently fit in the display
    */
   @Watch("_controlsThatFit")
