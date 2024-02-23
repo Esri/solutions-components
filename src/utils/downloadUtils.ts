@@ -846,6 +846,9 @@ export async function _prepareLabels(
   fields = [],
   useFieldAliasNames = false
 ): Promise<string[][]> {
+  if (fields.length === 0) {
+    fields = layer.fields.map(f => f.name.toLowerCase())
+  }
   // Get the label formatting, if any
   const labelFormatProps: ILabelFormatProps = await _getLabelFormat(webmap, layer, formatUsingLayerPopup);
 
@@ -915,8 +918,7 @@ export async function _prepareLabels(
 
   } else {
     // Get the features to export
-    const outFields = fields.length > 0 ? fields : undefined;
-    featureSet = await queryFeaturesByID(ids, featureLayer, [], false, undefined, outFields);
+    featureSet = await queryFeaturesByID(ids, featureLayer, [], false, undefined, fields);
   }
 
   // Get field data types. Do we have any domain-based fields?
