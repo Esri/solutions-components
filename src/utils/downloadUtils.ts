@@ -846,6 +846,9 @@ export async function _prepareLabels(
   fields = [],
   useFieldAliasNames = false
 ): Promise<string[][]> {
+  if (fields.length === 0) {
+    fields = layer.fields.map(f => f.name.toLowerCase())
+  }
   // Get the label formatting, if any
   const labelFormatProps: ILabelFormatProps = await _getLabelFormat(webmap, layer, formatUsingLayerPopup);
 
