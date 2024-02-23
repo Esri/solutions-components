@@ -918,8 +918,7 @@ export async function _prepareLabels(
 
   } else {
     // Get the features to export
-    const outFields = fields.length > 0 ? fields : undefined;
-    featureSet = await queryFeaturesByID(ids, featureLayer, [], false, undefined, outFields);
+    featureSet = await queryFeaturesByID(ids, featureLayer, [], false, undefined, fields);
   }
 
   // Get field data types. Do we have any domain-based fields?
