@@ -6,6 +6,10 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.7.43] - Feb 23rd 2024
+Fix sort issue
+Update strings
+
 ## [0.7.42] - Feb 23rd 2024
 Remove temp FeatureTable workaround
 Wait for table loaded when resetting the table
@@ -465,4 +469,5 @@ Recover from test releases
 [0.7.40]: https://github.com/Esri/solution.js/compare/v0.7.39...v0.7.40 "v0.7.40"
 [0.7.41]: https://github.com/Esri/solution.js/compare/v0.7.40...v0.7.41 "v0.7.41"
 [0.7.42]: https://github.com/Esri/solution.js/compare/v0.7.41...v0.7.42 "v0.7.42"
-[Unreleased]: https://github.com/Esri/solution.js/compare/v0.7.42...HEAD "Unreleased Changes"
+[0.7.43]: https://github.com/Esri/solution.js/compare/v0.7.42...v0.7.43 "v0.7.43"
+[Unreleased]: https://github.com/Esri/solution.js/compare/v0.7.43...HEAD "Unreleased Changes"
