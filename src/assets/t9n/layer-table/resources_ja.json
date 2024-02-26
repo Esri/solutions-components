@@ -1,12 +1,12 @@
 {
   "clearSelection": "選択の解除",
   "exportCSV": "CSV にエクスポート",
-  "filter": "須_Filter: {{title}}__________________鷗",
+  "filter": "フィルター: {{title}}",
   "filters": "フィルター",
-  "hideField": "須_Hide field_____________________鷗",
+  "hideField": "フィールドを非表示",
   "more": "その他",
   "selectAll": "すべて選択",
-  "share": "須_Share___________鷗",
+  "share": "共有",
   "showSelected": "選択の表示",
   "switchSelected": "選択の切り替え",
   "zoom": "ズーム",
@@ -15,5 +15,5 @@
   "showAll": "すべて表示",
   "recordsSelected": "合計: {{total}} | 選択: {{selected}}",
   "moreOptions": "その他のテーブル オプション",
-  "showHideColumns": "須_Show/hide columns__________________鷗"
+  "showHideColumns": "列の表示/非表示"
 }

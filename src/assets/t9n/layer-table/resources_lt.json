@@ -1,12 +1,12 @@
 {
   "clearSelection": "Valyti išranką",
   "exportCSV": "Eksportuoti į CSV",
-  "filter": "Į_Filter: {{title}}__________________š",
+  "filter": "Filtras: {{title}}",
   "filters": "Filtrai",
-  "hideField": "Į_Hide field_____________________š",
+  "hideField": "Slėpti lauką",
   "more": "Daugiau",
   "selectAll": "Pasirinkti viską",
-  "share": "Į_Share___________š",
+  "share": "Bendrinti",
   "showSelected": "Rodyti pasirinktus",
   "switchSelected": "Pakeisti pasirinktus",
   "zoom": "Didinti",
@@ -15,5 +15,5 @@
   "showAll": "Rodyti visus",
   "recordsSelected": "Iš viso: {{total}} | Pasirinkta: {{selected}}",
   "moreOptions": "Daugiau lentelės parinkčių",
-  "showHideColumns": "Į_Show/hide columns__________________š"
+  "showHideColumns": "Rodyti / slėpti stulpelius"
 }

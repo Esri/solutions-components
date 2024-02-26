@@ -1,4 +1,4 @@
 {
-  "error": "Ř_Error___________ů",
-  "noLayerToDisplayErrorMsg": "Ř_Configured web map don't have any editable feature layer_____________________________ů"
+  "error": "Chyba",
+  "noLayerToDisplayErrorMsg": "Nakonfigurovaná webová mapa nemá žádnou vrstvu prvků, kterou lze editovat."
 }

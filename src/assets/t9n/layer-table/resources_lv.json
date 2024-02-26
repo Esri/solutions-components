@@ -1,12 +1,12 @@
 {
   "clearSelection": "Notīrīt izvēli",
   "exportCSV": "Eksportēt kā CSV failu",
-  "filter": "ķ_Filter: {{title}}__________________ū",
+  "filter": "Filtrēt: {{title}}",
   "filters": "Filtri",
-  "hideField": "ķ_Hide field_____________________ū",
+  "hideField": "Paslēpt lauku",
   "more": "Vairāk",
   "selectAll": "Izvēlēties visu",
-  "share": "ķ_Share___________ū",
+  "share": "Koplietot",
   "showSelected": "Rādīt izvēlēto",
   "switchSelected": "Pārslēgt izvēlēto",
   "zoom": "Tālummaiņa",
@@ -15,5 +15,5 @@
   "showAll": "Rādīt visu",
   "recordsSelected": "Kopā: {{total}} | Izvēle: {{selected}}",
   "moreOptions": "Citas tabulas opcijas",
-  "showHideColumns": "ķ_Show/hide columns__________________ū"
+  "showHideColumns": "Rādīt/paslēpt kolonnas"
 }

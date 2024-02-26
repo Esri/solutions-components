@@ -1,4 +1,4 @@
 {
-  "error": "ã_Error___________Ç",
-  "noLayerToDisplayErrorMsg": "ã_Configured web map don't have any editable feature layer_____________________________Ç"
+  "error": "Erro",
+  "noLayerToDisplayErrorMsg": "O mapa da web configurado não possui nenhuma camada de feição editável."
 }

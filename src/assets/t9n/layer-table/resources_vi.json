@@ -1,12 +1,12 @@
 {
   "clearSelection": "Xóa lựa chọn",
   "exportCSV": "Xuất thành CSV",
-  "filter": "Đ_Filter: {{title}}__________________ớ",
+  "filter": "Bộ lọc: {{title}}",
   "filters": "Bộ lọc",
-  "hideField": "Đ_Hide field_____________________ớ",
+  "hideField": "Ẩn trường",
   "more": "Thêm",
   "selectAll": "Chọn tất cả",
-  "share": "Đ_Share___________ớ",
+  "share": "Chia sẻ",
   "showSelected": "Hiển thị mục được chọn",
   "switchSelected": "Chuyển đổi mục được chọn",
   "zoom": "Thu phóng",
@@ -15,5 +15,5 @@
   "showAll": "Hiện tất cả",
   "recordsSelected": "Tổng: {{total}} | Lựa chọn: {{selected}}",
   "moreOptions": "Các tùy chọn bảng khác",
-  "showHideColumns": "Đ_Show/hide columns__________________ớ"
+  "showHideColumns": "Hiển thị/ẩn cột"
 }

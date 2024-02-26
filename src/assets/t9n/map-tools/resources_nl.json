@@ -4,7 +4,7 @@
   "expand": "Uitvouwen",
   "basemap": "Basiskaart",
   "collapse": "Samenvouwen",
-  "enterFullscreen": "Ĳ_Enter full screen__________________ä",
-  "exitFullscreen": "Ĳ_Exit full screen_________________ä",
+  "enterFullscreen": "Volledig scherm activeren",
+  "exitFullscreen": "Volledig scherm afsluiten",
   "floorFilter": "Verdiepingenfilter"
 }

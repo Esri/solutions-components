@@ -4,7 +4,7 @@
   "expand": "توسيع",
   "basemap": "خريطة أساس",
   "collapse": "طي",
-  "enterFullscreen": "بيت_Enter full screen__________________لاحقة",
-  "exitFullscreen": "بيت_Exit full screen_________________لاحقة",
+  "enterFullscreen": "إدخال ملء الشاشة",
+  "exitFullscreen": "خروج من ملء الشاشة",
   "floorFilter": "عامل تصفية الطوابق"
 }

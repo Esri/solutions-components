@@ -1,12 +1,12 @@
 {
   "clearSelection": "Изчистване на избора",
   "exportCSV": "Експортиране в CSV",
-  "filter": "й_Filter: {{title}}__________________й",
+  "filter": "Филтър: {{title}}",
   "filters": "Филтри",
-  "hideField": "й_Hide field_____________________й",
+  "hideField": "Скриване на полето",
   "more": "Още",
   "selectAll": "Избиране на всички",
-  "share": "й_Share___________й",
+  "share": "Споделяне",
   "showSelected": "Показване на избраните",
   "switchSelected": "Превключване на избрани",
   "zoom": "Мащабиране",
@@ -15,5 +15,5 @@
   "showAll": "Показване на всички",
   "recordsSelected": "Общо: {{total}} | Избор: {{selected}}",
   "moreOptions": "Още опции за таблица",
-  "showHideColumns": "й_Show/hide columns__________________й"
+  "showHideColumns": "Показване/скриване на колони"
 }

@@ -1,4 +1,4 @@
 {
-  "error": "Ж_Error___________Я",
-  "featureErrorMsg": "Ж_Features not found___________________Я"
+  "error": "Ошибка",
+  "featureErrorMsg": "Пространственные объекты не найдены."
 }

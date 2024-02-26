@@ -4,7 +4,7 @@
   "expand": "Udvid",
   "basemap": "Baggrundskort",
   "collapse": "Skjul",
-  "enterFullscreen": "ø_Enter full screen__________________å",
-  "exitFullscreen": "ø_Exit full screen_________________å",
+  "enterFullscreen": "Gå til Fuld skærm-tilstand",
+  "exitFullscreen": "Afslut Fuld skærm-tilstand",
   "floorFilter": "Etagefilter"
 }

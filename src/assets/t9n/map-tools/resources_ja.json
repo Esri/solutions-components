@@ -4,7 +4,7 @@
   "expand": "展開",
   "basemap": "ベースマップ",
   "collapse": "折りたたむ",
-  "enterFullscreen": "須_Enter full screen__________________鷗",
-  "exitFullscreen": "須_Exit full screen_________________鷗",
+  "enterFullscreen": "全画面表示に切り替え",
+  "exitFullscreen": "全画面表示を終了",
   "floorFilter": "フロア フィルター"
 }

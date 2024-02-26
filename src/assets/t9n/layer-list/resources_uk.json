@@ -1,4 +1,4 @@
 {
-  "error": "ґ_Error___________Ї",
-  "noLayerToDisplayErrorMsg": "ґ_Configured web map don't have any editable feature layer_____________________________Ї"
+  "error": "Помилка",
+  "noLayerToDisplayErrorMsg": "Налаштована веб-карта не містить векторного шару, який можна редагувати."
 }

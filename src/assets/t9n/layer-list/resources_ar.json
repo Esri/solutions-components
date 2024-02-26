@@ -1,4 +1,4 @@
 {
-  "error": "بيت_Error___________لاحقة",
-  "noLayerToDisplayErrorMsg": "بيت_Configured web map don't have any editable feature layer_____________________________لاحقة"
+  "error": "خطأ",
+  "noLayerToDisplayErrorMsg": "لا تحتوي خريطة الويب التي تم تكوينها على أي طبقة معالم قابلة للتحرير."
 }

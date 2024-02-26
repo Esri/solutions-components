@@ -4,7 +4,7 @@
   "expand": "Razširi",
   "basemap": "Temeljna karta",
   "collapse": "Strni",
-  "enterFullscreen": "Š_Enter full screen__________________č",
-  "exitFullscreen": "Š_Exit full screen_________________č",
+  "enterFullscreen": "Vstop v celozaslonski način",
+  "exitFullscreen": "Izhod iz celozaslonskega načina",
   "floorFilter": "Filter nadstropij"
 }

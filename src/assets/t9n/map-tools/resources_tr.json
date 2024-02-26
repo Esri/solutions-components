@@ -4,7 +4,7 @@
   "expand": "Genişlet",
   "basemap": "Altlık Harita",
   "collapse": "Daralt",
-  "enterFullscreen": "ı_Enter full screen__________________İ",
-  "exitFullscreen": "ı_Exit full screen_________________İ",
+  "enterFullscreen": "Tam ekrana gir",
+  "exitFullscreen": "Tam ekrandan çık",
   "floorFilter": "Kat filtresi"
 }

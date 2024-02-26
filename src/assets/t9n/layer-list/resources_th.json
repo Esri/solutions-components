@@ -1,4 +1,4 @@
 {
-  "error": "ก้_Error___________ษฺ",
-  "noLayerToDisplayErrorMsg": "ก้_Configured web map don't have any editable feature layer_____________________________ษฺ"
+  "error": "ข้อผิดพลาด",
+  "noLayerToDisplayErrorMsg": "เว็บแมปที่กำหนดค่าไว้ไม่มีชั้นข้อมูลฟีเจอร์ที่สามารถแก้ไขได้"
 }

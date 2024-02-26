@@ -1,12 +1,12 @@
 {
   "clearSelection": "مسح التحديد",
   "exportCSV": "تصدير إلى CSV",
-  "filter": "بيت_Filter: {{title}}__________________لاحقة",
+  "filter": "تصفية: {{title}}",
   "filters": "عوامل تصفية",
-  "hideField": "بيت_Hide field_____________________لاحقة",
+  "hideField": "إخفاء الحقل",
   "more": "المزيد",
   "selectAll": "تحديد الكل",
-  "share": "بيت_Share___________لاحقة",
+  "share": "مشاركة",
   "showSelected": "عرض المحدد",
   "switchSelected": "تبديل المحدد",
   "zoom": "تغيير مقياس الرسم",
@@ -15,5 +15,5 @@
   "showAll": "إظهار الكل",
   "recordsSelected": "الإجمالي: {{total}} | التحديد: {{selected}}",
   "moreOptions": "المزيد من خيارات الجدول",
-  "showHideColumns": "بيت_Show/hide columns__________________لاحقة"
+  "showHideColumns": "إظهار/إخفاء الأعمدة"
 }

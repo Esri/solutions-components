@@ -1,8 +1,8 @@
 {
-  "cancel": "ķ_Cancel_____________ū",
-  "confirmMultiple": "ķ_These features will be permanently removed_______________________ū.",
-  "confirmSingle": "ķ_This feature will be permanently removed______________________ū.",
-  "delete": "ķ_Delete_____________ū",
-  "deleteCount": "ķ_Delete ({{n}})_______________ū",
-  "deleteFeature": "ķ_Delete feature_______________ū"
+  "cancel": "Atcelt",
+  "confirmMultiple": "Šie elementi tiks neatgriezeniski noņemti.",
+  "confirmSingle": "Šis elements tiks neatgriezeniski noņemts.",
+  "delete": "Dzēst",
+  "deleteCount": "Dzēst ({{n}})",
+  "deleteFeature": "Dzēst elementu"
 }

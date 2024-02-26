@@ -1,12 +1,12 @@
 {
   "clearSelection": "נקה בחירה",
   "exportCSV": "יצוא ל-CSV",
-  "filter": "כן_Filter: {{title}}__________________ש",
+  "filter": "מסנן: {{title}}",
   "filters": "סינונים",
-  "hideField": "כן_Hide field_____________________ש",
+  "hideField": "הסתר שדה",
   "more": "עוד",
   "selectAll": "בחר הכול",
-  "share": "כן_Share___________ש",
+  "share": "שתף",
   "showSelected": "הצג פריטים שנבחרו",
   "switchSelected": "החלף פריטים שנבחרו.",
   "zoom": "זום",
@@ -15,5 +15,5 @@
   "showAll": "הצג הכול",
   "recordsSelected": "(סה\"כ: {{total}} | בחירה: {{selected}})",
   "moreOptions": "אפשרויות טבלה נוספות",
-  "showHideColumns": "כן_Show/hide columns__________________ש"
+  "showHideColumns": "הצג/הסתר עמודות"
 }

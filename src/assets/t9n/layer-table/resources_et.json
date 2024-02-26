@@ -1,12 +1,12 @@
 {
   "clearSelection": "Tühista valik",
   "exportCSV": "Ekspordi CSV-vormingusse",
-  "filter": "Š_Filter: {{title}}__________________ä",
+  "filter": "Filter: {{title}}",
   "filters": "Filtrid",
-  "hideField": "Š_Hide field_____________________ä",
+  "hideField": "Peida väli",
   "more": "Rohkem",
   "selectAll": "Vali kõik",
-  "share": "Š_Share___________ä",
+  "share": "Jagamine",
   "showSelected": "Kuva valitud",
   "switchSelected": "Lülita valitud",
   "zoom": "Suumi",
@@ -15,5 +15,5 @@
   "showAll": "Kuva kõik",
   "recordsSelected": "Kokku: {{total}} | Valik: {{selected}}",
   "moreOptions": "Rohkem tabelivalikuid",
-  "showHideColumns": "Š_Show/hide columns__________________ä"
+  "showHideColumns": "Kuva/peida veerud"
 }

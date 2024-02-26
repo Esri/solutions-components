@@ -1,4 +1,4 @@
 {
-  "error": "Š_Error___________č",
-  "noLayerToDisplayErrorMsg": "Š_Configured web map don't have any editable feature layer_____________________________č"
+  "error": "Napaka",
+  "noLayerToDisplayErrorMsg": "Konfigurirana spletna karta nima nobenega sloja geoobjektov, ki bi ga bilo mogoče urejati."
 }

@@ -4,7 +4,7 @@
   "expand": "확장",
   "basemap": "베이스맵",
   "collapse": "축소",
-  "enterFullscreen": "한_Enter full screen__________________빠",
-  "exitFullscreen": "한_Exit full screen_________________빠",
+  "enterFullscreen": "전체 화면으로 전환",
+  "exitFullscreen": "전체 화면 종료",
   "floorFilter": "층 필터"
 }

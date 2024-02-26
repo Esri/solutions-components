@@ -1,12 +1,12 @@
 {
   "clearSelection": "ล้างการเลือก",
   "exportCSV": "ส่งออกเป็น CSV",
-  "filter": "ก้_Filter: {{title}}__________________ษฺ",
+  "filter": "ตัวกรอง: {{title}}",
   "filters": "ตัวกรอง",
-  "hideField": "ก้_Hide field_____________________ษฺ",
+  "hideField": "ซ่อนฟิลด์",
   "more": "กว่า",
   "selectAll": "เลือกทั้งหมด",
-  "share": "ก้_Share___________ษฺ",
+  "share": "แชร์",
   "showSelected": "แสดงที่เลือก",
   "switchSelected": "สลับรายการที่เลือก",
   "zoom": "ขยาย",
@@ -15,5 +15,5 @@
   "showAll": "แสดงทั้งหมด",
   "recordsSelected": "รวม: {{total}} | ที่เลือก: {{selected}}",
   "moreOptions": "ตัวเลือกตารางเพิ่มเติม",
-  "showHideColumns": "ก้_Show/hide columns__________________ษฺ"
+  "showHideColumns": "แสดง/ซ่อนคอลัมน์"
 }

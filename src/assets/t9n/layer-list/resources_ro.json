@@ -1,4 +1,4 @@
 {
-  "error": "Ă_Error___________ș",
-  "noLayerToDisplayErrorMsg": "Ă_Configured web map don't have any editable feature layer_____________________________ș"
+  "error": "Eroare",
+  "noLayerToDisplayErrorMsg": "Harta web configurată nu are niciun strat tematic de obiect spațial editabil."
 }

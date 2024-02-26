@@ -1,12 +1,12 @@
 {
   "clearSelection": "Hapus pilihan",
   "exportCSV": "Ekspor ke CSV",
-  "filter": "ng_Filter: {{title}}__________________ny",
+  "filter": "Filter: {{title}}",
   "filters": "Filter",
-  "hideField": "ng_Hide field_____________________ny",
+  "hideField": "Sembunyikan kolom",
   "more": "Lainnya",
   "selectAll": "Pilih semua",
-  "share": "ng_Share___________ny",
+  "share": "Bagikan",
   "showSelected": "Tampilkan yang dipilih",
   "switchSelected": "Alihkan yang dipilih",
   "zoom": "Perbesar",
@@ -15,5 +15,5 @@
   "showAll": "Tampilkan semua",
   "recordsSelected": "Total: {{total}} | Pilihan: {{selected}}",
   "moreOptions": "Opsi tabel lainnya",
-  "showHideColumns": "ng_Show/hide columns__________________ny"
+  "showHideColumns": "Tampilkan/sembunyikan kolom"
 }

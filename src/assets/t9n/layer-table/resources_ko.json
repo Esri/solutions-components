@@ -1,12 +1,12 @@
 {
   "clearSelection": "선택 해제",
   "exportCSV": "CSV로 내보내기",
-  "filter": "한_Filter: {{title}}__________________빠",
+  "filter": "필터: {{title}}",
   "filters": "필터",
-  "hideField": "한_Hide field_____________________빠",
+  "hideField": "필드 숨기기",
   "more": "더 보기",
   "selectAll": "모두 선택",
-  "share": "한_Share___________빠",
+  "share": "공유",
   "showSelected": "선택한 항목 보기",
   "switchSelected": "선택한 항목 전환",
   "zoom": "확대/축소",
@@ -15,5 +15,5 @@
   "showAll": "모두 보기",
   "recordsSelected": "총: {{total}}개 | 선택: {{selected}}개",
   "moreOptions": "추가 테이블 옵션",
-  "showHideColumns": "한_Show/hide columns__________________빠"
+  "showHideColumns": "열 표시/숨기기"
 }
