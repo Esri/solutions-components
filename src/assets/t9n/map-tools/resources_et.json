@@ -4,7 +4,7 @@
   "expand": "Laienda",
   "basemap": "Aluskaart",
   "collapse": "Ahenda",
-  "enterFullscreen": "Š_Enter full screen__________________ä",
-  "exitFullscreen": "Š_Exit full screen_________________ä",
+  "enterFullscreen": "Kuva täisekraanil",
+  "exitFullscreen": "Välju täisekraanilt",
   "floorFilter": "Korrusefilter"
 }

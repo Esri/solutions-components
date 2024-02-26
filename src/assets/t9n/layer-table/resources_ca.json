@@ -1,12 +1,12 @@
 {
   "clearSelection": "Esborra la selecció",
   "exportCSV": "Exporta a CSV",
-  "filter": "ó_Filter: {{title}}__________________à",
+  "filter": "Filtre: {{title}}",
   "filters": "Filtres",
-  "hideField": "ó_Hide field_____________________à",
+  "hideField": "Amaga el camp",
   "more": "Més",
   "selectAll": "Selecciona-ho tot",
-  "share": "ó_Share___________à",
+  "share": "Comparteix",
   "showSelected": "Mostra els seleccionats",
   "switchSelected": "Canvia la selecció",
   "zoom": "Zoom",
@@ -15,5 +15,5 @@
   "showAll": "Mostra-ho tot",
   "recordsSelected": "Total: {{total}} | Selecció: {{selected}}",
   "moreOptions": "Més opcions de taula",
-  "showHideColumns": "ó_Show/hide columns__________________à"
+  "showHideColumns": "Mostra o amaga columnes"
 }

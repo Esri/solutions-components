@@ -4,7 +4,7 @@
   "expand": "Розширити",
   "basemap": "Базова карта",
   "collapse": "Згорнути",
-  "enterFullscreen": "ґ_Enter full screen__________________Ї",
-  "exitFullscreen": "ґ_Exit full screen_________________Ї",
+  "enterFullscreen": "На весь екран",
+  "exitFullscreen": "Вийти з режиму повного екрана",
   "floorFilter": "Фільтр поверху"
 }

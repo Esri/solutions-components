@@ -1,8 +1,8 @@
 {
-  "cancel": "כן_Cancel_____________ש",
-  "confirmMultiple": "כן_These features will be permanently removed_______________________ש.",
-  "confirmSingle": "כן_This feature will be permanently removed______________________ש.",
-  "delete": "כן_Delete_____________ש",
-  "deleteCount": "כן_Delete ({{n}})_______________ש",
-  "deleteFeature": "כן_Delete feature_______________ש"
+  "cancel": "ביטול",
+  "confirmMultiple": "ישויות אלה יוסרו לצמיתות.",
+  "confirmSingle": "ישות זו תוסר לצמיתות.",
+  "delete": "מחיקה",
+  "deleteCount": "מחק ({{n}})",
+  "deleteFeature": "מחק ישות"
 }

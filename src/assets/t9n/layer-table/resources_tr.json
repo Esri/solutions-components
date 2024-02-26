@@ -1,12 +1,12 @@
 {
   "clearSelection": "Seçimi temizle",
   "exportCSV": "CSV olarak dışa aktar",
-  "filter": "ı_Filter: {{title}}__________________İ",
+  "filter": "Filtre: {{title}}",
   "filters": "Filtreler",
-  "hideField": "ı_Hide field_____________________İ",
+  "hideField": "Alanı gizle",
   "more": "Daha fazla",
   "selectAll": "Tümünü seç",
-  "share": "ı_Share___________İ",
+  "share": "Paylaş",
   "showSelected": "Seçilenleri göster",
   "switchSelected": "Seçili olanı değiştir",
   "zoom": "Yakınlaştır",
@@ -15,5 +15,5 @@
   "showAll": "Tümünü göster",
   "recordsSelected": "Toplam: {{total}} | Seçim: {{selected}}",
   "moreOptions": "Daha fazla tablo seçeneği",
-  "showHideColumns": "ı_Show/hide columns__________________İ"
+  "showHideColumns": "Sütunları göster/gizle"
 }

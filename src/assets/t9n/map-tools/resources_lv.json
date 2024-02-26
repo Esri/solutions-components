@@ -4,7 +4,7 @@
   "expand": "Izvērst",
   "basemap": "Pamatkarte",
   "collapse": "Sakļaut",
-  "enterFullscreen": "ķ_Enter full screen__________________ū",
-  "exitFullscreen": "ķ_Exit full screen_________________ū",
+  "enterFullscreen": "Atvērt pilnekrāna režīmu",
+  "exitFullscreen": "Iziet no pilnekrāna režīma",
   "floorFilter": "Stāvu filtrs"
 }

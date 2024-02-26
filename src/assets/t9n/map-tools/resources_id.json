@@ -4,7 +4,7 @@
   "expand": "Bentang",
   "basemap": "Peta Dasar",
   "collapse": "Tutup",
-  "enterFullscreen": "ng_Enter full screen__________________ny",
-  "exitFullscreen": "ng_Exit full screen_________________ny",
+  "enterFullscreen": "Masuk layar penuh",
+  "exitFullscreen": "Keluar dari layar penuh",
   "floorFilter": "Filter lantai"
 }

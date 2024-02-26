@@ -4,7 +4,7 @@
   "expand": "Rozwiń",
   "basemap": "Mapa bazowa",
   "collapse": "Zwiń",
-  "enterFullscreen": "ł_Enter full screen__________________ą",
-  "exitFullscreen": "ł_Exit full screen_________________ą",
+  "enterFullscreen": "Wyświetl na pełnym ekranie",
+  "exitFullscreen": "Opuść tryb pełnoekranowy",
   "floorFilter": "Filtr kondygnacji"
 }

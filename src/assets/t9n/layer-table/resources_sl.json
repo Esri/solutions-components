@@ -1,12 +1,12 @@
 {
   "clearSelection": "Počisti izbiro",
   "exportCSV": "Izvozi v CSV",
-  "filter": "Š_Filter: {{title}}__________________č",
+  "filter": "Filter: {{title}}",
   "filters": "Filtri",
-  "hideField": "Š_Hide field_____________________č",
+  "hideField": "Skrij polje",
   "more": "Več",
   "selectAll": "Izberi vse",
-  "share": "Š_Share___________č",
+  "share": "Deli",
   "showSelected": "Prikaži izbrano",
   "switchSelected": "Preklopi izbrano",
   "zoom": "Povečava",
@@ -15,5 +15,5 @@
   "showAll": "Prikaži vse",
   "recordsSelected": "Skupno: {{total}} | Selection: {{selected}}",
   "moreOptions": "Več možnosti tabele",
-  "showHideColumns": "Š_Show/hide columns__________________č"
+  "showHideColumns": "Pokaži/skrij stolpce"
 }

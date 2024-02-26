@@ -1,12 +1,12 @@
 {
   "clearSelection": "Effacer la sélection",
   "exportCSV": "Exporter au format CSV",
-  "filter": "æ_Filter: {{title}}__________________Â",
+  "filter": "Filtre : {{title}}",
   "filters": "Filtres",
-  "hideField": "æ_Hide field_____________________Â",
+  "hideField": "Masquer le champ",
   "more": "Plus",
   "selectAll": "Sélectionner tout",
-  "share": "æ_Share___________Â",
+  "share": "Partager",
   "showSelected": "Afficher la sélection",
   "switchSelected": "Inverser la sélection",
   "zoom": "Zoom",
@@ -15,5 +15,5 @@
   "showAll": "Afficher tout",
   "recordsSelected": "Total : {{total}} | Sélection : {{selected}}",
   "moreOptions": "Autres options de la table",
-  "showHideColumns": "æ_Show/hide columns__________________Â"
+  "showHideColumns": "Afficher/masquer les colonnes"
 }

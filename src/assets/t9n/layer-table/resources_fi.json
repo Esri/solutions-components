@@ -1,12 +1,12 @@
 {
   "clearSelection": "Tyhjennä valinnat",
   "exportCSV": "Vie CSV-tiedostoon",
-  "filter": "Å_Filter: {{title}}__________________ö",
+  "filter": "Suodatin: {{title}}",
   "filters": "Suodattimet",
-  "hideField": "Å_Hide field_____________________ö",
+  "hideField": "Piilota kenttä",
   "more": "Enemmän",
   "selectAll": "Valitse kaikki",
-  "share": "Å_Share___________ö",
+  "share": "Jaa",
   "showSelected": "Näytä valitut",
   "switchSelected": "Vaihda valitut",
   "zoom": "Tarkenna",
@@ -15,5 +15,5 @@
   "showAll": "Näytä kaikki",
   "recordsSelected": "Yhteensä: {{total}} | Valinta: {{selected}}",
   "moreOptions": "Muut taulun asetukset",
-  "showHideColumns": "Å_Show/hide columns__________________ö"
+  "showHideColumns": "Näytä/piilota sarakkeet"
 }

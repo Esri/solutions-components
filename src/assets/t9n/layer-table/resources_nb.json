@@ -1,12 +1,12 @@
 {
   "clearSelection": "Tøm utvalg",
   "exportCSV": "Eksporter til CSV",
-  "filter": "å_Filter: {{title}}__________________ø",
+  "filter": "Filter: {{title}}",
   "filters": "Filtre",
-  "hideField": "å_Hide field_____________________ø",
+  "hideField": "Skjul felt",
   "more": "Mer",
   "selectAll": "Velg alle",
-  "share": "å_Share___________ø",
+  "share": "Del",
   "showSelected": "Vis valgte",
   "switchSelected": "Bytt valgte",
   "zoom": "Zoom",
@@ -15,5 +15,5 @@
   "showAll": "Vis alle",
   "recordsSelected": "Totalt: {{total}} | Utvalg: {{selected}}",
   "moreOptions": "Flere tabellalternativer",
-  "showHideColumns": "å_Show/hide columns__________________ø"
+  "showHideColumns": "Vis/skjul kolonner"
 }

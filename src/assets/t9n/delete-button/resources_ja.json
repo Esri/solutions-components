@@ -1,8 +1,8 @@
 {
-  "cancel": "須_Cancel_____________鷗",
-  "confirmMultiple": "須_These features will be permanently removed_______________________鷗.",
-  "confirmSingle": "須_This feature will be permanently removed______________________鷗.",
-  "delete": "須_Delete_____________鷗",
-  "deleteCount": "須_Delete ({{n}})_______________鷗",
-  "deleteFeature": "須_Delete feature_______________鷗"
+  "cancel": "キャンセル",
+  "confirmMultiple": "これらのフィーチャは完全に削除されます。",
+  "confirmSingle": "このフィーチャは完全に削除されます。",
+  "delete": "削除",
+  "deleteCount": "削除 ({{n}})",
+  "deleteFeature": "フィーチャの削除"
 }

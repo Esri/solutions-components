@@ -4,7 +4,7 @@
   "expand": "ขยาย",
   "basemap": "แผนที่ฐาน",
   "collapse": "ย่อลงมา",
-  "enterFullscreen": "ก้_Enter full screen__________________ษฺ",
-  "exitFullscreen": "ก้_Exit full screen_________________ษฺ",
+  "enterFullscreen": "เข้าสู่โหมดเต็มหน้าจอ",
+  "exitFullscreen": "ออกจากโหมดเต็มจอ",
   "floorFilter": "ตัวกรองชั้น"
 }

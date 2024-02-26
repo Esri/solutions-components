@@ -4,7 +4,7 @@
   "expand": "Proširi",
   "basemap": "Pozadinska mapa",
   "collapse": "Skupi",
-  "enterFullscreen": "Č_Enter full screen__________________ž",
-  "exitFullscreen": "Č_Exit full screen_________________ž",
+  "enterFullscreen": "Uđi na ceo ekran",
+  "exitFullscreen": "Izađi iz režima celog ekrana",
   "floorFilter": "Filter sprata"
 }

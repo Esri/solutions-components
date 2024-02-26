@@ -4,7 +4,7 @@
   "expand": "Développer",
   "basemap": "Fond de carte",
   "collapse": "Réduire",
-  "enterFullscreen": "æ_Enter full screen__________________Â",
-  "exitFullscreen": "æ_Exit full screen_________________Â",
+  "enterFullscreen": "Passer en mode Plein écran",
+  "exitFullscreen": "Quitter le mode Plein écran",
   "floorFilter": "Filtre des étages"
 }

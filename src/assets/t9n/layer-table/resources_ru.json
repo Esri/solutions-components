@@ -1,12 +1,12 @@
 {
   "clearSelection": "Очистить выборку",
   "exportCSV": "Экспорт в CSV",
-  "filter": "Ж_Filter: {{title}}__________________Я",
+  "filter": "Фильтр: {{title}}",
   "filters": "Фильтры",
-  "hideField": "Ж_Hide field_____________________Я",
+  "hideField": "Скрыть поле",
   "more": "Больше",
   "selectAll": "Выбрать все",
-  "share": "Ж_Share___________Я",
+  "share": "Общий доступ",
   "showSelected": "Показать выбранные",
   "switchSelected": "Переключить выбранные",
   "zoom": "Масштабировать",
@@ -15,5 +15,5 @@
   "showAll": "Показать все",
   "recordsSelected": "Всего: {{total}} | Выборка: {{selected}}",
   "moreOptions": "Дополнительные опции таблицы",
-  "showHideColumns": "Ж_Show/hide columns__________________Я"
+  "showHideColumns": "Показать/скрыть столбцы"
 }

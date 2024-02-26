@@ -1,12 +1,12 @@
 {
   "clearSelection": "Wyczyść wybór",
   "exportCSV": "Eksportuj do CSV",
-  "filter": "ł_Filter: {{title}}__________________ą",
+  "filter": "Filtr: {{title}}",
   "filters": "Filtry",
-  "hideField": "ł_Hide field_____________________ą",
+  "hideField": "Ukryj pole",
   "more": "Więcej",
   "selectAll": "Wybierz wszystkie",
-  "share": "ł_Share___________ą",
+  "share": "Udostępnij",
   "showSelected": "Pokaż wybrane",
   "switchSelected": "Przełącz wybrane",
   "zoom": "Powiększ",
@@ -15,5 +15,5 @@
   "showAll": "Pokaż wszystko",
   "recordsSelected": "Łącznie: {{total}} | Wybrane: {{selected}}",
   "moreOptions": "Więcej opcji tabeli",
-  "showHideColumns": "ł_Show/hide columns__________________ą"
+  "showHideColumns": "Pokaż/ukryj kolumny"
 }

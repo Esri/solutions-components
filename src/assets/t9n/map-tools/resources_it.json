@@ -4,7 +4,7 @@
   "expand": "Espandi",
   "basemap": "Mappa di base",
   "collapse": "Comprimi",
-  "enterFullscreen": "é_Enter full screen__________________È",
-  "exitFullscreen": "é_Exit full screen_________________È",
+  "enterFullscreen": "Visualizzazione a schermo intero",
+  "exitFullscreen": "Chiudi visualizzazione a schermo intero",
   "floorFilter": "Filtro piano"
 }
