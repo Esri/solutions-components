@@ -186,11 +186,6 @@ export class LayerTable {
   @State() _showOnlySelected = false;
 
   /**
-   * boolean: When true the user has defined a sort order that should override the default order
-   */
-  @State() _sortActive = false;
-
-  /**
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
@@ -353,11 +348,6 @@ export class LayerTable {
   protected _tableNode: HTMLDivElement;
 
   /**
-   * bool: When true the table is being sorted
-   */
-  protected _tableSorting = false;
-
-  /**
    * any: Timeout used to limit redundancy for toolbar resizing
    */
   protected _timeout: any;
@@ -487,16 +477,6 @@ export class LayerTable {
     this._validateEnabledActions();
     if (this._selectAllActive && this.selectedIds.length !== this._allIds.length) {
       this._selectAllActive = false;
-    }
-  }
-
-  /**
-   * When sortActive is false the user has not defined a sort and we should use the default sort
-   */
-  @Watch("_sortActive")
-  async _sortActiveWatchHandler(): Promise<void> {
-    if (!this._sortActive) {
-      await this._sortTable();
     }
   }
 
@@ -1499,13 +1479,6 @@ export class LayerTable {
         this._table.highlightIds.on("change", (evt) => {
           void this._handleOnChange(evt);
         });
-
-        this.reactiveUtils.watch(
-          () => this._table.activeSortOrders,
-          (sortOrders) => {
-            this._sortActive = this._layer ? (sortOrders.length > 0 && sortOrders[0]?.direction === "asc" || sortOrders[0]?.direction === "desc") ||
-              sortOrders[0]?.direction === null && sortOrders[0]?.fieldName === this._layer.objectIdField : false;
-          });
       });
     }
   }
@@ -1668,7 +1641,6 @@ export class LayerTable {
         }
 
         this._showOnlySelected = false;
-        this._sortActive = false;
         await this._sortTable();
         this._updateToolbar();
       });
@@ -1730,15 +1702,11 @@ export class LayerTable {
    * Sort the objectid field in descending order
    */
   protected async _sortTable(): Promise<void> {
-    if (this._table && this._layer && !this._sortActive) {
-      if (!this._tableSorting && this.showNewestFirst) {
-        this._tableSorting = true;
-        await this._table.when();
-        await this._layer.when(() => {
-          this._table.sortColumn(this._layer.objectIdField, "desc");
-          this._tableSorting = false;
-        });
-      }
+    if (this._table && this._layer && this.showNewestFirst) {
+      await this._table.when();
+      await this._layer.when(() => {
+        this._table.sortColumn(this._layer.objectIdField, "desc");
+      });
     }
   }
 
