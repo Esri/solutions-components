@@ -1801,6 +1801,7 @@ export class LayerTable {
             autoUpdateUrl={false}
             closeBtn={true}
             closeBtnOnClick={async () => this._closeFilter()}
+            comboboxOverlayPositioning="fixed"
             layerExpressions={this._layerExpressions}
             onFilterListReset={() => this._handleFilterListReset()}
             onFilterUpdate={() => this._handleFilterUpdate()}
