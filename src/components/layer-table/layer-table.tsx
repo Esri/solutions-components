@@ -1971,6 +1971,7 @@ export class LayerTable {
       false, // removeDuplicates
       true, // addColumnTitle
       fields,
+      true,
       true
     );
 
