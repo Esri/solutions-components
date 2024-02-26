@@ -126,15 +126,16 @@ export async function consolidateLabels(
   formatUsingLayerPopup = true,
   includeHeaderNames = false,
   isCSVExport = false,
-  fields = [],
-  useFieldAliasNames = false
+  fields = undefined,
+  useFieldAliasNames = false,
+  filterFields = false
 ): Promise<string[][]> {
   const labelRequests = [];
 
   Object.keys(exportInfos).forEach(k => {
     const labelInfo: IExportInfo = exportInfos[k];
     labelRequests.push(
-      _prepareLabels(webmap, labelInfo.layerView?.layer || labelInfo.layer, labelInfo.ids, formatUsingLayerPopup, includeHeaderNames, fields, useFieldAliasNames)
+      _prepareLabels(webmap, labelInfo.layerView?.layer || labelInfo.layer, labelInfo.ids, formatUsingLayerPopup, includeHeaderNames, fields, useFieldAliasNames, filterFields)
     );
     if (isCSVExport) {
       // add the layer id as a temp value separator that we can use to split values for CSV export
@@ -163,10 +164,11 @@ export async function downloadCSV(
   formatUsingLayerPopup: boolean,
   removeDuplicates = false,
   addColumnTitle = false,
-  fields = [],
-  useFieldAliasNames = false
+  fields = undefined,
+  useFieldAliasNames = false,
+  filterFields = false
 ): Promise<void> {
-  let labels = await consolidateLabels(webmap, exportInfos, formatUsingLayerPopup, addColumnTitle, true, fields, useFieldAliasNames);
+  let labels = await consolidateLabels(webmap, exportInfos, formatUsingLayerPopup, addColumnTitle, true, fields, useFieldAliasNames, filterFields);
   labels = removeDuplicates ? removeDuplicateLabels(labels) : labels;
 
   const layerIds = Object.keys(exportInfos);
@@ -843,12 +845,10 @@ export async function _prepareLabels(
   ids: number[],
   formatUsingLayerPopup = true,
   includeHeaderNames = false,
-  fields = [],
-  useFieldAliasNames = false
+  fields = undefined,
+  useFieldAliasNames = false,
+  filterFields = false
 ): Promise<string[][]> {
-  if (fields.length === 0) {
-    fields = layer.fields.map(f => f.name.toLowerCase())
-  }
   // Get the label formatting, if any
   const labelFormatProps: ILabelFormatProps = await _getLabelFormat(webmap, layer, formatUsingLayerPopup);
 
@@ -929,7 +929,7 @@ export async function _prepareLabels(
   if (featureLayer.fields) {
     featureLayer.fields.forEach(
       field => {
-        if (fields.indexOf(field.name.toLowerCase()) > -1) {
+        if (filterFields ? fields.indexOf(field.name.toLowerCase()) > -1 : true) {
           const lowercaseFieldname = field.name.toLowerCase();
           attributeOrigNames[lowercaseFieldname] = field.name;
           attributeDomains[lowercaseFieldname] = field.domain;
@@ -941,7 +941,7 @@ export async function _prepareLabels(
     // Feature layer is missing fields, so get info from first feature
     Object.keys(featureSet[0]).forEach(
       fieldName => {
-        if (fields.indexOf(fieldName.toLowerCase()) > -1) {
+        if (filterFields ? fields.indexOf(fieldName.toLowerCase()) > -1 : true) {
           const lowercaseFieldname = fieldName.toLowerCase();
           attributeOrigNames[lowercaseFieldname] = fieldName;
         }
