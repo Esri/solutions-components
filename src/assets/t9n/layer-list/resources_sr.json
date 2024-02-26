@@ -1,4 +1,4 @@
 {
-  "error": "Č_Error___________ž",
-  "noLayerToDisplayErrorMsg": "Č_Configured web map don't have any editable feature layer_____________________________ž"
+  "error": "Greška",
+  "noLayerToDisplayErrorMsg": "Konfigurisana veb mapa nema sloj geoobjekta koji se može uređivati."
 }

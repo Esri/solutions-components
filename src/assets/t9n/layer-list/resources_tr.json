@@ -1,4 +1,4 @@
 {
-  "error": "ı_Error___________İ",
-  "noLayerToDisplayErrorMsg": "ı_Configured web map don't have any editable feature layer_____________________________İ"
+  "error": "Hata",
+  "noLayerToDisplayErrorMsg": "Yapılandırılmış web haritasında herhangi bir düzenlenebilir detay katman yok."
 }

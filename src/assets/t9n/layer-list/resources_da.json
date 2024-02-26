@@ -1,4 +1,4 @@
 {
-  "error": "ø_Error___________å",
-  "noLayerToDisplayErrorMsg": "ø_Configured web map don't have any editable feature layer_____________________________å"
+  "error": "Fejl",
+  "noLayerToDisplayErrorMsg": "Konfigurerede webkort har ikke noget redigerbart vektorlag."
 }

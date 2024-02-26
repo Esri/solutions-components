@@ -1,4 +1,4 @@
 {
-  "error": "Å_Error___________ö",
-  "noLayerToDisplayErrorMsg": "Å_Configured web map don't have any editable feature layer_____________________________ö"
+  "error": "Virhe",
+  "noLayerToDisplayErrorMsg": "Määritetty web-kartta ei sisällä muokattavaa kohdekarttatasoa."
 }

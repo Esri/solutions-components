@@ -1,4 +1,4 @@
 {
-  "error": "한_Error___________빠",
-  "noLayerToDisplayErrorMsg": "한_Configured web map don't have any editable feature layer_____________________________빠"
+  "error": "오류",
+  "noLayerToDisplayErrorMsg": "구성된 웹 맵에 편집 가능한 피처 레이어가 없습니다."
 }

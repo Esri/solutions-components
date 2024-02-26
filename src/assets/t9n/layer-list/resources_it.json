@@ -1,4 +1,4 @@
 {
-  "error": "é_Error___________È",
-  "noLayerToDisplayErrorMsg": "é_Configured web map don't have any editable feature layer_____________________________È"
+  "error": "Errore",
+  "noLayerToDisplayErrorMsg": "La mappa web configurata non ha un feature layer modificabile."
 }

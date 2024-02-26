@@ -1,4 +1,4 @@
 {
-  "error": "й_Error___________й",
-  "noLayerToDisplayErrorMsg": "й_Configured web map don't have any editable feature layer_____________________________й"
+  "error": "Грешка",
+  "noLayerToDisplayErrorMsg": "Конфигурираната уеб карта няма редактируеми обектни слоеве."
 }

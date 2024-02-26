@@ -1,4 +1,4 @@
 {
-  "error": "í_Error___________ő",
-  "noLayerToDisplayErrorMsg": "í_Configured web map don't have any editable feature layer_____________________________ő"
+  "error": "Hiba",
+  "noLayerToDisplayErrorMsg": "A konfigurált webtérkép egyetlen szerkeszthető vektoros réteget sem tartalmaz."
 }

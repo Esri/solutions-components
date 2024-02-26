@@ -1,4 +1,4 @@
 {
-  "error": "須_Error___________鷗",
-  "noLayerToDisplayErrorMsg": "須_Configured web map don't have any editable feature layer_____________________________鷗"
+  "error": "エラー",
+  "noLayerToDisplayErrorMsg": "構成済み Web マップに編集可能なフィーチャ レイヤーがありません。"
 }

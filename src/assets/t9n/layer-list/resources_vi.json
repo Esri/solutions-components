@@ -1,4 +1,4 @@
 {
-  "error": "Đ_Error___________ớ",
-  "noLayerToDisplayErrorMsg": "Đ_Configured web map don't have any editable feature layer_____________________________ớ"
+  "error": "Lỗi",
+  "noLayerToDisplayErrorMsg": "Bản đồ web đã cấu hình không có lớp đối tượng nào có thể chỉnh sửa."
 }

@@ -1,4 +1,4 @@
 {
-  "error": "試_Error___________驗",
-  "noLayerToDisplayErrorMsg": "試_Configured web map don't have any editable feature layer_____________________________驗"
+  "error": "錯誤",
+  "noLayerToDisplayErrorMsg": "配置的 Web 地圖沒有任何可編輯的圖徵圖層。"
 }

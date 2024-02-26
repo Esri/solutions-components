@@ -1,4 +1,4 @@
 {
-  "error": "å_Error___________ø",
-  "noLayerToDisplayErrorMsg": "å_Configured web map don't have any editable feature layer_____________________________ø"
+  "error": "Feil",
+  "noLayerToDisplayErrorMsg": "Konfigurert webkart har ingen geoobjektlag som kan redigeres."
 }
