@@ -191,6 +191,11 @@ export class LayerTable {
   @State() _showOnlySelected = false;
 
   /**
+   * IToolInfo[]: Key details used for creating the tools
+   */
+  @State() _toolInfos: IToolInfo[];
+
+  /**
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
@@ -361,11 +366,6 @@ export class LayerTable {
    * IToolSizeInfo[]: Id and Width for the current tools
    */
   protected _toolbarSizeInfos: IToolSizeInfo[];
-
-  /**
-   * IToolInfo[]: Key details used for creating the tools
-   */
-  protected _toolInfos: IToolInfo[];
 
   //--------------------------------------------------------------------------
   //
@@ -757,7 +757,7 @@ export class LayerTable {
    */
   protected _getActions(): VNode[] {
     const actions = this._getActionItems();
-    return actions.reduce((prev, cur) => {
+    return actions?.reduce((prev, cur) => {
       if (cur && !cur.isOverflow) {
         prev.push(
           cur.isDanger ?
@@ -1021,7 +1021,7 @@ export class LayerTable {
       clearTimeout(this._timeout)
     }
 
-    if (!this.isMobile) {
+    if (!this.isMobile && this._toolbar && this._toolInfos) {
       this._timeout = setTimeout(() => {
         clearTimeout(this._timeout)
 
@@ -1620,7 +1620,6 @@ export class LayerTable {
     this._table.view = this.mapView;
     this._checkEditEnabled();
     this._table.editingEnabled = this._editEnabled && this.enableInlineEdit;
-    this._initToolInfos();
 
     await this.reactiveUtils.once(
       () => this._table.state === "loaded")
@@ -1651,6 +1650,7 @@ export class LayerTable {
 
         this._showOnlySelected = false;
         await this._sortTable();
+        this._initToolInfos();
         this._updateToolbar();
       });
   }
