@@ -141,6 +141,11 @@ export class LayerTable {
   //--------------------------------------------------------------------------
 
   /**
+   * number[]: A list of all IDs for the current layer
+   */
+  @State() _allIds: number[] = [];
+
+  /**
    * IToolSizeInfo[]: The controls that currently fit based on toolbar size
    */
   @State() _controlsThatFit: IToolSizeInfo[];
@@ -206,11 +211,6 @@ export class LayerTable {
    * esri/widgets/FeatureTable/support/TableTemplate: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-FeatureTable-support-TableTemplate.html
    */
   protected TableTemplate: typeof import("esri/widgets/FeatureTable/support/TableTemplate");
-
-  /**
-   * number[]: A list of all IDs for the current layer
-   */
-  protected _allIds: number[] = [];
 
   /**
    * IColumnsInfo: Key/value pair with fieldname/(visible in table)
