@@ -434,6 +434,15 @@ export class LayerTable {
   }
 
   /**
+   * watch for changes in map info and update the toolbar
+   */
+  @Watch("mapInfo")
+  async mapInfoWatchHandler(): Promise<void> {
+    this._initToolInfos();
+    this._updateToolbar();
+  }
+
+  /**
    * watch for changes in map view and get the first layer
    */
   @Watch("mapView")
