@@ -133,22 +133,19 @@ export async function queryFeaturesByID(
   const num = layer.capabilities?.query.maxRecordCount;
   const start = 0;
 
+  if (ids.length === 0) {
+    ids = await layer.queryObjectIds();
+  }
+
   const q = layer.createQuery();
-  q.start = start;
   q.returnGeometry = returnGeometry;
   q.objectIds = ids.slice(start, num);
-  if (num) {
-    q.num = num;
-  }
+
   if (outSpatialReference) {
     q.outSpatialReference = outSpatialReference;
   }
   if (fields) {
     q.outFields = fields;
-  }
-
-  if (ids.length === 0) {
-    ids = await layer.queryObjectIds();
   }
 
   const result = await layer.queryFeatures(q);
@@ -159,7 +156,7 @@ export async function queryFeaturesByID(
 
   const remainingIds = ids.slice(num, ids.length);
   return remainingIds.length > 0 ?
-    queryFeaturesByID(remainingIds, layer, graphics, returnGeometry, outSpatialReference) :
+    queryFeaturesByID(remainingIds, layer, graphics, returnGeometry, outSpatialReference, fields) :
     Promise.resolve(graphics);
 }
 
