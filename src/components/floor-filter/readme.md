@@ -16,9 +16,11 @@
 
 ## Events
 
-| Event          | Description                                 | Type                  |
-| -------------- | ------------------------------------------- | --------------------- |
-| `levelChanged` | Emitted on demand when the Level is changed | `CustomEvent<string>` |
+| Event             | Description                                    | Type                  |
+| ----------------- | ---------------------------------------------- | --------------------- |
+| `facilityChanged` | Emitted on demand when the Facility is changed | `CustomEvent<string>` |
+| `levelChanged`    | Emitted on demand when the Level is changed    | `CustomEvent<string>` |
+| `siteChanged`     | Emitted on demand when the Site is changed     | `CustomEvent<string>` |
 
 
 ## Dependencies

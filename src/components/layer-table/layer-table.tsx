@@ -273,14 +273,29 @@ export class LayerTable {
   protected _filterList: HTMLInstantAppsFilterListElement;
 
   /**
+   * string: The current floor expression
+   */
+  protected _floorExpression: string
+
+  /**
    * string: The name of the floor field for the current layer
    */
   protected _floorField: string;
 
   /**
-   * string: The name of the floor field for the current layer
+   * string: The name of the floor facility
+   */
+  protected _floorFacility: string;
+
+  /**
+   * string: The name of the floor level
    */
   protected _floorLevel: string;
+
+  /**
+   * string: The name of the floor site
+   */
+  protected _floorSite: string;
 
   /**
    * LayerExpression[]: All layer expressions from the current filter config for the currently selected layer
@@ -451,6 +466,7 @@ export class LayerTable {
       this._mapClickHandle.remove();
     }
     if (this.mapView) {
+      this._floorExpression = undefined;
       this._updateShareUrl();
       this._mapClickHandle = this.reactiveUtils.on(
         () => this.mapView,
@@ -551,6 +567,17 @@ export class LayerTable {
   }
 
   /**
+   * Refresh the table when floor filter facility is changed
+   */
+  @Listen("facilityChanged", { target: "window" })
+  async facilityChanged(
+    evt: CustomEvent
+  ): Promise<void> {
+    this._floorFacility = evt.detail;
+    this._updateFloorDefinitionExpression();
+  }
+
+  /**
    * Refresh the table when floor filter level is changed
    */
   @Listen("levelChanged", { target: "window" })
@@ -558,6 +585,17 @@ export class LayerTable {
     evt: CustomEvent
   ): Promise<void> {
     this._floorLevel = evt.detail;
+    this._updateFloorDefinitionExpression();
+  }
+
+  /**
+   * Refresh the table when floor filter site is changed
+   */
+  @Listen("siteChanged", { target: "window" })
+  async siteChanged(
+    evt: CustomEvent
+  ): Promise<void> {
+    this._floorSite = evt.detail;
     this._updateFloorDefinitionExpression();
   }
 
@@ -977,7 +1015,13 @@ export class LayerTable {
    */
   protected _updateFloorDefinitionExpression(): void {
     if (this._floorField && this._floorLevel) {
-      this._layer.definitionExpression = `${this._floorField} = '${this._floorLevel}'`;
+      const floorExp = `${this._floorField} = '${this._floorLevel}'`;
+      const defExp = this._layer.definitionExpression;
+      this._layer.definitionExpression = defExp?.indexOf(this._floorExpression) > -1 ?
+        defExp.replace(this._floorExpression, floorExp) :
+        defExp ? `${defExp} AND (${floorExp})` : floorExp;
+
+      this._floorExpression = floorExp;
     }
   }
 
@@ -1835,7 +1879,17 @@ export class LayerTable {
    * Check if the layers definitionExpression has been modified
    */
   protected _handleFilterUpdate(): void {
-    this._filterActive = this._definitionExpression !== this._layer.definitionExpression;
+    const defExp = this._layer.definitionExpression;
+    if (this._floorExpression) {
+      const regEx = new RegExp(`${this._floorField} = ['].+[']`, "gm");
+      this._layer.definitionExpression = defExp && this._floorField && defExp.indexOf(`${this._floorField} = '`) > -1 ?
+        defExp.replace(regEx, this._floorExpression) : defExp ?
+        `${defExp} AND (${this._floorExpression})` : this._floorExpression;
+    }
+
+    this._filterActive = this._definitionExpression !== this._layer.definitionExpression &&
+      (this._floorExpression ? this._layer.definitionExpression !== this._floorExpression : true);
+
     this._updateShareUrl();
   }
 
@@ -1929,7 +1983,10 @@ export class LayerTable {
     this._layerExpressions = layerExpressions ? layerExpressions.filter(
       (exp) => exp.id === this._layer?.id) : [];
     this._filterList.layerExpressions = this._layerExpressions;
-    this._filterActive = false;
+    this._filterActive = this._layerExpressions.filter(lyrExp => {
+      console.log(lyrExp)
+      return lyrExp.expressions.filter(exp => exp.active).length > 0
+    }).length > 0;
   }
 
   /**
