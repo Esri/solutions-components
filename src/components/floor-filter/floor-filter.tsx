@@ -86,7 +86,17 @@ export class FloorFilter {
   /**
    * esri/core/Accessor: https://developers.arcgis.com/javascript/latest/api-reference/esri-core-Accessor.html#WatchHandle
    */
+  protected _facilityHandle: __esri.WatchHandle;
+
+  /**
+   * esri/core/Accessor: https://developers.arcgis.com/javascript/latest/api-reference/esri-core-Accessor.html#WatchHandle
+   */
   protected _levelHandle: __esri.WatchHandle;
+
+  /**
+   * esri/core/Accessor: https://developers.arcgis.com/javascript/latest/api-reference/esri-core-Accessor.html#WatchHandle
+   */
+  protected _siteHandle: __esri.WatchHandle;
 
   //--------------------------------------------------------------------------
   //
@@ -114,9 +124,19 @@ export class FloorFilter {
   //--------------------------------------------------------------------------
 
   /**
+   * Emitted on demand when the Facility is changed
+   */
+  @Event() facilityChanged: EventEmitter<string>;
+
+  /**
    * Emitted on demand when the Level is changed
    */
   @Event() levelChanged: EventEmitter<string>;
+
+  /**
+   * Emitted on demand when the Site is changed
+   */
+  @Event() siteChanged: EventEmitter<string>;
 
   //--------------------------------------------------------------------------
   //
@@ -173,17 +193,25 @@ export class FloorFilter {
           container: this._floorFilterElement,
           view
         });
+        this._facilityHandle?.remove();
+        this._facilityHandle = this.reactiveUtils.watch(() => this.floorFilterWidget.facility,
+          (facility) => {
+            this.facilityChanged.emit(facility);
+          });
 
-        if (this._levelHandle) {
-          this._levelHandle.remove();
-        }
-
+        this._levelHandle?.remove();
         this._levelHandle = this.reactiveUtils.watch(() => this.floorFilterWidget.level,
           (level) => {
             this.levelChanged.emit(level);
           });
+
+        this._siteHandle?.remove();
+        this._siteHandle = this.reactiveUtils.watch(() => this.floorFilterWidget.site,
+          (site) => {
+            this.siteChanged.emit(site);
+          });
       } else {
-        this.floorFilterWidget.view = view;
+        this.floorFilterWidget.viewModel.view = view;
       }
     }
   }

@@ -1587,7 +1587,9 @@ declare global {
         new (): HTMLFeaturesFlowItemElement;
     };
     interface HTMLFloorFilterElementEventMap {
+        "facilityChanged": string;
         "levelChanged": string;
+        "siteChanged": string;
     }
     interface HTMLFloorFilterElement extends Components.FloorFilter, HTMLStencilElement {
         addEventListener<K extends keyof HTMLFloorFilterElementEventMap>(type: K, listener: (this: HTMLFloorFilterElement, ev: FloorFilterCustomEvent<HTMLFloorFilterElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2514,9 +2516,17 @@ declare namespace LocalJSX {
          */
         "mapView"?: __esri.MapView;
         /**
+          * Emitted on demand when the Facility is changed
+         */
+        "onFacilityChanged"?: (event: FloorFilterCustomEvent<string>) => void;
+        /**
           * Emitted on demand when the Level is changed
          */
         "onLevelChanged"?: (event: FloorFilterCustomEvent<string>) => void;
+        /**
+          * Emitted on demand when the Site is changed
+         */
+        "onSiteChanged"?: (event: FloorFilterCustomEvent<string>) => void;
     }
     interface InfoCard {
         /**
