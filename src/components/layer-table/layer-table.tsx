@@ -484,13 +484,15 @@ export class LayerTable {
   @Watch("_layer")
   async _layerWatchHandler(): Promise<void> {
     this._fetchingData = true;
-    this._definitionExpression = this._layer?.definitionExpression;
-    this._floorField = this._layer?.floorInfo?.floorField;
-    this._updateFloorDefinitionExpression();
-    await this._resetTable();
-    this._updateShareUrl();
-    this._initLayerExpressions();
-    this._fetchingData = false;
+    await this._layer?.when(async () => {
+      this._definitionExpression = this._layer.definitionExpression;
+      this._floorField = this._layer.floorInfo?.floorField;
+      this._updateFloorDefinitionExpression();
+      await this._resetTable();
+      this._updateShareUrl();
+      this._initLayerExpressions();
+      this._fetchingData = false;
+    })
   }
 
   /**
