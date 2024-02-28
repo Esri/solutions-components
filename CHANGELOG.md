@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.7.47] - Feb 27th 2024
+Publish issue...no changes
+
 ## [0.7.46] - Feb 27th 2024
 Make toolInfos a State var
 add layer.when to layer watch handler
@@ -484,4 +487,5 @@ Recover from test releases
 [0.7.44]: https://github.com/Esri/solution.js/compare/v0.7.43...v0.7.44 "v0.7.44"
 [0.7.45]: https://github.com/Esri/solution.js/compare/v0.7.44...v0.7.45 "v0.7.45"
 [0.7.46]: https://github.com/Esri/solution.js/compare/v0.7.45...v0.7.46 "v0.7.46"
-[Unreleased]: https://github.com/Esri/solution.js/compare/v0.7.46...HEAD "Unreleased Changes"
+[0.7.47]: https://github.com/Esri/solution.js/compare/v0.7.46...v0.7.47 "v0.7.47"
+[Unreleased]: https://github.com/Esri/solution.js/compare/v0.7.47...HEAD "Unreleased Changes"
