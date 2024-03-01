@@ -453,6 +453,8 @@ export class LayerTable {
    */
   @Watch("mapInfo")
   async mapInfoWatchHandler(): Promise<void> {
+    this._resetColumnTemplates();
+    this._initLayerExpressions();
     this._initToolInfos();
     this._updateToolbar();
   }
@@ -489,8 +491,8 @@ export class LayerTable {
       this._floorField = this._layer.floorInfo?.floorField;
       this._updateFloorDefinitionExpression();
       await this._resetTable();
-      this._updateShareUrl();
       this._initLayerExpressions();
+      this._updateShareUrl();
       this._fetchingData = false;
     })
   }
@@ -1526,10 +1528,6 @@ export class LayerTable {
         } as __esri.FeatureTableProperties);
       });
 
-      this._initColumnsInfo();
-
-      this._checkEditEnabled();
-
       await this._table.when(() => {
         this._table.highlightIds.on("change", (evt) => {
           void this._handleOnChange(evt);
@@ -1652,18 +1650,16 @@ export class LayerTable {
    */
   protected async _resetTable(): Promise<void> {
     this._clearSelection();
-    this._allIds = [];
-    this.featureSelectionChange.emit(this.selectedIds);
-
-    const columnTemplates = this._getColumnTemplates(this._layer.id, this._layer?.fields);
     this._allIds = await queryAllIds(this._layer);
 
     if (!this._table) {
+      const columnTemplates = this._getColumnTemplates(this._layer.id, this._layer?.fields);
       await this._getTable(this._tableNode, columnTemplates);
+    } else {
+      this._table.view = this.mapView;
+      this._table.layer = this._layer;
     }
 
-    this._table.layer = this._layer;
-    this._table.view = this.mapView;
     this._checkEditEnabled();
     this._table.editingEnabled = this._editEnabled && this.enableInlineEdit;
 
@@ -1688,7 +1684,7 @@ export class LayerTable {
           this._defaultGlobalIdHonored = true;
         }
 
-        if (!this._defaultFilterHonored && this.defaultFilter && this._filterList) {
+        if (!this._defaultFilterHonored && this.defaultFilter?.length > 0 && this._filterList) {
           this._layerExpressions = this.defaultFilter;
           this._filterActive = true;
           this._defaultFilterHonored = true;
@@ -1986,7 +1982,6 @@ export class LayerTable {
       (exp) => exp.id === this._layer?.id) : [];
     this._filterList.layerExpressions = this._layerExpressions;
     this._filterActive = this._layerExpressions.filter(lyrExp => {
-      console.log(lyrExp)
       return lyrExp.expressions.filter(exp => exp.active).length > 0
     }).length > 0;
   }
