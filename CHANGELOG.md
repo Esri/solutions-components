@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.7.49] - Feb 29th 2024
+Init layer expressions and column info on map info change
+
 ## [0.7.48] - Feb 28th 2024
 Filter AND FloorFilter
 
@@ -492,4 +495,5 @@ Recover from test releases
 [0.7.46]: https://github.com/Esri/solution.js/compare/v0.7.45...v0.7.46 "v0.7.46"
 [0.7.47]: https://github.com/Esri/solution.js/compare/v0.7.46...v0.7.47 "v0.7.47"
 [0.7.48]: https://github.com/Esri/solution.js/compare/v0.7.47...v0.7.48 "v0.7.48"
-[Unreleased]: https://github.com/Esri/solution.js/compare/v0.7.48...HEAD "Unreleased Changes"
+[0.7.49]: https://github.com/Esri/solution.js/compare/v0.7.48...v0.7.49 "v0.7.49"
+[Unreleased]: https://github.com/Esri/solution.js/compare/v0.7.49...HEAD "Unreleased Changes"
