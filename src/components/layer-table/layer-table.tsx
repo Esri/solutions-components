@@ -323,6 +323,11 @@ export class LayerTable {
   protected reactiveUtils: typeof import("esri/core/reactiveUtils");
 
   /**
+   * IHandle: The layers refresh handle
+   */
+  protected _refreshHandle: IHandle;
+
+  /**
    * ResizeObserver: The observer that watches for toolbar size changes
    */
   protected _resizeObserver: ResizeObserver;
@@ -1404,14 +1409,14 @@ export class LayerTable {
     referenceElement: string,
     text: string
   ): VNode {
-    return (
+    return document.getElementById(referenceElement) ? (
       <calcite-tooltip
         placement={placement}
         reference-element={referenceElement}
       >
         <span>{text}</span>
       </calcite-tooltip>
-    )
+    ) : undefined;
   }
 
   /**
@@ -1660,6 +1665,7 @@ export class LayerTable {
       this._table.layer = this._layer;
     }
 
+    await this._initLayerRefresh();
     this._checkEditEnabled();
     this._table.editingEnabled = this._editEnabled && this.enableInlineEdit;
 
@@ -1695,6 +1701,30 @@ export class LayerTable {
         this._initToolInfos();
         this._updateToolbar();
       });
+  }
+
+  /**
+   * Update the current IDs when that layers data is modified
+   */
+  protected async _initLayerRefresh(): Promise<void> {
+    if (this._refreshHandle) {
+      this._refreshHandle.remove();
+    }
+    this._refreshHandle = this._layer.on("refresh", (evt) => {
+      if (evt.dataChanged) {
+        this._skipOnChange = true;
+        void this._updateAllIds();
+      }
+    });
+  }
+
+  /**
+   * Reset _allIds when the layers data has changed and refresh the selection ids and table
+   */
+  protected async _updateAllIds(): Promise<void> {
+    this._allIds = await queryAllIds(this._layer);
+    this.selectedIds = this.selectedIds.filter(id => this._allIds.indexOf(id) > -1)
+    await this._refresh();
   }
 
   /**
