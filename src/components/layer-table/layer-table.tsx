@@ -45,11 +45,6 @@ export class LayerTable {
   //--------------------------------------------------------------------------
 
   /**
-   * LayerExpression[]: default layer expression(s) to apply to the current layer
-   */
-  @Prop() defaultFilter: LayerExpression[];
-
-  /**
    * string: Global ID of the feature to select
    */
   @Prop() defaultGlobalId: string[];
@@ -392,6 +387,16 @@ export class LayerTable {
   //  Watch handlers
   //
   //--------------------------------------------------------------------------
+
+  @Watch("defaultOid")
+  async defaultOidWatchHandler(): Promise<void> {
+    await this._handleDefaults();
+  }
+
+  @Watch("defaultGlobalId")
+  async defaultGlobalIdWatchHandler(): Promise<void> {
+    await this._handleDefaults();
+  }
 
   /**
    * Reset the toolInfos when export csv is enabled/disabled
@@ -1375,22 +1380,6 @@ export class LayerTable {
       urlObj.searchParams.delete("oid");
     }
 
-    if (this._filterActive) {
-      const filter = JSON.parse(this._filterList.urlParams.get("filter"));
-      const layerExpressions = this._filterList.layerExpressions.map(layerExp => {
-        layerExp.expressions = layerExp.expressions.map(exp => {
-          if (exp.id.toString() === filter.expressionId.toString()) {
-            exp.active = true;
-          }
-          return exp;
-        })
-        return layerExp;
-      });
-      urlObj.searchParams.set("filter", JSON.stringify(layerExpressions));
-    } else {
-      urlObj.searchParams.delete("filter");
-    }
-
     this._shareNode.shareUrl = urlObj.href;
   }
 
@@ -1676,25 +1665,7 @@ export class LayerTable {
         this._table.clearSelectionFilter();
         this._resetColumnTemplates();
 
-        if (!this._defaultOidHonored && this.defaultOid?.length > 0 && this.defaultOid[0] > -1) {
-          this._selectDefaultFeature(this.defaultOid);
-          this._defaultOidHonored = true
-        }
-
-        if (!this._defaultGlobalIdHonored && this.defaultGlobalId?.length > 0) {
-          const features = await queryFeaturesByGlobalID(this.defaultGlobalId, this._layer);
-          const oids = features?.length > 0 ? features.map(f => f.getObjectId()) : undefined;
-          if (oids) {
-            this._selectDefaultFeature(oids);
-          }
-          this._defaultGlobalIdHonored = true;
-        }
-
-        if (!this._defaultFilterHonored && this.defaultFilter?.length > 0 && this._filterList) {
-          this._layerExpressions = this.defaultFilter;
-          this._filterActive = true;
-          this._defaultFilterHonored = true;
-        }
+        await this._handleDefaults();
 
         this._showOnlySelected = false;
         await this._sortTable();
@@ -1725,6 +1696,24 @@ export class LayerTable {
     this._allIds = await queryAllIds(this._layer);
     this.selectedIds = this.selectedIds.filter(id => this._allIds.indexOf(id) > -1)
     await this._refresh();
+  }
+
+  protected async _handleDefaults(): Promise<void> {
+    if (!this._defaultOidHonored &&  this.defaultOid?.length > 0 && this.defaultOid[0] > -1 && this._table)  {
+      this._selectDefaultFeature(this.defaultOid);
+      this._defaultOidHonored = true
+      this.defaultOid = undefined;
+    }
+
+    if (!this._defaultGlobalIdHonored && this.defaultGlobalId?.length > 0 && this._table) {
+      const features = await queryFeaturesByGlobalID(this.defaultGlobalId, this._layer);
+      const oids = features?.length > 0 ? features.map(f => f.getObjectId()) : undefined;
+      if (oids) {
+        this._selectDefaultFeature(oids);
+      }
+      this._defaultGlobalIdHonored = true;
+      this.defaultGlobalId = undefined;
+    }
   }
 
   /**
@@ -1763,6 +1752,7 @@ export class LayerTable {
     oids: number[]
   ): void {
     if (oids.length > 0) {
+      this._skipOnChange = true;
       this._table.highlightIds.addMany(oids);
       void this._table.when(() => {
         const i = this._table.viewModel.getObjectIdIndex(oids[0]);

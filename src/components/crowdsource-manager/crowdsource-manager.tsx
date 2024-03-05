@@ -18,7 +18,6 @@ import { Component, Element, Host, h, Listen, Prop, State, VNode, Watch } from "
 import CrowdsourceManager_T9n from "../../assets/t9n/crowdsource-manager/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { ELayoutMode, IBasemapConfig, ILayerAndTableIds, IMapChange, IMapInfo, ISearchConfiguration, theme } from "../../utils/interfaces";
-import { LayerExpression } from "@esri/instant-apps-components";
 import { getLayerOrTable } from "../../utils/mapViewUtils";
 
 @Component({
@@ -45,11 +44,6 @@ export class CrowdsourceManager {
    * ; delimited x;y pair
    */
   @Prop() defaultCenter = "";
-
-  /**
-   * string: default layer expression to apply to the current layer
-   */
-  @Prop() defaultFilter = "";
 
   /**
    * string: Global ID of the feature to select
@@ -188,6 +182,26 @@ export class CrowdsourceManager {
   //--------------------------------------------------------------------------
 
   /**
+   * number[]: X,Y pair used to center the map
+   */
+  @State() _defaultCenter: number[];
+
+  /**
+   * string[]: List of global ids that should be selected by default
+   */
+  @State() _defaultGlobalId: string[];
+
+  /**
+   * number: zoom level the map should go to
+   */
+  @State() _defaultLevel: number;
+
+  /**
+   * number[]: List of ids that should be selected by default
+   */
+  @State() _defaultOid: number[];
+
+  /**
    * When true the info panel with the popup details will take the full height and prevent the map from displaying
    */
   @State() _expandPopup = false;
@@ -255,31 +269,6 @@ export class CrowdsourceManager {
   //--------------------------------------------------------------------------
 
   /**
-   * number[]: X,Y pair used to center the map
-   */
-  protected _defaultCenter: number[];
-
-  /**
-   * string: Definition expression to be used by current layer
-   */
-  protected _defaultFilter: LayerExpression[];
-
-  /**
-   * string[]: List of global ids that should be selected by default
-   */
-  protected _defaultGlobalId: string[];
-
-  /**
-   * number: zoom level the map should go to
-   */
-  protected _defaultLevel: number;
-
-  /**
-   * number[]: List of ids that should be selected by default
-   */
-  protected _defaultOid: number[];
-
-  /**
    * HTMLLayerTableElement: The layer table element
    */
   protected _layerTable: HTMLLayerTableElement;
@@ -312,15 +301,7 @@ export class CrowdsourceManager {
   @Watch("defaultCenter")
   defaultCenterWatchHandler(): void {
     this._defaultCenter = !this.defaultCenter ? undefined :
-      this.defaultCenter.split(";").map(v => parseFloat(v));
-  }
-
-  /**
-   * Watch for filter url param to be set
-   */
-  @Watch("defaultFilter")
-  defaultFilterWatchHandler(): void {
-    this._defaultFilter = JSON.parse(this.defaultFilter);
+      this.defaultCenter?.split(";").map(v => parseFloat(v));
   }
 
   /**
@@ -329,7 +310,7 @@ export class CrowdsourceManager {
   @Watch("defaultGlobalId")
   defaultGlobalIdWatchHandler(): void {
     this._defaultGlobalId = !this.defaultGlobalId ? undefined :
-      this.defaultGlobalId.indexOf(",") > -1 ? this.defaultGlobalId.split(",") : [this.defaultGlobalId];
+      this.defaultGlobalId?.indexOf(",") > -1 ? this.defaultGlobalId.split(",") : [this.defaultGlobalId];
   }
 
   /**
@@ -338,7 +319,7 @@ export class CrowdsourceManager {
   @Watch("defaultOid")
   defaultOidWatchHandler(): void {
     this._defaultOid = !this.defaultOid ? undefined :
-      this.defaultOid.indexOf(",") > -1 ? this.defaultOid.split(",").map(o => parseInt(o, 10)) : [parseInt(this.defaultOid, 10)];
+      this.defaultOid?.indexOf(",") > -1 ? this.defaultOid.split(",").map(o=> parseInt(o, 10)) : [parseInt(this.defaultOid, 10)];
   }
 
   /**
@@ -856,7 +837,6 @@ export class CrowdsourceManager {
         }
         <div class={`width-full height-full position-relative`}>
           <layer-table
-            defaultFilter={hasMapAndLayer ? this._defaultFilter : undefined}
             defaultGlobalId={hasMapAndLayer ? this._defaultGlobalId : undefined}
             defaultLayerId={hasMapAndLayer ? this.defaultLayer : ""}
             defaultOid={hasMapAndLayer && !this.defaultGlobalId ? this._defaultOid : undefined}
