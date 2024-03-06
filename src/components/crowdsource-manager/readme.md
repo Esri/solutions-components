@@ -11,7 +11,6 @@
 | ------------------------- | ----------------------------- | ------------------------------------------------------------------------------------------------------------------ | ---------------------- | ----------- |
 | `basemapConfig`           | --                            | IBasemapConfig: List of any basemaps to filter out from the basemap widget                                         | `IBasemapConfig`       | `undefined` |
 | `defaultCenter`           | `default-center`              | string: default center point values for the map ; delimited x;y pair                                               | `string`               | `""`        |
-| `defaultFilter`           | `default-filter`              | string: default layer expression to apply to the current layer                                                     | `string`               | `""`        |
 | `defaultGlobalId`         | `default-global-id`           | string: Global ID of the feature to select                                                                         | `string`               | `""`        |
 | `defaultLayer`            | `default-layer`               | string: when provided this layer ID will be used when the app loads                                                | `string`               | `""`        |
 | `defaultLevel`            | `default-level`               | string: default zoom level                                                                                         | `string`               | `""`        |
