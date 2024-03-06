@@ -182,21 +182,6 @@ export class CrowdsourceManager {
   //--------------------------------------------------------------------------
 
   /**
-   * number[]: X,Y pair used to center the map
-   */
-  @State() _defaultCenter: number[];
-
-  /**
-   * number: zoom level the map should go to
-   */
-  @State() _defaultLevel: number;
-
-  /**
-   * number[]: List of ids that should be selected by default
-   */
-  @State() _defaultOid: number[];
-
-  /**
    * When true the info panel with the popup details will take the full height and prevent the map from displaying
    */
   @State() _expandPopup = false;
@@ -891,14 +876,14 @@ export class CrowdsourceManager {
     this._mapView = this._mapChange.mapView;
     this._initMapZoom();
     this._mapView.popupEnabled = false;
-    const defaultCenter = !this.defaultCenter || this._defaultCenterHonored ?
+    const center = !this.defaultCenter || this._defaultCenterHonored ?
       undefined : this.defaultCenter?.split(";").map(v => parseFloat(v));
-    const defaultLevel = !this.defaultLevel || this._defaultLevelHonored ?
+    const zoom = !this.defaultLevel || this._defaultLevelHonored ?
       undefined : parseInt(this.defaultLevel, 10);
-    if (defaultCenter && defaultLevel) {
+    if (center && zoom) {
       await this._mapView.goTo({
-        center: this._defaultCenter,
-        zoom: this._defaultLevel
+        center,
+        zoom
       });
       this._defaultCenterHonored = true;
       this._defaultLevelHonored = true;
