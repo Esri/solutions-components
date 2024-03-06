@@ -388,11 +388,17 @@ export class LayerTable {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * Handle url defaults when defaultOid is set
+   */
   @Watch("defaultOid")
   async defaultOidWatchHandler(): Promise<void> {
     await this._handleDefaults();
   }
 
+  /**
+   * Handle url defaults when defaultGlobalId is set
+   */
   @Watch("defaultGlobalId")
   async defaultGlobalIdWatchHandler(): Promise<void> {
     await this._handleDefaults();
@@ -1699,6 +1705,9 @@ export class LayerTable {
     await this._refresh();
   }
 
+  /**
+   * Handle default OID or GlobalID from url parameters
+   */
   protected async _handleDefaults(): Promise<void> {
     if (!this._defaultOidHonored && this.defaultOid?.length > 0 && this.defaultOid[0] > -1 && this._table) {
       await this._selectDefaultFeature(this.defaultOid);

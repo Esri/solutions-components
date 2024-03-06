@@ -249,6 +249,18 @@ export class CrowdsourceManager {
   //--------------------------------------------------------------------------
 
   /**
+   * boolean: When true the map view will be set after render due to popup obstructing the view
+   * MapView.when is not fired when mapView is not currently visible
+   */
+  protected _defaultCenterHonored = false;
+
+  /**
+   * boolean: When true the map view will be set after render due to popup obstructing the view
+   * MapView.when is not fired when mapView is not currently visible
+   */
+  protected _defaultLevelHonored = false;
+
+  /**
    * HTMLLayerTableElement: The layer table element
    */
   protected _layerTable: HTMLLayerTableElement;
@@ -268,10 +280,6 @@ export class CrowdsourceManager {
    * MapView.when is not fired when mapView is not currently visible
    */
   protected _shouldSetMapView = false;
-
-  protected _defaultCenterHonored = false;
-
-  protected _defaultLevelHonored = false;
 
   //--------------------------------------------------------------------------
   //
