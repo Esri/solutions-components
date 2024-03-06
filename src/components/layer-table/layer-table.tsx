@@ -1636,7 +1636,7 @@ export class LayerTable {
    */
   protected _resetColumnTemplates(): void {
     const columnTemplates = this._getColumnTemplates(this._layer?.id, this._layer?.fields);
-    const hasChange = columnTemplates.some((ct, i) => {
+    const hasChange = columnTemplates?.some((ct, i) => {
       return JSON.stringify(this._table?.tableTemplate.columnTemplates[i]) !== JSON.stringify(ct)
     });
     if (this._table && columnTemplates && hasChange) {
