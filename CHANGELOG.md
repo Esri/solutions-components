@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.7.51] - Mar 6th 2024
+Floor filter workaround
+
 ## [0.7.50] - Mar 6th 2024
 Patch issue share, table flicker, layer refresh
 
@@ -500,4 +503,5 @@ Recover from test releases
 [0.7.48]: https://github.com/Esri/solution.js/compare/v0.7.47...v0.7.48 "v0.7.48"
 [0.7.49]: https://github.com/Esri/solution.js/compare/v0.7.48...v0.7.49 "v0.7.49"
 [0.7.50]: https://github.com/Esri/solution.js/compare/v0.7.49...v0.7.50 "v0.7.50"
-[Unreleased]: https://github.com/Esri/solution.js/compare/v0.7.50...HEAD "Unreleased Changes"
+[0.7.51]: https://github.com/Esri/solution.js/compare/v0.7.50...v0.7.51 "v0.7.51"
+[Unreleased]: https://github.com/Esri/solution.js/compare/v0.7.51...HEAD "Unreleased Changes"
