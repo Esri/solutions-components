@@ -187,11 +187,6 @@ export class CrowdsourceManager {
   @State() _defaultCenter: number[];
 
   /**
-   * string[]: List of global ids that should be selected by default
-   */
-  @State() _defaultGlobalId: string[];
-
-  /**
    * number: zoom level the map should go to
    */
   @State() _defaultLevel: number;
@@ -289,46 +284,15 @@ export class CrowdsourceManager {
    */
   protected _shouldSetMapView = false;
 
+  protected _defaultCenterHonored = false;
+
+  protected _defaultLevelHonored = false;
+
   //--------------------------------------------------------------------------
   //
   //  Watch handlers
   //
   //--------------------------------------------------------------------------
-
-  /**
-   * Watch for center url param to be set
-   */
-  @Watch("defaultCenter")
-  defaultCenterWatchHandler(): void {
-    this._defaultCenter = !this.defaultCenter ? undefined :
-      this.defaultCenter?.split(";").map(v => parseFloat(v));
-  }
-
-  /**
-   * Watch for globalid url param to be set
-   */
-  @Watch("defaultGlobalId")
-  defaultGlobalIdWatchHandler(): void {
-    this._defaultGlobalId = !this.defaultGlobalId ? undefined :
-      this.defaultGlobalId?.indexOf(",") > -1 ? this.defaultGlobalId.split(",") : [this.defaultGlobalId];
-  }
-
-  /**
-   * Watch for oid url param to be set
-   */
-  @Watch("defaultOid")
-  defaultOidWatchHandler(): void {
-    this._defaultOid = !this.defaultOid ? undefined :
-      this.defaultOid?.indexOf(",") > -1 ? this.defaultOid.split(",").map(o=> parseInt(o, 10)) : [parseInt(this.defaultOid, 10)];
-  }
-
-  /**
-   * Watch for zoom level param to be set
-   */
-  @Watch("defaultLevel")
-  defaultLevelWatchHandler(): void {
-    this._defaultLevel = !this.defaultLevel ? undefined : parseInt(this.defaultLevel, 10);
-  }
 
   /**
    * When true the map zoom tools will be available
@@ -808,6 +772,10 @@ export class CrowdsourceManager {
     const toggleLayout = layoutMode === ELayoutMode.HORIZONTAL ? "horizontal" : "vertical";
     const toggleSlot = layoutMode === ELayoutMode.HORIZONTAL  ? "header" : "panel-start";
     const hasMapAndLayer = this.defaultWebmap && this.defaultLayer;
+    const globalId = !this.defaultGlobalId ? undefined :
+      this.defaultGlobalId?.indexOf(",") > -1 ? this.defaultGlobalId.split(",") : [this.defaultGlobalId];
+    const defaultOid = !this.defaultOid ? undefined :
+      this.defaultOid?.indexOf(",") > -1 ? this.defaultOid.split(",").map(o=> parseInt(o, 10)) : [parseInt(this.defaultOid, 10)];
     return (
       <calcite-shell class={`${tableSizeClass} ${tableClass} border-bottom`}>
         {
@@ -837,9 +805,9 @@ export class CrowdsourceManager {
         }
         <div class={`width-full height-full position-relative`}>
           <layer-table
-            defaultGlobalId={hasMapAndLayer ? this._defaultGlobalId : undefined}
+            defaultGlobalId={hasMapAndLayer ? globalId : undefined}
             defaultLayerId={hasMapAndLayer ? this.defaultLayer : ""}
-            defaultOid={hasMapAndLayer && !this.defaultGlobalId ? this._defaultOid : undefined}
+            defaultOid={hasMapAndLayer && !globalId ? defaultOid : undefined}
             enableAutoRefresh={this.enableAutoRefresh}
             enableCSV={this.enableCSV}
             enableColumnReorder={this.enableColumnReorder}
@@ -923,13 +891,17 @@ export class CrowdsourceManager {
     this._mapView = this._mapChange.mapView;
     this._initMapZoom();
     this._mapView.popupEnabled = false;
-    if (this._defaultCenter && this._defaultLevel) {
+    const defaultCenter = !this.defaultCenter || this._defaultCenterHonored ?
+      undefined : this.defaultCenter?.split(";").map(v => parseFloat(v));
+    const defaultLevel = !this.defaultLevel || this._defaultLevelHonored ?
+      undefined : parseInt(this.defaultLevel, 10);
+    if (defaultCenter && defaultLevel) {
       await this._mapView.goTo({
         center: this._defaultCenter,
         zoom: this._defaultLevel
       });
-      this._defaultCenter = undefined;
-      this._defaultLevel = undefined;
+      this._defaultCenterHonored = true;
+      this._defaultLevelHonored = true;
     }
   }
 

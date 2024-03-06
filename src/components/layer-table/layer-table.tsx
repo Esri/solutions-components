@@ -1630,7 +1630,10 @@ export class LayerTable {
    */
   protected _resetColumnTemplates(): void {
     const columnTemplates = this._getColumnTemplates(this._layer?.id, this._layer?.fields);
-    if (this._table && columnTemplates) {
+    const hasChange = columnTemplates.some((ct, i) => {
+      return JSON.stringify(this._table?.tableTemplate.columnTemplates[i]) !== JSON.stringify(ct)
+    });
+    if (this._table && columnTemplates && hasChange) {
       this._table.tableTemplate = new this.TableTemplate({
         columnTemplates
       });
@@ -1665,18 +1668,11 @@ export class LayerTable {
         this._table.clearSelectionFilter();
         this._resetColumnTemplates();
         this._showOnlySelected = false;
-        await this._sortTable();
-
-        setTimeout(() => {
-          void this._finalLoad();
-        }, 250)
+        await this._handleDefaults();
+        await this._sortTable()
+        this._initToolInfos();
+        this._updateToolbar();
       });
-  }
-
-  protected async _finalLoad(): Promise<void> {
-    await this._handleDefaults();
-    this._initToolInfos();
-    this._updateToolbar();
   }
 
   /**
@@ -1704,10 +1700,12 @@ export class LayerTable {
   }
 
   protected async _handleDefaults(): Promise<void> {
-    if (!this._defaultOidHonored &&  this.defaultOid?.length > 0 && this.defaultOid[0] > -1 && this._table)  {
+    if (!this._defaultOidHonored && this.defaultOid?.length > 0 && this.defaultOid[0] > -1 && this._table) {
       await this._selectDefaultFeature(this.defaultOid);
       this._defaultOidHonored = true
       this.defaultOid = undefined;
+      this._showOnlySelected = false;
+      this._toggleShowSelected();
     }
 
     if (!this._defaultGlobalIdHonored && this.defaultGlobalId?.length > 0 && this._table) {
@@ -1718,6 +1716,8 @@ export class LayerTable {
       }
       this._defaultGlobalIdHonored = true;
       this.defaultGlobalId = undefined;
+      this._showOnlySelected = false;
+      this._toggleShowSelected();
     }
   }
 
@@ -1757,12 +1757,10 @@ export class LayerTable {
     oids: number[]
   ): Promise<void> {
     if (oids.length > 0) {
-      this._skipOnChange = true;
       this._table.highlightIds.addMany(oids);
-      await this._table.when(() => {
-        const i = this._table.viewModel.getObjectIdIndex(oids[0]);
-        this._table.viewModel.scrollToIndex(i);
-      });
+      // This is messed up and only make this worse
+      //const i = this._table.viewModel.getObjectIdIndex(oids[0]);
+      //this._table.viewModel.scrollToIndex(i);
     }
   }
 
