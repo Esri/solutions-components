@@ -1664,14 +1664,19 @@ export class LayerTable {
         this._table.highlightIds.removeAll();
         this._table.clearSelectionFilter();
         this._resetColumnTemplates();
-
-        await this._handleDefaults();
-
         this._showOnlySelected = false;
         await this._sortTable();
-        this._initToolInfos();
-        this._updateToolbar();
+
+        setTimeout(() => {
+          void this._finalLoad();
+        }, 250)
       });
+  }
+
+  protected async _finalLoad(): Promise<void> {
+    await this._handleDefaults();
+    this._initToolInfos();
+    this._updateToolbar();
   }
 
   /**
@@ -1700,7 +1705,7 @@ export class LayerTable {
 
   protected async _handleDefaults(): Promise<void> {
     if (!this._defaultOidHonored &&  this.defaultOid?.length > 0 && this.defaultOid[0] > -1 && this._table)  {
-      this._selectDefaultFeature(this.defaultOid);
+      await this._selectDefaultFeature(this.defaultOid);
       this._defaultOidHonored = true
       this.defaultOid = undefined;
     }
@@ -1709,7 +1714,7 @@ export class LayerTable {
       const features = await queryFeaturesByGlobalID(this.defaultGlobalId, this._layer);
       const oids = features?.length > 0 ? features.map(f => f.getObjectId()) : undefined;
       if (oids) {
-        this._selectDefaultFeature(oids);
+        await this._selectDefaultFeature(oids);
       }
       this._defaultGlobalIdHonored = true;
       this.defaultGlobalId = undefined;
@@ -1748,13 +1753,13 @@ export class LayerTable {
   /**
    * Select the feature that was specified via url params
    */
-  protected _selectDefaultFeature(
+  protected async _selectDefaultFeature(
     oids: number[]
-  ): void {
+  ): Promise<void> {
     if (oids.length > 0) {
       this._skipOnChange = true;
       this._table.highlightIds.addMany(oids);
-      void this._table.when(() => {
+      await this._table.when(() => {
         const i = this._table.viewModel.getObjectIdIndex(oids[0]);
         this._table.viewModel.scrollToIndex(i);
       });
