@@ -1639,7 +1639,7 @@ export class LayerTable {
     const hasChange = columnTemplates?.some((ct, i) => {
       return JSON.stringify(this._table?.tableTemplate.columnTemplates[i]) !== JSON.stringify(ct)
     });
-    if (this._table && columnTemplates && hasChange) {
+    if (this._table && columnTemplates && (hasChange || !this._columnsInfo)) {
       this._table.tableTemplate = new this.TableTemplate({
         columnTemplates
       });
