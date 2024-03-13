@@ -51,7 +51,7 @@
         result.json().then(data => {
           document.getElementById("appContainer").style.opacity = "1";
           const helper = document.getElementById("helper");
-          helper.value = JSON.stringify(data.templates);
+          helper.value = JSON.stringify(data);
         });
       });
     });

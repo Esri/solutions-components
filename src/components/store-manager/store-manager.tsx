@@ -15,7 +15,7 @@
  */
 
 /**
- * The json-editor componet leverages a stencil/store to manage data.
+ * The json-editor component leverages a stencil/store to manage data.
  * If a component uses the json-editor but does not have logic to hydrate the store this component can be used.
  * It will create and hydrate the store based on the value provided.
  *
@@ -26,8 +26,9 @@
 */
 
 import { Component, Element, Event, EventEmitter, Prop, VNode } from '@stencil/core';
-//import { state } from '../../utils/editStore';
-import { /*getItemDataAsJson,*/ UserSession } from '@esri/solution-common';
+import state from "../../utils/solution-store";
+import { getFeatureServices, /*getModels,*/ getSpatialReferenceInfo } from '../../utils/templates';
+import { ISolutionItemData, UserSession } from '@esri/solution-common';
 
 @Component({
   tag: 'store-manager',
@@ -99,26 +100,24 @@ export class StoreManager {
 
   /**
    * Initialize the observer that will monitor and respond to changes in the value.
-   * When we get a new value we are dealinmg with a new solution and need to fetch the items data and load the state.
+   * When we get a new value we are dealing with a new solution and need to fetch the item's data and load the state.
    */
   protected _initValueObserver(): void {
-    //const self = this;
+    const self = this;
     this._valueObserver = new MutationObserver(ml => {
       ml.some(mutation => {
         const newValue = mutation.target[mutation.attributeName];
         if (mutation.type === 'attributes' && mutation.attributeName === "value" &&
           newValue !== mutation.oldValue && newValue !== "") {
-          /*
-          const v = JSON.parse(newValue);
-          // eslint-disable-next-line @typescript-eslint/no-floating-promises
-          getItemDataAsJson(v, self.authentication).then(data => {
-            state.models = getModels(Array.isArray(v) ? v : [v], self.authentication, v);
-            state.featureServices = getFeatureServices(Array.isArray(v) ? v : [v])
-            state.get("spatialReferenceInfo") = getSpatialReferenceInfo(state.featureServices, data);
-            self.templates = v;
-            self.stateLoaded.emit(state);
-          });
-          */
+          const solutionData = JSON.parse(newValue) as ISolutionItemData;
+          state.setStoreInfo("solutionData", solutionData);
+
+          const services = getFeatureServices(solutionData.templates);
+          state.setStoreInfo("featureServices", services);
+          state.setStoreInfo("spatialReferenceInfo", getSpatialReferenceInfo(services, solutionData));
+
+          //self.templates = solutionData;
+          self.stateLoaded.emit(state);
           return true;
         }
       })

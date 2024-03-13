@@ -22322,6 +22322,2987 @@
               ]
           },
           "estimatedDeploymentCostFactor": 10
+      },
+      {
+          "itemId": "27d6eee83f2f4f6aae4a1d028536bd66",
+          "type": "Feature Service",
+          "key": "mgiyyxqm",
+          "item": {
+              "id": "{{27d6eee83f2f4f6aae4a1d028536bd66.itemId}}",
+              "type": "Feature Service",
+              "accessInformation": "Esri",
+              "categories": [],
+              "culture": "en-us",
+              "description": "A feature layer used to store geographical areas an elected official serves, precincts and related polling places, and voting centers.",
+              "extent": "{{solutionItemExtent}}",
+              "licenseInfo": null,
+              "name": "ElectionLocations",
+              "properties": null,
+              "snippet": "A feature layer used to store geographical areas an elected official serves, precincts and related polling places, and voting centers.",
+              "tags": [
+                  "Precincts",
+                  "Polling Places",
+                  "Voting",
+                  "Early Voting",
+                  "Ballots",
+                  "Voting Centers",
+                  "Elected Officials",
+                  "Secretary of State",
+                  "Elections",
+                  "Election Day",
+                  "Election Officials",
+                  "Clerks"
+              ],
+              "thumbnail": "thumbnail/thumbnail1552920388014.png",
+              "title": "ElectionLocations",
+              "typeKeywords": [
+                  "ArcGIS Server",
+                  "Data",
+                  "Feature Access",
+                  "Feature Service",
+                  "Metadata",
+                  "Multilayer",
+                  "Service",
+                  "source-df22713d6498473cad086c6e8645ae0c",
+                  "Hosted Service"
+              ],
+              "url": "{{27d6eee83f2f4f6aae4a1d028536bd66.url}}"
+          },
+          "data": {
+              "tables": [
+                  {
+                      "id": 3,
+                      "popupInfo": {
+                          "title": "{pollingplacename}",
+                          "mediaInfos": [],
+                          "fieldInfos": [
+                              {
+                                  "fieldName": "OBJECTID",
+                                  "visible": true,
+                                  "isEditable": false,
+                                  "label": "OBJECTID"
+                              },
+                              {
+                                  "fieldName": "facilityid",
+                                  "visible": true,
+                                  "isEditable": true,
+                                  "label": "Voting Location ID"
+                              },
+                              {
+                                  "fieldName": "name",
+                                  "visible": true,
+                                  "isEditable": true,
+                                  "label": "Voting Location Name"
+                              },
+                              {
+                                  "fieldName": "waittime",
+                                  "visible": true,
+                                  "isEditable": true,
+                                  "label": "Wait Time (Minutes)"
+                              }
+                          ],
+                          "popupElements": [
+                              {
+                                  "fieldInfos": [
+                                      {
+                                          "fieldName": "OBJECTID",
+                                          "visible": true,
+                                          "isEditable": false,
+                                          "label": "OBJECTID"
+                                      },
+                                      {
+                                          "fieldName": "facilityid",
+                                          "visible": true,
+                                          "isEditable": true,
+                                          "label": "Voting Location ID"
+                                      },
+                                      {
+                                          "fieldName": "name",
+                                          "visible": true,
+                                          "isEditable": true,
+                                          "label": "Voting Location Name"
+                                      },
+                                      {
+                                          "fieldName": "waittime",
+                                          "visible": true,
+                                          "isEditable": true,
+                                          "label": "Wait Time (Minutes)"
+                                      }
+                                  ],
+                                  "type": "fields"
+                              }
+                          ],
+                          "expressionInfos": []
+                      }
+                  }
+              ],
+              "layers": [
+                  {
+                      "id": 0,
+                      "popupInfo": {
+                          "title": "<span style='font-size:medium'>{name}</span>",
+                          "fieldInfos": [
+                              {
+                                  "fieldName": "OBJECTID",
+                                  "visible": false,
+                                  "isEditable": false,
+                                  "label": "OBJECTID"
+                              },
+                              {
+                                  "fieldName": "facilityid",
+                                  "visible": true,
+                                  "isEditable": true,
+                                  "label": "Facility ID"
+                              },
+                              {
+                                  "fieldName": "type",
+                                  "visible": true,
+                                  "isEditable": true,
+                                  "label": "Voting Facility Type"
+                              },
+                              {
+                                  "fieldName": "name",
+                                  "visible": true,
+                                  "isEditable": true,
+                                  "label": "Name"
+                              },
+                              {
+                                  "fieldName": "fulladdr",
+                                  "visible": true,
+                                  "isEditable": true,
+                                  "label": "Address"
+                              },
+                              {
+                                  "fieldName": "municipality",
+                                  "visible": true,
+                                  "isEditable": true,
+                                  "label": "Municipality"
+                              },
+                              {
+                                  "fieldName": "pstlstate",
+                                  "visible": true,
+                                  "isEditable": true,
+                                  "label": "State"
+                              },
+                              {
+                                  "fieldName": "pstlzip5",
+                                  "visible": true,
+                                  "isEditable": true,
+                                  "label": "Zip Code"
+                              },
+                              {
+                                  "fieldName": "phone",
+                                  "visible": true,
+                                  "isEditable": true,
+                                  "label": "Phone"
+                              },
+                              {
+                                  "fieldName": "agencyurl",
+                                  "visible": true,
+                                  "isEditable": true,
+                                  "label": "Website"
+                              },
+                              {
+                                  "fieldName": "operdays",
+                                  "visible": true,
+                                  "isEditable": true,
+                                  "label": "Operational Days"
+                              },
+                              {
+                                  "fieldName": "handicap",
+                                  "visible": true,
+                                  "isEditable": true,
+                                  "label": "Handicap Accessible"
+                              },
+                              {
+                                  "fieldName": "pocname",
+                                  "visible": true,
+                                  "isEditable": true,
+                                  "label": "Contact Name"
+                              },
+                              {
+                                  "fieldName": "pocphone",
+                                  "visible": true,
+                                  "isEditable": true,
+                                  "label": "Contact Phone"
+                              },
+                              {
+                                  "fieldName": "pocemail",
+                                  "visible": true,
+                                  "isEditable": true,
+                                  "label": "Contact Email"
+                              },
+                              {
+                                  "fieldName": "nextelect",
+                                  "visible": true,
+                                  "isEditable": true,
+                                  "label": "Next Election Date",
+                                  "format": {
+                                      "dateFormat": "longMonthDayYear",
+                                      "timezone": "utc"
+                                  }
+                              },
+                              {
+                                  "fieldName": "regdate",
+                                  "visible": true,
+                                  "isEditable": true,
+                                  "label": "Voter Registration Deadline",
+                                  "format": {
+                                      "dateFormat": "longMonthDayYear",
+                                      "timezone": "utc"
+                                  }
+                              },
+                              {
+                                  "fieldName": "voteservices",
+                                  "visible": true,
+                                  "isEditable": true,
+                                  "label": "Election Services"
+                              },
+                              {
+                                  "fieldName": "dropbox",
+                                  "visible": true,
+                                  "isEditable": true,
+                                  "label": "Dropbox"
+                              },
+                              {
+                                  "fieldName": "boxlocation",
+                                  "visible": true,
+                                  "isEditable": true,
+                                  "label": "Box Location"
+                              },
+                              {
+                                  "fieldName": "comments",
+                                  "visible": true,
+                                  "isEditable": true,
+                                  "label": "Comments"
+                              },
+                              {
+                                  "fieldName": "GlobalID",
+                                  "label": "GlobalID",
+                                  "isEditable": false,
+                                  "visible": false
+                              },
+                              {
+                                  "fieldName": "CreationDate",
+                                  "label": "CreationDate",
+                                  "isEditable": false,
+                                  "visible": false,
+                                  "format": {
+                                      "dateFormat": "shortDateShortTime",
+                                      "timezone": "utc"
+                                  }
+                              },
+                              {
+                                  "fieldName": "Creator",
+                                  "label": "Creator",
+                                  "isEditable": false,
+                                  "visible": false,
+                                  "stringFieldOption": "textbox"
+                              },
+                              {
+                                  "fieldName": "EditDate",
+                                  "label": "EditDate",
+                                  "isEditable": false,
+                                  "visible": false,
+                                  "format": {
+                                      "dateFormat": "shortDateShortTime",
+                                      "timezone": "utc"
+                                  }
+                              },
+                              {
+                                  "fieldName": "Editor",
+                                  "label": "Editor",
+                                  "isEditable": false,
+                                  "visible": false,
+                                  "stringFieldOption": "textbox"
+                              },
+                              {
+                                  "fieldName": "relationships/0/OBJECTID",
+                                  "label": "OBJECTID",
+                                  "isEditable": false,
+                                  "visible": false
+                              },
+                              {
+                                  "fieldName": "relationships/0/precinctid",
+                                  "label": "Precinct ID",
+                                  "isEditable": false,
+                                  "visible": false,
+                                  "stringFieldOption": "textbox"
+                              },
+                              {
+                                  "fieldName": "relationships/0/name",
+                                  "label": "Precinct Name",
+                                  "isEditable": false,
+                                  "visible": false,
+                                  "stringFieldOption": "textbox"
+                              },
+                              {
+                                  "fieldName": "relationships/0/county",
+                                  "label": "County",
+                                  "isEditable": false,
+                                  "visible": false,
+                                  "stringFieldOption": "textbox"
+                              },
+                              {
+                                  "fieldName": "relationships/0/pollingid",
+                                  "label": "Polling Place ID",
+                                  "isEditable": false,
+                                  "visible": false,
+                                  "stringFieldOption": "textbox"
+                              },
+                              {
+                                  "fieldName": "relationships/0/GlobalID",
+                                  "label": "GlobalID",
+                                  "isEditable": false,
+                                  "visible": false
+                              },
+                              {
+                                  "fieldName": "relationships/0/CreationDate",
+                                  "label": "CreationDate",
+                                  "isEditable": false,
+                                  "visible": false,
+                                  "format": {
+                                      "dateFormat": "shortDateShortTime",
+                                      "timezone": "utc"
+                                  }
+                              },
+                              {
+                                  "fieldName": "relationships/0/Creator",
+                                  "label": "Creator",
+                                  "isEditable": false,
+                                  "visible": false,
+                                  "stringFieldOption": "textbox"
+                              },
+                              {
+                                  "fieldName": "relationships/0/EditDate",
+                                  "label": "EditDate",
+                                  "isEditable": false,
+                                  "visible": false,
+                                  "format": {
+                                      "dateFormat": "shortDateShortTime",
+                                      "timezone": "utc"
+                                  }
+                              },
+                              {
+                                  "fieldName": "relationships/0/Editor",
+                                  "label": "Editor",
+                                  "isEditable": false,
+                                  "visible": false,
+                                  "stringFieldOption": "textbox"
+                              },
+                              {
+                                  "fieldName": "expression/expr0",
+                                  "visible": false
+                              },
+                              {
+                                  "fieldName": "expression/expr1",
+                                  "visible": false
+                              },
+                              {
+                                  "fieldName": "expression/expr3",
+                                  "visible": false
+                              },
+                              {
+                                  "fieldName": "expression/expr4",
+                                  "visible": false
+                              },
+                              {
+                                  "fieldName": "earlyvoting",
+                                  "label": "Early Voting Available",
+                                  "isEditable": false,
+                                  "visible": false,
+                                  "stringFieldOption": "textbox"
+                              },
+                              {
+                                  "fieldName": "earlyvotingdate",
+                                  "label": "Early Voting Date",
+                                  "isEditable": false,
+                                  "visible": false,
+                                  "format": {
+                                      "dateFormat": "shortDateShortTime",
+                                      "timezone": "utc"
+                                  }
+                              },
+                              {
+                                  "fieldName": "expression/expr5",
+                                  "visible": false
+                              }
+                          ],
+                          "description": "<table cellpadding='0' style='text-align: center; font-size: medium; background-color: #464646; color: #FFFFFF; border-collapse: collapse; border-spacing: 0px; width: 100%; table-layout: fixed; margin: 0px -1px'>\n\t<tbody>\n\t\t<tr>\n\t\t\t<td style='display:{expression/expr1}; padding: 8px 0px; padding-bottom: 10px'>Today is Election Day! <br />{expression/expr0}\n\t\t\t</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td style='display:{expression/expr3}; padding: 8px 0px; padding-bottom: 10px'>Next Election Day <br />{nextelect}\n\t\t\t</td>\n\t\t</tr>\n\t</tbody>\n</table>\n\n<table style='text-align: center; font-size: medium; color: #000000; width: 100%; margin: 8px 0px; border-collapse: separate; border-spacing: 0px 8px; table-layout: fixed;'>\n\t<tbody>\n\t\t<tr>\n\t\t\t<td>\n\t\t\t\t{fulladdr}<br />\n\t\t\t\t{municipality}, {pstlstate} {pstlzip5}<br />\n\t\t\t\t<font color='#007AC2'>{expression/expr2}</font>\n\t\t\t</td>\n\t\t</tr>\n\t</tbody>\n</table>\n\n<table style='display: {expression/expr1}; text-align: center; font-size: medium; color: #000000; width: 100%; margin: 8px 0px; border-collapse: separate; border-spacing: 0px 8px; table-layout: fixed;'>\n\t<tbody>\n\t\t<tr>\n\t\t\t<td>\n\t\t\t\tHours<br />\n\t\t\t\t{expression/expr4}\n\t\t\t</td>\n\t\t</tr>\n\t</tbody>\n</table>\n\n<table style='display:{expression/expr3}; text-align: center; font-size: medium; color: #000000; width: 100%; margin: 8px 0px; border-collapse: separate; border-spacing: 0px 8px; table-layout: fixed;'>\n\t<tbody>\n\t\t<tr>\n\t\t\t<td style='padding-bottom: 10px'>\n\t\t\t\tHours<br />\n\t\t\t\t{expression/expr5}\n\t\t\t</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td>\n\t\t\t\tMust register to vote by:<br />\n\t\t\t\t{regdate}\n\t\t\t</td>\n\t\t</tr>\n\t</tbody>\n</table>\n\n\n<table style='text-align: center; font-size: medium; color: #000000; width: 100%; margin: 8px 0px; border-collapse: separate; border-spacing: 0px 8px; table-layout: fixed;'>\n\t<tbody>\n\t\t<tr>\n\t\t\t<td>\n\t\t\t\tFor more information, contact:<br /><a href='{agencyurl}' target='_blank'>{pocname}</a><br />\n\t\t\t\t{pocphone} <br /><a href='mailto: {pocemail}' target='_blank'>email</a>\n\t\t\t</td>\t\n\t\t</tr>\t\t\n\t</tbody>\n</table>",
+                          "showAttachments": false,
+                          "showLastEditInfo": false,
+                          "relatedRecordsInfo": {
+                              "showRelatedRecords": false
+                          },
+                          "expressionInfos": [
+                              {
+                                  "name": "expr0",
+                                  "title": "WaitTimes",
+                                  "expression": "var electiondate = Date($feature.nextelect)\nvar current = Today()\n\nvar currentText = Text(current, 'MMM D YYYY');\nvar electiondateText = Text(electiondate, 'MMM D YYYY')\n\n\nif (currentText != electiondateText) {\n    return null;\n}\n\nvar waittimes = Filter(FeatureSetByName($datastore,\"Election Day Metrics\", ['waittime','CreationDate'], false), \"facilityid = '\" + $feature.facilityid+\"'\");\nvar waittime = null;\nvar maxdate = null;\nfor(var x in waittimes) {\n    if (maxdate == null || x.CreationDate > maxdate) {\n        waittime = x.waittime + \" minutes\";\n        maxdate = x.CreationDate ;\n    }\n}\n\nvar waittimedateText = Text(maxdate, 'MMM D YYYY')\n\nif (waittime == null || currentText != waittimedateText) {\n    return null;\n}\n\nreturn \"Approximate wait is \" + waittime;\n",
+                                  "returnType": "string"
+                              },
+                              {
+                                  "name": "expr1",
+                                  "title": "ElectionDay",
+                                  "expression": "var electiondate = Date($feature.nextelect)\nvar current = Today()\n\nvar currentText = Text(current, 'MMM D YYYY');\nvar electiondateText = Text(electiondate, 'MMM D YYYY')\n\n\nIIF(currentText == electiondateText, null, \"none\");\n\n",
+                                  "returnType": "string"
+                              },
+                              {
+                                  "name": "expr2",
+                                  "title": "HandicapAccessible",
+                                  "expression": "if ($feature.handicap == \"Yes\") {\r\n\treturn \"Handicap Accessible\" ; \r\n}\r\nreturn null",
+                                  "returnType": "string"
+                              },
+                              {
+                                  "name": "expr3",
+                                  "title": "NotElectionDay",
+                                  "expression": "var electiondate = Date($feature.nextelect)\nvar current = Today()\n\nvar currentText = Text(current, 'MMM D YYYY');\nvar electiondateText = Text(electiondate, 'MMM D YYYY')\n\n\nIIF(currentText != electiondateText, null, \"none\");",
+                                  "returnType": "string"
+                              },
+                              {
+                                  "name": "expr4",
+                                  "title": "OpenClosed",
+                                  "expression": "//Splits day list into an array with sub-arrays for each day\r\nfunction DayTime(field){\r\n    var x = 0\r\n\tvar array = []\r\n\tvar sp = split(replace(field,\")\",\"\"),\";\")\r\n\tvar num = count(sp)\r\n\t//Split data field into array\r\n\tfor (var y in sp){\r\n\t\tif(x < num){\r\n\t\t    var mid_v = split(sp[x],\"(\")\r\n\t\t\tvar addin = split(mid_v[1],\"-\")\r\n\t\t\tif(count(addin)==2){\r\n    \t\t\tmid_v[1]=addin[0]\r\n    \t\t\tmid_v[2]=addin[1]\r\n    \t\t\tvar final = mid_v\r\n    \t\t\tarray[x]=final\r\n    \t\t\tx+=1\r\n\t\t\t}else{\r\n\t\t\tarray[x]=mid_v\r\n\t\t\tx+=1\r\n\t\t\t}\r\n\t\t}\r\n\t}\r\n\treturn array\r\n}\r\n\r\n//finds all days present in a range\r\nfunction range_finder(range){\r\n    var sp = split(range,\"-\")\r\n    var start = When(sp[0]==\"Su\",0, sp[0]==\"Mo\",1,sp[0]==\"Tu\",2,sp[0]==\"We\",3,sp[0]==\"Th\",4,sp[0]==\"Fr\",5,sp[0]==\"Sa\",6,7)\r\n    var end = When(sp[1]==\"Su\",0, sp[1]==\"Mo\",1,sp[1]==\"Tu\",2,sp[1]==\"We\",3,sp[1]==\"Th\",4,sp[1]==\"Fr\",5,sp[1]==\"Sa\",6,7)\r\n\tvar i = start\r\n\tvar y = 0\r\n\tvar weekend = end - start\r\n\tvar listed_day = []\r\n\t\r\n    if(weekend>0){\r\n        var days = [[\"Su\",0],[\"Mo\",1],[\"Tu\",2],[\"We\",3],[\"Th\",4],[\"Fr\",5],[\"Sa\",6]]\r\n    \tfor (var x in days){\r\n    \t    \tif((days[x][1] >= start) && (days[x][1] <= end) &&(start != 7) && (end != 7)){\r\n    \t\t    listed_day[y]=days[x][0]\r\n    \t\t    y+=1\r\n    \t\t    i+=1\r\n    \t\t    x+=1\r\n    \t\t} else if((days[x][1] <= start) && (days[x][1] >= end) &&(start != 7) && (end != 7)){\r\n    \t\t    listed_day[y]=days[x][0]\r\n    \t\t    y+=1\r\n    \t\t    i+=1\r\n    \t\t    x+=1\r\n    \t\t}\r\n    \t}\r\n    }else{\r\n        var days = [[\"Mo\",1],[\"Tu\",2],[\"We\",3],[\"Th\",4],[\"Fr\",5],[\"Sa\",6],[\"Su\",7],[\"Mo\",8],[\"Tu\",9],[\"We\",10],[\"Th\",11],[\"Fr\",12],[\"Sa\",13],[\"Su\",14]]\r\n        var start =When(sp[0]==\"Su\",0, sp[0]==\"Mo\",1,sp[0]==\"Tu\",2,sp[0]==\"We\",3,sp[0]==\"Th\",4,sp[0]==\"Fr\",5,sp[0]==\"Sa\",6, 7)\r\n        var end =When(sp[1]==\"Su\",7, sp[1]==\"Mo\",8,sp[1]==\"Tu\",9,sp[1]==\"We\",10,sp[1]==\"Th\",11,sp[1]==\"Fr\",12,sp[1]==\"Sa\",13,14)\r\n        for (var x in days){\r\n    \t    \tif((days[x][1] >= start) && (days[x][1] <= end) &&(start != 8) && (end != 15)){\r\n    \t\t    listed_day[y]=days[x][0]\r\n    \t\t    y+=1\r\n    \t\t    i+=1\r\n    \t\t    x+=1\r\n    \t\t} else if((days[x][1] <= start) && (days[x][1] >= end) &&(start != 8) && (end != 15)){\r\n    \t\t    listed_day[y]=days[x][0]\r\n    \t\t    y+=1\r\n    \t\t    i+=1\r\n    \t\t    x+=1\r\n    \t\t}\r\n        }\r\n    }\r\n\treturn listed_day\r\n}\r\n\r\n//Converts values with hyphens into array and replaces them in the list\r\nfunction Day_Splitter(list){\r\n    var new_days = []\r\n    var x = (count(list))\r\n    var t = 0\r\n\tfor (var z in list){\r\n\t    var f = 0\r\n\t\tif(find('-', list[z][0]) >1){\r\n\t\t   var range = range_finder(list[z][0])\r\n\t\t   var num_days=count(range)\r\n\t\t   for (var d in range){\r\n\t\t    \t   if (f <= num_days){\r\n                       if(count(list[z])==2){\r\n                          new_days[t] =[range[f], list[z][1]]//,list[z][2]]\r\n                          \r\n                       }else{\r\n                          new_days[t] =[range[f], list[z][1],list[z][2]] \r\n                       }\r\n             \t   x +=1\r\n\t\t\t\t   f +=1 \r\n\t\t\t\t   t +=1\r\n\t\t\t   }\r\n\t\t\t}\r\n\t\t}else{\r\n\t\t   new_days[t]= list[z]\r\n\t\t   x +=1\r\n\t\t   f +=1 \r\n\t\t   t +=1\r\n\t\t}\r\n\t}\r\n\treturn new_days\r\n}\r\n\r\n//Function to determine if time falls during open Hours\r\nfunction between(value,start,end){\r\n    var open = Date(Year(value),Month(value),day(value),(split(start,\":\")[0]),(split(start,\":\")[1]))\r\n    var close = Date(Year(value),Month(value),day(value),(split(end,\":\")[0]),(split(end,\":\")[1]))\r\n\t\r\n\tif(value >= open && value < close){\r\n\t\treturn \"Open\"\r\n\t}else{\r\n\t\treturn \"Closed\"\r\n\t}\r\n}\r\n\r\n//Reorder array to put sunday in place 0\r\nfunction reorder(array){\r\n\tvar days = [[\"Su\",0],[\"Mo\",1],[\"Tu\",2],[\"We\",3],[\"Th\",4],[\"Fr\",5],[\"Sa\",6]]\r\n\tvar list =[]\r\n\tvar old = array\r\n\tfor (var x in days){\r\n\t\tfor(var y in old){\r\n\t\t\tif(old[y][0]==days[x][0]){\r\n\t\t\t\tlist[x]=old[y]\r\n\t\t\t}\r\n\t\t}   \r\n\t}\r\n\treturn list\r\n}\r\n\r\n//Function to determine if the location is open\r\nfunction Open (times){\r\n    \r\n\t//Day and Hour Calcs for Locations\r\n    var schedule = reorder(Day_Splitter(DayTime(replace(times,\" \",\"\"))))\r\n    var date_now = now();\r\n\tvar day_schedule = schedule[weekday(date_now)];\r\n\t\r\n\tvar open_text = \"Closed\";\r\n\tif(count(day_schedule)==3){\r\n\t\t\r\n\t\tvar start = Date(Year(date_now),Month(date_now),Day(date_now),(split(day_schedule[1],\":\")[0]),(split(day_schedule[1],\":\")[1]))\r\n\t    var end = Date(Year(date_now),Month(date_now),Day(date_now),(split(day_schedule[2],\":\")[0]),(split(day_schedule[2],\":\")[1]))\r\n\t    var start_format = \"h:mmA\";\r\n\t    if (Minute(start) == 0) {\r\n\t\t    start_format = \"hA\"\r\n\t\t}\r\n\t\tvar end_format = \"h:mmA\";\r\n\t\tif (Minute(end) == 0) {\r\n\t\t    end_format = \"hA\"\r\n\t\t}\r\n\t    open_text = Text(start, start_format) + \" - \" + Text(end, end_format)\r\n\t\t\r\n\t\tif (between(date_now,day_schedule[1], day_schedule[2])==\"Open\"){\r\n\t\t\t//The next Value is returned if the location is open\r\n\t\t\topen_text += TextFormatting.NewLine + \"Open Now\";\r\n\t\t}\r\n\t\telse {\r\n\t\t\topen_text += TextFormatting.NewLine + \"Closed Now\"\r\n\t\t}\r\n\t\t\r\n\t}\r\n\treturn open_text;\r\n}\r\n\r\nOpen($feature.operdays)",
+                                  "returnType": "string"
+                              },
+                              {
+                                  "name": "expr5",
+                                  "title": "ElectionDayHours",
+                                  "expression": "//Splits day list into an array with sub-arrays for each day\r\nfunction DayTime(field){\r\n    var x = 0\r\n\tvar array = []\r\n\tvar sp = split(replace(field,\")\",\"\"),\";\")\r\n\tvar num = count(sp)\r\n\t//Split data field into array\r\n\tfor (var y in sp){\r\n\t\tif(x < num){\r\n\t\t    var mid_v = split(sp[x],\"(\")\r\n\t\t\tvar addin = split(mid_v[1],\"-\")\r\n\t\t\tif(count(addin)==2){\r\n    \t\t\tmid_v[1]=addin[0]\r\n    \t\t\tmid_v[2]=addin[1]\r\n    \t\t\tvar final = mid_v\r\n    \t\t\tarray[x]=final\r\n    \t\t\tx+=1\r\n\t\t\t}else{\r\n\t\t\tarray[x]=mid_v\r\n\t\t\tx+=1\r\n\t\t\t}\r\n\t\t}\r\n\t}\r\n\treturn array\r\n}\r\n\r\n//finds all days present in a range\r\nfunction range_finder(range){\r\n    var sp = split(range,\"-\")\r\n    var start = When(sp[0]==\"Su\",0, sp[0]==\"Mo\",1,sp[0]==\"Tu\",2,sp[0]==\"We\",3,sp[0]==\"Th\",4,sp[0]==\"Fr\",5,sp[0]==\"Sa\",6,7)\r\n    var end = When(sp[1]==\"Su\",0, sp[1]==\"Mo\",1,sp[1]==\"Tu\",2,sp[1]==\"We\",3,sp[1]==\"Th\",4,sp[1]==\"Fr\",5,sp[1]==\"Sa\",6,7)\r\n\tvar i = start\r\n\tvar y = 0\r\n\tvar weekend = end - start\r\n\tvar listed_day = []\r\n\t\r\n    if(weekend>0){\r\n        var days = [[\"Su\",0],[\"Mo\",1],[\"Tu\",2],[\"We\",3],[\"Th\",4],[\"Fr\",5],[\"Sa\",6]]\r\n    \tfor (var x in days){\r\n    \t    \tif((days[x][1] >= start) && (days[x][1] <= end) &&(start != 7) && (end != 7)){\r\n    \t\t    listed_day[y]=days[x][0]\r\n    \t\t    y+=1\r\n    \t\t    i+=1\r\n    \t\t    x+=1\r\n    \t\t} else if((days[x][1] <= start) && (days[x][1] >= end) &&(start != 7) && (end != 7)){\r\n    \t\t    listed_day[y]=days[x][0]\r\n    \t\t    y+=1\r\n    \t\t    i+=1\r\n    \t\t    x+=1\r\n    \t\t}\r\n    \t}\r\n    }else{\r\n        var days = [[\"Mo\",1],[\"Tu\",2],[\"We\",3],[\"Th\",4],[\"Fr\",5],[\"Sa\",6],[\"Su\",7],[\"Mo\",8],[\"Tu\",9],[\"We\",10],[\"Th\",11],[\"Fr\",12],[\"Sa\",13],[\"Su\",14]]\r\n        var start =When(sp[0]==\"Su\",0, sp[0]==\"Mo\",1,sp[0]==\"Tu\",2,sp[0]==\"We\",3,sp[0]==\"Th\",4,sp[0]==\"Fr\",5,sp[0]==\"Sa\",6, 7)\r\n        var end =When(sp[1]==\"Su\",7, sp[1]==\"Mo\",8,sp[1]==\"Tu\",9,sp[1]==\"We\",10,sp[1]==\"Th\",11,sp[1]==\"Fr\",12,sp[1]==\"Sa\",13,14)\r\n        for (var x in days){\r\n    \t    \tif((days[x][1] >= start) && (days[x][1] <= end) &&(start != 8) && (end != 15)){\r\n    \t\t    listed_day[y]=days[x][0]\r\n    \t\t    y+=1\r\n    \t\t    i+=1\r\n    \t\t    x+=1\r\n    \t\t} else if((days[x][1] <= start) && (days[x][1] >= end) &&(start != 8) && (end != 15)){\r\n    \t\t    listed_day[y]=days[x][0]\r\n    \t\t    y+=1\r\n    \t\t    i+=1\r\n    \t\t    x+=1\r\n    \t\t}\r\n        }\r\n    }\r\n\treturn listed_day\r\n}\r\n\r\n//Converts values with hyphens into array and replaces them in the list\r\nfunction Day_Splitter(list){\r\n    var new_days = []\r\n    var x = (count(list))\r\n    var t = 0\r\n\tfor (var z in list){\r\n\t    var f = 0\r\n\t\tif(find('-', list[z][0]) >1){\r\n\t\t   var range = range_finder(list[z][0])\r\n\t\t   var num_days=count(range)\r\n\t\t   for (var d in range){\r\n\t\t    \t   if (f <= num_days){\r\n                       if(count(list[z])==2){\r\n                          new_days[t] =[range[f], list[z][1]]//,list[z][2]]\r\n                          \r\n                       }else{\r\n                          new_days[t] =[range[f], list[z][1],list[z][2]] \r\n                       }\r\n             \t   x +=1\r\n\t\t\t\t   f +=1 \r\n\t\t\t\t   t +=1\r\n\t\t\t   }\r\n\t\t\t}\r\n\t\t}else{\r\n\t\t   new_days[t]= list[z]\r\n\t\t   x +=1\r\n\t\t   f +=1 \r\n\t\t   t +=1\r\n\t\t}\r\n\t}\r\n\treturn new_days\r\n}\r\n\r\n//Function to determine if time falls during open Hours\r\nfunction between(value,start,end){\r\n    var open = Date(Year(value),Month(value),day(value),(split(start,\":\")[0]),(split(start,\":\")[1]))\r\n    var close = Date(Year(value),Month(value),day(value),(split(end,\":\")[0]),(split(end,\":\")[1]))\r\n\t\r\n\tif(value >= open && value < close){\r\n\t\treturn \"Open\"\r\n\t}else{\r\n\t\treturn \"Closed\"\r\n\t}\r\n}\r\n\r\n//Reorder array to put sunday in place 0\r\nfunction reorder(array){\r\n\tvar days = [[\"Su\",0],[\"Mo\",1],[\"Tu\",2],[\"We\",3],[\"Th\",4],[\"Fr\",5],[\"Sa\",6]]\r\n\tvar list =[]\r\n\tvar old = array\r\n\tfor (var x in days){\r\n\t\tfor(var y in old){\r\n\t\t\tif(old[y][0]==days[x][0]){\r\n\t\t\t\tlist[x]=old[y]\r\n\t\t\t}\r\n\t\t}   \r\n\t}\r\n\treturn list\r\n}\r\n\r\n//Function to determine if the location is open\r\nfunction Open (times){\r\n    \r\n\t//Day and Hour Calcs for Locations\r\n    var schedule = reorder(Day_Splitter(DayTime(replace(times,\" \",\"\"))))\r\n    var date_now = $feature.nextelect;\r\n\tvar day_schedule = schedule[weekday(date_now)];\r\n\t\r\n\tvar open_hours = null;\r\n\tif(count(day_schedule)==3){\r\n\t\t\r\n\t\tvar start = Date(Year(date_now),Month(date_now),Day(date_now),(split(day_schedule[1],\":\")[0]),(split(day_schedule[1],\":\")[1]))\r\n\t    var end = Date(Year(date_now),Month(date_now),Day(date_now),(split(day_schedule[2],\":\")[0]),(split(day_schedule[2],\":\")[1]))\r\n\t    var start_format = \"h:mmA\";\r\n\t    if (Minute(start) == 0) {\r\n\t\t    start_format = \"hA\"\r\n\t\t}\r\n\t\tvar end_format = \"h:mmA\";\r\n\t\tif (Minute(end) == 0) {\r\n\t\t    end_format = \"hA\"\r\n\t\t}\r\n\t    open_hours = Text(start, start_format) + \" - \" + Text(end, end_format)\r\n\t}\r\n\treturn open_hours;\r\n}\r\n\r\nOpen($feature.operdays)",
+                                  "returnType": "string"
+                              }
+                          ],
+                          "mediaInfos": []
+                      },
+                      "layerDefinition": {
+                          "defaultVisibility": true
+                      }
+                  },
+                  {
+                      "id": 1,
+                      "popupInfo": {
+                          "title": "<p style='font-size:16px'>Voting for Precinct: {precinctid}</p>",
+                          "fieldInfos": [
+                              {
+                                  "fieldName": "OBJECTID",
+                                  "visible": false,
+                                  "isEditable": false,
+                                  "label": "OBJECTID"
+                              },
+                              {
+                                  "fieldName": "precinctid",
+                                  "visible": true,
+                                  "isEditable": true,
+                                  "label": "Precinct ID"
+                              },
+                              {
+                                  "fieldName": "name",
+                                  "visible": true,
+                                  "isEditable": true,
+                                  "label": "Precinct Name"
+                              },
+                              {
+                                  "fieldName": "county",
+                                  "visible": true,
+                                  "isEditable": true,
+                                  "label": "County"
+                              },
+                              {
+                                  "fieldName": "pollingid",
+                                  "visible": true,
+                                  "isEditable": true,
+                                  "label": "Polling Place ID"
+                              },
+                              {
+                                  "fieldName": "GlobalID",
+                                  "visible": false,
+                                  "isEditable": false,
+                                  "label": "GlobalID"
+                              },
+                              {
+                                  "fieldName": "CreationDate",
+                                  "label": "CreationDate",
+                                  "isEditable": false,
+                                  "visible": false,
+                                  "format": {
+                                      "dateFormat": "shortDateShortTime",
+                                      "timezone": "utc"
+                                  }
+                              },
+                              {
+                                  "fieldName": "Creator",
+                                  "label": "Creator",
+                                  "isEditable": false,
+                                  "visible": false,
+                                  "stringFieldOption": "textbox"
+                              },
+                              {
+                                  "fieldName": "EditDate",
+                                  "label": "EditDate",
+                                  "isEditable": false,
+                                  "visible": false,
+                                  "format": {
+                                      "dateFormat": "shortDateShortTime",
+                                      "timezone": "utc"
+                                  }
+                              },
+                              {
+                                  "fieldName": "Editor",
+                                  "label": "Editor",
+                                  "isEditable": false,
+                                  "visible": false,
+                                  "stringFieldOption": "textbox"
+                              },
+                              {
+                                  "fieldName": "relationships/0/OBJECTID",
+                                  "label": "OBJECTID",
+                                  "isEditable": false,
+                                  "visible": false
+                              },
+                              {
+                                  "fieldName": "relationships/0/facilityid",
+                                  "label": "Facility ID",
+                                  "isEditable": false,
+                                  "visible": false,
+                                  "stringFieldOption": "textbox"
+                              },
+                              {
+                                  "fieldName": "relationships/0/type",
+                                  "label": "Voting Facility Type",
+                                  "isEditable": false,
+                                  "visible": false,
+                                  "stringFieldOption": "textbox"
+                              },
+                              {
+                                  "fieldName": "relationships/0/name",
+                                  "label": "Name",
+                                  "isEditable": false,
+                                  "visible": false,
+                                  "stringFieldOption": "textbox"
+                              },
+                              {
+                                  "fieldName": "relationships/0/fulladdr",
+                                  "label": "Address",
+                                  "isEditable": false,
+                                  "visible": false,
+                                  "stringFieldOption": "textbox"
+                              },
+                              {
+                                  "fieldName": "relationships/0/municipality",
+                                  "label": "Municipality",
+                                  "isEditable": false,
+                                  "visible": false,
+                                  "stringFieldOption": "textbox"
+                              },
+                              {
+                                  "fieldName": "relationships/0/pstlstate",
+                                  "label": "State",
+                                  "isEditable": false,
+                                  "visible": false,
+                                  "stringFieldOption": "textbox"
+                              },
+                              {
+                                  "fieldName": "relationships/0/pstlzip5",
+                                  "label": "Zip Code",
+                                  "isEditable": false,
+                                  "visible": false,
+                                  "stringFieldOption": "textbox"
+                              },
+                              {
+                                  "fieldName": "relationships/0/phone",
+                                  "label": "Phone",
+                                  "isEditable": false,
+                                  "visible": false,
+                                  "stringFieldOption": "textbox"
+                              },
+                              {
+                                  "fieldName": "relationships/0/agencyurl",
+                                  "label": "Website",
+                                  "isEditable": false,
+                                  "visible": false,
+                                  "stringFieldOption": "textbox"
+                              },
+                              {
+                                  "fieldName": "relationships/0/operdays",
+                                  "label": "Operational Days",
+                                  "isEditable": false,
+                                  "visible": false,
+                                  "stringFieldOption": "textbox"
+                              },
+                              {
+                                  "fieldName": "relationships/0/handicap",
+                                  "label": "Handicap Accessible",
+                                  "isEditable": false,
+                                  "visible": false,
+                                  "stringFieldOption": "textbox"
+                              },
+                              {
+                                  "fieldName": "relationships/0/pocname",
+                                  "label": "Contact Name",
+                                  "isEditable": false,
+                                  "visible": false,
+                                  "stringFieldOption": "textbox"
+                              },
+                              {
+                                  "fieldName": "relationships/0/pocphone",
+                                  "label": "Contact Phone",
+                                  "isEditable": false,
+                                  "visible": false,
+                                  "stringFieldOption": "textbox"
+                              },
+                              {
+                                  "fieldName": "relationships/0/pocemail",
+                                  "label": "Contact Email",
+                                  "isEditable": false,
+                                  "visible": false,
+                                  "stringFieldOption": "textbox"
+                              },
+                              {
+                                  "fieldName": "relationships/0/nextelect",
+                                  "label": "Next Election Date",
+                                  "isEditable": false,
+                                  "visible": false,
+                                  "format": {
+                                      "dateFormat": "shortDateShortTime",
+                                      "timezone": "utc"
+                                  }
+                              },
+                              {
+                                  "fieldName": "relationships/0/regdate",
+                                  "label": "Voter Registration Deadline",
+                                  "isEditable": false,
+                                  "visible": false,
+                                  "format": {
+                                      "dateFormat": "shortDateShortTime",
+                                      "timezone": "utc"
+                                  }
+                              },
+                              {
+                                  "fieldName": "relationships/0/voteservices",
+                                  "label": "Election Services",
+                                  "isEditable": false,
+                                  "visible": false,
+                                  "stringFieldOption": "textbox"
+                              },
+                              {
+                                  "fieldName": "relationships/0/dropbox",
+                                  "label": "Dropbox",
+                                  "isEditable": false,
+                                  "visible": false,
+                                  "stringFieldOption": "textbox"
+                              },
+                              {
+                                  "fieldName": "relationships/0/boxlocation",
+                                  "label": "Box Location",
+                                  "isEditable": false,
+                                  "visible": false,
+                                  "stringFieldOption": "textbox"
+                              },
+                              {
+                                  "fieldName": "relationships/0/comments",
+                                  "label": "Comments",
+                                  "isEditable": false,
+                                  "visible": false,
+                                  "stringFieldOption": "textbox"
+                              },
+                              {
+                                  "fieldName": "relationships/0/GlobalID",
+                                  "label": "GlobalID",
+                                  "isEditable": false,
+                                  "visible": false
+                              },
+                              {
+                                  "fieldName": "relationships/0/CreationDate",
+                                  "label": "CreationDate",
+                                  "isEditable": false,
+                                  "visible": false,
+                                  "format": {
+                                      "dateFormat": "shortDateShortTime",
+                                      "timezone": "utc"
+                                  }
+                              },
+                              {
+                                  "fieldName": "relationships/0/Creator",
+                                  "label": "Creator",
+                                  "isEditable": false,
+                                  "visible": false,
+                                  "stringFieldOption": "textbox"
+                              },
+                              {
+                                  "fieldName": "relationships/0/EditDate",
+                                  "label": "EditDate",
+                                  "isEditable": false,
+                                  "visible": false,
+                                  "format": {
+                                      "dateFormat": "shortDateShortTime",
+                                      "timezone": "utc"
+                                  }
+                              },
+                              {
+                                  "fieldName": "relationships/0/Editor",
+                                  "label": "Editor",
+                                  "isEditable": false,
+                                  "visible": false,
+                                  "stringFieldOption": "textbox"
+                              },
+                              {
+                                  "fieldName": "relationships/0/earlyvoting",
+                                  "label": "Early Voting Available",
+                                  "isEditable": false,
+                                  "visible": false,
+                                  "stringFieldOption": "textbox"
+                              },
+                              {
+                                  "fieldName": "relationships/0/earlyvotingdate",
+                                  "label": "Early Voting Date",
+                                  "isEditable": false,
+                                  "visible": false,
+                                  "format": {
+                                      "dateFormat": "shortDateShortTime",
+                                      "timezone": "utc"
+                                  }
+                              }
+                          ],
+                          "description": "<a href='https://www.dupageco.org/sampleballot/' target='_blank'><font color='#3366BB' size='3'>Review a Sample Ballot</font></a>",
+                          "showAttachments": false,
+                          "relatedRecordsInfo": {
+                              "showRelatedRecords": true
+                          },
+                          "mediaInfos": []
+                      },
+                      "layerDefinition": {
+                          "defaultVisibility": true
+                      }
+                  },
+                  {
+                      "id": 2,
+                      "popupInfo": {
+                          "title": "",
+                          "fieldInfos": [
+                              {
+                                  "fieldName": "OBJECTID",
+                                  "label": "OBJECTID",
+                                  "isEditable": false,
+                                  "visible": false
+                              },
+                              {
+                                  "fieldName": "electedoffice",
+                                  "label": "Elected Office",
+                                  "isEditable": true,
+                                  "visible": true,
+                                  "stringFieldOption": "textbox"
+                              },
+                              {
+                                  "fieldName": "name",
+                                  "label": "District Name",
+                                  "isEditable": true,
+                                  "visible": true,
+                                  "stringFieldOption": "textbox"
+                              },
+                              {
+                                  "fieldName": "districtid",
+                                  "label": "District ID",
+                                  "isEditable": true,
+                                  "visible": true,
+                                  "stringFieldOption": "textbox"
+                              },
+                              {
+                                  "fieldName": "repname1",
+                                  "label": "Representative Name",
+                                  "isEditable": true,
+                                  "visible": true,
+                                  "stringFieldOption": "textbox"
+                              },
+                              {
+                                  "fieldName": "repimageurl1",
+                                  "label": "Representative Image URL",
+                                  "isEditable": true,
+                                  "visible": true,
+                                  "stringFieldOption": "textbox"
+                              },
+                              {
+                                  "fieldName": "party1",
+                                  "label": "Party",
+                                  "isEditable": true,
+                                  "visible": true,
+                                  "stringFieldOption": "textbox"
+                              },
+                              {
+                                  "fieldName": "districturl1",
+                                  "label": "Website",
+                                  "isEditable": true,
+                                  "visible": true,
+                                  "stringFieldOption": "textbox"
+                              },
+                              {
+                                  "fieldName": "repname2",
+                                  "label": "Representative Name",
+                                  "isEditable": true,
+                                  "visible": true,
+                                  "stringFieldOption": "textbox"
+                              },
+                              {
+                                  "fieldName": "repimageurl2",
+                                  "label": "Representative Image URL",
+                                  "isEditable": true,
+                                  "visible": true,
+                                  "stringFieldOption": "textbox"
+                              },
+                              {
+                                  "fieldName": "districturl2",
+                                  "label": "Website",
+                                  "isEditable": true,
+                                  "visible": true,
+                                  "stringFieldOption": "textbox"
+                              },
+                              {
+                                  "fieldName": "repname3",
+                                  "label": "Representative Name",
+                                  "isEditable": true,
+                                  "visible": true,
+                                  "stringFieldOption": "textbox"
+                              },
+                              {
+                                  "fieldName": "repimageurl3",
+                                  "label": "Representative Image URL",
+                                  "isEditable": true,
+                                  "visible": true,
+                                  "stringFieldOption": "textbox"
+                              },
+                              {
+                                  "fieldName": "districturl3",
+                                  "label": "Website",
+                                  "isEditable": true,
+                                  "visible": true,
+                                  "stringFieldOption": "textbox"
+                              },
+                              {
+                                  "fieldName": "GlobalID",
+                                  "label": "GlobalID",
+                                  "isEditable": false,
+                                  "visible": false
+                              },
+                              {
+                                  "fieldName": "expression/expr0",
+                                  "visible": false
+                              },
+                              {
+                                  "fieldName": "expression/expr1",
+                                  "visible": false
+                              },
+                              {
+                                  "fieldName": "expression/expr2",
+                                  "visible": false
+                              },
+                              {
+                                  "fieldName": "expression/expr3",
+                                  "visible": false
+                              },
+                              {
+                                  "fieldName": "expression/expr4",
+                                  "visible": false
+                              },
+                              {
+                                  "fieldName": "expression/expr5",
+                                  "visible": false
+                              },
+                              {
+                                  "fieldName": "expression/expr6",
+                                  "visible": false
+                              },
+                              {
+                                  "fieldName": "expression/expr7",
+                                  "visible": false
+                              },
+                              {
+                                  "fieldName": "expression/expr8",
+                                  "visible": false
+                              },
+                              {
+                                  "fieldName": "CreationDate",
+                                  "label": "CreationDate",
+                                  "isEditable": false,
+                                  "visible": false,
+                                  "format": {
+                                      "dateFormat": "shortDateShortTime",
+                                      "timezone": "utc"
+                                  }
+                              },
+                              {
+                                  "fieldName": "Creator",
+                                  "label": "Creator",
+                                  "isEditable": false,
+                                  "visible": false,
+                                  "stringFieldOption": "textbox"
+                              },
+                              {
+                                  "fieldName": "EditDate",
+                                  "label": "EditDate",
+                                  "isEditable": false,
+                                  "visible": false,
+                                  "format": {
+                                      "dateFormat": "shortDateShortTime",
+                                      "timezone": "utc"
+                                  }
+                              },
+                              {
+                                  "fieldName": "Editor",
+                                  "label": "Editor",
+                                  "isEditable": false,
+                                  "visible": false,
+                                  "stringFieldOption": "textbox"
+                              },
+                              {
+                                  "fieldName": "party2",
+                                  "label": "Party",
+                                  "isEditable": true,
+                                  "visible": true,
+                                  "stringFieldOption": "textbox"
+                              },
+                              {
+                                  "fieldName": "party3",
+                                  "label": "Party",
+                                  "isEditable": true,
+                                  "visible": true,
+                                  "stringFieldOption": "textbox"
+                              }
+                          ],
+                          "description": "<table style='border-collapse: separate; font-size:14px; border-spacing: 0px 0px; width: 100%; table-layout: fixed; margin: 0px 0px;'>\n\n<tbody>\n                  \n<tr style='display:{expression/expr6}; text-align: left; vertical-align:top;  '>                  \n\n<td style='padding-left: 3px; padding-top: 3px; align: left; padding-bottom: 3px; width: 120px'>\n<img src='{repimageurl1}' width='100' /></td>\n\n<td style='padding-top: 5px; align:right; vertical-align:top'> <b>{repname1} \n<font color='{expression/expr3}'>{expression/expr0}</font> </b><br /><i>{electedoffice}</i><br />{name}<br /><a href='{districturl1}' target='_blank'>Website</a><br /></td>\n\n</tr>\n\n<tr style='display:{expression/expr7}; text-align: left; vertical-align:top; width: 100%'>  \n\n<td style='padding-left: 3px; padding-top: 3px; align: left; padding-bottom: 3px'>\n<img src='{repimageurl2}' width='100' /></td>\n\n<td style='padding-top: 5px; padding-bottom: 5px; align:right; vertical-align:top'><b>{repname2} <font color='{expression/expr4}'>{expression/expr1}</font></b><br /><i>{electedoffice}</i><br />{name}<br />\n<a href='{districturl2}' target='_blank'>Website</a><br /></td>\n\n</tr>     \n\n<tr style='display:{expression/expr8}; text-align: left; vertical-align:top; width: 100%'> \n\n<td style='padding-left: 3px; padding-top: 3px; align: left; padding-bottom: 3px'>\n<img src='{repimageurl3}' width='100' /></td>\n\n<td style='padding-top: 5px; padding-bottom: 5px; align:right; vertical-align:top'><b>{repname3} <font color='{expression/expr5}'>{expression/expr2}</font></b><br /><i>{electedoffice}</i><br />{name}<br />\n<a href='{districturl3}' target='_blank'>Website</a><br /></td>\n\n</tr>\n\n</tbody>\n</table>",
+                          "showAttachments": false,
+                          "showLastEditInfo": false,
+                          "expressionInfos": [
+                              {
+                                  "name": "expr0",
+                                  "title": "party1abbr",
+                                  "expression": "if ($feature.party1 == \"Democratic\") {\n    return \"(D)\" ; \n}\nif ($feature.party1 == \"Republican\") {\n    return \"(R)\";\n} \nif ($feature.party1 == \"Libertarian\") {\n    return \"(L)\";\n} \nif ($feature.party1 == \"Independent\") {\n    return \"(I)\";\n} \nreturn null",
+                                  "returnType": "string"
+                              },
+                              {
+                                  "name": "expr1",
+                                  "title": "party2abbr",
+                                  "expression": "if ($feature.party2 == \"Democratic\") {\n    return \"(D)\" ; \n}\nif ($feature.party2 == \"Republican\") {\n    return \"(R)\";\n} \nif ($feature.party2 == \"Libertarian\") {\n    return \"(L)\";\n} \nif ($feature.party2 == \"Independent\") {\n    return \"(I)\";\n} \nreturn null",
+                                  "returnType": "string"
+                              },
+                              {
+                                  "name": "expr2",
+                                  "title": "party3abbr",
+                                  "expression": "if ($feature.party3 == \"Democratic\") {\n    return \"(D)\" ; \n}\nif ($feature.party3 == \"Republican\") {\n    return \"(R)\";\n} \nif ($feature.party3 == \"Libertarian\") {\n    return \"(L)\";\n} \nif ($feature.party3 == \"Independent\") {\n    return \"(I)\";\n} \nreturn null",
+                                  "returnType": "string"
+                              },
+                              {
+                                  "name": "expr3",
+                                  "title": "party1color",
+                                  "expression": "if($feature.party1 == 'Republican') {\n    return '#DE0100' ;\n}\nif($feature.party1 == 'Democratic') {\n    return '#0015BC' ;\n}\nif($feature.party1 == 'Libertarian') {\n    return '#000000' ;\n}\nif($feature.party1 == 'Green') {\n    return '#008000' ;\n}\nif($feature.party1 == 'Independent') {\n    return '#000000' ;\n}\nreturn null",
+                                  "returnType": "string"
+                              },
+                              {
+                                  "name": "expr4",
+                                  "title": "party2color",
+                                  "expression": "if($feature.party2 == 'Republican') {\n    return '#DE0100' ;\n}\nif($feature.party2 == 'Democratic') {\n    return '#0015BC' ;\n}\nif($feature.party2 == 'Libertarian') {\n    return '#000000' ;\n}\nif($feature.party2 == 'Green') {\n    return '#008000' ;\n}\nif($feature.party2 == 'Independent') {\n    return '#000000' ;\n}\nreturn null",
+                                  "returnType": "string"
+                              },
+                              {
+                                  "name": "expr5",
+                                  "title": "party3color",
+                                  "expression": "if($feature.party3 == 'Republican') {\n    return '#DE0100' ;\n}\nif($feature.party3 == 'Democratic') {\n    return '#0015BC' ;\n}\nif($feature.party3 == 'Libertarian') {\n    return '#000000' ;\n}\nif($feature.party3 == 'Green') {\n    return '#008000' ;\n}\nif($feature.party3 == 'Independent') {\n    return '#000000' ;\n}\nreturn null",
+                                  "returnType": "string"
+                              },
+                              {
+                                  "name": "expr6",
+                                  "title": "repname1null",
+                                  "expression": "if ($feature.repname1 == null){\n    return \"none\";\n}\nif ($feature.repname1 == \"\"){\n    return \"none\";\n}\nreturn null",
+                                  "returnType": "string"
+                              },
+                              {
+                                  "name": "expr7",
+                                  "title": "repname2null",
+                                  "expression": "if ($feature.repname2 == null){\n    return \"none\";\n}\nif ($feature.repname2 == \"\"){\n    return \"none\";\n}\nreturn null",
+                                  "returnType": "string"
+                              },
+                              {
+                                  "name": "expr8",
+                                  "title": "repname3null",
+                                  "expression": "if ($feature.repname3 == null){\n    return \"none\";\n}\nif ($feature.repname3 == \"\"){\n    return \"none\";\n}\nreturn null",
+                                  "returnType": "string"
+                              }
+                          ],
+                          "mediaInfos": []
+                      },
+                      "layerDefinition": {
+                          "defaultVisibility": true
+                      }
+                  }
+              ]
+          },
+          "resources": [
+              "d05b3cf1ffcb4a4fa677627dfb18609e_info_thumbnail/thumbnail1552920388014.png"
+          ],
+          "dependencies": [],
+          "groups": [],
+          "properties": {
+              "service": {
+                  "currentVersion": 10.7,
+                  "serviceItemId": "{{27d6eee83f2f4f6aae4a1d028536bd66.itemId}}",
+                  "sourceSchemaChangesAllowed": true,
+                  "hasViews": true,
+                  "serviceDescription": "A feature layer used to store geographical areas an elected official serves, precincts and related polling places, and voting centers.",
+                  "hasVersionedData": false,
+                  "supportsDisconnectedEditing": false,
+                  "hasStaticData": false,
+                  "hasSharedDomains": false,
+                  "maxRecordCount": 2000,
+                  "supportedQueryFormats": "JSON",
+                  "supportsVCSProjection": false,
+                  "capabilities": "Create,Delete,Query,Update,Editing",
+                  "description": "A feature layer used to store geographical areas an elected official serves, precincts and related polling places, and voting centers.",
+                  "copyrightText": "Esri",
+                  "spatialReference": {
+                      "wkid": 102100,
+                      "latestWkid": 3857
+                  },
+                  "initialExtent": "{{27d6eee83f2f4f6aae4a1d028536bd66.solutionExtent}}",
+                  "fullExtent": "{{27d6eee83f2f4f6aae4a1d028536bd66.solutionExtent}}",
+                  "allowGeometryUpdates": true,
+                  "units": "esriMeters",
+                  "supportsAppend": true,
+                  "supportsSharedDomains": true,
+                  "size": 2351104,
+                  "syncEnabled": false,
+                  "supportsApplyEditsWithGlobalIds": true,
+                  "supportsReturnDeleteResults": true,
+                  "editorTrackingInfo": {
+                      "enableEditorTracking": true,
+                      "enableOwnershipAccessControl": false,
+                      "allowOthersToQuery": true,
+                      "allowOthersToUpdate": true,
+                      "allowOthersToDelete": true,
+                      "allowAnonymousToQuery": true,
+                      "allowAnonymousToUpdate": true,
+                      "allowAnonymousToDelete": true
+                  },
+                  "xssPreventionInfo": {
+                      "xssPreventionEnabled": true,
+                      "xssPreventionRule": "InputOnly",
+                      "xssInputRule": "rejectInvalid"
+                  },
+                  "layers": [
+                      {
+                          "id": 0,
+                          "name": "Voting Locations",
+                          "parentLayerId": -1,
+                          "defaultVisibility": true,
+                          "subLayerIds": null,
+                          "minScale": 0,
+                          "maxScale": 0,
+                          "geometryType": "esriGeometryPoint"
+                      },
+                      {
+                          "id": 1,
+                          "name": "Voting Precincts",
+                          "parentLayerId": -1,
+                          "defaultVisibility": true,
+                          "subLayerIds": null,
+                          "minScale": 0,
+                          "maxScale": 4513,
+                          "geometryType": "esriGeometryPolygon"
+                      },
+                      {
+                          "id": 2,
+                          "name": "Electoral Districts",
+                          "parentLayerId": -1,
+                          "defaultVisibility": true,
+                          "subLayerIds": null,
+                          "minScale": 0,
+                          "maxScale": 0,
+                          "geometryType": "esriGeometryPolygon"
+                      }
+                  ],
+                  "tables": [
+                      {
+                          "id": 3,
+                          "name": "Election Day Metrics",
+                          "parentLayerId": -1,
+                          "defaultVisibility": true,
+                          "subLayerIds": null,
+                          "minScale": 0,
+                          "maxScale": 0
+                      }
+                  ]
+              },
+              "layers": [
+                  {
+                      "adminLayerInfo": {
+                          "geometryField": {
+                              "name": "Shape"
+                          }
+                      },
+                      "id": 0,
+                      "name": "{{27d6eee83f2f4f6aae4a1d028536bd66.layer0.name||Voting Locations}}",
+                      "type": "Feature Layer",
+                      "serviceItemId": "{{27d6eee83f2f4f6aae4a1d028536bd66.itemId}}",
+                      "sourceSchemaChangesAllowed": true,
+                      "hasViews": true,
+                      "displayField": "name",
+                      "description": "",
+                      "copyrightText": "Esri",
+                      "defaultVisibility": true,
+                      "editFieldsInfo": {
+                          "creationDateField": "CreationDate",
+                          "creatorField": "Creator",
+                          "editDateField": "EditDate",
+                          "editorField": "Editor"
+                      },
+                      "editingInfo": {
+                          "lastEditDate": 1565180985631
+                      },
+                      "relationships": [
+                          {
+                              "id": 0,
+                              "name": "VotingPrecincts",
+                              "relatedTableId": 1,
+                              "cardinality": "esriRelCardinalityOneToOne",
+                              "role": "esriRelRoleOrigin",
+                              "keyField": "facilityid",
+                              "composite": false
+                          }
+                      ],
+                      "isDataVersioned": false,
+                      "supportsAppend": true,
+                      "supportsCalculate": true,
+                      "supportsASyncCalculate": true,
+                      "supportsTruncate": false,
+                      "supportsAttachmentsByUploadId": true,
+                      "supportsAttachmentsResizing": true,
+                      "supportsRollbackOnFailureParameter": true,
+                      "supportsStatistics": true,
+                      "supportsExceedsLimitStatistics": true,
+                      "supportsAdvancedQueries": true,
+                      "supportsValidateSql": true,
+                      "supportsCoordinatesQuantization": true,
+                      "supportsFieldDescriptionProperty": true,
+                      "supportsQuantizationEditMode": true,
+                      "supportsApplyEditsWithGlobalIds": true,
+                      "supportsReturningQueryGeometry": true,
+                      "advancedQueryCapabilities": {
+                          "supportsPagination": true,
+                          "supportsPaginationOnAggregatedQueries": true,
+                          "supportsQueryRelatedPagination": true,
+                          "supportsQueryWithDistance": true,
+                          "supportsReturningQueryExtent": true,
+                          "supportsStatistics": true,
+                          "supportsOrderBy": true,
+                          "supportsDistinct": true,
+                          "supportsQueryWithResultType": true,
+                          "supportsSqlExpression": true,
+                          "supportsAdvancedQueryRelated": true,
+                          "supportsCountDistinct": true,
+                          "supportsPercentileStatistics": true,
+                          "supportsLod": true,
+                          "supportsQueryWithLodSR": false,
+                          "supportedLodTypes": [
+                              "geohash"
+                          ],
+                          "supportsReturningGeometryCentroid": false,
+                          "supportsQueryWithDatumTransformation": true,
+                          "supportsHavingClause": true,
+                          "supportsOutFieldSQLExpression": true,
+                          "supportsMaxRecordCountFactor": true,
+                          "supportsTopFeaturesQuery": true,
+                          "supportsDisjointSpatialRel": true,
+                          "supportsQueryWithCacheHint": true
+                      },
+                      "useStandardizedQueries": true,
+                      "geometryType": "esriGeometryPoint",
+                      "minScale": 0,
+                      "maxScale": 0,
+                      "extent": "{{27d6eee83f2f4f6aae4a1d028536bd66.solutionExtent}}",
+                      "drawingInfo": {
+                          "renderer": {
+                              "type": "simple",
+                              "symbol": {
+                                  "angle": 0,
+                                  "xoffset": 0,
+                                  "yoffset": 0,
+                                  "type": "esriPMS",
+                                  "url": "162b4c3a-562c-43af-9000-8e43361caacb",
+                                  "imageData": "iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAYAAAByDd+UAAAACXBIWXMAAA7EAAAOxAGVKw4bAAADO0lEQVRIie2WwWvbVhzHP1iWHcuN7S4qs1VMYZcMCoahHQphsMOgBOww0kNz66HgHLqTLx0JbRPSbPSwntKD8xf4FMYUusFOWynLYSJgdsmlDQ11ErBLPSfSFDtSD7IaK7Edtyljh31BIL33e7/Pe0+/3/u9IP+ygv8DOySWCqjxKBkcFKuJaEMlGmLt6gL6BwMu3eSSIpMNBsjLw2REAcQgBAVoHULdAG2G6vAQK1/e5Rug+d7Ax7PkWjb3UwkyyuUccUXtarf3XJN3NvW8NsPkgcW1az/w+zsDf/yW69EhSskExCU4p6hEP7vns2lWdWxzm4hRIflaJxZBfrbLb08Wmf5iluWBgY9nyUWHKH3yMYhC9wmZG8tYL1aJfJpHkBQApDCMXoSNlxRLBcpTD1k7Fbh0k0stm/vJRH+YubFM4iuNgJSiVT2KGVFwoeYmGnDhVKAik00lyMQl9zuczmGbFawtjb31OWJjRfbW54mNFQlIqbfjPLtmVUcUIBlHXrnNrckHPOoHFIMB8iPDHQ2yChwFy99Pp4mNFQmns/6BskoofY9XP30OQPI87NSZgz7AUgFVHiYjhY/aQuksB1urAHw08Sevf50gMpo/vjEdk2u/CxCLIJcKXOn8lz5gPOrmmaeApGCb2+1orLx1ur8+7wN5/aF01h1juLZSCC6OkIEeQBwUsaNFHFEJRFIntrX7ylRscxtxRMVqA8UgVBsonbY+oNVEDAp+R94zqKwX2pFzwfXZE2hDpXU4sO+u8nIS3KNPClPpCYyGWKsbkEycDeqpboDj+JPfB7y6gP7LHarNQ+ReST+oDAvqBuWJ7/2V5ETiOzYrtQb5s66y1gAxMMDRNr7ItDbDZCyCfO49YYYF1Qb6+CKFU4EA+/+Qe7bLH9JzrVt3X9UrOls1cBzmgf2BgFMPWfv5DtN/lfXiaE3veYgfl2HBVg02d5m6sUTX2fash+MLLJcKlM1NtGQcOXm+d/UwLPefVRvojsN8L1hfILgrBS6s3ObWTp25WARZCp28YtQNyrbN6tcP+I4u2zgw0FO7xDwqFbgSj5IxDxADoHiXqOOhf2agp/aKT4T6u+g/fS/9IHoDZk0h/yEYCEUAAAAASUVORK5CYII=",
+                                  "contentType": "image/png",
+                                  "width": 21,
+                                  "height": 21
+                              }
+                          },
+                          "transparency": 0
+                      },
+                      "allowGeometryUpdates": true,
+                      "hasAttachments": false,
+                      "htmlPopupType": "esriServerHTMLPopupTypeAsHTMLText",
+                      "hasM": false,
+                      "hasZ": false,
+                      "objectIdField": "OBJECTID",
+                      "uniqueIdField": {
+                          "name": "OBJECTID",
+                          "isSystemMaintained": true
+                      },
+                      "globalIdField": "GlobalID",
+                      "typeIdField": "",
+                      "fields": [
+                          {
+                              "name": "OBJECTID",
+                              "type": "esriFieldTypeOID",
+                              "alias": "OBJECTID",
+                              "sqlType": "sqlTypeOther",
+                              "nullable": false,
+                              "editable": false,
+                              "visible": true,
+                              "domain": null,
+                              "defaultValue": null
+                          },
+                          {
+                              "name": "facilityid",
+                              "type": "esriFieldTypeString",
+                              "alias": "Facility ID",
+                              "sqlType": "sqlTypeOther",
+                              "length": 10,
+                              "nullable": true,
+                              "editable": true,
+                              "visible": true,
+                              "domain": null,
+                              "defaultValue": null
+                          },
+                          {
+                              "name": "type",
+                              "type": "esriFieldTypeString",
+                              "alias": "Voting Facility Type",
+                              "sqlType": "sqlTypeOther",
+                              "length": 255,
+                              "nullable": true,
+                              "editable": true,
+                              "visible": true,
+                              "domain": {
+                                  "type": "codedValue",
+                                  "name": "type_Domain",
+                                  "codedValues": [
+                                      {
+                                          "name": "Polling Place",
+                                          "code": "Polling Place"
+                                      },
+                                      {
+                                          "name": "Voting Center",
+                                          "code": "Voting Center"
+                                      }
+                                  ]
+                              },
+                              "defaultValue": null
+                          },
+                          {
+                              "name": "name",
+                              "type": "esriFieldTypeString",
+                              "alias": "Name",
+                              "sqlType": "sqlTypeOther",
+                              "length": 255,
+                              "nullable": true,
+                              "editable": true,
+                              "visible": true,
+                              "domain": null,
+                              "defaultValue": null
+                          },
+                          {
+                              "name": "fulladdr",
+                              "type": "esriFieldTypeString",
+                              "alias": "Address",
+                              "sqlType": "sqlTypeOther",
+                              "length": 255,
+                              "nullable": true,
+                              "editable": true,
+                              "visible": true,
+                              "domain": null,
+                              "defaultValue": null
+                          },
+                          {
+                              "name": "municipality",
+                              "type": "esriFieldTypeString",
+                              "alias": "Municipality",
+                              "sqlType": "sqlTypeOther",
+                              "length": 255,
+                              "nullable": true,
+                              "editable": true,
+                              "visible": true,
+                              "domain": null,
+                              "defaultValue": null
+                          },
+                          {
+                              "name": "pstlstate",
+                              "type": "esriFieldTypeString",
+                              "alias": "State",
+                              "sqlType": "sqlTypeOther",
+                              "length": 2,
+                              "nullable": true,
+                              "editable": true,
+                              "visible": true,
+                              "domain": null,
+                              "defaultValue": null
+                          },
+                          {
+                              "name": "pstlzip5",
+                              "type": "esriFieldTypeString",
+                              "alias": "Zip Code",
+                              "sqlType": "sqlTypeOther",
+                              "length": 5,
+                              "nullable": true,
+                              "editable": true,
+                              "visible": true,
+                              "domain": null,
+                              "defaultValue": null
+                          },
+                          {
+                              "name": "phone",
+                              "type": "esriFieldTypeString",
+                              "alias": "Phone",
+                              "sqlType": "sqlTypeOther",
+                              "length": 12,
+                              "nullable": true,
+                              "editable": true,
+                              "visible": true,
+                              "domain": null,
+                              "defaultValue": null
+                          },
+                          {
+                              "name": "agencyurl",
+                              "type": "esriFieldTypeString",
+                              "alias": "Website",
+                              "sqlType": "sqlTypeOther",
+                              "length": 150,
+                              "nullable": true,
+                              "editable": true,
+                              "visible": true,
+                              "domain": null,
+                              "defaultValue": null
+                          },
+                          {
+                              "name": "operdays",
+                              "type": "esriFieldTypeString",
+                              "alias": "Operational Days",
+                              "sqlType": "sqlTypeOther",
+                              "length": 255,
+                              "nullable": true,
+                              "editable": true,
+                              "visible": true,
+                              "domain": null,
+                              "defaultValue": null
+                          },
+                          {
+                              "name": "handicap",
+                              "type": "esriFieldTypeString",
+                              "alias": "Handicap Accessible",
+                              "sqlType": "sqlTypeOther",
+                              "length": 5,
+                              "nullable": true,
+                              "editable": true,
+                              "visible": true,
+                              "domain": {
+                                  "type": "codedValue",
+                                  "name": "handicap_Domain",
+                                  "codedValues": [
+                                      {
+                                          "name": "Yes",
+                                          "code": "Yes"
+                                      },
+                                      {
+                                          "name": "No",
+                                          "code": "No"
+                                      }
+                                  ]
+                              },
+                              "defaultValue": null
+                          },
+                          {
+                              "name": "pocname",
+                              "type": "esriFieldTypeString",
+                              "alias": "Contact Name",
+                              "sqlType": "sqlTypeOther",
+                              "length": 150,
+                              "nullable": true,
+                              "editable": true,
+                              "visible": true,
+                              "domain": null,
+                              "defaultValue": null
+                          },
+                          {
+                              "name": "pocphone",
+                              "type": "esriFieldTypeString",
+                              "alias": "Contact Phone",
+                              "sqlType": "sqlTypeOther",
+                              "length": 12,
+                              "nullable": true,
+                              "editable": true,
+                              "visible": true,
+                              "domain": null,
+                              "defaultValue": null
+                          },
+                          {
+                              "name": "pocemail",
+                              "type": "esriFieldTypeString",
+                              "alias": "Contact Email",
+                              "sqlType": "sqlTypeOther",
+                              "length": 100,
+                              "nullable": true,
+                              "editable": true,
+                              "visible": true,
+                              "domain": null,
+                              "defaultValue": null
+                          },
+                          {
+                              "name": "earlyvoting",
+                              "type": "esriFieldTypeString",
+                              "alias": "Early Voting Available",
+                              "sqlType": "sqlTypeOther",
+                              "length": 5,
+                              "nullable": true,
+                              "editable": true,
+                              "visible": true,
+                              "domain": {
+                                  "type": "codedValue",
+                                  "name": "earlyvoting_Domain",
+                                  "codedValues": [
+                                      {
+                                          "name": "Yes",
+                                          "code": "Yes"
+                                      },
+                                      {
+                                          "name": "No",
+                                          "code": "No"
+                                      }
+                                  ]
+                              },
+                              "defaultValue": null
+                          },
+                          {
+                              "name": "earlyvotingdate",
+                              "type": "esriFieldTypeDate",
+                              "alias": "Early Voting Date",
+                              "sqlType": "sqlTypeOther",
+                              "length": 8,
+                              "nullable": true,
+                              "editable": true,
+                              "visible": true,
+                              "domain": null,
+                              "defaultValue": null
+                          },
+                          {
+                              "name": "nextelect",
+                              "type": "esriFieldTypeDate",
+                              "alias": "Next Election Date",
+                              "sqlType": "sqlTypeOther",
+                              "length": 8,
+                              "nullable": true,
+                              "editable": true,
+                              "visible": true,
+                              "domain": null,
+                              "defaultValue": null
+                          },
+                          {
+                              "name": "regdate",
+                              "type": "esriFieldTypeDate",
+                              "alias": "Voter Registration Deadline",
+                              "sqlType": "sqlTypeOther",
+                              "length": 8,
+                              "nullable": true,
+                              "editable": true,
+                              "visible": true,
+                              "domain": null,
+                              "defaultValue": null
+                          },
+                          {
+                              "name": "voteservices",
+                              "type": "esriFieldTypeString",
+                              "alias": "Election Services",
+                              "sqlType": "sqlTypeOther",
+                              "length": 5,
+                              "nullable": true,
+                              "editable": true,
+                              "visible": true,
+                              "domain": {
+                                  "type": "codedValue",
+                                  "name": "voteservices_Domain",
+                                  "codedValues": [
+                                      {
+                                          "name": "Yes",
+                                          "code": "Yes"
+                                      },
+                                      {
+                                          "name": "No",
+                                          "code": "No"
+                                      }
+                                  ]
+                              },
+                              "defaultValue": null
+                          },
+                          {
+                              "name": "dropbox",
+                              "type": "esriFieldTypeString",
+                              "alias": "Dropbox",
+                              "sqlType": "sqlTypeOther",
+                              "length": 5,
+                              "nullable": true,
+                              "editable": true,
+                              "visible": true,
+                              "domain": {
+                                  "type": "codedValue",
+                                  "name": "dropbox_Domain",
+                                  "codedValues": [
+                                      {
+                                          "name": "Yes",
+                                          "code": "Yes"
+                                      },
+                                      {
+                                          "name": "No",
+                                          "code": "No"
+                                      }
+                                  ]
+                              },
+                              "defaultValue": null
+                          },
+                          {
+                              "name": "boxlocation",
+                              "type": "esriFieldTypeString",
+                              "alias": "Box Location",
+                              "sqlType": "sqlTypeOther",
+                              "length": 255,
+                              "nullable": true,
+                              "editable": true,
+                              "visible": true,
+                              "domain": null,
+                              "defaultValue": null
+                          },
+                          {
+                              "name": "comments",
+                              "type": "esriFieldTypeString",
+                              "alias": "Comments",
+                              "sqlType": "sqlTypeOther",
+                              "length": 500,
+                              "nullable": true,
+                              "editable": true,
+                              "visible": true,
+                              "domain": null,
+                              "defaultValue": null
+                          },
+                          {
+                              "name": "GlobalID",
+                              "type": "esriFieldTypeGlobalID",
+                              "alias": "GlobalID",
+                              "sqlType": "sqlTypeOther",
+                              "length": 38,
+                              "nullable": false,
+                              "editable": false,
+                              "visible": true,
+                              "domain": null,
+                              "defaultValue": "NEWID() WITH VALUES"
+                          },
+                          {
+                              "name": "CreationDate",
+                              "type": "esriFieldTypeDate",
+                              "alias": "CreationDate",
+                              "sqlType": "sqlTypeOther",
+                              "length": 8,
+                              "nullable": true,
+                              "editable": false,
+                              "visible": true,
+                              "domain": null,
+                              "defaultValue": null
+                          },
+                          {
+                              "name": "Creator",
+                              "type": "esriFieldTypeString",
+                              "alias": "Creator",
+                              "sqlType": "sqlTypeOther",
+                              "length": 128,
+                              "nullable": true,
+                              "editable": false,
+                              "visible": true,
+                              "domain": null,
+                              "defaultValue": null
+                          },
+                          {
+                              "name": "EditDate",
+                              "type": "esriFieldTypeDate",
+                              "alias": "EditDate",
+                              "sqlType": "sqlTypeOther",
+                              "length": 8,
+                              "nullable": true,
+                              "editable": false,
+                              "visible": true,
+                              "domain": null,
+                              "defaultValue": null
+                          },
+                          {
+                              "name": "Editor",
+                              "type": "esriFieldTypeString",
+                              "alias": "Editor",
+                              "sqlType": "sqlTypeOther",
+                              "length": 128,
+                              "nullable": true,
+                              "editable": false,
+                              "visible": true,
+                              "domain": null,
+                              "defaultValue": null
+                          }
+                      ],
+                      "indexes": [
+                          {
+                              "name": "G3facilityid",
+                              "fields": "facilityid",
+                              "isAscending": true,
+                              "isUnique": false,
+                              "description": ""
+                          },
+                          {
+                              "name": "GlobalID_Index",
+                              "fields": "GlobalID",
+                              "isAscending": false,
+                              "isUnique": true,
+                              "description": ""
+                          },
+                          {
+                              "name": "CreationDateIndex",
+                              "fields": "CreationDate",
+                              "isAscending": true,
+                              "isUnique": false,
+                              "description": "CreationDate Field index"
+                          },
+                          {
+                              "name": "CreatorIndex",
+                              "fields": "Creator",
+                              "isAscending": false,
+                              "isUnique": false,
+                              "description": "Creator Field index"
+                          },
+                          {
+                              "name": "EditDateIndex",
+                              "fields": "EditDate",
+                              "isAscending": true,
+                              "isUnique": false,
+                              "description": "EditDate Field index"
+                          },
+                          {
+                              "name": "EditorIndex",
+                              "fields": "Editor",
+                              "isAscending": false,
+                              "isUnique": false,
+                              "description": "Editor Field index"
+                          },
+                          {
+                              "name": "user_15533.ElectionGeography_VOTING_LOCATIONS2_Shape_sidx",
+                              "fields": "Shape",
+                              "isAscending": false,
+                              "isUnique": false,
+                              "description": "Shape Index"
+                          },
+                          {
+                              "name": "PK__Election__F4B70D8554594B5B",
+                              "fields": "OBJECTID",
+                              "isAscending": true,
+                              "isUnique": true,
+                              "description": "clustered, unique, primary key"
+                          }
+                      ],
+                      "types": [],
+                      "templates": [
+                          {
+                              "name": "Voting Locations",
+                              "description": "",
+                              "drawingTool": "esriFeatureEditToolNone",
+                              "prototype": {
+                                  "attributes": {
+                                      "facilityid": null,
+                                      "type": null,
+                                      "name": null,
+                                      "fulladdr": null,
+                                      "municipality": null,
+                                      "pstlstate": null,
+                                      "pstlzip5": null,
+                                      "phone": null,
+                                      "agencyurl": null,
+                                      "operdays": null,
+                                      "handicap": null,
+                                      "pocname": null,
+                                      "pocphone": null,
+                                      "pocemail": null,
+                                      "earlyvoting": null,
+                                      "earlyvotingdate": null,
+                                      "nextelect": null,
+                                      "regdate": null,
+                                      "voteservices": null,
+                                      "dropbox": null,
+                                      "boxlocation": null,
+                                      "comments": null
+                                  }
+                              }
+                          }
+                      ],
+                      "supportedQueryFormats": "JSON, geoJSON, PBF",
+                      "hasStaticData": false,
+                      "maxRecordCount": 2000,
+                      "standardMaxRecordCount": 32000,
+                      "standardMaxRecordCountNoGeometry": 32000,
+                      "tileMaxRecordCount": 8000,
+                      "maxRecordCountFactor": 1,
+                      "capabilities": "Create,Delete,Query,Update,Editing"
+                  },
+                  {
+                      "adminLayerInfo": {
+                          "geometryField": {
+                              "name": "Shape"
+                          }
+                      },
+                      "id": 1,
+                      "name": "{{27d6eee83f2f4f6aae4a1d028536bd66.layer1.name||Voting Precincts}}",
+                      "type": "Feature Layer",
+                      "serviceItemId": "{{27d6eee83f2f4f6aae4a1d028536bd66.itemId}}",
+                      "sourceSchemaChangesAllowed": true,
+                      "hasViews": true,
+                      "displayField": "name",
+                      "description": "",
+                      "copyrightText": "Esri",
+                      "defaultVisibility": true,
+                      "editFieldsInfo": {
+                          "creationDateField": "CreationDate",
+                          "creatorField": "Creator",
+                          "editDateField": "EditDate",
+                          "editorField": "Editor"
+                      },
+                      "editingInfo": {
+                          "lastEditDate": 1565180985631
+                      },
+                      "relationships": [
+                          {
+                              "id": 0,
+                              "name": "VotingLocations",
+                              "relatedTableId": 0,
+                              "cardinality": "esriRelCardinalityOneToOne",
+                              "role": "esriRelRoleDestination",
+                              "keyField": "pollingid",
+                              "composite": false
+                          }
+                      ],
+                      "isDataVersioned": false,
+                      "supportsAppend": true,
+                      "supportsCalculate": true,
+                      "supportsASyncCalculate": true,
+                      "supportsTruncate": true,
+                      "supportsAttachmentsByUploadId": true,
+                      "supportsAttachmentsResizing": true,
+                      "supportsRollbackOnFailureParameter": true,
+                      "supportsStatistics": true,
+                      "supportsExceedsLimitStatistics": true,
+                      "supportsAdvancedQueries": true,
+                      "supportsValidateSql": true,
+                      "supportsCoordinatesQuantization": true,
+                      "supportsFieldDescriptionProperty": true,
+                      "supportsQuantizationEditMode": true,
+                      "supportsApplyEditsWithGlobalIds": true,
+                      "supportsMultiScaleGeometry": true,
+                      "supportsReturningQueryGeometry": true,
+                      "advancedQueryCapabilities": {
+                          "supportsPagination": true,
+                          "supportsPaginationOnAggregatedQueries": true,
+                          "supportsQueryRelatedPagination": true,
+                          "supportsQueryWithDistance": true,
+                          "supportsReturningQueryExtent": true,
+                          "supportsStatistics": true,
+                          "supportsOrderBy": true,
+                          "supportsDistinct": true,
+                          "supportsQueryWithResultType": true,
+                          "supportsSqlExpression": true,
+                          "supportsAdvancedQueryRelated": true,
+                          "supportsCountDistinct": true,
+                          "supportsPercentileStatistics": true,
+                          "supportsLod": true,
+                          "supportsQueryWithLodSR": false,
+                          "supportedLodTypes": [
+                              "geohash"
+                          ],
+                          "supportsReturningGeometryCentroid": true,
+                          "supportsReturningGeometryProperties": true,
+                          "supportsQueryWithDatumTransformation": true,
+                          "supportsHavingClause": true,
+                          "supportsOutFieldSQLExpression": true,
+                          "supportsMaxRecordCountFactor": true,
+                          "supportsTopFeaturesQuery": true,
+                          "supportsDisjointSpatialRel": true,
+                          "supportsQueryWithCacheHint": true
+                      },
+                      "useStandardizedQueries": true,
+                      "geometryType": "esriGeometryPolygon",
+                      "minScale": 0,
+                      "maxScale": 4513,
+                      "extent": "{{27d6eee83f2f4f6aae4a1d028536bd66.solutionExtent}}",
+                      "drawingInfo": {
+                          "renderer": {
+                              "type": "simple",
+                              "symbol": {
+                                  "type": "esriSFS",
+                                  "style": "esriSFSSolid",
+                                  "color": [
+                                      203,
+                                      193,
+                                      242,
+                                      0
+                                  ],
+                                  "outline": {
+                                      "type": "esriSLS",
+                                      "style": "esriSLSSolid",
+                                      "color": [
+                                          230,
+                                          152,
+                                          0,
+                                          255
+                                      ],
+                                      "width": 0.7
+                                  }
+                              }
+                          },
+                          "scaleSymbols": true,
+                          "transparency": 0,
+                          "labelingInfo": null
+                      },
+                      "allowGeometryUpdates": true,
+                      "hasAttachments": false,
+                      "htmlPopupType": "esriServerHTMLPopupTypeAsHTMLText",
+                      "hasM": false,
+                      "hasZ": false,
+                      "objectIdField": "OBJECTID",
+                      "uniqueIdField": {
+                          "name": "OBJECTID",
+                          "isSystemMaintained": true
+                      },
+                      "globalIdField": "GlobalID",
+                      "typeIdField": "",
+                      "fields": [
+                          {
+                              "name": "OBJECTID",
+                              "type": "esriFieldTypeOID",
+                              "alias": "OBJECTID",
+                              "sqlType": "sqlTypeOther",
+                              "nullable": false,
+                              "editable": false,
+                              "visible": true,
+                              "domain": null,
+                              "defaultValue": null
+                          },
+                          {
+                              "name": "precinctid",
+                              "type": "esriFieldTypeString",
+                              "alias": "Precinct ID",
+                              "sqlType": "sqlTypeOther",
+                              "length": 10,
+                              "nullable": true,
+                              "editable": true,
+                              "visible": true,
+                              "domain": null,
+                              "defaultValue": null
+                          },
+                          {
+                              "name": "name",
+                              "type": "esriFieldTypeString",
+                              "alias": "Precinct Name",
+                              "sqlType": "sqlTypeOther",
+                              "length": 255,
+                              "nullable": true,
+                              "editable": true,
+                              "visible": true,
+                              "domain": null,
+                              "defaultValue": null
+                          },
+                          {
+                              "name": "county",
+                              "type": "esriFieldTypeString",
+                              "alias": "County",
+                              "sqlType": "sqlTypeOther",
+                              "length": 50,
+                              "nullable": true,
+                              "editable": true,
+                              "visible": true,
+                              "domain": null,
+                              "defaultValue": null
+                          },
+                          {
+                              "name": "pollingid",
+                              "type": "esriFieldTypeString",
+                              "alias": "Polling Place ID",
+                              "sqlType": "sqlTypeOther",
+                              "length": 10,
+                              "nullable": true,
+                              "editable": true,
+                              "visible": true,
+                              "domain": null,
+                              "defaultValue": null
+                          },
+                          {
+                              "name": "GlobalID",
+                              "type": "esriFieldTypeGlobalID",
+                              "alias": "GlobalID",
+                              "sqlType": "sqlTypeOther",
+                              "length": 38,
+                              "nullable": false,
+                              "editable": false,
+                              "visible": true,
+                              "domain": null,
+                              "defaultValue": null
+                          },
+                          {
+                              "name": "CreationDate",
+                              "type": "esriFieldTypeDate",
+                              "alias": "CreationDate",
+                              "sqlType": "sqlTypeOther",
+                              "length": 8,
+                              "nullable": true,
+                              "editable": false,
+                              "visible": true,
+                              "domain": null,
+                              "defaultValue": null
+                          },
+                          {
+                              "name": "Creator",
+                              "type": "esriFieldTypeString",
+                              "alias": "Creator",
+                              "sqlType": "sqlTypeOther",
+                              "length": 128,
+                              "nullable": true,
+                              "editable": false,
+                              "visible": true,
+                              "domain": null,
+                              "defaultValue": null
+                          },
+                          {
+                              "name": "EditDate",
+                              "type": "esriFieldTypeDate",
+                              "alias": "EditDate",
+                              "sqlType": "sqlTypeOther",
+                              "length": 8,
+                              "nullable": true,
+                              "editable": false,
+                              "visible": true,
+                              "domain": null,
+                              "defaultValue": null
+                          },
+                          {
+                              "name": "Editor",
+                              "type": "esriFieldTypeString",
+                              "alias": "Editor",
+                              "sqlType": "sqlTypeOther",
+                              "length": 128,
+                              "nullable": true,
+                              "editable": false,
+                              "visible": true,
+                              "domain": null,
+                              "defaultValue": null
+                          }
+                      ],
+                      "indexes": [
+                          {
+                              "name": "FDO_GlobalID",
+                              "fields": "GlobalID",
+                              "isAscending": true,
+                              "isUnique": true,
+                              "description": ""
+                          },
+                          {
+                              "name": "G4pollingid",
+                              "fields": "pollingid",
+                              "isAscending": true,
+                              "isUnique": false,
+                              "description": ""
+                          },
+                          {
+                              "name": "CreationDateIndex",
+                              "fields": "CreationDate",
+                              "isAscending": true,
+                              "isUnique": false,
+                              "description": "CreationDate Field index"
+                          },
+                          {
+                              "name": "CreatorIndex",
+                              "fields": "Creator",
+                              "isAscending": false,
+                              "isUnique": false,
+                              "description": "Creator Field index"
+                          },
+                          {
+                              "name": "EditDateIndex",
+                              "fields": "EditDate",
+                              "isAscending": true,
+                              "isUnique": false,
+                              "description": "EditDate Field index"
+                          },
+                          {
+                              "name": "EditorIndex",
+                              "fields": "Editor",
+                              "isAscending": false,
+                              "isUnique": false,
+                              "description": "Editor Field index"
+                          },
+                          {
+                              "name": "user_15533.ElectionGeography_VOTING_PRECINCTS2_Shape_sidx",
+                              "fields": "Shape",
+                              "isAscending": false,
+                              "isUnique": false,
+                              "description": "Shape Index"
+                          },
+                          {
+                              "name": "PK__Election__F4B70D85C13DC83B",
+                              "fields": "OBJECTID",
+                              "isAscending": true,
+                              "isUnique": true,
+                              "description": "clustered, unique, primary key"
+                          }
+                      ],
+                      "types": [],
+                      "templates": [
+                          {
+                              "name": "Voting Precincts",
+                              "description": "",
+                              "drawingTool": "esriFeatureEditToolPolygon",
+                              "prototype": {
+                                  "attributes": {
+                                      "pollingid": null,
+                                      "county": null,
+                                      "precinctid": null,
+                                      "name": null
+                                  }
+                              }
+                          }
+                      ],
+                      "supportedQueryFormats": "JSON, geoJSON, PBF",
+                      "hasStaticData": false,
+                      "maxRecordCount": 2000,
+                      "standardMaxRecordCount": 4000,
+                      "standardMaxRecordCountNoGeometry": 32000,
+                      "tileMaxRecordCount": 4000,
+                      "maxRecordCountFactor": 1,
+                      "capabilities": "Create,Delete,Query,Update,Editing"
+                  },
+                  {
+                      "adminLayerInfo": {
+                          "geometryField": {
+                              "name": "Shape"
+                          }
+                      },
+                      "id": 2,
+                      "name": "{{27d6eee83f2f4f6aae4a1d028536bd66.layer2.name||Electoral Districts}}",
+                      "type": "Feature Layer",
+                      "serviceItemId": "{{27d6eee83f2f4f6aae4a1d028536bd66.itemId}}",
+                      "sourceSchemaChangesAllowed": true,
+                      "hasViews": true,
+                      "displayField": "name",
+                      "description": "",
+                      "copyrightText": "Esri",
+                      "defaultVisibility": true,
+                      "editFieldsInfo": {
+                          "creationDateField": "CreationDate",
+                          "creatorField": "Creator",
+                          "editDateField": "EditDate",
+                          "editorField": "Editor"
+                      },
+                      "editingInfo": {
+                          "lastEditDate": 1565180985678
+                      },
+                      "relationships": [],
+                      "isDataVersioned": false,
+                      "supportsAppend": true,
+                      "supportsCalculate": true,
+                      "supportsASyncCalculate": true,
+                      "supportsTruncate": true,
+                      "supportsAttachmentsByUploadId": true,
+                      "supportsAttachmentsResizing": true,
+                      "supportsRollbackOnFailureParameter": true,
+                      "supportsStatistics": true,
+                      "supportsExceedsLimitStatistics": true,
+                      "supportsAdvancedQueries": true,
+                      "supportsValidateSql": true,
+                      "supportsCoordinatesQuantization": true,
+                      "supportsFieldDescriptionProperty": true,
+                      "supportsQuantizationEditMode": true,
+                      "supportsApplyEditsWithGlobalIds": true,
+                      "supportsMultiScaleGeometry": true,
+                      "supportsReturningQueryGeometry": true,
+                      "advancedQueryCapabilities": {
+                          "supportsPagination": true,
+                          "supportsPaginationOnAggregatedQueries": true,
+                          "supportsQueryRelatedPagination": true,
+                          "supportsQueryWithDistance": true,
+                          "supportsReturningQueryExtent": true,
+                          "supportsStatistics": true,
+                          "supportsOrderBy": true,
+                          "supportsDistinct": true,
+                          "supportsQueryWithResultType": true,
+                          "supportsSqlExpression": true,
+                          "supportsAdvancedQueryRelated": true,
+                          "supportsCountDistinct": true,
+                          "supportsPercentileStatistics": true,
+                          "supportsLod": true,
+                          "supportsQueryWithLodSR": false,
+                          "supportedLodTypes": [
+                              "geohash"
+                          ],
+                          "supportsReturningGeometryCentroid": true,
+                          "supportsReturningGeometryProperties": true,
+                          "supportsQueryWithDatumTransformation": true,
+                          "supportsHavingClause": true,
+                          "supportsOutFieldSQLExpression": true,
+                          "supportsMaxRecordCountFactor": true,
+                          "supportsTopFeaturesQuery": true,
+                          "supportsDisjointSpatialRel": true,
+                          "supportsQueryWithCacheHint": true
+                      },
+                      "useStandardizedQueries": true,
+                      "geometryType": "esriGeometryPolygon",
+                      "minScale": 0,
+                      "maxScale": 0,
+                      "extent": "{{27d6eee83f2f4f6aae4a1d028536bd66.solutionExtent}}",
+                      "drawingInfo": {
+                          "renderer": {
+                              "type": "simple",
+                              "symbol": {
+                                  "type": "esriSFS",
+                                  "style": "esriSFSSolid",
+                                  "color": [
+                                      220,
+                                      247,
+                                      200,
+                                      0
+                                  ],
+                                  "outline": {
+                                      "type": "esriSLS",
+                                      "style": "esriSLSSolid",
+                                      "color": [
+                                          110,
+                                          110,
+                                          110,
+                                          255
+                                      ],
+                                      "width": 2
+                                  }
+                              }
+                          },
+                          "scaleSymbols": true,
+                          "transparency": 0,
+                          "labelingInfo": null
+                      },
+                      "allowGeometryUpdates": true,
+                      "hasAttachments": false,
+                      "htmlPopupType": "esriServerHTMLPopupTypeAsHTMLText",
+                      "hasM": false,
+                      "hasZ": false,
+                      "objectIdField": "OBJECTID",
+                      "uniqueIdField": {
+                          "name": "OBJECTID",
+                          "isSystemMaintained": true
+                      },
+                      "globalIdField": "GlobalID",
+                      "typeIdField": "",
+                      "fields": [
+                          {
+                              "name": "OBJECTID",
+                              "type": "esriFieldTypeOID",
+                              "alias": "OBJECTID",
+                              "sqlType": "sqlTypeOther",
+                              "nullable": false,
+                              "editable": false,
+                              "visible": true,
+                              "domain": null,
+                              "defaultValue": null
+                          },
+                          {
+                              "name": "electedoffice",
+                              "type": "esriFieldTypeString",
+                              "alias": "Elected Office",
+                              "sqlType": "sqlTypeOther",
+                              "length": 150,
+                              "nullable": true,
+                              "editable": true,
+                              "visible": true,
+                              "domain": {
+                                  "type": "codedValue",
+                                  "name": "electedoffice_Domain",
+                                  "codedValues": [
+                                      {
+                                          "name": "Attorney General",
+                                          "code": "Attorney General"
+                                      },
+                                      {
+                                          "name": "Comptroller",
+                                          "code": "Comptroller"
+                                      },
+                                      {
+                                          "name": "County Auditor",
+                                          "code": "County Auditor"
+                                      },
+                                      {
+                                          "name": "County Clerk",
+                                          "code": "County Clerk"
+                                      },
+                                      {
+                                          "name": "County Commissioner",
+                                          "code": "County Commissioner"
+                                      },
+                                      {
+                                          "name": "County Coroner",
+                                          "code": "County Coroner"
+                                      },
+                                      {
+                                          "name": "County Executive",
+                                          "code": "County Executive"
+                                      },
+                                      {
+                                          "name": "County Prosecutor",
+                                          "code": "County Prosecutor"
+                                      },
+                                      {
+                                          "name": "County Recorder",
+                                          "code": "County Recorder"
+                                      },
+                                      {
+                                          "name": "County Sheriff",
+                                          "code": "County Sheriff"
+                                      },
+                                      {
+                                          "name": "County Treasurer",
+                                          "code": "County Treasurer"
+                                      },
+                                      {
+                                          "name": "Governor",
+                                          "code": "Governor"
+                                      },
+                                      {
+                                          "name": "Lieutenant Governor",
+                                          "code": "Lieutenant Governor"
+                                      },
+                                      {
+                                          "name": "Local Auditor",
+                                          "code": "Local Auditor"
+                                      },
+                                      {
+                                          "name": "Local Clerk",
+                                          "code": "Local Clerk"
+                                      },
+                                      {
+                                          "name": "Local Elected Representative",
+                                          "code": "Local Elected Representative"
+                                      },
+                                      {
+                                          "name": "Local Manager",
+                                          "code": "Local Manager"
+                                      },
+                                      {
+                                          "name": "Local Treasurer",
+                                          "code": "Local Treasurer"
+                                      },
+                                      {
+                                          "name": "Mayor",
+                                          "code": "Mayor"
+                                      },
+                                      {
+                                          "name": "President of the United States",
+                                          "code": "President of the United States"
+                                      },
+                                      {
+                                          "name": "Secretary of State",
+                                          "code": "Secretary of State"
+                                      },
+                                      {
+                                          "name": "State Attorney General",
+                                          "code": "State Attorney General"
+                                      },
+                                      {
+                                          "name": "State Auditor",
+                                          "code": "State Auditor"
+                                      },
+                                      {
+                                          "name": "State House Representative",
+                                          "code": "State House Representative"
+                                      },
+                                      {
+                                          "name": "State Senate",
+                                          "code": "State Senate"
+                                      },
+                                      {
+                                          "name": "State Treasurer",
+                                          "code": "State Treasurer"
+                                      },
+                                      {
+                                          "name": "United States House of Representatives",
+                                          "code": "United States House of Representatives"
+                                      },
+                                      {
+                                          "name": "United States Senate",
+                                          "code": "United States Senate"
+                                      },
+                                      {
+                                          "name": "Vice-President of the United States",
+                                          "code": "Vice-President of the United States"
+                                      }
+                                  ]
+                              },
+                              "defaultValue": null
+                          },
+                          {
+                              "name": "name",
+                              "type": "esriFieldTypeString",
+                              "alias": "District Name",
+                              "sqlType": "sqlTypeOther",
+                              "length": 255,
+                              "nullable": true,
+                              "editable": true,
+                              "visible": true,
+                              "domain": null,
+                              "defaultValue": null
+                          },
+                          {
+                              "name": "districtid",
+                              "type": "esriFieldTypeString",
+                              "alias": "District ID",
+                              "sqlType": "sqlTypeOther",
+                              "length": 10,
+                              "nullable": true,
+                              "editable": true,
+                              "visible": true,
+                              "domain": null,
+                              "defaultValue": null
+                          },
+                          {
+                              "name": "repname1",
+                              "type": "esriFieldTypeString",
+                              "alias": "Representative Name",
+                              "sqlType": "sqlTypeOther",
+                              "length": 255,
+                              "nullable": true,
+                              "editable": true,
+                              "visible": true,
+                              "domain": null,
+                              "defaultValue": null
+                          },
+                          {
+                              "name": "repimageurl1",
+                              "type": "esriFieldTypeString",
+                              "alias": "Representative Image URL",
+                              "sqlType": "sqlTypeOther",
+                              "length": 255,
+                              "nullable": true,
+                              "editable": true,
+                              "visible": true,
+                              "domain": null,
+                              "defaultValue": null
+                          },
+                          {
+                              "name": "party1",
+                              "type": "esriFieldTypeString",
+                              "alias": "Party",
+                              "sqlType": "sqlTypeOther",
+                              "length": 50,
+                              "nullable": true,
+                              "editable": true,
+                              "visible": true,
+                              "domain": {
+                                  "type": "codedValue",
+                                  "name": "party1_Domain",
+                                  "codedValues": [
+                                      {
+                                          "name": "Republican",
+                                          "code": "Republican"
+                                      },
+                                      {
+                                          "name": "Democratic",
+                                          "code": "Democratic"
+                                      },
+                                      {
+                                          "name": "Green",
+                                          "code": "Green"
+                                      },
+                                      {
+                                          "name": "Libertarian",
+                                          "code": "Libertarian"
+                                      },
+                                      {
+                                          "name": "Independent",
+                                          "code": "Independent"
+                                      }
+                                  ]
+                              },
+                              "defaultValue": null
+                          },
+                          {
+                              "name": "districturl1",
+                              "type": "esriFieldTypeString",
+                              "alias": "Website",
+                              "sqlType": "sqlTypeOther",
+                              "length": 255,
+                              "nullable": true,
+                              "editable": true,
+                              "visible": true,
+                              "domain": null,
+                              "defaultValue": null
+                          },
+                          {
+                              "name": "repname2",
+                              "type": "esriFieldTypeString",
+                              "alias": "Representative Name",
+                              "sqlType": "sqlTypeOther",
+                              "length": 255,
+                              "nullable": true,
+                              "editable": true,
+                              "visible": true,
+                              "domain": null,
+                              "defaultValue": null
+                          },
+                          {
+                              "name": "repimageurl2",
+                              "type": "esriFieldTypeString",
+                              "alias": "Representative Image URL",
+                              "sqlType": "sqlTypeOther",
+                              "length": 255,
+                              "nullable": true,
+                              "editable": true,
+                              "visible": true,
+                              "domain": null,
+                              "defaultValue": null
+                          },
+                          {
+                              "name": "party2",
+                              "type": "esriFieldTypeString",
+                              "alias": "Party",
+                              "sqlType": "sqlTypeOther",
+                              "length": 50,
+                              "nullable": true,
+                              "editable": true,
+                              "visible": true,
+                              "domain": {
+                                  "type": "codedValue",
+                                  "name": "party1_Domain",
+                                  "codedValues": [
+                                      {
+                                          "name": "Republican",
+                                          "code": "Republican"
+                                      },
+                                      {
+                                          "name": "Democratic",
+                                          "code": "Democratic"
+                                      },
+                                      {
+                                          "name": "Green",
+                                          "code": "Green"
+                                      },
+                                      {
+                                          "name": "Libertarian",
+                                          "code": "Libertarian"
+                                      },
+                                      {
+                                          "name": "Independent",
+                                          "code": "Independent"
+                                      }
+                                  ]
+                              },
+                              "defaultValue": null
+                          },
+                          {
+                              "name": "districturl2",
+                              "type": "esriFieldTypeString",
+                              "alias": "Website",
+                              "sqlType": "sqlTypeOther",
+                              "length": 255,
+                              "nullable": true,
+                              "editable": true,
+                              "visible": true,
+                              "domain": null,
+                              "defaultValue": null
+                          },
+                          {
+                              "name": "repname3",
+                              "type": "esriFieldTypeString",
+                              "alias": "Representative Name",
+                              "sqlType": "sqlTypeOther",
+                              "length": 255,
+                              "nullable": true,
+                              "editable": true,
+                              "visible": true,
+                              "domain": null,
+                              "defaultValue": null
+                          },
+                          {
+                              "name": "repimageurl3",
+                              "type": "esriFieldTypeString",
+                              "alias": "Representative Image URL",
+                              "sqlType": "sqlTypeOther",
+                              "length": 255,
+                              "nullable": true,
+                              "editable": true,
+                              "visible": true,
+                              "domain": null,
+                              "defaultValue": null
+                          },
+                          {
+                              "name": "party3",
+                              "type": "esriFieldTypeString",
+                              "alias": "Party",
+                              "sqlType": "sqlTypeOther",
+                              "length": 50,
+                              "nullable": true,
+                              "editable": true,
+                              "visible": true,
+                              "domain": {
+                                  "type": "codedValue",
+                                  "name": "party1_Domain",
+                                  "codedValues": [
+                                      {
+                                          "name": "Republican",
+                                          "code": "Republican"
+                                      },
+                                      {
+                                          "name": "Democratic",
+                                          "code": "Democratic"
+                                      },
+                                      {
+                                          "name": "Green",
+                                          "code": "Green"
+                                      },
+                                      {
+                                          "name": "Libertarian",
+                                          "code": "Libertarian"
+                                      },
+                                      {
+                                          "name": "Independent",
+                                          "code": "Independent"
+                                      }
+                                  ]
+                              },
+                              "defaultValue": null
+                          },
+                          {
+                              "name": "districturl3",
+                              "type": "esriFieldTypeString",
+                              "alias": "Website",
+                              "sqlType": "sqlTypeOther",
+                              "length": 255,
+                              "nullable": true,
+                              "editable": true,
+                              "visible": true,
+                              "domain": null,
+                              "defaultValue": null
+                          },
+                          {
+                              "name": "GlobalID",
+                              "type": "esriFieldTypeGlobalID",
+                              "alias": "GlobalID",
+                              "sqlType": "sqlTypeOther",
+                              "length": 38,
+                              "nullable": false,
+                              "editable": false,
+                              "visible": true,
+                              "domain": null,
+                              "defaultValue": null
+                          },
+                          {
+                              "name": "CreationDate",
+                              "type": "esriFieldTypeDate",
+                              "alias": "CreationDate",
+                              "sqlType": "sqlTypeOther",
+                              "length": 8,
+                              "nullable": true,
+                              "editable": false,
+                              "visible": true,
+                              "domain": null,
+                              "defaultValue": null
+                          },
+                          {
+                              "name": "Creator",
+                              "type": "esriFieldTypeString",
+                              "alias": "Creator",
+                              "sqlType": "sqlTypeOther",
+                              "length": 128,
+                              "nullable": true,
+                              "editable": false,
+                              "visible": true,
+                              "domain": null,
+                              "defaultValue": null
+                          },
+                          {
+                              "name": "EditDate",
+                              "type": "esriFieldTypeDate",
+                              "alias": "EditDate",
+                              "sqlType": "sqlTypeOther",
+                              "length": 8,
+                              "nullable": true,
+                              "editable": false,
+                              "visible": true,
+                              "domain": null,
+                              "defaultValue": null
+                          },
+                          {
+                              "name": "Editor",
+                              "type": "esriFieldTypeString",
+                              "alias": "Editor",
+                              "sqlType": "sqlTypeOther",
+                              "length": 128,
+                              "nullable": true,
+                              "editable": false,
+                              "visible": true,
+                              "domain": null,
+                              "defaultValue": null
+                          }
+                      ],
+                      "indexes": [
+                          {
+                              "name": "FDO_GlobalID",
+                              "fields": "GlobalID",
+                              "isAscending": true,
+                              "isUnique": true,
+                              "description": ""
+                          },
+                          {
+                              "name": "CreationDateIndex",
+                              "fields": "CreationDate",
+                              "isAscending": true,
+                              "isUnique": false,
+                              "description": "CreationDate Field index"
+                          },
+                          {
+                              "name": "CreatorIndex",
+                              "fields": "Creator",
+                              "isAscending": false,
+                              "isUnique": false,
+                              "description": "Creator Field index"
+                          },
+                          {
+                              "name": "EditDateIndex",
+                              "fields": "EditDate",
+                              "isAscending": true,
+                              "isUnique": false,
+                              "description": "EditDate Field index"
+                          },
+                          {
+                              "name": "EditorIndex",
+                              "fields": "Editor",
+                              "isAscending": false,
+                              "isUnique": false,
+                              "description": "Editor Field index"
+                          },
+                          {
+                              "name": "user_15533.ElectionGeography_ELECTORAL_DISTRICTS_Shape_sidx",
+                              "fields": "Shape",
+                              "isAscending": false,
+                              "isUnique": false,
+                              "description": "Shape Index"
+                          },
+                          {
+                              "name": "PK__Election__F4B70D854E70F145",
+                              "fields": "OBJECTID",
+                              "isAscending": true,
+                              "isUnique": true,
+                              "description": "clustered, unique, primary key"
+                          }
+                      ],
+                      "types": [],
+                      "templates": [
+                          {
+                              "name": "Electoral Districts",
+                              "description": "",
+                              "drawingTool": "esriFeatureEditToolPolygon",
+                              "prototype": {
+                                  "attributes": {
+                                      "districturl3": null,
+                                      "party3": null,
+                                      "electedoffice": null,
+                                      "name": null,
+                                      "districtid": null,
+                                      "repname1": null,
+                                      "repimageurl1": null,
+                                      "party1": null,
+                                      "districturl1": null,
+                                      "repname2": null,
+                                      "repimageurl2": null,
+                                      "party2": null,
+                                      "districturl2": null,
+                                      "repname3": null,
+                                      "repimageurl3": null
+                                  }
+                              }
+                          }
+                      ],
+                      "supportedQueryFormats": "JSON, geoJSON, PBF",
+                      "hasStaticData": false,
+                      "maxRecordCount": 2000,
+                      "standardMaxRecordCount": 4000,
+                      "standardMaxRecordCountNoGeometry": 32000,
+                      "tileMaxRecordCount": 4000,
+                      "maxRecordCountFactor": 1,
+                      "capabilities": "Create,Delete,Query,Update,Editing"
+                  }
+              ],
+              "tables": [
+                  {
+                      "adminLayerInfo": {
+                          "geometryField": null
+                      },
+                      "id": 3,
+                      "name": "{{27d6eee83f2f4f6aae4a1d028536bd66.layer3.name||Election Day Metrics}}",
+                      "type": "Table",
+                      "serviceItemId": "{{27d6eee83f2f4f6aae4a1d028536bd66.itemId}}",
+                      "sourceSchemaChangesAllowed": true,
+                      "hasViews": true,
+                      "displayField": "name",
+                      "description": "",
+                      "copyrightText": "Esri",
+                      "defaultVisibility": true,
+                      "editFieldsInfo": {
+                          "creationDateField": "CreationDate",
+                          "creatorField": "Creator",
+                          "editDateField": "EditDate",
+                          "editorField": "Editor"
+                      },
+                      "editingInfo": {
+                          "lastEditDate": 1572443390464
+                      },
+                      "relationships": [],
+                      "isDataVersioned": false,
+                      "supportsAppend": true,
+                      "supportsCalculate": true,
+                      "supportsASyncCalculate": true,
+                      "supportsTruncate": true,
+                      "supportsAttachmentsByUploadId": true,
+                      "supportsAttachmentsResizing": true,
+                      "supportsRollbackOnFailureParameter": true,
+                      "supportsStatistics": true,
+                      "supportsExceedsLimitStatistics": true,
+                      "supportsAdvancedQueries": true,
+                      "supportsValidateSql": true,
+                      "supportsCoordinatesQuantization": true,
+                      "supportsFieldDescriptionProperty": true,
+                      "supportsQuantizationEditMode": true,
+                      "supportsApplyEditsWithGlobalIds": true,
+                      "advancedQueryCapabilities": {
+                          "supportsPagination": true,
+                          "supportsPaginationOnAggregatedQueries": true,
+                          "supportsQueryRelatedPagination": true,
+                          "supportsQueryWithDistance": true,
+                          "supportsReturningQueryExtent": true,
+                          "supportsStatistics": true,
+                          "supportsOrderBy": true,
+                          "supportsDistinct": true,
+                          "supportsQueryWithResultType": true,
+                          "supportsSqlExpression": true,
+                          "supportsAdvancedQueryRelated": true,
+                          "supportsCountDistinct": true,
+                          "supportsPercentileStatistics": true,
+                          "supportsLod": true,
+                          "supportsQueryWithLodSR": false,
+                          "supportedLodTypes": [
+                              "geohash"
+                          ],
+                          "supportsReturningGeometryCentroid": false,
+                          "supportsQueryWithDatumTransformation": true,
+                          "supportsHavingClause": true,
+                          "supportsOutFieldSQLExpression": true,
+                          "supportsMaxRecordCountFactor": true,
+                          "supportsTopFeaturesQuery": true,
+                          "supportsQueryWithCacheHint": true
+                      },
+                      "useStandardizedQueries": true,
+                      "allowGeometryUpdates": true,
+                      "hasAttachments": false,
+                      "htmlPopupType": "esriServerHTMLPopupTypeNone",
+                      "hasM": false,
+                      "hasZ": false,
+                      "objectIdField": "OBJECTID",
+                      "uniqueIdField": {
+                          "name": "OBJECTID",
+                          "isSystemMaintained": true
+                      },
+                      "globalIdField": "GlobalID",
+                      "typeIdField": "",
+                      "fields": [
+                          {
+                              "name": "OBJECTID",
+                              "type": "esriFieldTypeOID",
+                              "alias": "OBJECTID",
+                              "sqlType": "sqlTypeOther",
+                              "nullable": false,
+                              "editable": false,
+                              "visible": true,
+                              "domain": null,
+                              "defaultValue": null
+                          },
+                          {
+                              "name": "facilityid",
+                              "type": "esriFieldTypeString",
+                              "alias": "Voting Location ID",
+                              "sqlType": "sqlTypeOther",
+                              "length": 10,
+                              "nullable": true,
+                              "editable": true,
+                              "visible": true,
+                              "domain": null,
+                              "defaultValue": null
+                          },
+                          {
+                              "name": "name",
+                              "type": "esriFieldTypeString",
+                              "alias": "Voting Location Name",
+                              "sqlType": "sqlTypeOther",
+                              "length": 255,
+                              "nullable": true,
+                              "editable": true,
+                              "visible": true,
+                              "domain": null,
+                              "defaultValue": null
+                          },
+                          {
+                              "name": "waittime",
+                              "type": "esriFieldTypeSmallInteger",
+                              "alias": "Wait Time (Minutes)",
+                              "sqlType": "sqlTypeOther",
+                              "nullable": true,
+                              "editable": true,
+                              "visible": true,
+                              "domain": null,
+                              "defaultValue": null
+                          },
+                          {
+                              "name": "GlobalID",
+                              "type": "esriFieldTypeGlobalID",
+                              "alias": "GlobalID",
+                              "sqlType": "sqlTypeOther",
+                              "length": 38,
+                              "nullable": false,
+                              "editable": false,
+                              "visible": true,
+                              "domain": null,
+                              "defaultValue": "NEWID() WITH VALUES"
+                          },
+                          {
+                              "name": "CreationDate",
+                              "type": "esriFieldTypeDate",
+                              "alias": "CreationDate",
+                              "sqlType": "sqlTypeOther",
+                              "length": 8,
+                              "nullable": true,
+                              "editable": false,
+                              "visible": true,
+                              "domain": null,
+                              "defaultValue": null
+                          },
+                          {
+                              "name": "Creator",
+                              "type": "esriFieldTypeString",
+                              "alias": "Creator",
+                              "sqlType": "sqlTypeOther",
+                              "length": 128,
+                              "nullable": true,
+                              "editable": false,
+                              "visible": true,
+                              "domain": null,
+                              "defaultValue": null
+                          },
+                          {
+                              "name": "EditDate",
+                              "type": "esriFieldTypeDate",
+                              "alias": "EditDate",
+                              "sqlType": "sqlTypeOther",
+                              "length": 8,
+                              "nullable": true,
+                              "editable": false,
+                              "visible": true,
+                              "domain": null,
+                              "defaultValue": null
+                          },
+                          {
+                              "name": "Editor",
+                              "type": "esriFieldTypeString",
+                              "alias": "Editor",
+                              "sqlType": "sqlTypeOther",
+                              "length": 128,
+                              "nullable": true,
+                              "editable": false,
+                              "visible": true,
+                              "domain": null,
+                              "defaultValue": null
+                          }
+                      ],
+                      "indexes": [
+                          {
+                              "name": "G7facilityid",
+                              "fields": "facilityid",
+                              "isAscending": true,
+                              "isUnique": false,
+                              "description": ""
+                          },
+                          {
+                              "name": "GlobalID_Index",
+                              "fields": "GlobalID",
+                              "isAscending": false,
+                              "isUnique": true,
+                              "description": ""
+                          },
+                          {
+                              "name": "CreationDateIndex",
+                              "fields": "CreationDate",
+                              "isAscending": true,
+                              "isUnique": false,
+                              "description": "CreationDate Field index"
+                          },
+                          {
+                              "name": "CreatorIndex",
+                              "fields": "Creator",
+                              "isAscending": false,
+                              "isUnique": false,
+                              "description": "Creator Field index"
+                          },
+                          {
+                              "name": "EditDateIndex",
+                              "fields": "EditDate",
+                              "isAscending": true,
+                              "isUnique": false,
+                              "description": "EditDate Field index"
+                          },
+                          {
+                              "name": "EditorIndex",
+                              "fields": "Editor",
+                              "isAscending": false,
+                              "isUnique": false,
+                              "description": "Editor Field index"
+                          },
+                          {
+                              "name": "PK__Election__F4B70D851DC2AB26",
+                              "fields": "OBJECTID",
+                              "isAscending": true,
+                              "isUnique": true,
+                              "description": "clustered, unique, primary key"
+                          }
+                      ],
+                      "types": [],
+                      "templates": [
+                          {
+                              "name": "Election Day Metrics",
+                              "description": "",
+                              "drawingTool": "esriFeatureEditToolNone",
+                              "prototype": {
+                                  "attributes": {
+                                      "name": null,
+                                      "waittime": null,
+                                      "facilityid": null
+                                  }
+                              }
+                          }
+                      ],
+                      "supportedQueryFormats": "JSON, geoJSON, PBF",
+                      "hasStaticData": false,
+                      "maxRecordCount": 2000,
+                      "standardMaxRecordCount": 32000,
+                      "tileMaxRecordCount": 8000,
+                      "maxRecordCountFactor": 1,
+                      "capabilities": "Create,Delete,Query,Update,Editing"
+                  }
+              ]
+          },
+          "estimatedDeploymentCostFactor": 10
       }
   ]
 }

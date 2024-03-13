@@ -79,7 +79,7 @@ import {
 //
 //--------------------------------------------------------------------------------------------------------------------//
 
-interface SolutionStoreData {
+interface ISolutionStoreData {
   solutionItemId: string,
   defaultWkid: string,
   solutionData: ISolutionItemData,
@@ -88,7 +88,7 @@ interface SolutionStoreData {
   spatialReferenceInfo: ISolutionSpatialReferenceInfo
 }
 
-const EmptySolutionStore: SolutionStoreData = {
+const EmptySolutionStore: ISolutionStoreData = {
   solutionItemId: "",
   defaultWkid: undefined,
   solutionData: { metadata: {}, templates: [] },
@@ -165,6 +165,8 @@ class SolutionStore
   public getStoreInfo(
     propName: string
   ): any {
+    const valueSnippet = JSON.stringify(this._store.get(propName)).substring(0, Math.min(50, JSON.stringify(this._store.get(propName)).length));//???
+    console.log("GET StoreInfo " + propName + ": " + valueSnippet);//???
     return this._store.get(propName);
   }
 
@@ -180,6 +182,7 @@ class SolutionStore
     solutionItemId: string,
     authentication: UserSession
   ): Promise<void> {
+    console.log("loadSolution " + solutionItemId);//???
     this._authentication = authentication;
 
     const solutionData = await getItemDataAsJson(solutionItemId, authentication);
@@ -302,6 +305,8 @@ class SolutionStore
     propName: string,
     value: any
   ): void {
+    const valueSnippet = JSON.stringify(value).substring(0, Math.min(50, JSON.stringify(value).length));//???
+    console.log("SET StoreInfo " + propName + ": " + valueSnippet);//???
     this._store.set(propName, value);
     this._flagStoreHasChanges(true);
 }
@@ -374,14 +379,14 @@ class SolutionStore
    */
   protected _flagStoreHasChanges(flagHasChanges: boolean): void {
     // Event for notifying if the store has changes or not
-    if (this._hasChanges !== flagHasChanges) {
+    //???if (this._hasChanges !== flagHasChanges) {
       window.dispatchEvent(new CustomEvent("solutionStoreHasChanges", {
         detail: flagHasChanges,
         bubbles: true,
         cancelable: false,
         composed: true
       }));
-    }
+    //}
 
     this._hasChanges = flagHasChanges;
   }

@@ -24,12 +24,13 @@ import {
   //IItemShare,
   IOrganizationVariableItem,
   //IResourcePath,
-  //SolutionModels,
+  ISolutionModels,
   //ISolutionSpatialReferenceInfo,
   IVariableItem
 } from '../utils/interfaces';
 import {
-  IItemTemplate
+  IItemTemplate,
+  getProp
 } from '@esri/solution-common';
 
 //--------------------------------------------------------------------------
@@ -37,6 +38,31 @@ import {
 //  Public Functions
 //
 //--------------------------------------------------------------------------
+
+/**
+ * Gets a list of Feature Services that are not views along with an enabled property that indicates
+ * if the service currently uses a spatial reference variable.
+ *
+ * @param templates a list of item templates from the solution
+ *
+ * @returns a list of feature service names and an enabled property to indicate
+ * if they currently use a spatial reference variable.
+ */
+export function getFeatureServices(
+  templates: IItemTemplate[]
+): any[] {
+  return templates.reduce((prev, cur) => {
+    const name: string = cur.item.title || cur.item.name;
+    if (cur.type === "Feature Service" &&
+      cur.item.typeKeywords.indexOf("View Service") < 0 &&
+      prev.indexOf(name) < 0
+    ) {
+      const wkid = getProp(cur, "properties.service.spatialReference.wkid");
+      prev.push({ name, enabled: wkid.toString().startsWith("{{params.wkid||")});
+    }
+    return prev;
+  }, []);
+}
 
 /**
  * Sort the solution items
@@ -132,6 +158,83 @@ export function getItemHierarchy(
 }
 
 /**
+ * Create and store text models for the editor as well as other key values such as the original values
+ * that can be used to clear any temp edits.
+ *
+ * @param templates a list of item templates from the solution
+ *
+ * @returns a list of models and key values
+ */
+export function getModels(templates: any[]): ISolutionModels {
+  const ids: string[] = [];
+  const models: ISolutionModels = {};
+  const monacoDefined = typeof(monaco) !== "undefined";
+  templates.forEach(t => {
+    if (ids.indexOf(t.itemId) < 0) {
+      ids.push(t.itemId);
+      models[t.itemId] = {
+        dataModel: monacoDefined ? monaco.editor.createModel(JSON.stringify(t.data, null, '\t'), "json") : undefined,
+        dataOriginValue: JSON.stringify(t.data),
+        propsModel: monacoDefined ? monaco.editor.createModel(JSON.stringify(t.properties, null, '\t'), "json") : undefined,
+        propsOriginValue: JSON.stringify(t.properties),
+        propsDiffOriginValue: JSON.stringify(t.properties),
+        state: undefined,
+        shareInfo: undefined,
+        isEditing: false,
+        itemId: t.itemId,
+        updateItemValues: {},
+        originalItemValues: {},
+        name: t.item?.name,
+        title: t.item?.title,
+        itemOriginValue: JSON.stringify(t.item),
+        spatialReference: t.properties?.service?.spatialReference,
+        resources: [], //???
+        resourceFilePaths: [], //???
+        sourceResourceFilePaths: [], //???
+        thumbnailOrigin: undefined, //???
+        thumbnailNew: undefined, //???
+        type: t.type
+      };
+    }
+  });
+  return models;
+}
+
+/**
+ * Set key organization variables we will allow users to insert at runtime
+ *
+ * @param translations nls translation object
+ *
+ * @returns a list of variables for the organization
+ */
+export function getOrganizationVariables(
+  translations: any
+): IOrganizationVariableItem[] {
+  const orgVars: IOrganizationVariableItem[] = [{
+    id: "",
+    title: translations.geocodeUrl,
+    value: "{{organization.helperServices.geocode:getDefaultLocatorURL}}"
+  }, {
+    id: "",
+    title: translations.geometryUrl,
+    value: "{{organization.helperServices.geometry.url}}"
+  }, {
+    id: "",
+    title: translations.portalBaseUrl,
+    value: "{{portalBaseUrl}}"
+  }, {
+    id: "",
+    title: translations.routeUrl,
+    value: "{{organization.helperServices.route.url}}"
+  }, {
+    id: "",
+    title: translations.solutionItemExtent,
+    value: "{{solutionItemExtent}}"
+  }];
+  return orgVars;
+}
+
+/**
  * Explore the solution item templates for variables we will allow users to insert at runtime
  *
  * @param templates a list of item templates from the solution
@@ -181,37 +284,29 @@ export function getSolutionVariables(
 }
 
 /**
- * Set key organization variables we will allow users to insert at runtime
+ * Stores basic spatial reference information that is used to determine if a custom spatial reference parameter will
+ * be exposed while deploying this solution and if so what feature services will support it and what will the default wkid be
  *
- * @param translations nls translation object
+ * @param services a list of objects with service name and enabled property (indicates if they currently use a spatial reference var)
+ * @param data the data object of a solution item
  *
- * @returns a list of variables for the organization
+ * @returns an object that stores if a custom spatial reference parameter is enabled/disabled,
+ * a list of services and if they are enabled/disabled, and the default wkid
  */
-export function getOrganizationVariables(
-  translations: any
-): IOrganizationVariableItem[] {
-  const orgVars: IOrganizationVariableItem[] = [{
-    id: "",
-    title: translations.geocodeUrl,
-    value: "{{organization.helperServices.geocode:getDefaultLocatorURL}}"
-  }, {
-    id: "",
-    title: translations.geometryUrl,
-    value: "{{organization.helperServices.geometry.url}}"
-  }, {
-    id: "",
-    title: translations.portalBaseUrl,
-    value: "{{portalBaseUrl}}"
-  }, {
-    id: "",
-    title: translations.routeUrl,
-    value: "{{organization.helperServices.route.url}}"
-  }, {
-    id: "",
-    title: translations.solutionItemExtent,
-    value: "{{solutionItemExtent}}"
-  }];
-  return orgVars;
+export function getSpatialReferenceInfo(
+  services: any[],
+  data: any
+): any {
+  const defaultServices: any = {};
+  services.forEach(service => {
+    defaultServices[service.name] = service.enabled;
+  });
+  const wkid = getProp(data, "params.wkid.default");
+  return {
+    enabled: wkid !== undefined && wkid !== "",
+    services: defaultServices,
+    spatialReference: wkid ? { wkid } : undefined
+  }
 }
 
 //--------------------------------------------------------------------------
