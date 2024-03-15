@@ -85,7 +85,7 @@ export namespace Components {
         "zoomAndScrollToSelected": boolean;
     }
     interface CookieTest {
-        "getInstance": () => Promise<void>;
+        "getInstance": () => Promise<Telemetry | undefined>;
         "measurementIds": string[];
         "portal": __esri.Portal;
     }

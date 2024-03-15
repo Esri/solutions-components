@@ -5,7 +5,7 @@ export declare class CookieTest {
     portal: __esri.Portal;
     _telemetryInstance: Telemetry;
     _loaded: boolean;
-    getInstance(): Promise<void>;
+    getInstance(): Promise<Telemetry | undefined>;
     render(): any;
     _init(): Promise<void>;
 }

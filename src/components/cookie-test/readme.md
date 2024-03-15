@@ -15,13 +15,13 @@
 
 ## Methods
 
-### `getInstance() => Promise<void>`
+### `getInstance() => Promise<Telemetry | undefined>`
 
 
 
 #### Returns
 
-Type: `Promise<void>`
+Type: `Promise<any>`
 
 
 

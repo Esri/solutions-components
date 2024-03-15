@@ -106,15 +106,19 @@ export class CookieTest {
         return {
             "getInstance": {
                 "complexType": {
-                    "signature": "() => Promise<void>",
+                    "signature": "() => Promise<Telemetry | undefined>",
                     "parameters": [],
                     "references": {
                         "Promise": {
                             "location": "global",
                             "id": "global::Promise"
+                        },
+                        "Telemetry": {
+                            "location": "global",
+                            "id": "global::Telemetry"
                         }
                     },
-                    "return": "Promise<void>"
+                    "return": "Promise<any>"
                 },
                 "docs": {
                     "text": "",

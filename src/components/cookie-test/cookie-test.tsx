@@ -18,7 +18,7 @@ export class CookieTest {
   @State() _loaded = false;
 
   @Method()
-  async getInstance(): Promise<void> {
+  async getInstance(): Promise<Telemetry | undefined> {
     await this._init();
     return this._loaded ? this._telemetryInstance : undefined;
   }
