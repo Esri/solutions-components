@@ -1,4 +1,4 @@
-import { Component, Host, h, Method, Prop } from '@stencil/core';
+import { Component, Host, h, Method, Prop, State } from '@stencil/core';
 import { Telemetry } from "@esri/telemetry";
 import { GoogleAnalytics } from '@esri/telemetry-google-analytics';
 
@@ -15,7 +15,7 @@ export class CookieTest {
 
   _telemetryInstance: Telemetry;
 
-  _loaded = false;
+  @State() _loaded = false;
 
   @Method()
   async getInstance(): Promise<void> {

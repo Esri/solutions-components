@@ -1624,9 +1624,9 @@ const cookieTestCss = ":host{display:block}#cookie-policy.epjs_cookiepolicy{posi
 const CookieTest = class {
     constructor(hostRef) {
         registerInstance(this, hostRef);
-        this._loaded = false;
         this.measurementIds = ["G-ZSDDNE856F"];
         this.portal = undefined;
+        this._loaded = false;
     }
     async getInstance() {
         await this._init();

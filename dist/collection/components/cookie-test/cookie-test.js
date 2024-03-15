@@ -8,9 +8,9 @@ import { Telemetry } from "@esri/telemetry";
 import { GoogleAnalytics } from "@esri/telemetry-google-analytics";
 export class CookieTest {
     constructor() {
-        this._loaded = false;
         this.measurementIds = ["G-ZSDDNE856F"];
         this.portal = undefined;
+        this._loaded = false;
     }
     async getInstance() {
         await this._init();
@@ -95,6 +95,11 @@ export class CookieTest {
                     "text": ""
                 }
             }
+        };
+    }
+    static get states() {
+        return {
+            "_loaded": {}
         };
     }
     static get methods() {

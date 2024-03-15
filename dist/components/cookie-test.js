@@ -1626,9 +1626,9 @@ const CookieTest$1 = /*@__PURE__*/ proxyCustomElement(class CookieTest extends H
         super();
         this.__registerHost();
         this.__attachShadow();
-        this._loaded = false;
         this.measurementIds = ["G-ZSDDNE856F"];
         this.portal = undefined;
+        this._loaded = false;
     }
     async getInstance() {
         await this._init();
@@ -1667,6 +1667,7 @@ const CookieTest$1 = /*@__PURE__*/ proxyCustomElement(class CookieTest extends H
 }, [1, "cookie-test", {
         "measurementIds": [16],
         "portal": [16],
+        "_loaded": [32],
         "getInstance": [64]
     }]);
 function defineCustomElement$1() {
