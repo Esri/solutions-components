@@ -1,0 +1,38 @@
+{
+  "share": {
+    "label": "Zdieľať"
+  },
+  "embed": {
+    "label": "Vložiť",
+    "copy": "Kópia",
+    "width": "Šírka",
+    "height": "Výška"
+  },
+  "info": {
+    "label": "Vedeli ste?",
+    "tooltip": "Skopírovaný odkaz zachová aktuálne zobrazenie mapy, viditeľné vrstvy a otvorené vyskakovacie okná. Použite túto možnosť pre zdieľanie toho, čo aktuálne vidíte v aplikácii."
+  },
+  "success": {
+    "label": "Úspešné!",
+    "url": "URL aplikácie skopírovaná do schránky.",
+    "embed": "Kód na vloženie skopírovaný do schránky."
+  },
+  "options": {
+    "link": {
+      "label": "Kopírovať odkaz",
+      "tooltip": "Kliknite pre kopírovanie odkazu do schránky"
+    },
+    "facebook": {
+      "label": "Facebook",
+      "tooltip": "Kliknite pre zdieľanie na účte Facebook"
+    },
+    "twitter": {
+      "label": "Twitter",
+      "tooltip": "Kliknite pre zdieľanie na účte Twitter"
+    },
+    "linkedIn": {
+      "label": "LinkedIn",
+      "tooltip": "Kliknite pre zdieľanie na účte LinkedIn"
+    }
+  }
+}

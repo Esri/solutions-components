@@ -1,0 +1,8 @@
+{
+  "cancel": "Storno",
+  "confirmMultiple": "Tyto prvky budou trvale odstraněny.",
+  "confirmSingle": "Tento prvek bude trvale odstraněn.",
+  "delete": "Smazat",
+  "deleteCount": "Smazat ({{n}})",
+  "deleteFeature": "Odstranit prvek"
+}

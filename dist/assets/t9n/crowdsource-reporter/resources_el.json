@@ -1,0 +1,22 @@
+{
+  "createReportHeader": "Δημιουργία αναφοράς",
+  "share": "Κοινοποίηση",
+  "sort": "Ταξινόμηση",
+  "filter": "Φίλτρο",
+  "expand": "Ανάπτυξη",
+  "collapse": "Σύμπτυξη",
+  "next": "Επόμενο",
+  "submit": "Υποβολή",
+  "cancel": "Ακύρωση",
+  "back": "Πίσω",
+  "error": "Σφάλμα",
+  "invalidConfigurationErrorMsg": "Μη έγκυρη διαμόρφωση",
+  "noLayerToDisplayErrorMsg": "Ο διαμορφωμένος web χάρτης δεν έχει κανένα επεξεργάσιμο θεματικό επίπεδο στοιχείων.",
+  "chooseCategoryMsg": "Choose a category for your report.",
+  "featureErrorMsg": "Δεν βρέθηκαν στοιχεία.",
+  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "currentLocationMsg": "Χρήση τρέχουσας τοποθεσίας μου",
+  "addLocationMsg": "Add the location for your report.",
+  "reportSubmit": "Επιτυχής υποβολή αναφοράς",
+  "submitMsg": "Σας ευχαριστούμε! Η αναφορά υποβολήθηκε με επιτυχία."
+}

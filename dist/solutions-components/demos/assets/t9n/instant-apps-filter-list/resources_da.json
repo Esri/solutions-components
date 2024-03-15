@@ -1,0 +1,16 @@
+{
+  "andOperator": "Resultaterne vil vise ALLE matchende filtre",
+  "andOperator2": "OG: Resultaterne vil vise ALLE matchende filtre",
+  "close": "Luk",
+  "maxSlider": "{field}, øvre grænse",
+  "minSlider": "{field}, nedre grænse",
+  "nextMonth": "Næste måned",
+  "orOperator": "Resultaterne vil vise EVENTUELLE matchende filtre",
+  "orOperator2": "ELLER: Resultaterne vil vise EVENTUELLE matchende filtre",
+  "previousMonth": "Forrige måned",
+  "resetDatePicker": "Nulstil datovælger",
+  "resetFilter": "Nulstil filter",
+  "selectFilter": "Vælg filter",
+  "zoomTo": "Zoom til",
+  "zoomToExtent": "Zoom til udstrækning"
+}

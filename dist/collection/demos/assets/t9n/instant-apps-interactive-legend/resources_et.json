@@ -1,0 +1,15 @@
+{
+  "noLegend": "Legendi pole.",
+  "loading": "Interaktiivse legendi laadimine",
+  "open": "Ava",
+  "close": "Sule",
+  "expand": "Laienda",
+  "collapse": "Ahenda",
+  "totalFeatureCount": "Objektide koguarv",
+  "showAll": "Kuva kõik",
+  "zoomTo": "Suumi",
+  "relationship": {
+    "instructionalText": "Kaardi filtreerimiseks klõpsake värvilistel ruutudel",
+    "notSupported": "Seose joonistusstiili praegu ei toetata."
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "export": "Export",
+  "exportPopover": "Vyskakovacie okno Export",
+  "includeExtraContent": "Zahrnúť výsledky",
+  "includeHeaderTheme": "Zahrnúť motív záhlavia",
+  "includeLegend": "Zahrnúť legendu",
+  "includeMap": "Zahrnúť mapu",
+  "includePopup": "Zahrnúť vyskakovacie okno",
+  "title": "Názov",
+  "toggleExport": "Prepnúť Export"
+}

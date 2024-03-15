@@ -1,0 +1,9 @@
+{
+  "add": "Dodaj",
+  "remove": "Usuń",
+  "featuresAdded": "Dodane obiekty: {{n}}",
+  "featuresRemoved": "Usunięte obiekty: {{n}}",
+  "totalSelected": "Wybrane łącznie: {{n}}",
+  "inputLayer": "Warstwa wejściowa",
+  "inputLayerTip": "Wybierz warstwę wejściową zawierającą wybrane obiekty, które chcesz przejrzeć. Aktualizuj wybrane obiekty z jednej warstwy wejściowej naraz."
+}

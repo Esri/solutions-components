@@ -1,0 +1,22 @@
+{
+  "createReportHeader": "Aruande koostamine",
+  "share": "Jagamine",
+  "sort": "Sordi",
+  "filter": "Filtreeri",
+  "expand": "Laienda",
+  "collapse": "Ahenda",
+  "next": "Edasi",
+  "submit": "Esita",
+  "cancel": "Loobu",
+  "back": "Tagasi",
+  "error": "Tõrge",
+  "invalidConfigurationErrorMsg": "Vigane konfiguratsioon",
+  "noLayerToDisplayErrorMsg": "Konfigureeritud veebikaardil pole muudetavaid objektikihte.",
+  "chooseCategoryMsg": "Choose a category for your report.",
+  "featureErrorMsg": "Objekte ei leitud.",
+  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "currentLocationMsg": "Kasuta minu praegust asukohta",
+  "addLocationMsg": "Add the location for your report.",
+  "reportSubmit": "Aruanne esitatud.",
+  "submitMsg": "Täname teid. Teie aruanne edastati."
+}

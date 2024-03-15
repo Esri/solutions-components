@@ -1,0 +1,9 @@
+{
+  "add": "Toevoegen",
+  "remove": "Verwijderen",
+  "featuresAdded": "Toegevoegde objecten: {{n}}",
+  "featuresRemoved": "Verwijderde objecten: {{n}}",
+  "totalSelected": "Totaal geselecteerd: {{n}}",
+  "inputLayer": "Invoerlaag",
+  "inputLayerTip": "Kies een invoerlaag om geselecteerde objecten hieruit door te nemen, werk geselecteerde objecten uit één invoerlaag een voor een bij."
+}

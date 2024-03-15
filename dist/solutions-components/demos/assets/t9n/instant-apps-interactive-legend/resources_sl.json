@@ -1,0 +1,15 @@
+{
+  "noLegend": "Brez legende.",
+  "loading": "Nalaganje interaktivne legende",
+  "open": "Odpri",
+  "close": "Zapri",
+  "expand": "Razširi",
+  "collapse": "Strni",
+  "totalFeatureCount": "Skupno število geoobjektov",
+  "showAll": "Prikaži vse",
+  "zoomTo": "Približaj na",
+  "relationship": {
+    "instructionalText": "Klikni barvne pravokotnike za filtriranje karte",
+    "notSupported": "Slog risanja relacije trenutno ni podprt."
+  }
+}

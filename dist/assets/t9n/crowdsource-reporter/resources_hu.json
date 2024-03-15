@@ -1,0 +1,22 @@
+{
+  "createReportHeader": "Jelentés létrehozása",
+  "share": "Megosztás",
+  "sort": "Rendezés",
+  "filter": "Szűrő",
+  "expand": "Kibontás",
+  "collapse": "Összecsukás",
+  "next": "Tovább",
+  "submit": "Küldés",
+  "cancel": "Mégse",
+  "back": "Vissza",
+  "error": "Hiba",
+  "invalidConfigurationErrorMsg": "Érvénytelen konfiguráció",
+  "noLayerToDisplayErrorMsg": "A konfigurált webtérkép egyetlen szerkeszthető vektoros réteget sem tartalmaz.",
+  "chooseCategoryMsg": "Choose a category for your report.",
+  "featureErrorMsg": "Nem találhatók vektoros elemek.",
+  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "currentLocationMsg": "Jelenlegi saját hely használata",
+  "addLocationMsg": "Add the location for your report.",
+  "reportSubmit": "Jelentés beküldve.",
+  "submitMsg": "Köszönjük! Az Ön jelentésének elküldése sikeresen megtörtént."
+}

@@ -1,0 +1,9 @@
+{
+  "add": "Legg til",
+  "remove": "Fjern",
+  "featuresAdded": "Geoobjekter som er lagt til: {{n}}",
+  "featuresRemoved": "Geoobjekter som er fjernet: {{n}}",
+  "totalSelected": "Totalt antall valgte: {{n}}",
+  "inputLayer": "Inndatalag",
+  "inputLayerTip": "Velg inndatalag med geoobjekter som skal vurderes. Oppdater valgte geoobjekter fra et inndatalag om gangen."
+}

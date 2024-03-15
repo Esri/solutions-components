@@ -1,0 +1,22 @@
+{
+  "createReportHeader": "Tạo Báo cáo",
+  "share": "Chia sẻ",
+  "sort": "Sắp xếp",
+  "filter": "Bộ lọc",
+  "expand": "Mở rộng",
+  "collapse": "Thu gọn",
+  "next": "Tiếp",
+  "submit": "Gửi đi",
+  "cancel": "Hủy",
+  "back": "Quay lại",
+  "error": "Lỗi",
+  "invalidConfigurationErrorMsg": "Cấu hình không hợp lệ",
+  "noLayerToDisplayErrorMsg": "Bản đồ web đã cấu hình không có lớp đối tượng nào có thể chỉnh sửa.",
+  "chooseCategoryMsg": "Choose a category for your report.",
+  "featureErrorMsg": "Không tìm thấy đối tượng.",
+  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "currentLocationMsg": "Sử dụng vị trí hiện tại của tôi",
+  "addLocationMsg": "Add the location for your report.",
+  "reportSubmit": "Đã gửi Báo cáo.",
+  "submitMsg": "Xin cảm ơn! Báo cáo của bạn đã được gửi thành công."
+}

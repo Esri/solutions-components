@@ -1,0 +1,22 @@
+{
+  "createReportHeader": "Skapa en rapport",
+  "share": "Dela",
+  "sort": "Sortera",
+  "filter": "Filter",
+  "expand": "Expandera",
+  "collapse": "Dölj",
+  "next": "Nästa",
+  "submit": "Utför",
+  "cancel": "Avbryt",
+  "back": "Bakåt",
+  "error": "Fel",
+  "invalidConfigurationErrorMsg": "Ogiltig konfiguration",
+  "noLayerToDisplayErrorMsg": "Konfigurerad webbkarta har inga redigerbara geoobjektlager.",
+  "chooseCategoryMsg": "Choose a category for your report.",
+  "featureErrorMsg": "Geoobjekten hittades inte.",
+  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "currentLocationMsg": "Använd min aktuella plats",
+  "addLocationMsg": "Add the location for your report.",
+  "reportSubmit": "Rapporten har skickats.",
+  "submitMsg": "Tack! Din rapport har skickats in."
+}

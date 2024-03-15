@@ -1,0 +1,9 @@
+{
+  "add": "Pridať",
+  "remove": "Odstrániť",
+  "featuresAdded": "Pridané prvky: {{n}}",
+  "featuresRemoved": "Odstránené prvky: {{n}}",
+  "totalSelected": "Celkom vybraných: {{n}}",
+  "inputLayer": "Vstupná vrstva",
+  "inputLayerTip": "Vyberte vstupnú vrstvu na preskúmanie vybraných prvkov, aktualizujte vybrané prvky z jednej vstupnej vrstvy naraz."
+}

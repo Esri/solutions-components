@@ -1,0 +1,38 @@
+{
+  "share": {
+    "label": "Chia sẻ"
+  },
+  "embed": {
+    "label": "Nhúng",
+    "copy": "Sao chép",
+    "width": "Chiều rộng",
+    "height": "Chiều cao"
+  },
+  "info": {
+    "label": "Bạn có biết?",
+    "tooltip": "Liên kết sao chép sẽ giữ nguyên chế độ xem bản đồ hiện tại, các lớp hiển thị và cửa sổ pop-up đang mở. Sử dụng tùy chọn này để chia sẻ những gì bạn thấy trong ứng dụng."
+  },
+  "success": {
+    "label": "Thành công!",
+    "url": "URL ứng dụng đã được sao chép vào clipboard.",
+    "embed": "Mã nhúng đã được sao chép vào clipboard."
+  },
+  "options": {
+    "link": {
+      "label": "Sao chép Liên kết",
+      "tooltip": "Nhấp để sao chép liên kết vào clipboard"
+    },
+    "facebook": {
+      "label": "Facebook",
+      "tooltip": "Nhấp để chia sẻ với tài khoản Facebook của bạn"
+    },
+    "twitter": {
+      "label": "Twitter",
+      "tooltip": "Nhấp để chia sẻ với tài khoản Twitter của bạn"
+    },
+    "linkedIn": {
+      "label": "LinkedIn",
+      "tooltip": "Nhấp để chia sẻ với tài khoản LinkedIn của bạn"
+    }
+  }
+}

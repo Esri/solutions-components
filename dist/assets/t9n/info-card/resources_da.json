@@ -1,0 +1,10 @@
+{
+  "fetchingData": "Henter data",
+  "edit": "Redigér",
+  "enableEditing": "Opdateringsfunktionalitet skal være aktiveret på laget.",
+  "editDisabled": "Redigering deaktiveret",
+  "next": "Næste",
+  "back": "Tilbage",
+  "indexOfTotal": "{{index}} for {{total}}",
+  "delete": "Slet"
+}

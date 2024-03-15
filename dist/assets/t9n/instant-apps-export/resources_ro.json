@@ -1,0 +1,11 @@
+{
+  "export": "Export",
+  "exportPopover": "Export semn de carte",
+  "includeExtraContent": "Includeți rezultate",
+  "includeHeaderTheme": "Includere temă antet",
+  "includeLegend": "Includere legendă",
+  "includeMap": "Includere hartă",
+  "includePopup": "Includere fereastră pop-up",
+  "title": "Titlu",
+  "toggleExport": "Comutare export"
+}

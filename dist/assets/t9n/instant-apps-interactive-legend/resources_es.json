@@ -1,0 +1,15 @@
+{
+  "noLegend": "No hay leyenda.",
+  "loading": "Cargando leyenda interactiva",
+  "open": "Abrir",
+  "close": "Cerrar",
+  "expand": "Expandir",
+  "collapse": "Contraer",
+  "totalFeatureCount": "Recuento total de entidades",
+  "showAll": "Mostrar todo",
+  "zoomTo": "Acercar a",
+  "relationship": {
+    "instructionalText": "Haga clic en los cuadrados de color para filtrar el mapa",
+    "notSupported": "Actualmente no se admite el estilo de dibujo de relación."
+  }
+}

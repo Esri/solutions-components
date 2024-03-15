@@ -1,0 +1,22 @@
+{
+  "createReportHeader": "보고서 생성",
+  "share": "공유",
+  "sort": "정렬",
+  "filter": "필터",
+  "expand": "확장",
+  "collapse": "축소",
+  "next": "다음",
+  "submit": "제출",
+  "cancel": "취소",
+  "back": "뒤로",
+  "error": "오류",
+  "invalidConfigurationErrorMsg": "유효하지 않은 구성",
+  "noLayerToDisplayErrorMsg": "구성된 웹 맵에 편집 가능한 피처 레이어가 없습니다.",
+  "chooseCategoryMsg": "Choose a category for your report.",
+  "featureErrorMsg": "피처를 찾을 수 없습니다.",
+  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "currentLocationMsg": "내 현재 위치 사용",
+  "addLocationMsg": "Add the location for your report.",
+  "reportSubmit": "보고서가 제출되었습니다.",
+  "submitMsg": "감사합니다! 보고서가 제출되었습니다."
+}

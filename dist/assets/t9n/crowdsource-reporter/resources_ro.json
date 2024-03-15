@@ -1,0 +1,22 @@
+{
+  "createReportHeader": "Creare raport",
+  "share": "Partajare",
+  "sort": "Sortare",
+  "filter": "Filtrare",
+  "expand": "Extindere",
+  "collapse": "Restrângere",
+  "next": "Următorul",
+  "submit": "Trimitere",
+  "cancel": "Anulare",
+  "back": "Înapoi",
+  "error": "Eroare",
+  "invalidConfigurationErrorMsg": "Configurare incorectă",
+  "noLayerToDisplayErrorMsg": "Harta web configurată nu are niciun strat tematic de obiect spațial editabil.",
+  "chooseCategoryMsg": "Choose a category for your report.",
+  "featureErrorMsg": "Obiectele spațiale nu au fost găsite.",
+  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "currentLocationMsg": "Folosiți locația mea curentă",
+  "addLocationMsg": "Add the location for your report.",
+  "reportSubmit": "Raport transmis.",
+  "submitMsg": "Vă mulțumim! Raportul dvs. a fost trimis cu succes."
+}

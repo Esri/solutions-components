@@ -1,0 +1,9 @@
+{
+  "add": "Añadir",
+  "remove": "Eliminar",
+  "featuresAdded": "Entidades agregadas: {{n}}",
+  "featuresRemoved": "Entidades eliminadas: {{n}}",
+  "totalSelected": "Total seleccionado: {{n}}",
+  "inputLayer": "Capa de entrada",
+  "inputLayerTip": "Elija la capa de entrada para revisar las entidades seleccionadas en ella y actualice las entidades seleccionadas en una capa de entrada de una en una."
+}

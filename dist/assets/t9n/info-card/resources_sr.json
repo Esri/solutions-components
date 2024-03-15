@@ -1,0 +1,10 @@
+{
+  "fetchingData": "Preuzimanje podataka",
+  "edit": "Izmeni",
+  "enableEditing": "Mogućnost ažuriranja mora da bude omogućena na sloju.",
+  "editDisabled": "Uređivanje je onemogućeno",
+  "next": "Sledeće",
+  "back": "Nazad",
+  "indexOfTotal": "{{index}} od {{total}}",
+  "delete": "Izbriši"
+}

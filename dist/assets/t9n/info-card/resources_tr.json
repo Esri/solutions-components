@@ -1,0 +1,10 @@
+{
+  "fetchingData": "Veriler getiriliyor",
+  "edit": "Düzenle",
+  "enableEditing": "Katmanda güncelleme yeteneği etkinleştirilmelidir.",
+  "editDisabled": "Düzenleme Devre Dışı Bırakıldı",
+  "next": "İleri",
+  "back": "Geri",
+  "indexOfTotal": "{{index}} / {{total}}",
+  "delete": "Sil"
+}

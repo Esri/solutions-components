@@ -1,0 +1,9 @@
+{
+  "add": "追加",
+  "remove": "削除",
+  "featuresAdded": "追加したフィーチャ数: {{n}}",
+  "featuresRemoved": "削除したフィーチャ数: {{n}}",
+  "totalSelected": "選択した総数: {{n}}",
+  "inputLayer": "入力レイヤー",
+  "inputLayerTip": "選択したフィーチャを確認するための入力レイヤーを選択し、一度に 1 つの入力レイヤーから選択したフィーチャを更新します。"
+}

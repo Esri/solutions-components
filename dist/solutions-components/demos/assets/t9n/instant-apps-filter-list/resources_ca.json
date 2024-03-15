@@ -1,0 +1,16 @@
+{
+  "andOperator": "Els resultats mostraran TOTS els filtres coincidents",
+  "andOperator2": "AND: els resultats mostraran TOTS els filtres coincidents",
+  "close": "Tanca",
+  "maxSlider": "{field}, límit superior",
+  "minSlider": "{field}, límit inferior",
+  "nextMonth": "El mes vinent",
+  "orOperator": "Els resultats mostraran QUALSEVOL filtre coincident",
+  "orOperator2": "OR: els resultats mostraran QUALSEVOL filtre coincident",
+  "previousMonth": "El mes passat",
+  "resetDatePicker": "Reinicialitza el selector de dates",
+  "resetFilter": "Restableix el filtre",
+  "selectFilter": "Selecciona el filtre",
+  "zoomTo": "Aplica el zoom a",
+  "zoomToExtent": "Zoom a extensió"
+}

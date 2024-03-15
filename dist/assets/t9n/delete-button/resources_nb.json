@@ -1,0 +1,8 @@
+{
+  "cancel": "Avbryt",
+  "confirmMultiple": "Disse geoobjektene slettes for godt.",
+  "confirmSingle": "Geoobjektet slettes for godt.",
+  "delete": "Slett",
+  "deleteCount": "Slett ({{n}})",
+  "deleteFeature": "Slett geoobjekt"
+}

@@ -1,0 +1,22 @@
+{
+  "createReportHeader": "Създаване на отчет",
+  "share": "Споделяне",
+  "sort": "Сортиране",
+  "filter": "Филтър",
+  "expand": "Разгъване",
+  "collapse": "Сгъване",
+  "next": "Напред",
+  "submit": "Изпращане",
+  "cancel": "Отказ",
+  "back": "Назад",
+  "error": "Грешка",
+  "invalidConfigurationErrorMsg": "Невалидна конфигурация",
+  "noLayerToDisplayErrorMsg": "Конфигурираната уеб карта няма редактируеми обектни слоеве.",
+  "chooseCategoryMsg": "Choose a category for your report.",
+  "featureErrorMsg": "Няма намерени обекти.",
+  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "currentLocationMsg": "Използвай моето текущо местоположение",
+  "addLocationMsg": "Add the location for your report.",
+  "reportSubmit": "Отчетът е изпратен.",
+  "submitMsg": "Благодаря Ви! Отчетът Ви беше изпратен успешно."
+}

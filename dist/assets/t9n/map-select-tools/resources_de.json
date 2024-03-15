@@ -1,0 +1,16 @@
+{
+  "listName": "Listenname",
+  "listNamePlaceholder": "Name hier eingeben",
+  "searchDistance": "Suchentfernung",
+  "select": "Layer",
+  "selectedFeatures": "{{n}} ausgewählte Features",
+  "selectionLoading": "Auswahl wird geladen",
+  "sketch": "Skizzieren",
+  "bufferLayer": "Puffer-Layer",
+  "sketchLayer": "Skizzen-Layer",
+  "useLayerFeatures": "Layer-Features verwenden",
+  "inputLayer": "Eingabe-Layer",
+  "useLayerFeaturesTooltip": "Wählen Sie einen Layer aus, und verwenden Sie die Skizzenwerkzeuge, um auf Features zu zeigen, die als Grenze verwendet werden können, um überschneidende Features aus dem Eingabe-Layer auszuwählen.",
+  "useSearchDistanceTootip": "Definieren Sie einen Abstand für einen Suchpuffer zur Auswahl von Eingabe-Features, die den Puffer überschneiden.",
+  "placeholder": "Adresse oder Ort suchen"
+}

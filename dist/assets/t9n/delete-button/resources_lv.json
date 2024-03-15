@@ -1,0 +1,8 @@
+{
+  "cancel": "Atcelt",
+  "confirmMultiple": "Šie elementi tiks neatgriezeniski noņemti.",
+  "confirmSingle": "Šis elements tiks neatgriezeniski noņemts.",
+  "delete": "Dzēst",
+  "deleteCount": "Dzēst ({{n}})",
+  "deleteFeature": "Dzēst elementu"
+}

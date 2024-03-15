@@ -1,0 +1,38 @@
+{
+  "share": {
+    "label": "Jaa"
+  },
+  "embed": {
+    "label": "Upota",
+    "copy": "Kopioi",
+    "width": "Leveys",
+    "height": "Korkeus"
+  },
+  "info": {
+    "label": "Tiesitkö?",
+    "tooltip": "Kopioi linkki -toiminto säilyttää nykyisen karttanäkymän, näkyvät karttatasot ja avoimet ponnahdusikkunat. Tällä toiminnolla voit jakaa sovelluksen näkymän."
+  },
+  "success": {
+    "label": "Onnistui!",
+    "url": "Sovelluksen URL-osoite on kopioitu leikepöydälle.",
+    "embed": "Upotuskoodi on kopioitu leikepöydälle."
+  },
+  "options": {
+    "link": {
+      "label": "Kopioi linkki",
+      "tooltip": "Kopioi linkki leikepöydälle napsauttamalla"
+    },
+    "facebook": {
+      "label": "Facebook",
+      "tooltip": "Napsauta, jos haluat jakaa Facebook-tilillesi"
+    },
+    "twitter": {
+      "label": "Twitter",
+      "tooltip": "Napsauta, jos haluat jakaa Twitter-tilillesi"
+    },
+    "linkedIn": {
+      "label": "LinkedIn",
+      "tooltip": "Napsauta, jos haluat jakaa LinkedIn-tilillesi"
+    }
+  }
+}

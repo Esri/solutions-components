@@ -1,0 +1,38 @@
+{
+  "share": {
+    "label": "Jagamine"
+  },
+  "embed": {
+    "label": "Manusta",
+    "copy": "Kopeeri",
+    "width": "Laius",
+    "height": "Kõrgus"
+  },
+  "info": {
+    "label": "Kas teadsite?",
+    "tooltip": "\"Kopeeri link\" säilitab praeguse kaardivaate, nähtavad kihid ja avatud hüpikaknad. Kasutage seda valikut, et jagada seda, mida te rakenduses näete."
+  },
+  "success": {
+    "label": "Tehtud!",
+    "url": "Rakenduse URL kopeeriti lõikelauale.",
+    "embed": "Manustatud kood kopeeriti lõikelauale."
+  },
+  "options": {
+    "link": {
+      "label": "Kopeeri link",
+      "tooltip": "Klõpsake lingi kopeerimiseks lõikelauale"
+    },
+    "facebook": {
+      "label": "Facebook",
+      "tooltip": "Klõpsake oma Facebooki kontoga jagamiseks"
+    },
+    "twitter": {
+      "label": "Twitter",
+      "tooltip": "Klõpsake oma Twitteri kontoga jagamiseks"
+    },
+    "linkedIn": {
+      "label": "LinkedIn",
+      "tooltip": "Klõpsake oma LinkedIni kontoga jagamiseks"
+    }
+  }
+}

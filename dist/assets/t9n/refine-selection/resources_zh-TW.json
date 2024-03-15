@@ -1,0 +1,9 @@
+{
+  "add": "新增",
+  "remove": "移除",
+  "featuresAdded": "已新增圖徵: {{n}}",
+  "featuresRemoved": "已移除圖徵: {{n}}",
+  "totalSelected": "選擇總計: {{n}}",
+  "inputLayer": "輸入圖層",
+  "inputLayerTip": "選擇輸入圖層以檢閱所選圖徵，一次從一個輸入圖層更新所選圖徵。"
+}

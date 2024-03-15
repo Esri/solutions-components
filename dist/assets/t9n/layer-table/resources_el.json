@@ -1,0 +1,19 @@
+{
+  "clearSelection": "Απαλοιφή επιλογών",
+  "exportCSV": "Εξαγωγή σε CSV",
+  "filter": "Φίλτρο: {{title}}",
+  "filters": "Φίλτρα",
+  "hideField": "Απόκρυψη πεδίου",
+  "more": "Περισσότερα",
+  "selectAll": "Επιλογή όλων",
+  "share": "Κοινοποίηση",
+  "showSelected": "Εμφάνιση επιλεγμένων",
+  "switchSelected": "Επιλογή Αλλαγής",
+  "zoom": "Εστίαση",
+  "fetchingData": "Ανάκτηση Δεδομένων",
+  "refresh": "Ανανέωση",
+  "showAll": "Εμφάνιση όλων",
+  "recordsSelected": "Σύνολο: {{total}} | Επιλογή: {{selected}}",
+  "moreOptions": "Περισσότερες επιλογές πίνακα",
+  "showHideColumns": "Εμφάνιση/Απόκρυψη στηλών"
+}

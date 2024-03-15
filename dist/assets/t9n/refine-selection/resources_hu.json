@@ -1,0 +1,9 @@
+{
+  "add": "Hozzáadás",
+  "remove": "Eltávolítás",
+  "featuresAdded": "Hozzáadott vektoros elemek: {{n}}",
+  "featuresRemoved": "Eltávolított vektoros elemek: {{n}}",
+  "totalSelected": "Kijelölve összesen: {{n}}",
+  "inputLayer": "Bemenő réteg",
+  "inputLayerTip": "Válasszon bemeneti réteget a kijelölt vektoros elemek ellenőrzéséhez, valamint a kijelölt vektoros elemek egy bemeneti rétegből egyszerre történő frissítéséhez."
+}

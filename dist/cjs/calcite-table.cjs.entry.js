@@ -1,0 +1,318 @@
+/*!
+ * Copyright 2022 Esri
+ * Licensed under the Apache License, Version 2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
+ */
+'use strict';
+
+Object.defineProperty(exports, '__esModule', { value: true });
+
+const index = require('./index-105cf2b9.js');
+const loadable = require('./loadable-5a794992.js');
+const t9n = require('./t9n-993a84de.js');
+const locale = require('./locale-d237c9d5.js');
+const browser = require('./browser-d08a5f99.js');
+require('./dom-c9c2c835.js');
+require('./guid-ae73cd27.js');
+require('./resources-9447c777.js');
+require('./key-c5504030.js');
+require('./observers-db4527e4.js');
+
+/*!
+ * All material copyright ESRI, All Rights Reserved, unless otherwise specified.
+ * See https://github.com/Esri/calcite-design-system/blob/main/LICENSE.md for details.
+ * v2.4.0
+ */
+const CSS = {
+    bordered: "bordered",
+    striped: "striped",
+    selectionArea: "selection-area",
+    paginationArea: "pagination-area",
+    container: "container",
+    tableContainer: "table-container",
+    tableFixed: "table--fixed",
+    assistiveText: "assistive-text",
+    selectionActions: "selection-actions",
+};
+const SLOTS = {
+    selectionActions: "selection-actions",
+    tableHeader: "table-header",
+    tableFooter: "table-footer",
+};
+
+const tableCss = ":host([scale=s]){--calcite-internal-table-cell-padding:0.25rem;--calcite-internal-table-cell-font-size:var(--calcite-font-size--2);--calcite-internal-table-cell-font-size-secondary:var(--calcite-font-size--3)}:host([scale=m]){--calcite-internal-table-cell-padding:0.5rem;--calcite-internal-table-cell-font-size:var(--calcite-font-size--1);--calcite-internal-table-cell-font-size-secondary:var(--calcite-font-size--2)}:host([scale=l]){--calcite-internal-table-cell-padding:1rem;--calcite-internal-table-cell-font-size:var(--calcite-font-size-0);--calcite-internal-table-cell-font-size-secondary:var(--calcite-font-size--1)}:host{display:flex}.container{display:flex;block-size:100%;inline-size:100%;flex-direction:column}.table-container{overflow:auto;white-space:nowrap;border:1px solid var(--calcite-color-border-3)}.assistive-text{position:absolute;inline-size:1px;block-size:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0, 0, 0, 0);white-space:nowrap;border-width:0}table{inline-size:100%;border-collapse:collapse;overflow-x:scroll}.table--fixed{table-layout:fixed}.bordered ::slotted(calcite-table-row){--calcite-table-row-border-color:var(--calcite-color-border-3)}.striped ::slotted(calcite-table-row:nth-child(2n+1)){--calcite-table-row-background:var(--calcite-color-foreground-2)}.selection-actions{display:flex;flex-direction:row;margin-inline-start:auto}.selection-area{display:flex;flex-direction:row;align-items:center;padding-block:var(--calcite-internal-table-cell-padding)}.selection-area calcite-chip:last-of-type{margin-inline-end:0.5rem}.selection-area calcite-chip:last-of-type:not(:first-of-type){margin-inline-start:0.5rem}.selection-area calcite-button{margin-inline-end:1rem}.pagination-area{display:flex;inline-size:100%;flex-direction:row;justify-content:center;padding-block:var(--calcite-internal-table-cell-padding)}calcite-pagination{flex:1;justify-content:center}:host([hidden]){display:none}[hidden]{display:none}";
+
+const Table = class {
+    constructor(hostRef) {
+        index.registerInstance(this, hostRef);
+        this.calciteTableSelect = index.createEvent(this, "calciteTableSelect", 6);
+        this.calciteTablePageChange = index.createEvent(this, "calciteTablePageChange", 6);
+        this.calciteInternalTableRowFocusChange = index.createEvent(this, "calciteInternalTableRowFocusChange", 6);
+        // --------------------------------------------------------------------------
+        //
+        //  Private Methods
+        //
+        // --------------------------------------------------------------------------
+        this.getSlottedRows = (el) => {
+            var _a;
+            return (_a = el === null || el === void 0 ? void 0 : el.assignedElements({ flatten: true })) === null || _a === void 0 ? void 0 : _a.filter((el) => el === null || el === void 0 ? void 0 : el.matches("calcite-table-row"));
+        };
+        this.updateRows = () => {
+            var _a, _b, _c;
+            const headRows = this.getSlottedRows(this.tableHeadSlotEl) || [];
+            const bodyRows = this.getSlottedRows(this.tableBodySlotEl) || [];
+            const footRows = this.getSlottedRows(this.tableFootSlotEl) || [];
+            const allRows = [...headRows, ...bodyRows, ...footRows];
+            headRows === null || headRows === void 0 ? void 0 : headRows.forEach((row) => {
+                const position = headRows === null || headRows === void 0 ? void 0 : headRows.indexOf(row);
+                row.rowType = "head";
+                row.positionSection = position;
+                row.positionSectionLocalized = this.localizeNumber((position + 1).toString());
+            });
+            bodyRows === null || bodyRows === void 0 ? void 0 : bodyRows.forEach((row) => {
+                const position = bodyRows === null || bodyRows === void 0 ? void 0 : bodyRows.indexOf(row);
+                row.rowType = "body";
+                row.positionSection = position;
+                row.positionSectionLocalized = this.localizeNumber((position + 1).toString());
+            });
+            footRows === null || footRows === void 0 ? void 0 : footRows.forEach((row) => {
+                const position = footRows === null || footRows === void 0 ? void 0 : footRows.indexOf(row);
+                row.rowType = "foot";
+                row.positionSection = position;
+                row.positionSectionLocalized = this.localizeNumber((position + 1).toString());
+            });
+            allRows === null || allRows === void 0 ? void 0 : allRows.forEach((row) => {
+                row.selectionMode = this.selectionMode;
+                row.bodyRowCount = bodyRows === null || bodyRows === void 0 ? void 0 : bodyRows.length;
+                row.positionAll = allRows === null || allRows === void 0 ? void 0 : allRows.indexOf(row);
+                row.numbered = this.numbered;
+                row.scale = this.scale;
+                row.readCellContentsToAT = this.readCellContentsToAT;
+                row.lastVisibleRow = (allRows === null || allRows === void 0 ? void 0 : allRows.indexOf(row)) === allRows.length - 1;
+            });
+            const colCount = ((_a = headRows[0]) === null || _a === void 0 ? void 0 : _a.cellCount) || ((_c = (_b = headRows[0]) === null || _b === void 0 ? void 0 : _b.querySelectorAll("calcite-table-header")) === null || _c === void 0 ? void 0 : _c.length);
+            this.colCount = colCount;
+            this.headRows = headRows;
+            this.bodyRows = bodyRows;
+            this.footRows = footRows;
+            this.allRows = allRows;
+            this.updateSelectedItems();
+            this.paginateRows();
+        };
+        this.handlePaginationChange = () => {
+            var _a;
+            const requestedItem = (_a = this.paginationEl) === null || _a === void 0 ? void 0 : _a.startItem;
+            this.pageStartRow = requestedItem || 1;
+            this.calciteTablePageChange.emit();
+            this.updateRows();
+        };
+        this.paginateRows = () => {
+            var _a;
+            (_a = this.bodyRows) === null || _a === void 0 ? void 0 : _a.forEach((row) => {
+                const rowPos = row.positionSection + 1;
+                const inView = rowPos >= this.pageStartRow && rowPos < this.pageStartRow + this.pageSize;
+                row.hidden = this.pageSize > 0 && !inView && !this.footRows.includes(row);
+                row.lastVisibleRow =
+                    rowPos === this.pageStartRow + this.pageSize - 1 || rowPos === this.bodyRows.length;
+            });
+        };
+        this.updateSelectedItems = (emit) => {
+            var _a, _b;
+            const selectedItems = (_a = this.bodyRows) === null || _a === void 0 ? void 0 : _a.filter((el) => el.selected);
+            this.selectedItems = selectedItems;
+            this.selectedCount = selectedItems === null || selectedItems === void 0 ? void 0 : selectedItems.length;
+            (_b = this.allRows) === null || _b === void 0 ? void 0 : _b.forEach((row) => {
+                row.selectedRowCount = this.selectedCount;
+                row.selectedRowCountLocalized = this.localizeNumber(this.selectedCount);
+            });
+            if (emit) {
+                this.calciteTableSelect.emit();
+            }
+        };
+        this.handleDeselectAllRows = () => {
+            var _a;
+            (_a = this.bodyRows) === null || _a === void 0 ? void 0 : _a.forEach((row) => {
+                row.selected = false;
+            });
+            this.updateSelectedItems(true);
+        };
+        this.setSelectedItems = (elToMatch) => {
+            var _a;
+            (_a = this.bodyRows) === null || _a === void 0 ? void 0 : _a.forEach((el) => {
+                var _a;
+                if ((elToMatch === null || elToMatch === void 0 ? void 0 : elToMatch.rowType) === "head") {
+                    el.selected = this.selectedCount !== ((_a = this.bodyRows) === null || _a === void 0 ? void 0 : _a.length);
+                }
+                else {
+                    el.selected =
+                        elToMatch === el ? !el.selected : this.selectionMode === "multiple" ? el.selected : false;
+                }
+            });
+            this.updateSelectedItems(true);
+        };
+        this.localizeNumber = (value) => {
+            locale.numberStringFormatter.numberFormatOptions = {
+                locale: this.effectiveLocale,
+                numberingSystem: this.numberingSystem,
+                useGrouping: this.groupSeparator,
+            };
+            return locale.numberStringFormatter.localize(value.toString());
+        };
+        this.bordered = false;
+        this.caption = undefined;
+        this.groupSeparator = false;
+        this.layout = "auto";
+        this.numbered = false;
+        this.numberingSystem = undefined;
+        this.pageSize = 0;
+        this.scale = "m";
+        this.selectionMode = "none";
+        this.zebra = false;
+        this.striped = false;
+        this.selectedItems = [];
+        this.messages = undefined;
+        this.messageOverrides = undefined;
+        this.colCount = 0;
+        this.pageStartRow = 1;
+        this.selectedCount = 0;
+        this.readCellContentsToAT = undefined;
+        this.defaultMessages = undefined;
+        this.effectiveLocale = "";
+    }
+    handleNumberedChange() {
+        this.updateRows();
+    }
+    onMessagesChange() {
+        /* wired up by t9n util */
+    }
+    effectiveLocaleChange() {
+        t9n.updateMessages(this, this.effectiveLocale);
+    }
+    //--------------------------------------------------------------------------
+    //
+    //  Lifecycle
+    //
+    //--------------------------------------------------------------------------
+    async componentWillLoad() {
+        loadable.setUpLoadableComponent(this);
+        await t9n.setUpMessages(this);
+        this.readCellContentsToAT = /safari/i.test(browser.getUserAgentString());
+        this.updateRows();
+    }
+    componentDidLoad() {
+        loadable.setComponentLoaded(this);
+    }
+    connectedCallback() {
+        locale.connectLocalized(this);
+        t9n.connectMessages(this);
+    }
+    disconnectedCallback() {
+        locale.disconnectLocalized(this);
+        t9n.disconnectMessages(this);
+    }
+    //--------------------------------------------------------------------------
+    //
+    //  Event Listeners
+    //
+    //--------------------------------------------------------------------------
+    calciteChipSelectListener(event) {
+        if (event.composedPath().includes(this.el)) {
+            this.setSelectedItems(event.target);
+        }
+    }
+    calciteInternalTableRowFocusEvent(event) {
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j;
+        const cellPosition = event["detail"].cellPosition;
+        const rowPos = event["detail"].rowPosition;
+        const destination = event["detail"].destination;
+        const lastCell = event["detail"].lastCell;
+        const visibleBody = (_a = this.bodyRows) === null || _a === void 0 ? void 0 : _a.filter((row) => !row.hidden);
+        const visibleAll = (_b = this.allRows) === null || _b === void 0 ? void 0 : _b.filter((row) => !row.hidden);
+        const lastHeadRow = (_c = this.headRows[this.headRows.length - 1]) === null || _c === void 0 ? void 0 : _c.positionAll;
+        const firstBodyRow = (_d = visibleBody[0]) === null || _d === void 0 ? void 0 : _d.positionAll;
+        const lastBodyRow = (_e = visibleBody[visibleBody.length - 1]) === null || _e === void 0 ? void 0 : _e.positionAll;
+        const firstFootRow = (_f = this.footRows[0]) === null || _f === void 0 ? void 0 : _f.positionAll;
+        const lastTableRow = (_g = visibleAll[visibleAll.length - 1]) === null || _g === void 0 ? void 0 : _g.positionAll;
+        const leavingHeader = destination === "next" && rowPos === lastHeadRow;
+        const leavingFooter = destination === "previous" && rowPos === firstFootRow;
+        const enteringHeader = destination === "previous" && rowPos === firstBodyRow;
+        const enteringFooter = destination === "next" && rowPos === lastBodyRow;
+        let rowPosition;
+        switch (destination) {
+            case "first":
+                rowPosition = 0;
+                break;
+            case "last":
+                rowPosition = lastTableRow;
+                break;
+            case "next":
+                rowPosition = leavingHeader ? firstBodyRow : enteringFooter ? firstFootRow : rowPos + 1;
+                break;
+            case "previous":
+                rowPosition = leavingFooter ? lastBodyRow : enteringHeader ? lastHeadRow : rowPos - 1;
+                break;
+        }
+        const destinationCount = (_j = (_h = this.allRows) === null || _h === void 0 ? void 0 : _h.find((row) => row.positionAll === rowPosition)) === null || _j === void 0 ? void 0 : _j.cellCount;
+        const adjustedPos = cellPosition > destinationCount ? destinationCount : cellPosition;
+        if (rowPosition !== undefined) {
+            this.calciteInternalTableRowFocusChange.emit({
+                cellPosition: adjustedPos,
+                rowPosition,
+                destination,
+                lastCell,
+            });
+        }
+    }
+    // --------------------------------------------------------------------------
+    //
+    //  Render Methods
+    //
+    // --------------------------------------------------------------------------
+    renderSelectionArea() {
+        var _a, _b, _c;
+        const outOfViewCount = (_b = (_a = this.selectedItems) === null || _a === void 0 ? void 0 : _a.filter((el) => el.hidden)) === null || _b === void 0 ? void 0 : _b.length;
+        const localizedOutOfView = this.localizeNumber(outOfViewCount === null || outOfViewCount === void 0 ? void 0 : outOfViewCount.toString());
+        const localizedSelectedCount = this.localizeNumber((_c = this.selectedCount) === null || _c === void 0 ? void 0 : _c.toString());
+        const selectionText = `${localizedSelectedCount} ${this.messages.selected}`;
+        const outOfView = `${localizedOutOfView} ${this.messages.hiddenSelected}`;
+        return (index.h("div", { class: CSS.selectionArea }, index.h("calcite-chip", { kind: this.selectedCount > 0 ? "brand" : "neutral", scale: this.scale, value: selectionText }, selectionText), outOfViewCount > 0 && (index.h("calcite-chip", { icon: "hide-empty", scale: this.scale, title: outOfView, value: outOfView }, localizedOutOfView)), this.selectedCount > 0 && (index.h("calcite-button", { "icon-start": "x", kind: "neutral", onClick: this.handleDeselectAllRows, round: true, scale: this.scale, title: `${this.messages.clear} ${selectionText} ${this.messages.row}` }, this.messages.clear)), index.h("div", { class: CSS.selectionActions }, index.h("slot", { name: SLOTS.selectionActions }))));
+    }
+    renderPaginationArea() {
+        var _a;
+        return (index.h("div", { class: CSS.paginationArea }, index.h("calcite-pagination", { groupSeparator: this.groupSeparator, numberingSystem: this.numberingSystem, onCalcitePaginationChange: this.handlePaginationChange, pageSize: this.pageSize, scale: this.scale, startItem: 1, totalItems: (_a = this.bodyRows) === null || _a === void 0 ? void 0 : _a.length,
+            // eslint-disable-next-line react/jsx-sort-props -- ref should be last so node attrs/props are in sync (see https://github.com/Esri/calcite-design-system/pull/6530)
+            ref: (el) => (this.paginationEl = el) })));
+    }
+    renderTHead() {
+        return (index.h("thead", null, index.h("slot", { name: SLOTS.tableHeader, onSlotchange: this.updateRows, ref: (el) => (this.tableHeadSlotEl = el) })));
+    }
+    renderTBody() {
+        return (index.h("tbody", null, index.h("slot", { onSlotchange: this.updateRows, ref: (el) => (this.tableBodySlotEl = el) })));
+    }
+    renderTFoot() {
+        return (index.h("tfoot", null, index.h("slot", { name: SLOTS.tableFooter, onSlotchange: this.updateRows, ref: (el) => (this.tableFootSlotEl = el) })));
+    }
+    render() {
+        var _a;
+        return (index.h(index.Host, null, index.h("div", { class: CSS.container }, this.selectionMode !== "none" && this.renderSelectionArea(), index.h("div", { class: {
+                [CSS.bordered]: this.bordered,
+                [CSS.striped]: this.striped || this.zebra,
+                [CSS.tableContainer]: true,
+            } }, index.h("table", { "aria-colcount": this.colCount, "aria-multiselectable": this.selectionMode === "multiple", "aria-readonly": true, "aria-rowcount": (_a = this.allRows) === null || _a === void 0 ? void 0 : _a.length, class: { [CSS.tableFixed]: this.layout === "fixed" }, role: "grid" }, index.h("caption", { class: CSS.assistiveText }, this.caption), this.renderTHead(), this.renderTBody(), this.renderTFoot())), this.pageSize > 0 && this.renderPaginationArea())));
+    }
+    static get assetsDirs() { return ["assets"]; }
+    get el() { return index.getElement(this); }
+    static get watchers() { return {
+        "groupSeparator": ["handleNumberedChange"],
+        "numbered": ["handleNumberedChange"],
+        "numberingSystem": ["handleNumberedChange"],
+        "pageSize": ["handleNumberedChange"],
+        "scale": ["handleNumberedChange"],
+        "selectionMode": ["handleNumberedChange"],
+        "messageOverrides": ["onMessagesChange"],
+        "effectiveLocale": ["effectiveLocaleChange"]
+    }; }
+};
+Table.style = tableCss;
+
+exports.calcite_table = Table;

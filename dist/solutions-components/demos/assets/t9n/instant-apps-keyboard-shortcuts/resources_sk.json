@@ -1,0 +1,30 @@
+{
+  "mapShortcuts": {
+    "arrowKeys": "Klávesy so šípkami",
+    "nudge": "Posunúť doľava, doprava, hore alebo dole",
+    "N": "Nastaviť na sever",
+    "A": "Otočiť proti smeru hodinových ručičiek",
+    "D": "Otočíť v smere hodinových ručičiek",
+    "plus": "Priblížiť na stred",
+    "minus": "Oddialiť na stred"
+  },
+  "sceneShortcuts": {
+    "P": "Presunúť kameru do kolmého zobrazenia vzhľadom k dátam zobrazeným v mape",
+    "N": "Nastaviť mapu na sever",
+    "W": "Nakloniť kameru nahor",
+    "A": "Rotovať kameru proti smeru hodinových ručičiek",
+    "D": "Rotovať kameru v smere hodinových ručičiek",
+    "S": "Nakloniť kameru nadol",
+    "globalCommands": {
+      "J": "Posunúť nadol bližšie k mape",
+      "U": "Posunúť nahor vyššie od mapy"
+    }
+  },
+  "generalShortcuts": {
+    "menu": "menu skratiek",
+    "shortcut": "Skratka",
+    "action": "Akcia",
+    "title": "Vybrať mapu",
+    "label": "Klávesové skratky"
+  }
+}

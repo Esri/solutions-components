@@ -1,0 +1,22 @@
+{
+  "createReportHeader": "Buat Laporan",
+  "share": "Bagikan",
+  "sort": "Urutkan",
+  "filter": "Filter",
+  "expand": "Bentang",
+  "collapse": "Tutup",
+  "next": "Selanjutnya",
+  "submit": "Kirim",
+  "cancel": "Batalkan",
+  "back": "Kembali",
+  "error": "Kesalahan",
+  "invalidConfigurationErrorMsg": "Konfigurasi tidak valid",
+  "noLayerToDisplayErrorMsg": "Web map yang dikonfigurasi tidak memiliki feature layer yang dapat diedit.",
+  "chooseCategoryMsg": "Choose a category for your report.",
+  "featureErrorMsg": "Fitur tidak ditemukan.",
+  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "currentLocationMsg": "Gunakan lokasi saya saat ini",
+  "addLocationMsg": "Add the location for your report.",
+  "reportSubmit": "Laporan Terkirim.",
+  "submitMsg": "Terima kasih! Laporan Anda berhasil dikirim."
+}

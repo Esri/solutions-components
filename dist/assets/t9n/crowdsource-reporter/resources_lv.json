@@ -1,0 +1,22 @@
+{
+  "createReportHeader": "Izveidot pārskatu",
+  "share": "Koplietot",
+  "sort": "Kārtot",
+  "filter": "Filtrs",
+  "expand": "Izvērst",
+  "collapse": "Sakļaut",
+  "next": "Tālāk",
+  "submit": "Iesniegt",
+  "cancel": "Atcelt",
+  "back": "Atpakaļ",
+  "error": "Kļūda",
+  "invalidConfigurationErrorMsg": "Nederīga konfigurācija",
+  "noLayerToDisplayErrorMsg": "Konfigurētajai tīmekļa kartei nav rediģējamu elementu slāņu.",
+  "chooseCategoryMsg": "Choose a category for your report.",
+  "featureErrorMsg": "Elementi nav atrasti.",
+  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "currentLocationMsg": "Izmantot manu pašreizējo novietojumu",
+  "addLocationMsg": "Add the location for your report.",
+  "reportSubmit": "Pārskats iesniegts.",
+  "submitMsg": "Paldies! Jūsu pārskats ir veiksmīgi iesniegts."
+}

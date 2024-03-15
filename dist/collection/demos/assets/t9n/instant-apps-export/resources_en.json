@@ -1,0 +1,12 @@
+{
+  "export": "Export",
+  "exportBtn": "Print or Export as a PDF",
+  "exportPopover": "Export popover",
+  "includeExtraContent": "Include results",
+  "includeHeaderTheme": "Include header theme",
+  "includeLegend": "Include legend",
+  "includeMap": "Include map",
+  "includePopup": "Include popup",
+  "title": "Title",
+  "toggleExport": "Toggle Export"
+}

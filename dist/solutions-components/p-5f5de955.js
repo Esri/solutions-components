@@ -1,0 +1,11 @@
+/*!
+ * Copyright 2022 Esri
+ * Licensed under the Apache License, Version 2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
+ */
+import{f as t,h as e}from"./p-7d280d8a.js";import{a as o}from"./p-3dd92f0d.js";import{S as n}from"./p-66ff2c3f.js";import{S as a}from"./p-4c5d243f.js";
+/*!
+ * All material copyright ESRI, All Rights Reserved, unless otherwise specified.
+ * See https://github.com/Esri/calcite-design-system/blob/main/LICENSE.md for details.
+ * v2.4.0
+ */const i=150,c=t=>t.reduce(((t,e)=>t+e),0)/t.length,l=t=>{const e=t.filter((t=>t.slot!==n.menuActions)),o=e?.length;return{actionWidth:o?c(e.map((t=>t.clientWidth||0))):0,actionHeight:o?c(e.map((t=>t.clientHeight||0))):0}},r=({layout:t,actionCount:e,actionWidth:o,width:n,actionHeight:a,height:i,groupCount:c})=>Math.max(e-(({width:t,actionWidth:e,layout:o,height:n,actionHeight:a,groupCount:i})=>Math.floor((("horizontal"===o?t:n)-2*i)/("horizontal"===o?e:a)))({width:n,actionWidth:o,layout:t,height:i,actionHeight:a,groupCount:c}),0),s=t=>Array.from(t.querySelectorAll("calcite-action")).filter((t=>!t.closest("calcite-action-menu")||t.slot===a.trigger)),d=({actionGroups:e,expanded:o,overflowCount:a})=>{let i=a;e.reverse().forEach((e=>{let a=0;const c=s(e).reverse();c.forEach((t=>{t.slot===n.menuActions&&(t.removeAttribute("slot"),t.textEnabled=o)})),i>0&&c.some((t=>(c.filter((t=>!t.slot)).length>1&&c.length>2&&!t.closest("calcite-action-menu")&&(t.textEnabled=!0,t.setAttribute("slot",n.menuActions),a++,a>1&&i--),i<1))),t(e)}))};function p({el:t,expanded:e}){s(t).filter((t=>t.slot!==n.menuActions)).forEach((t=>t.textEnabled=e)),t.querySelectorAll("calcite-action-group, calcite-action-menu").forEach((t=>t.expanded=e))}const h=({expanded:t,expandText:n,collapseText:a,toggle:i,el:c,position:l,tooltip:r,ref:s,scale:d})=>{const p="rtl"===o(c),h=t?a:n,u=["chevrons-left","chevrons-right"];p&&u.reverse();const f="end"===function(t,e){return t||e.closest("calcite-shell-panel")?.position||"start"}(l,c),g=e("calcite-action",{icon:t?f?u[1]:u[0]:f?u[0]:u[1],onClick:i,scale:d,text:h,textEnabled:t,title:t||r?null:h,ref:e=>(({tooltip:t,referenceElement:e,expanded:o,ref:n})=>(t&&(t.referenceElement=!o&&e?e:null),n&&n(e),e))({tooltip:r,referenceElement:e,expanded:t,ref:s})});return g};export{h as E,d as a,r as b,l as g,i as o,s as q,p as t}

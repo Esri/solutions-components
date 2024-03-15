@@ -1,0 +1,19 @@
+{
+  "clearSelection": "Tyhjennä valinnat",
+  "exportCSV": "Vie CSV-tiedostoon",
+  "filter": "Suodatin: {{title}}",
+  "filters": "Suodattimet",
+  "hideField": "Piilota kenttä",
+  "more": "Enemmän",
+  "selectAll": "Valitse kaikki",
+  "share": "Jaa",
+  "showSelected": "Näytä valitut",
+  "switchSelected": "Vaihda valitut",
+  "zoom": "Tarkenna",
+  "fetchingData": "Noudetaan aineistoa",
+  "refresh": "Päivitä",
+  "showAll": "Näytä kaikki",
+  "recordsSelected": "Yhteensä: {{total}} | Valinta: {{selected}}",
+  "moreOptions": "Muut taulun asetukset",
+  "showHideColumns": "Näytä/piilota sarakkeet"
+}
