@@ -84,6 +84,10 @@ export namespace Components {
          */
         "zoomAndScrollToSelected": boolean;
     }
+    interface CookieTest {
+        "TelemetryInstance": any;
+        "measurementIds": string[];
+    }
     interface CreateFeature {
         /**
           * Destroy the Editor widget instance
@@ -1445,6 +1449,12 @@ declare global {
         prototype: HTMLCardManagerElement;
         new (): HTMLCardManagerElement;
     };
+    interface HTMLCookieTestElement extends Components.CookieTest, HTMLStencilElement {
+    }
+    var HTMLCookieTestElement: {
+        prototype: HTMLCookieTestElement;
+        new (): HTMLCookieTestElement;
+    };
     interface HTMLCreateFeatureElementEventMap {
         "success": void;
         "fail": Error;
@@ -2018,6 +2028,7 @@ declare global {
         "basemap-gallery": HTMLBasemapGalleryElement;
         "buffer-tools": HTMLBufferToolsElement;
         "card-manager": HTMLCardManagerElement;
+        "cookie-test": HTMLCookieTestElement;
         "create-feature": HTMLCreateFeatureElement;
         "crowdsource-manager": HTMLCrowdsourceManagerElement;
         "crowdsource-reporter": HTMLCrowdsourceReporterElement;
@@ -2147,6 +2158,10 @@ declare namespace LocalJSX {
           * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
          */
         "zoomAndScrollToSelected"?: boolean;
+    }
+    interface CookieTest {
+        "TelemetryInstance"?: any;
+        "measurementIds"?: string[];
     }
     interface CreateFeature {
         /**
@@ -3418,6 +3433,7 @@ declare namespace LocalJSX {
         "basemap-gallery": BasemapGallery;
         "buffer-tools": BufferTools;
         "card-manager": CardManager;
+        "cookie-test": CookieTest;
         "create-feature": CreateFeature;
         "crowdsource-manager": CrowdsourceManager;
         "crowdsource-reporter": CrowdsourceReporter;
@@ -3474,6 +3490,7 @@ declare module "@stencil/core" {
             "basemap-gallery": LocalJSX.BasemapGallery & JSXBase.HTMLAttributes<HTMLBasemapGalleryElement>;
             "buffer-tools": LocalJSX.BufferTools & JSXBase.HTMLAttributes<HTMLBufferToolsElement>;
             "card-manager": LocalJSX.CardManager & JSXBase.HTMLAttributes<HTMLCardManagerElement>;
+            "cookie-test": LocalJSX.CookieTest & JSXBase.HTMLAttributes<HTMLCookieTestElement>;
             "create-feature": LocalJSX.CreateFeature & JSXBase.HTMLAttributes<HTMLCreateFeatureElement>;
             "crowdsource-manager": LocalJSX.CrowdsourceManager & JSXBase.HTMLAttributes<HTMLCrowdsourceManagerElement>;
             "crowdsource-reporter": LocalJSX.CrowdsourceReporter & JSXBase.HTMLAttributes<HTMLCrowdsourceReporterElement>;

@@ -1,0 +1,57 @@
+:host {
+  display: block;
+}
+
+#cookie-policy.epjs_cookiepolicy {
+  position: fixed;
+  display: block;
+  z-index: 5000;
+  /* overflow: hidden; */
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+  margin: 0;
+  padding: 5px 0 0 0;
+  font-family: Helvetica, Arial, sans-serif;
+  text-align: center;
+  letter-spacing: normal;
+  white-space: normal;
+  color: inherit;
+}
+
+#cookie-policy.epjs_cookiepolicy .cookie-consent-popup-container {
+  position: relative;
+  display: block;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  margin: 0;
+  padding: 20px 0 10px 0;
+  transform: translate(0, 110%);
+  transition: transform 0.5s ease-out 0s;
+  background-color: rgba(51, 51, 51, 0.95);
+  color: #fff;
+}
+
+#cookie-policy.epjs_cookiepolicy .cookie-consent-popup-container .epjs_text {
+  position: static;
+  display: block;
+  margin: 0;
+  padding: 0 10px 14px 10px;
+  font-weight: lighter;
+  color: inherit;
+  -webkit-font-smoothing: auto;
+}
+
+#cookie-policy.epjs_cookiepolicy .cookie-consent-popup-container .epjs_buttons {
+  position: static;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  letter-spacing: -0.3em;
+  color: inherit;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
