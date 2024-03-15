@@ -28,7 +28,7 @@
   width: 100%;
   margin: 0;
   padding: 20px 0 10px 0;
-  transform: translate(0, 110%);
+  /* transform: translate(0, 110%); */
   transition: transform 0.5s ease-out 0s;
   background-color: rgba(51, 51, 51, 0.95);
   color: #fff;
