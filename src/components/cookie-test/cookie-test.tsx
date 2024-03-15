@@ -18,12 +18,13 @@ export class CookieTest {
   _loaded = false;
 
   @Method()
-  async getInstance() {
+  async getInstance(): Promise<void> {
     await this._init();
     return this._loaded ? this._telemetryInstance : undefined;
   }
 
   render() {
+    console.log("cookie-test-render")
     return (
       <Host>
         <section
