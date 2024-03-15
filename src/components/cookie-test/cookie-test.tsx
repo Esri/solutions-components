@@ -5,7 +5,7 @@ import { GoogleAnalytics } from '@esri/telemetry-google-analytics';
 @Component({
   tag: 'cookie-test',
   styleUrl: 'cookie-test.css',
-  shadow: true,
+  shadow: false,
 })
 export class CookieTest {
 
@@ -28,7 +28,7 @@ export class CookieTest {
     return (
       <Host>
         <section
-          class="epjs_cookiepolicy epjs_displayed"
+          class="epjs_cookiepolicy"
           id="cookie-policy"
         >
           <div class="cookie-consent-popup-container">

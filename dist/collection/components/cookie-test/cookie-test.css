@@ -2,7 +2,7 @@
   display: block;
 }
 
-#cookie-policy.epjs_cookiepolicy {
+.epjs_cookiepolicy {
   position: fixed;
   display: block;
   z-index: 5000;
@@ -20,7 +20,7 @@
   color: inherit;
 }
 
-#cookie-policy.epjs_cookiepolicy .cookie-consent-popup-container {
+.cookie-consent-popup-container {
   position: relative;
   display: block;
   bottom: 0;
@@ -34,7 +34,7 @@
   color: #fff;
 }
 
-#cookie-policy.epjs_cookiepolicy .cookie-consent-popup-container .epjs_text {
+.epjs_text {
   position: static;
   display: block;
   margin: 0;
@@ -44,7 +44,7 @@
   -webkit-font-smoothing: auto;
 }
 
-#cookie-policy.epjs_cookiepolicy .cookie-consent-popup-container .epjs_buttons {
+.epjs_buttons {
   position: static;
   margin: 0;
   padding: 0;
