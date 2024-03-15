@@ -1,4 +1,4 @@
-import { Component, Host, h, Prop } from '@stencil/core';
+import { Component, Host, h, Method, Prop } from '@stencil/core';
 import { Telemetry } from "@esri/telemetry";
 import { GoogleAnalytics } from '@esri/telemetry-google-analytics';
 
@@ -11,17 +11,19 @@ export class CookieTest {
 
   @Prop() measurementIds = ["G-ZSDDNE856F"];
 
-  @Prop({mutable: true}) TelemetryInstance;
+  @Prop() portal: __esri.Portal;
+
+  _telemetryInstance: Telemetry;
+
+  _loaded = false;
+
+  @Method()
+  async getInstance() {
+    await this._init();
+    return this._loaded ? this._telemetryInstance : undefined;
+  }
 
   render() {
-    const googleAnalyticsTracker = new GoogleAnalytics({
-      measurementIds: this.measurementIds
-    });
-
-    this.TelemetryInstance = new Telemetry({
-      plugins: [googleAnalyticsTracker]
-    });
-
     return (
       <Host>
         <section
@@ -96,4 +98,22 @@ export class CookieTest {
     );
   }
 
+  async _init(): Promise<void> {
+    if (!this._loaded && this.measurementIds?.length > 0 && this.portal) {
+      const googleAnalyticsTracker = new GoogleAnalytics({
+        measurementIds: this.measurementIds
+      });
+
+      this._telemetryInstance = new Telemetry({
+        plugins: [googleAnalyticsTracker],
+        portal: this.portal,
+        debug: true,
+        test: true
+      });
+
+      await this._telemetryInstance.init();
+
+      this._loaded = true;
+    }
+  }
 }

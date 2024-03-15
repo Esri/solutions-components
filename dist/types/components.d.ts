@@ -87,6 +87,7 @@ export namespace Components {
     interface CookieTest {
         "TelemetryInstance": any;
         "measurementIds": string[];
+        "portal": __esri.Portal;
     }
     interface CreateFeature {
         /**
@@ -2162,6 +2163,7 @@ declare namespace LocalJSX {
     interface CookieTest {
         "TelemetryInstance"?: any;
         "measurementIds"?: string[];
+        "portal"?: __esri.Portal;
     }
     interface CreateFeature {
         /**

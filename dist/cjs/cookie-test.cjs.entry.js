@@ -1629,6 +1629,7 @@ const CookieTest = class {
     constructor(hostRef) {
         index.registerInstance(this, hostRef);
         this.measurementIds = ["G-ZSDDNE856F"];
+        this.portal = undefined;
         this.TelemetryInstance = undefined;
     }
     render() {
@@ -1636,7 +1637,10 @@ const CookieTest = class {
             measurementIds: this.measurementIds
         });
         this.TelemetryInstance = new Telemetry({
-            plugins: [googleAnalyticsTracker]
+            plugins: [googleAnalyticsTracker],
+            portal: this.portal,
+            debug: true,
+            test: true
         });
         return (index.h(index.Host, null, index.h("section", { class: "epjs_cookiepolicy epjs_displayed", id: "cookie-policy" }, index.h("div", { class: "cookie-consent-popup-container" }, index.h("div", { class: "epjs_text", id: "cookie-policy-description-top", tabindex: "-1" }, index.h("p", null, "Dear visitor,"), index.h("p", null, "We use analytics cookies to offer you a better browsing experience. You have the choice to refuse or accept them.")), index.h("div", { class: "epjs_buttons" }, index.h("button", { class: "epjs_agree", type: "button" }, index.h("span", null, "I refuse analytics cookies")), index.h("button", { class: "epjs_agree", type: "button" }, index.h("span", null, "I accept analytics cookies"))), index.h("div", { class: "epjs_text", id: "cookie-policy-description-bottom" }, index.h("p", null, "For any information on the other cookies and server logs we use, we invite you to read our", index.h("a", { class: "cc-link-default", href: "https://www.europarl.europa.eu/privacy-policy/en/data-protection", rel: "noopener noreferrer", style: {
                 "text-decoration": "underline",

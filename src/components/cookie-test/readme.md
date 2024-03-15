@@ -11,6 +11,7 @@
 | ------------------- | -------------------- | ----------- | ---------- | ------------------ |
 | `TelemetryInstance` | `telemetry-instance` |             | `any`      | `undefined`        |
 | `measurementIds`    | --                   |             | `string[]` | `["G-ZSDDNE856F"]` |
+| `portal`            | --                   |             | `Portal`   | `undefined`        |
 
 
 ----------------------------------------------
