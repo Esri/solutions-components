@@ -39,3 +39,9 @@
 .padding-end-1 {
   padding-inline-end: 1rem;
 }
+
+.link-text {
+  --calcite-color-text-link: var(--calcite-color-text-inverse);
+  --calcite-color-brand-underline: var(--calcite-color-text-inverse);
+  --calcite-color-brand: var(--calcite-color-text-inverse);
+}

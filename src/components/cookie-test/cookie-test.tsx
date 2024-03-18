@@ -60,7 +60,7 @@ export class CookieTest {
               <calcite-button
                 appearance="solid"
                 class="padding-end-1"
-                kind="neutral"
+                kind="brand"
                 onClick={() => this._refuse()}
               >
                 I refuse analytics cookies
@@ -68,7 +68,7 @@ export class CookieTest {
 
               <calcite-button
                 appearance="solid"
-                kind="neutral"
+                kind="brand"
                 onClick={() => this._accept()}
               >
                 I accept analytics cookies
