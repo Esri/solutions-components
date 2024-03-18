@@ -85,6 +85,7 @@ export namespace Components {
         "zoomAndScrollToSelected": boolean;
     }
     interface CookieTest {
+        "firstUseVar": string;
         "getInstance": () => Promise<Telemetry | undefined>;
         "measurementIds": string[];
         "portal": __esri.Portal;
@@ -2161,6 +2162,7 @@ declare namespace LocalJSX {
         "zoomAndScrollToSelected"?: boolean;
     }
     interface CookieTest {
+        "firstUseVar"?: string;
         "measurementIds"?: string[];
         "portal"?: __esri.Portal;
     }

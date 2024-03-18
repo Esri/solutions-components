@@ -1619,11 +1619,12 @@ class GoogleAnalytics {
     }
 }
 
-const cookieTestCss = ":host{display:block}.epjs_cookiepolicy{position:fixed;display:block;z-index:5000;bottom:0;left:0;width:100%;height:auto;margin:0;padding:5px 0 0 0;font-family:Helvetica, Arial, sans-serif;text-align:center;letter-spacing:normal;white-space:normal;color:inherit}.cookie-consent-popup-container{position:relative;display:block;bottom:0;left:0;width:100%;margin:0;padding:20px 0 10px 0;transition:transform 0.5s ease-out 0s;background-color:rgba(51, 51, 51, 0.95);color:#fff}.epjs_text{position:static;display:block;margin:0;padding:0 10px 14px 10px;font-weight:lighter;color:inherit;-webkit-font-smoothing:auto}.epjs_buttons{position:static;margin:0;padding:0;text-align:center;letter-spacing:-0.3em;color:inherit;display:flex;justify-content:center;flex-wrap:wrap}";
+const cookieTestCss = ":host{display:block}.consent-panel{position:fixed;display:block;z-index:5000;bottom:0;left:0;width:100%;height:auto;margin:0;padding:5px 0 0 0;text-align:center;letter-spacing:normal;white-space:normal;color:inherit}.cookie-consent-popup-container{position:relative;display:block;bottom:0;left:0;width:100%;margin:0;padding:20px 0 10px 0;transition:transform 0.5s ease-out 0s;background-color:rgba(51, 51, 51, 0.95);color:#fff}.consent-text{position:static;display:block;margin:0;padding:0 10px 14px 10px;}.epjs_buttons{position:static;margin:0;padding:0;display:flex;justify-content:center;flex-wrap:wrap}";
 
 const CookieTest = class {
     constructor(hostRef) {
         registerInstance(this, hostRef);
+        this.firstUseVar = "solutions-first-use";
         this.measurementIds = ["G-ZSDDNE856F"];
         this.portal = undefined;
         this._loaded = false;
@@ -1634,16 +1635,10 @@ const CookieTest = class {
     }
     render() {
         console.log("cookie-test-render");
-        return (h(Host, null, h("section", { class: "epjs_cookiepolicy", id: "cookie-policy" }, h("div", { class: "cookie-consent-popup-container" }, h("div", { class: "epjs_text", id: "cookie-policy-description-top", tabindex: "-1" }, h("p", null, "Dear visitor,"), h("p", null, "We use analytics cookies to offer you a better browsing experience. You have the choice to refuse or accept them.")), h("div", { class: "epjs_buttons" }, h("button", { class: "epjs_agree", type: "button" }, h("span", null, "I refuse analytics cookies")), h("button", { class: "epjs_agree", type: "button" }, h("span", null, "I accept analytics cookies"))), h("div", { class: "epjs_text", id: "cookie-policy-description-bottom" }, h("p", null, "For any information on the other cookies and server logs we use, we invite you to read our", h("a", { class: "cc-link-default", href: "https://www.europarl.europa.eu/privacy-policy/en/data-protection", rel: "noopener noreferrer", style: {
+        return (h(Host, null, h("calcite-panel", { class: "consent-panel", id: "cookie-policy" }, h("div", { class: "cookie-consent-popup-container" }, h("div", { class: "consent-text", id: "cookie-policy-description-top", tabindex: "-1" }, h("p", null, "Dear visitor,"), h("p", null, "We use analytics cookies to offer you a better browsing experience. You have the choice to refuse or accept them.")), h("div", { class: "epjs_buttons" }, h("calcite-button", { appearance: "solid", class: "epjs_agree", kind: "neutral" }, "I refuse analytics cookies"), h("calcite-button", { appearance: "solid", class: "epjs_agree", kind: "neutral" }, "I accept analytics cookies")), h("div", { class: "consent-text", id: "cookie-policy-description-bottom" }, h("p", null, "For any information on the other cookies and server logs we use, we invite you to read our", h("calcite-link", { href: "https://www.europarl.europa.eu/privacy-policy/en/data-protection", rel: "noopener noreferrer", style: {
                 "text-decoration": "underline",
                 "color": "inherit"
-            }, target: "_blank" }, "data protection policy"), " , our", h("a", { class: "cc-link-default", href: "https://www.europarl.europa.eu/privacy-policy/en/cookies-policy", rel: "noopener noreferrer", style: {
-                "text-decoration": "underline",
-                "color": "inherit"
-            }, target: "_blank" }, "cookies policy"), "and our", h("a", { class: "cc-link-default", href: "https://www.europarl.europa.eu/privacy-policy/en/cookies-inventory", rel: "noopener noreferrer", style: {
-                "text-decoration": "underline",
-                "color": "inherit"
-            }, target: "_blank" }, "cookies inventory.")))))));
+            }, target: "_blank" }, "data protection policy"), " , our", h("calcite-link", { class: "cc-link-default", href: "https://www.europarl.europa.eu/privacy-policy/en/cookies-policy", rel: "noopener noreferrer", target: "_blank" }, "cookies policy"), "and our", h("calcite-link", { href: "https://www.europarl.europa.eu/privacy-policy/en/cookies-inventory", rel: "noopener noreferrer", target: "_blank" }, "cookies inventory.")))))));
     }
     async _init() {
         var _a;
@@ -1655,7 +1650,7 @@ const CookieTest = class {
                 plugins: [googleAnalyticsTracker],
                 portal: this.portal,
                 debug: true,
-                test: true
+                test: true,
             });
             await this._telemetryInstance.init();
             this._loaded = true;

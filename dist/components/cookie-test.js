@@ -5,6 +5,15 @@
  */
 import { proxyCustomElement, HTMLElement, h, Host } from '@stencil/core/internal/client';
 import { g as getAugmentedNamespace, c as createCommonjsModule, a as commonjsGlobal, b as commonjsRequire } from './_commonjsHelpers.js';
+import { d as defineCustomElement$a } from './action.js';
+import { d as defineCustomElement$9 } from './action-menu.js';
+import { d as defineCustomElement$8 } from './button.js';
+import { d as defineCustomElement$7 } from './icon.js';
+import { d as defineCustomElement$6 } from './link.js';
+import { d as defineCustomElement$5 } from './loader.js';
+import { d as defineCustomElement$4 } from './panel.js';
+import { d as defineCustomElement$3 } from './popover.js';
+import { d as defineCustomElement$2 } from './scrim.js';
 
 const _nodeResolve_empty = {};
 
@@ -1619,12 +1628,13 @@ class GoogleAnalytics {
     }
 }
 
-const cookieTestCss = ":host{display:block}.epjs_cookiepolicy{position:fixed;display:block;z-index:5000;bottom:0;left:0;width:100%;height:auto;margin:0;padding:5px 0 0 0;font-family:Helvetica, Arial, sans-serif;text-align:center;letter-spacing:normal;white-space:normal;color:inherit}.cookie-consent-popup-container{position:relative;display:block;bottom:0;left:0;width:100%;margin:0;padding:20px 0 10px 0;transition:transform 0.5s ease-out 0s;background-color:rgba(51, 51, 51, 0.95);color:#fff}.epjs_text{position:static;display:block;margin:0;padding:0 10px 14px 10px;font-weight:lighter;color:inherit;-webkit-font-smoothing:auto}.epjs_buttons{position:static;margin:0;padding:0;text-align:center;letter-spacing:-0.3em;color:inherit;display:flex;justify-content:center;flex-wrap:wrap}";
+const cookieTestCss = ":host{display:block}.consent-panel{position:fixed;display:block;z-index:5000;bottom:0;left:0;width:100%;height:auto;margin:0;padding:5px 0 0 0;text-align:center;letter-spacing:normal;white-space:normal;color:inherit}.cookie-consent-popup-container{position:relative;display:block;bottom:0;left:0;width:100%;margin:0;padding:20px 0 10px 0;transition:transform 0.5s ease-out 0s;background-color:rgba(51, 51, 51, 0.95);color:#fff}.consent-text{position:static;display:block;margin:0;padding:0 10px 14px 10px;}.epjs_buttons{position:static;margin:0;padding:0;display:flex;justify-content:center;flex-wrap:wrap}";
 
 const CookieTest$1 = /*@__PURE__*/ proxyCustomElement(class CookieTest extends HTMLElement {
     constructor() {
         super();
         this.__registerHost();
+        this.firstUseVar = "solutions-first-use";
         this.measurementIds = ["G-ZSDDNE856F"];
         this.portal = undefined;
         this._loaded = false;
@@ -1635,16 +1645,10 @@ const CookieTest$1 = /*@__PURE__*/ proxyCustomElement(class CookieTest extends H
     }
     render() {
         console.log("cookie-test-render");
-        return (h(Host, null, h("section", { class: "epjs_cookiepolicy", id: "cookie-policy" }, h("div", { class: "cookie-consent-popup-container" }, h("div", { class: "epjs_text", id: "cookie-policy-description-top", tabindex: "-1" }, h("p", null, "Dear visitor,"), h("p", null, "We use analytics cookies to offer you a better browsing experience. You have the choice to refuse or accept them.")), h("div", { class: "epjs_buttons" }, h("button", { class: "epjs_agree", type: "button" }, h("span", null, "I refuse analytics cookies")), h("button", { class: "epjs_agree", type: "button" }, h("span", null, "I accept analytics cookies"))), h("div", { class: "epjs_text", id: "cookie-policy-description-bottom" }, h("p", null, "For any information on the other cookies and server logs we use, we invite you to read our", h("a", { class: "cc-link-default", href: "https://www.europarl.europa.eu/privacy-policy/en/data-protection", rel: "noopener noreferrer", style: {
+        return (h(Host, null, h("calcite-panel", { class: "consent-panel", id: "cookie-policy" }, h("div", { class: "cookie-consent-popup-container" }, h("div", { class: "consent-text", id: "cookie-policy-description-top", tabindex: "-1" }, h("p", null, "Dear visitor,"), h("p", null, "We use analytics cookies to offer you a better browsing experience. You have the choice to refuse or accept them.")), h("div", { class: "epjs_buttons" }, h("calcite-button", { appearance: "solid", class: "epjs_agree", kind: "neutral" }, "I refuse analytics cookies"), h("calcite-button", { appearance: "solid", class: "epjs_agree", kind: "neutral" }, "I accept analytics cookies")), h("div", { class: "consent-text", id: "cookie-policy-description-bottom" }, h("p", null, "For any information on the other cookies and server logs we use, we invite you to read our", h("calcite-link", { href: "https://www.europarl.europa.eu/privacy-policy/en/data-protection", rel: "noopener noreferrer", style: {
                 "text-decoration": "underline",
                 "color": "inherit"
-            }, target: "_blank" }, "data protection policy"), " , our", h("a", { class: "cc-link-default", href: "https://www.europarl.europa.eu/privacy-policy/en/cookies-policy", rel: "noopener noreferrer", style: {
-                "text-decoration": "underline",
-                "color": "inherit"
-            }, target: "_blank" }, "cookies policy"), "and our", h("a", { class: "cc-link-default", href: "https://www.europarl.europa.eu/privacy-policy/en/cookies-inventory", rel: "noopener noreferrer", style: {
-                "text-decoration": "underline",
-                "color": "inherit"
-            }, target: "_blank" }, "cookies inventory.")))))));
+            }, target: "_blank" }, "data protection policy"), " , our", h("calcite-link", { class: "cc-link-default", href: "https://www.europarl.europa.eu/privacy-policy/en/cookies-policy", rel: "noopener noreferrer", target: "_blank" }, "cookies policy"), "and our", h("calcite-link", { href: "https://www.europarl.europa.eu/privacy-policy/en/cookies-inventory", rel: "noopener noreferrer", target: "_blank" }, "cookies inventory.")))))));
     }
     async _init() {
         var _a;
@@ -1656,7 +1660,7 @@ const CookieTest$1 = /*@__PURE__*/ proxyCustomElement(class CookieTest extends H
                 plugins: [googleAnalyticsTracker],
                 portal: this.portal,
                 debug: true,
-                test: true
+                test: true,
             });
             await this._telemetryInstance.init();
             this._loaded = true;
@@ -1664,6 +1668,7 @@ const CookieTest$1 = /*@__PURE__*/ proxyCustomElement(class CookieTest extends H
     }
     static get style() { return cookieTestCss; }
 }, [0, "cookie-test", {
+        "firstUseVar": [1, "first-use-var"],
         "measurementIds": [16],
         "portal": [16],
         "_loaded": [32],
@@ -1673,11 +1678,56 @@ function defineCustomElement$1() {
     if (typeof customElements === "undefined") {
         return;
     }
-    const components = ["cookie-test"];
+    const components = ["cookie-test", "calcite-action", "calcite-action-menu", "calcite-button", "calcite-icon", "calcite-link", "calcite-loader", "calcite-panel", "calcite-popover", "calcite-scrim"];
     components.forEach(tagName => { switch (tagName) {
         case "cookie-test":
             if (!customElements.get(tagName)) {
                 customElements.define(tagName, CookieTest$1);
+            }
+            break;
+        case "calcite-action":
+            if (!customElements.get(tagName)) {
+                defineCustomElement$a();
+            }
+            break;
+        case "calcite-action-menu":
+            if (!customElements.get(tagName)) {
+                defineCustomElement$9();
+            }
+            break;
+        case "calcite-button":
+            if (!customElements.get(tagName)) {
+                defineCustomElement$8();
+            }
+            break;
+        case "calcite-icon":
+            if (!customElements.get(tagName)) {
+                defineCustomElement$7();
+            }
+            break;
+        case "calcite-link":
+            if (!customElements.get(tagName)) {
+                defineCustomElement$6();
+            }
+            break;
+        case "calcite-loader":
+            if (!customElements.get(tagName)) {
+                defineCustomElement$5();
+            }
+            break;
+        case "calcite-panel":
+            if (!customElements.get(tagName)) {
+                defineCustomElement$4();
+            }
+            break;
+        case "calcite-popover":
+            if (!customElements.get(tagName)) {
+                defineCustomElement$3();
+            }
+            break;
+        case "calcite-scrim":
+            if (!customElements.get(tagName)) {
+                defineCustomElement$2();
             }
             break;
     } });

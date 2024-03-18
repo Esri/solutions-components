@@ -1,6 +1,7 @@
 /// <reference types="arcgis-js-api" />
 import { Telemetry } from "@esri/telemetry";
 export declare class CookieTest {
+    firstUseVar: string;
     measurementIds: string[];
     portal: __esri.Portal;
     _telemetryInstance: Telemetry;
