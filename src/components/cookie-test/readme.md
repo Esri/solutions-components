@@ -14,17 +14,11 @@
 | `portal`         | --              |             | `Portal`   | `undefined`             |
 
 
-## Methods
+## Events
 
-### `getInstance() => Promise<Telemetry | undefined>`
-
-
-
-#### Returns
-
-Type: `Promise<any>`
-
-
+| Event            | Description | Type                            |
+| ---------------- | ----------- | ------------------------------- |
+| `consentGranted` |             | `CustomEvent<IConsentResponse>` |
 
 
 ## Dependencies

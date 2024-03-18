@@ -1,12 +1,21 @@
 /// <reference types="arcgis-js-api" />
+import { EventEmitter } from '../../stencil-public-runtime';
 import { Telemetry } from "@esri/telemetry";
+export interface IConsentResponse {
+    granted: boolean;
+    instance?: Telemetry;
+    messages?: string[];
+}
 export declare class CookieTest {
     firstUseVar: string;
     measurementIds: string[];
     portal: __esri.Portal;
     _telemetryInstance: Telemetry;
     _loaded: boolean;
-    getInstance(): Promise<Telemetry | undefined>;
+    _consentGranted: boolean;
+    consentGranted: EventEmitter<IConsentResponse>;
     render(): any;
     _init(): Promise<void>;
+    _accept(): void;
+    _refuse(): void;
 }

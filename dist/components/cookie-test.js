@@ -3,7 +3,7 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-import { proxyCustomElement, HTMLElement, h, Host } from '@stencil/core/internal/client';
+import { proxyCustomElement, HTMLElement, createEvent, h, Host } from '@stencil/core/internal/client';
 import { g as getAugmentedNamespace, c as createCommonjsModule, a as commonjsGlobal, b as commonjsRequire } from './_commonjsHelpers.js';
 import { d as defineCustomElement$a } from './action.js';
 import { d as defineCustomElement$9 } from './action-menu.js';
@@ -1634,21 +1634,20 @@ const CookieTest$1 = /*@__PURE__*/ proxyCustomElement(class CookieTest extends H
     constructor() {
         super();
         this.__registerHost();
+        this.consentGranted = createEvent(this, "consentGranted", 7);
+        this._consentGranted = false;
         this.firstUseVar = "solutions-first-use";
         this.measurementIds = ["G-ZSDDNE856F"];
         this.portal = undefined;
         this._loaded = false;
     }
-    async getInstance() {
-        await this._init();
-        return this._loaded ? this._telemetryInstance : undefined;
-    }
     render() {
         console.log("cookie-test-render");
-        return (h(Host, null, h("calcite-panel", { class: "consent-panel", id: "cookie-policy" }, h("div", { class: "cookie-consent-popup-container" }, h("div", { id: "cookie-policy-description-top", tabindex: "-1" }, h("p", null, "Dear visitor,"), h("p", null, "We use analytics cookies to offer you a better browsing experience. You have the choice to refuse or accept them.")), h("div", { class: "button-container" }, h("calcite-button", { appearance: "solid", class: "padding-end-1", kind: "neutral" }, "I refuse analytics cookies"), h("calcite-button", { appearance: "solid", kind: "neutral" }, "I accept analytics cookies")), h("div", null, h("p", null, "For any information on the other cookies and server logs we use, we invite you to read our", h("calcite-link", { href: "https://www.europarl.europa.eu/privacy-policy/en/data-protection", rel: "noopener noreferrer", target: "_blank" }, "data protection policy"), " , our", h("calcite-link", { href: "https://www.europarl.europa.eu/privacy-policy/en/cookies-policy", rel: "noopener noreferrer", target: "_blank" }, "cookies policy"), "and our", h("calcite-link", { href: "https://www.europarl.europa.eu/privacy-policy/en/cookies-inventory", rel: "noopener noreferrer", target: "_blank" }, "cookies inventory.")))))));
+        return (h(Host, null, h("calcite-panel", { class: "consent-panel", id: "cookie-policy" }, h("div", { class: "cookie-consent-popup-container" }, h("div", { id: "cookie-policy-description-top", tabindex: "-1" }, h("p", null, "Dear visitor,"), h("p", null, "We use analytics cookies to offer you a better browsing experience. You have the choice to refuse or accept them.")), h("div", { class: "button-container" }, h("calcite-button", { appearance: "solid", class: "padding-end-1", kind: "neutral", onClick: () => this._refuse() }, "I refuse analytics cookies"), h("calcite-button", { appearance: "solid", kind: "neutral", onClick: () => this._accept() }, "I accept analytics cookies")), h("div", null, h("p", null, "For any information on the other cookies and server logs we use, we invite you to read our\u00A0", h("calcite-link", { href: "https://www.europarl.europa.eu/privacy-policy/en/data-protection", rel: "noopener noreferrer", target: "_blank" }, "data protection policy"), " , our\u00A0", h("calcite-link", { href: "https://www.europarl.europa.eu/privacy-policy/en/cookies-policy", rel: "noopener noreferrer", target: "_blank" }, "cookies policy"), "and our\u00A0", h("calcite-link", { href: "https://www.europarl.europa.eu/privacy-policy/en/cookies-inventory", rel: "noopener noreferrer", target: "_blank" }, "cookies inventory.")))))));
     }
     async _init() {
         var _a;
+        // should have some messaging around the expectations like no portal set
         if (!this._loaded && ((_a = this.measurementIds) === null || _a === void 0 ? void 0 : _a.length) > 0 && this.portal) {
             const googleAnalyticsTracker = new GoogleAnalytics({
                 measurementIds: this.measurementIds
@@ -1661,15 +1660,28 @@ const CookieTest$1 = /*@__PURE__*/ proxyCustomElement(class CookieTest extends H
             });
             await this._telemetryInstance.init();
             this._loaded = true;
+            this.consentGranted.emit({
+                granted: this._consentGranted,
+                instance: this._telemetryInstance
+            });
         }
+    }
+    _accept() {
+        this._consentGranted = true;
+        void this._init();
+    }
+    _refuse() {
+        this._consentGranted = false;
+        this.consentGranted.emit({
+            granted: this._consentGranted
+        });
     }
     static get style() { return cookieTestCss; }
 }, [0, "cookie-test", {
         "firstUseVar": [1, "first-use-var"],
         "measurementIds": [16],
         "portal": [16],
-        "_loaded": [32],
-        "getInstance": [64]
+        "_loaded": [32]
     }]);
 function defineCustomElement$1() {
     if (typeof customElements === "undefined") {

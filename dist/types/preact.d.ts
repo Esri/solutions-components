@@ -510,7 +510,9 @@ declare module "preact/src/jsx" {
 
       "card-manager": JSX.SolutionsCardManager & JSXInternal.HTMLAttributes<HTMLSolutionsCardManagerElement>
 
-      "cookie-test": JSX.SolutionsCookieTest & JSXInternal.HTMLAttributes<HTMLSolutionsCookieTestElement>
+      "cookie-test": Omit<JSX.SolutionsCookieTest, "onConsentGranted"> & JSXInternal.HTMLAttributes<HTMLSolutionsCookieTestElement> & {
+        "onconsentGranted"?: (event: CustomEvent<any>) => void;
+      }
 
       "create-feature": Omit<JSX.SolutionsCreateFeature, "onSuccess" | "onFail" | "onDrawComplete" | "onEditingAttachment"> & JSXInternal.HTMLAttributes<HTMLSolutionsCreateFeatureElement> & {
         "onsuccess"?: (event: CustomEvent<any>) => void;

@@ -6,8 +6,10 @@
  */
 import { HTMLStencilElement, JSXBase } from "./stencil-public-runtime";
 import { ButtonType, DistanceUnit, EditType, EDrawMode, ELayoutMode, IBasemapConfig, IExportInfos, IInventoryItem, ILayerAndTableIds, IMapChange, IMapInfo, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange, theme } from "./utils/interfaces";
+import { IConsentResponse } from "./components/cookie-test/cookie-test";
 import { UserSession } from "@esri/solution-common";
 export { ButtonType, DistanceUnit, EditType, EDrawMode, ELayoutMode, IBasemapConfig, IExportInfos, IInventoryItem, ILayerAndTableIds, IMapChange, IMapInfo, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange, theme } from "./utils/interfaces";
+export { IConsentResponse } from "./components/cookie-test/cookie-test";
 export { UserSession } from "@esri/solution-common";
 export namespace Components {
     interface ArcgisLogin {
@@ -86,7 +88,6 @@ export namespace Components {
     }
     interface CookieTest {
         "firstUseVar": string;
-        "getInstance": () => Promise<Telemetry | undefined>;
         "measurementIds": string[];
         "portal": __esri.Portal;
     }
@@ -1313,6 +1314,10 @@ export interface BufferToolsCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLBufferToolsElement;
 }
+export interface CookieTestCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLCookieTestElement;
+}
 export interface CreateFeatureCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLCreateFeatureElement;
@@ -1451,7 +1456,18 @@ declare global {
         prototype: HTMLCardManagerElement;
         new (): HTMLCardManagerElement;
     };
+    interface HTMLCookieTestElementEventMap {
+        "consentGranted": IConsentResponse;
+    }
     interface HTMLCookieTestElement extends Components.CookieTest, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLCookieTestElementEventMap>(type: K, listener: (this: HTMLCookieTestElement, ev: CookieTestCustomEvent<HTMLCookieTestElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLCookieTestElementEventMap>(type: K, listener: (this: HTMLCookieTestElement, ev: CookieTestCustomEvent<HTMLCookieTestElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLCookieTestElement: {
         prototype: HTMLCookieTestElement;
@@ -2164,6 +2180,7 @@ declare namespace LocalJSX {
     interface CookieTest {
         "firstUseVar"?: string;
         "measurementIds"?: string[];
+        "onConsentGranted"?: (event: CookieTestCustomEvent<IConsentResponse>) => void;
         "portal"?: __esri.Portal;
     }
     interface CreateFeature {
