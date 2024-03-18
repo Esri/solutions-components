@@ -78,6 +78,7 @@ export class CookieTest {
               <p>
                 For any information on the other cookies and server logs we use, we invite you to read our&nbsp;
                 <calcite-link
+                  class="link-text"
                   href="https://www.europarl.europa.eu/privacy-policy/en/data-protection"
                   rel="noopener noreferrer"
                   target="_blank"
@@ -85,6 +86,7 @@ export class CookieTest {
                     data protection policy
                 </calcite-link> , our&nbsp;
                 <calcite-link
+                  class="link-text"
                   href="https://www.europarl.europa.eu/privacy-policy/en/cookies-policy"
                   rel="noopener noreferrer"
                   target="_blank"
@@ -93,6 +95,7 @@ export class CookieTest {
                 </calcite-link>
                   and our&nbsp;
                 <calcite-link
+                  class="link-text"
                   href="https://www.europarl.europa.eu/privacy-policy/en/cookies-inventory"
                   rel="noopener noreferrer"
                   target="_blank"
