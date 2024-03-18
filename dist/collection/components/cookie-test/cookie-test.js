@@ -14,9 +14,15 @@ export class CookieTest {
         this.portal = undefined;
         this._loaded = false;
     }
+    async componentWillLoad() {
+        this._shouldRender = localStorage.getItem(this.firstUseVar) === null;
+        if (localStorage.getItem(this.firstUseVar) === "true") {
+            await this._init();
+        }
+    }
     render() {
         console.log("cookie-test-render");
-        return (h(Host, null, h("calcite-panel", { class: "consent-panel", id: "cookie-policy" }, h("div", { class: "cookie-consent-popup-container" }, h("div", { id: "cookie-policy-description-top", tabindex: "-1" }, h("p", null, "Dear visitor,"), h("p", null, "We use analytics cookies to offer you a better browsing experience. You have the choice to refuse or accept them.")), h("div", { class: "button-container" }, h("calcite-button", { appearance: "solid", class: "padding-end-1", kind: "neutral", onClick: () => this._refuse() }, "I refuse analytics cookies"), h("calcite-button", { appearance: "solid", kind: "neutral", onClick: () => this._accept() }, "I accept analytics cookies")), h("div", null, h("p", null, "For any information on the other cookies and server logs we use, we invite you to read our\u00A0", h("calcite-link", { href: "https://www.europarl.europa.eu/privacy-policy/en/data-protection", rel: "noopener noreferrer", target: "_blank" }, "data protection policy"), " , our\u00A0", h("calcite-link", { href: "https://www.europarl.europa.eu/privacy-policy/en/cookies-policy", rel: "noopener noreferrer", target: "_blank" }, "cookies policy"), "and our\u00A0", h("calcite-link", { href: "https://www.europarl.europa.eu/privacy-policy/en/cookies-inventory", rel: "noopener noreferrer", target: "_blank" }, "cookies inventory.")))))));
+        return this._shouldRender && !this._loaded ? (h(Host, null, h("calcite-panel", { class: "consent-panel", id: "cookie-policy" }, h("div", { class: "cookie-consent-popup-container" }, h("div", { id: "cookie-policy-description-top", tabindex: "-1" }, h("p", null, "Dear visitor,"), h("p", null, "We use analytics cookies to offer you a better browsing experience. You have the choice to refuse or accept them.")), h("div", { class: "button-container" }, h("calcite-button", { appearance: "solid", class: "padding-end-1", kind: "neutral", onClick: () => this._refuse() }, "I refuse analytics cookies"), h("calcite-button", { appearance: "solid", kind: "neutral", onClick: () => this._accept() }, "I accept analytics cookies")), h("div", null, h("p", null, "For any information on the other cookies and server logs we use, we invite you to read our\u00A0", h("calcite-link", { href: "https://www.europarl.europa.eu/privacy-policy/en/data-protection", rel: "noopener noreferrer", target: "_blank" }, "data protection policy"), " , our\u00A0", h("calcite-link", { href: "https://www.europarl.europa.eu/privacy-policy/en/cookies-policy", rel: "noopener noreferrer", target: "_blank" }, "cookies policy"), "and our\u00A0", h("calcite-link", { href: "https://www.europarl.europa.eu/privacy-policy/en/cookies-inventory", rel: "noopener noreferrer", target: "_blank" }, "cookies inventory."))))))) : undefined;
     }
     async _init() {
         var _a;
@@ -41,10 +47,12 @@ export class CookieTest {
     }
     _accept() {
         this._consentGranted = true;
+        localStorage.setItem(this.firstUseVar, this._consentGranted.toString());
         void this._init();
     }
     _refuse() {
         this._consentGranted = false;
+        localStorage.setItem(this.firstUseVar, this._consentGranted.toString());
         this.consentGranted.emit({
             granted: this._consentGranted
         });

@@ -29,11 +29,20 @@ export class CookieTest {
 
   _consentGranted = false;
 
+  _shouldRender: boolean;
+
   @Event() consentGranted: EventEmitter<IConsentResponse>;
+
+  async componentWillLoad(): Promise<void> {
+    this._shouldRender = localStorage.getItem(this.firstUseVar) === null;
+    if (localStorage.getItem(this.firstUseVar) === "true") {
+      await this._init();
+    }
+  }
 
   render() {
     console.log("cookie-test-render")
-    return (
+    return this._shouldRender && !this._loaded ? (
       <Host>
         <calcite-panel
           class="consent-panel"
@@ -95,7 +104,7 @@ export class CookieTest {
           </div>
         </calcite-panel>
       </Host>
-    );
+    ) : undefined;
   }
 
   async _init(): Promise<void> {
@@ -125,11 +134,13 @@ export class CookieTest {
 
   _accept(): void {
     this._consentGranted = true;
+    localStorage.setItem(this.firstUseVar, this._consentGranted.toString())
     void this._init();
   }
 
   _refuse(): void {
     this._consentGranted = false;
+    localStorage.setItem(this.firstUseVar, this._consentGranted.toString())
     this.consentGranted.emit({
       granted: this._consentGranted
     });

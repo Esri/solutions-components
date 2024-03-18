@@ -1,10 +1,10 @@
 {
   "entries": [
+    "components/cookie-test/cookie-test.js",
     "components/arcgis-login/arcgis-login.js",
     "components/basemap-gallery/basemap-gallery.js",
     "components/buffer-tools/buffer-tools.js",
     "components/card-manager/card-manager.js",
-    "components/cookie-test/cookie-test.js",
     "components/create-feature/create-feature.js",
     "components/crowdsource-manager/crowdsource-manager.js",
     "components/crowdsource-reporter/crowdsource-reporter.js",

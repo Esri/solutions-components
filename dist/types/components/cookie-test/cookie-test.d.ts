@@ -13,7 +13,9 @@ export declare class CookieTest {
     _telemetryInstance: Telemetry;
     _loaded: boolean;
     _consentGranted: boolean;
+    _shouldRender: boolean;
     consentGranted: EventEmitter<IConsentResponse>;
+    componentWillLoad(): Promise<void>;
     render(): any;
     _init(): Promise<void>;
     _accept(): void;
