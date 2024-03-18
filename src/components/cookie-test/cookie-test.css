@@ -41,6 +41,11 @@
 }
 
 .link-text {
+  /* 1.0 vars*/
+  --calcite-ui-text-link: var(--calcite-color-text-inverse);
+  --calcite-ui-brand: var(--calcite-color-text-inverse);
+
+  /* 2.0 vars */
   --calcite-color-text-link: var(--calcite-color-text-inverse);
   --calcite-color-brand-underline: var(--calcite-color-text-inverse);
   --calcite-color-brand: var(--calcite-color-text-inverse);
