@@ -10,12 +10,7 @@
   left: 0;
   width: 100%;
   height: auto;
-  margin: 0;
-  padding: 5px 0 0 0;
   text-align: center;
-  letter-spacing: normal;
-  white-space: normal;
-  color: inherit;
 }
 
 .cookie-consent-popup-container {
@@ -25,31 +20,22 @@
   left: 0;
   width: 100%;
   margin: 0;
-  padding: 20px 0 10px 0;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
   /* transform: translate(0, 110%); */
   transition: transform 0.5s ease-out 0s;
   background-color: rgba(51, 51, 51, 0.95);
   color: #fff;
 }
 
-.consent-text {
+.button-container {
   position: static;
-  display: block;
-  margin: 0;
-  padding: 0 10px 14px 10px;
-  /* font-weight: lighter;
-  color: inherit;
-  -webkit-font-smoothing: auto; */
-}
-
-.epjs_buttons {
-  position: static;
-  margin: 0;
-  padding: 0;
-  /* text-align: center;
-  letter-spacing: -0.3em;
-  color: inherit; */
+  margin-bottom: 1rem;
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
+}
+
+.padding-end-1 {
+  padding-inline-end: 1rem;
 }

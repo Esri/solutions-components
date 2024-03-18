@@ -37,42 +37,32 @@ export class CookieTest {
         >
           <div class="cookie-consent-popup-container">
             <div
-              class="consent-text"
               id="cookie-policy-description-top"
               tabindex="-1"
             >
               <p>Dear visitor,</p>
               <p>We use analytics cookies to offer you a better browsing experience. You have the choice to refuse or accept them.</p>
             </div>
-            <div class="epjs_buttons">
-
-              <calcite-button appearance="solid" class="epjs_agree" kind="neutral">
+            <div class="button-container">
+              <calcite-button appearance="solid" class="padding-end-1" kind="neutral">
                 I refuse analytics cookies
               </calcite-button>
 
-              <calcite-button appearance="solid" class="epjs_agree" kind="neutral">
+              <calcite-button appearance="solid" kind="neutral">
                 I accept analytics cookies
               </calcite-button>
             </div>
-            <div
-              class="consent-text"
-              id="cookie-policy-description-bottom"
-            >
+            <div>
               <p>
                 For any information on the other cookies and server logs we use, we invite you to read our
                 <calcite-link
                   href="https://www.europarl.europa.eu/privacy-policy/en/data-protection"
                   rel="noopener noreferrer"
-                  style={{
-                    "text-decoration": "underline",
-                    "color": "inherit"
-                  }}
                   target="_blank"
                 >
                     data protection policy
                 </calcite-link> , our
                 <calcite-link
-                  class="cc-link-default"
                   href="https://www.europarl.europa.eu/privacy-policy/en/cookies-policy"
                   rel="noopener noreferrer"
                   target="_blank"
