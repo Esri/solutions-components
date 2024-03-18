@@ -1663,6 +1663,7 @@ const CookieTest$1 = /*@__PURE__*/ proxyCustomElement(class CookieTest extends H
                 portal: this.portal,
                 debug: true,
                 test: true,
+                disabled: false
             });
             await this._telemetryInstance.init();
             this._loaded = true;

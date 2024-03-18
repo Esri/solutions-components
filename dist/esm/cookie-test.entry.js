@@ -1653,6 +1653,7 @@ const CookieTest = class {
                 portal: this.portal,
                 debug: true,
                 test: true,
+                disabled: false
             });
             await this._telemetryInstance.init();
             this._loaded = true;

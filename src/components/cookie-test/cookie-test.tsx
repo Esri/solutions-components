@@ -119,6 +119,7 @@ export class CookieTest {
         portal: this.portal,
         debug: true,
         test: true,
+        disabled: false
       });
 
       await this._telemetryInstance.init();
