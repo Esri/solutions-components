@@ -88,6 +88,7 @@ export namespace Components {
     }
     interface CookieTest {
         "firstUseVar": string;
+        "getInstance": () => Promise<Telemetry | undefined>;
         "measurementIds": string[];
         "portal": __esri.Portal;
     }

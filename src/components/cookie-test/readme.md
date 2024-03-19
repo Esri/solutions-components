@@ -21,6 +21,19 @@
 | `consentGranted` |             | `CustomEvent<IConsentResponse>` |
 
 
+## Methods
+
+### `getInstance() => Promise<Telemetry | undefined>`
+
+
+
+#### Returns
+
+Type: `Promise<any>`
+
+
+
+
 ## Dependencies
 
 ### Depends on

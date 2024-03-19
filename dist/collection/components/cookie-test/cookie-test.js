@@ -14,7 +14,15 @@ export class CookieTest {
         this.portal = undefined;
         this._loaded = false;
     }
+    async getInstance() {
+        console.log("getInstance");
+        if (localStorage.getItem(this.firstUseVar) === "true") {
+            await this._init();
+        }
+        return this._telemetryInstance;
+    }
     async componentWillLoad() {
+        console.log("componentWillLoad");
         this._shouldRender = localStorage.getItem(this.firstUseVar) === null;
         if (localStorage.getItem(this.firstUseVar) === "true") {
             await this._init();
@@ -26,8 +34,10 @@ export class CookieTest {
     }
     async _init() {
         var _a;
+        console.log("_init");
         // should have some messaging around the expectations like no portal set
         if (!this._loaded && ((_a = this.measurementIds) === null || _a === void 0 ? void 0 : _a.length) > 0 && this.portal) {
+            console.log("IN _init");
             const googleAnalyticsTracker = new GoogleAnalytics({
                 measurementIds: this.measurementIds
             });
@@ -44,6 +54,9 @@ export class CookieTest {
                 granted: this._consentGranted,
                 instance: this._telemetryInstance
             });
+        }
+        else {
+            console.log("NOT IN _init");
         }
     }
     _accept() {
@@ -155,5 +168,30 @@ export class CookieTest {
                     }
                 }
             }];
+    }
+    static get methods() {
+        return {
+            "getInstance": {
+                "complexType": {
+                    "signature": "() => Promise<Telemetry | undefined>",
+                    "parameters": [],
+                    "references": {
+                        "Promise": {
+                            "location": "global",
+                            "id": "global::Promise"
+                        },
+                        "Telemetry": {
+                            "location": "global",
+                            "id": "global::Telemetry"
+                        }
+                    },
+                    "return": "Promise<any>"
+                },
+                "docs": {
+                    "text": "",
+                    "tags": []
+                }
+            }
+        };
     }
 }

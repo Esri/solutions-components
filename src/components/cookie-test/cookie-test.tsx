@@ -1,4 +1,4 @@
-import { Component, Event, EventEmitter, Host, h, Prop, State } from '@stencil/core';
+import { Component, Event, EventEmitter, Host, h, Method, Prop, State } from '@stencil/core';
 import { Telemetry } from "@esri/telemetry";
 import { GoogleAnalytics } from '@esri/telemetry-google-analytics';
 
@@ -33,7 +33,18 @@ export class CookieTest {
 
   @Event() consentGranted: EventEmitter<IConsentResponse>;
 
+  @Method()
+  async getInstance(): Promise<Telemetry | undefined> {
+    console.log("getInstance")
+
+    if (localStorage.getItem(this.firstUseVar) === "true") {
+      await this._init();
+    }
+    return this._telemetryInstance;
+  }
+
   async componentWillLoad(): Promise<void> {
+    console.log("componentWillLoad")
     this._shouldRender = localStorage.getItem(this.firstUseVar) === null;
     if (localStorage.getItem(this.firstUseVar) === "true") {
       await this._init();
@@ -111,8 +122,12 @@ export class CookieTest {
   }
 
   async _init(): Promise<void> {
+    console.log("_init")
+
     // should have some messaging around the expectations like no portal set
     if (!this._loaded && this.measurementIds?.length > 0 && this.portal) {
+      console.log("IN _init")
+
       const googleAnalyticsTracker = new GoogleAnalytics({
         measurementIds: this.measurementIds
       });
@@ -133,6 +148,8 @@ export class CookieTest {
         granted: this._consentGranted,
         instance: this._telemetryInstance
       });
+    } else {
+      console.log("NOT IN _init")
     }
   }
 
