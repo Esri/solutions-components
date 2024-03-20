@@ -39,6 +39,8 @@
   padding-top: 1rem;
   padding-bottom: 1rem;
   transition: transform 0.5s ease-out 0s;
+  background-color: rgba(51, 51, 51, 0.95);
+  color: #fff;
 }
 
 .button-container {
@@ -51,4 +53,15 @@
 
 .padding-end-1 {
   padding-inline-end: 1rem;
+}
+
+.link-text {
+  /* 1.0 vars*/
+  --calcite-ui-text-link: var(--calcite-color-text-inverse);
+  --calcite-ui-brand: var(--calcite-color-text-inverse);
+
+  /* 2.0 vars */
+  --calcite-color-text-link: var(--calcite-color-text-inverse);
+  --calcite-color-brand-underline: var(--calcite-color-text-inverse);
+  --calcite-color-brand: var(--calcite-color-text-inverse);
 }
