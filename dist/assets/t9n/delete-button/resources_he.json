@@ -1,0 +1,8 @@
+{
+  "cancel": "ביטול",
+  "confirmMultiple": "ישויות אלה יוסרו לצמיתות.",
+  "confirmSingle": "ישות זו תוסר לצמיתות.",
+  "delete": "מחיקה",
+  "deleteCount": "מחק ({{n}})",
+  "deleteFeature": "מחק ישות"
+}

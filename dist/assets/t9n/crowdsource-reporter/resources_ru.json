@@ -1,0 +1,22 @@
+{
+  "createReportHeader": "Создать отчет",
+  "share": "Общий доступ",
+  "sort": "Сортировать",
+  "filter": "Фильтр",
+  "expand": "Развернуть",
+  "collapse": "Свернуть",
+  "next": "Далее",
+  "submit": "Отправить",
+  "cancel": "Отмена",
+  "back": "Назад",
+  "error": "Ошибка",
+  "invalidConfigurationErrorMsg": "Недопустимая конфигурация",
+  "noLayerToDisplayErrorMsg": "Настроенная веб-карта не содержит редактируемых векторных слоев.",
+  "chooseCategoryMsg": "Choose a category for your report.",
+  "featureErrorMsg": "Пространственные объекты не найдены.",
+  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "currentLocationMsg": "Использовать мое текущее местоположение",
+  "addLocationMsg": "Add the location for your report.",
+  "reportSubmit": "Отчет отправлен.",
+  "submitMsg": "Спасибо! Ваш отчет успешно отправлен."
+}

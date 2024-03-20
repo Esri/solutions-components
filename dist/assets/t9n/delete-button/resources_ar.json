@@ -1,0 +1,8 @@
+{
+  "cancel": "إلغاء الأمر",
+  "confirmMultiple": "ستتم إزالة هذه المعالم بشكل دائم.",
+  "confirmSingle": "ستتم إزالة هذا المعلم بشكل دائم.",
+  "delete": "حذف",
+  "deleteCount": "حذف ({{n}})",
+  "deleteFeature": "حذف المعلم"
+}

@@ -1,0 +1,16 @@
+{
+  "andOperator": "Alleen resultaten die voldoen aan ALLE (ALL) filters worden getoond",
+  "andOperator2": "AND: Resultaten die voldoen aan ALLE (ALL) filters",
+  "close": "Sluiten",
+  "maxSlider": "{field},bovengrens",
+  "minSlider": "{field}, ondergrens",
+  "nextMonth": "Volgende maand",
+  "orOperator": "Resultaten die voldoen aan EEN (ANY) filter worden getoond",
+  "orOperator2": "OR: Resultaten die voldoen aan EEN (ANY) filter",
+  "previousMonth": "Vorige maand",
+  "resetDatePicker": "Datumkiezer opnieuw instellen",
+  "resetFilter": "Filter opnieuw instellen",
+  "selectFilter": "Filter selecteren",
+  "zoomTo": "Zoomen naar",
+  "zoomToExtent": "Inzoomen op extent"
+}

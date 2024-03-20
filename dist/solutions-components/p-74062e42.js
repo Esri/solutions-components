@@ -1,0 +1,6 @@
+/*!
+ * Copyright 2022 Esri
+ * Licensed under the Apache License, Version 2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
+ */
+class e{constructor(){this._formatterCache=new Map,this._commonDateTimeFormatterOptions={year:"numeric",month:"2-digit",day:"2-digit",timeZoneName:"shortOffset"}}get name(){return"native"}create(e){return new Date(e)}increase(e){return new Date(e.getTime()+864e5)}formatToIsoDateString(e){const t=e.getFullYear(),n=e.getMonth()+1,r=e.getDate();return`${t}-${n.toString().padStart(2,"0")}-${r.toString().padStart(2,"0")}`}isoToTimeZone(e,t){const n=this._toDate(e),r=this._getFormatter(t).formatToParts(n),[i]=r.filter((({type:e})=>"timeZoneName"===e)).map((({value:e})=>e)),s=this._getTimeZoneOffsetInMins(i),a=n.getMinutes()-(n.getTimezoneOffset()-s);return n.setMinutes(a),n}same(e,t){return e.getTime()===t.getTime()}_toDate(e){return new Date(e)}_getFormatter(e){let t=this._formatterCache.get(e);return t||(t=new Intl.DateTimeFormat("en-US",{timeZone:e,...this._commonDateTimeFormatterOptions}),this._formatterCache.set(e,t)),t}_getTimeZoneOffsetInMins(e){const[t,...n]=e.slice(3),[r,i]=n.join("").split(":");return("+"===t?1:-1)*(60*Number(r)+Number(i||0))}}export{e as DateEngine}

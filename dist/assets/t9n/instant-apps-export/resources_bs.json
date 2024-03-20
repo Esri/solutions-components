@@ -1,0 +1,11 @@
+{
+  "export": "Izvezi",
+  "exportPopover": "Izvezi popover",
+  "includeExtraContent": "Uključi rezultate",
+  "includeHeaderTheme": "Uključi temu zaglavlja",
+  "includeLegend": "Uključi legendu",
+  "includeMap": "Uključi kartu",
+  "includePopup": "Uključi skočni prozor",
+  "title": "Naziv",
+  "toggleExport": "Uključi/isključi izvoz"
+}

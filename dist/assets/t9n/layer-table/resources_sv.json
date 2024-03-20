@@ -1,0 +1,19 @@
+{
+  "clearSelection": "Rensa markering",
+  "exportCSV": "Exportera till CSV",
+  "filter": "Filter: {{title}}",
+  "filters": "Filter",
+  "hideField": "Dölj fält",
+  "more": "Mer",
+  "selectAll": "Markera alla",
+  "share": "Dela",
+  "showSelected": "Visa valda",
+  "switchSelected": "Växla valda",
+  "zoom": "Zooma",
+  "fetchingData": "Hämtar data",
+  "refresh": "Uppdatera",
+  "showAll": "Visa alla",
+  "recordsSelected": "Totalt: {{total}} | Urval: {{selected}}",
+  "moreOptions": "Fler tabellalternativ",
+  "showHideColumns": "Visa/dölj kolumner"
+}

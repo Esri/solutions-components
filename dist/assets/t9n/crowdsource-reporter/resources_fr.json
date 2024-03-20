@@ -1,0 +1,22 @@
+{
+  "createReportHeader": "Créer un rapport",
+  "share": "Partager",
+  "sort": "Trier",
+  "filter": "Filtrer",
+  "expand": "Développer",
+  "collapse": "Réduire",
+  "next": "Suivant",
+  "submit": "Envoyer",
+  "cancel": "Annuler",
+  "back": "Retour",
+  "error": "Erreur",
+  "invalidConfigurationErrorMsg": "Configuration non valide",
+  "noLayerToDisplayErrorMsg": "La carte Web configurée ne comporte aucune couche d’entités modifiable.",
+  "chooseCategoryMsg": "Choose a category for your report.",
+  "featureErrorMsg": "Entités introuvables.",
+  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "currentLocationMsg": "Utiliser ma position actuelle",
+  "addLocationMsg": "Add the location for your report.",
+  "reportSubmit": "Rapport envoyé.",
+  "submitMsg": "Merci. Votre rapport a été envoyé."
+}

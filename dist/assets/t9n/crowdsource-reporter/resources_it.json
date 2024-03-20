@@ -1,0 +1,22 @@
+{
+  "createReportHeader": "Crea una segnalazione",
+  "share": "Condividi",
+  "sort": "Ordina",
+  "filter": "Filtro",
+  "expand": "Espandi",
+  "collapse": "Comprimi",
+  "next": "Avanti",
+  "submit": "Invia",
+  "cancel": "Annulla",
+  "back": "Indietro",
+  "error": "Errore",
+  "invalidConfigurationErrorMsg": "Configurazione non valida",
+  "noLayerToDisplayErrorMsg": "La mappa web configurata non ha un feature layer modificabile.",
+  "chooseCategoryMsg": "Choose a category for your report.",
+  "featureErrorMsg": "Feature trovate.",
+  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "currentLocationMsg": "Usa la mia posizione corrente",
+  "addLocationMsg": "Add the location for your report.",
+  "reportSubmit": "Segnalazione inviata.",
+  "submitMsg": "Grazie! Il report è stato inviato con successo."
+}

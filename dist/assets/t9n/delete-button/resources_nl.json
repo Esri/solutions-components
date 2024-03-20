@@ -1,0 +1,8 @@
+{
+  "cancel": "Annuleren",
+  "confirmMultiple": "Deze objecten worden permanent verwijderd.",
+  "confirmSingle": "Dit object wordt permanent verwijderd.",
+  "delete": "Verwijderen",
+  "deleteCount": "Verwijderen ({{n}})",
+  "deleteFeature": "Object verwijderen"
+}

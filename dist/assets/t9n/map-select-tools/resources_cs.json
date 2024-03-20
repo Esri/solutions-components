@@ -1,0 +1,16 @@
+{
+  "listName": "Název seznamu",
+  "listNamePlaceholder": "Zde zadejte název",
+  "searchDistance": "Vzdálenost vyhledávání",
+  "select": "Vrstva",
+  "selectedFeatures": "{{n}} vybraných prvků",
+  "selectionLoading": "Výběr se načítá",
+  "sketch": "Skica",
+  "bufferLayer": "Vrstva obalové zóny",
+  "sketchLayer": "Vrstva skici",
+  "useLayerFeatures": "Použít prvky vrstvy",
+  "inputLayer": "Vstupní vrstva",
+  "useLayerFeaturesTooltip": "Zvolte vrstvu a pomocí nástrojů skicování označte prvky, které lze použít jako hranici pro výběr protínajících prvků ze vstupní vrstvy.",
+  "useSearchDistanceTootip": "Definujte vzdálenost pro vyhledávací obalovou zónu, pomocí níž lze vybrat vstupní prvky, které tuto obalovou zónu protínají.",
+  "placeholder": "Najít adresu nebo místo"
+}

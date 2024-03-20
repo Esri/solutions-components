@@ -1,0 +1,22 @@
+{
+  "createReportHeader": "Vytvoriť report",
+  "share": "Zdieľať",
+  "sort": "Zoradiť",
+  "filter": "Filter",
+  "expand": "Rozbaliť",
+  "collapse": "Zbaliť",
+  "next": "Ďalšie",
+  "submit": "Odoslať",
+  "cancel": "Zrušiť",
+  "back": "Späť",
+  "error": "Chyba",
+  "invalidConfigurationErrorMsg": "Neplatná konfigurácia",
+  "noLayerToDisplayErrorMsg": "Nakonfigurovaná webová mapa neobsahuje žiadnu editovateľnú prvkovú vrstvu.",
+  "chooseCategoryMsg": "Choose a category for your report.",
+  "featureErrorMsg": "Prvky sa nenašli.",
+  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "currentLocationMsg": "Použiť moju aktuálnu polohu",
+  "addLocationMsg": "Add the location for your report.",
+  "reportSubmit": "Report odoslaný.",
+  "submitMsg": "Ďakujeme! Váš report bol úspešne odoslaný."
+}

@@ -1,0 +1,10 @@
+{
+  "fetchingData": "إحضار البيانات",
+  "edit": "تحرير",
+  "enableEditing": "يجب تمكين إمكانية التحديث في الطبقة.",
+  "editDisabled": "تم تعطيل التحرير",
+  "next": "التالي",
+  "back": "رجوع",
+  "indexOfTotal": "{{index}} من {{total}}",
+  "delete": "حذف"
+}

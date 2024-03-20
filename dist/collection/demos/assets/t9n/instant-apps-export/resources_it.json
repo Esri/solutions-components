@@ -1,0 +1,11 @@
+{
+  "export": "Esporta",
+  "exportPopover": "Esporta popover",
+  "includeExtraContent": "Includere i risultati",
+  "includeHeaderTheme": "Includi tema intestazione",
+  "includeLegend": "Includi legenda",
+  "includeMap": "Includi mappa",
+  "includePopup": "Includi popup",
+  "title": "Titolo",
+  "toggleExport": "Attiva/disattiva esportazione"
+}

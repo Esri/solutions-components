@@ -1,0 +1,404 @@
+/*!
+ * Copyright 2022 Esri
+ * Licensed under the Apache License, Version 2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
+ */
+import { proxyCustomElement, HTMLElement, createEvent, h, Fragment } from '@stencil/core/internal/client';
+import { s as setUpLoadableComponent, a as setComponentLoaded, c as componentFocusable } from './loadable.js';
+import { n as numberStringFormatter, c as connectLocalized, d as disconnectLocalized } from './locale2.js';
+import { u as updateMessages, c as connectMessages, s as setUpMessages, d as disconnectMessages } from './t9n.js';
+import { c as createObserver } from './observers.js';
+import { g as getIconScale } from './component.js';
+import { d as defineCustomElement$1 } from './icon.js';
+
+/*!
+ * All material copyright ESRI, All Rights Reserved, unless otherwise specified.
+ * See https://github.com/Esri/calcite-design-system/blob/main/LICENSE.md for details.
+ * v2.4.0
+ */
+const CSS = {
+    page: "page",
+    selected: "selected",
+    chevron: "chevron",
+    disabled: "disabled",
+    ellipsis: "ellipsis",
+};
+const ICONS = {
+    next: "chevron-right",
+    previous: "chevron-left",
+    first: "chevron-start",
+    last: "chevron-end",
+};
+
+/**
+ * Do not edit directly
+ * Generated on Wed, 17 Jan 2024 17:52:10 GMT
+ */
+const calciteContainerSizeWidthXxs = {"min":"0","max":"320px"}; // Small handheld devices and mini-windows
+const calciteContainerSizeWidthXs = {"min":"321px","max":"476px"}; // Handheld devices
+const calciteContainerSizeWidthSm = {"min":"477px","max":"768px"}; // Small tablets
+const calciteContainerSizeWidthMd = {"min":"769px","max":"1152px"}; // Small laptops
+const calciteContainerSizeWidthLg = {"min":"1153px","max":"1440px"}; // Large laptops and desktop computers
+
+/*!
+ * All material copyright ESRI, All Rights Reserved, unless otherwise specified.
+ * See https://github.com/Esri/calcite-design-system/blob/main/LICENSE.md for details.
+ * v2.4.0
+ */
+/**
+ * A breakpoints lookup object.
+ */
+const breakpoints = {
+    width: {
+        large: cssLengthToNumber(calciteContainerSizeWidthLg.max),
+        medium: cssLengthToNumber(calciteContainerSizeWidthMd.max),
+        small: cssLengthToNumber(calciteContainerSizeWidthSm.max),
+        xsmall: cssLengthToNumber(calciteContainerSizeWidthXs.max),
+        xxsmall: cssLengthToNumber(calciteContainerSizeWidthXxs.max),
+    },
+};
+function cssLengthToNumber(length) {
+    return parseInt(length);
+}
+
+const paginationCss = ":host{display:flex;writing-mode:horizontal-tb}:host([scale=s]) .chevron,:host([scale=s]) .page,:host([scale=s]) .ellipsis{block-size:1.5rem;padding-inline:0.25rem;font-size:var(--calcite-font-size--2);line-height:1rem;min-inline-size:1.5rem}:host([scale=m]) .chevron,:host([scale=m]) .page,:host([scale=m]) .ellipsis{block-size:2rem;padding-inline:0.5rem;font-size:var(--calcite-font-size--1);line-height:1rem;min-inline-size:2rem}:host([scale=l]) .chevron,:host([scale=l]) .page,:host([scale=l]) .ellipsis{block-size:2.75rem;font-size:var(--calcite-font-size-0);line-height:1.25rem;min-inline-size:2.75rem}:host([scale=l]) .chevron{padding-inline:0.625rem}:host([scale=l]) .page,:host([scale=l]) .ellipsis{padding-inline:0.75rem}:host button{outline-color:transparent}:host button:focus{outline:2px solid var(--calcite-color-brand);outline-offset:calc(\n            -2px *\n            calc(\n              1 -\n              2 * clamp(\n                0,\n                var(--calcite-offset-invert-focus),\n                1\n              )\n            )\n          )}.chevron,.page,.ellipsis{margin:0px;box-sizing:border-box;display:flex;align-items:center;justify-content:center;border-style:none;--tw-border-opacity:0;background-color:transparent;padding:0px;vertical-align:baseline;font-family:inherit;font-size:var(--calcite-font-size-0);line-height:1.25rem;color:var(--calcite-color-text-3)}.chevron,.page{cursor:pointer;border-block:2px solid transparent}.chevron:hover,.page:hover{color:var(--calcite-color-text-1);transition:all var(--calcite-animation-timing) ease-in-out 0s, outline 0s, outline-offset 0s}.page:hover{border-block-end-color:var(--calcite-color-border-2)}.page.selected{font-weight:var(--calcite-font-weight-medium);color:var(--calcite-color-text-1);border-block-end-color:var(--calcite-color-brand)}.chevron:hover{background-color:var(--calcite-color-foreground-2);color:var(--calcite-color-brand)}.chevron:active{background-color:var(--calcite-color-foreground-3)}.chevron.disabled{pointer-events:none;background-color:transparent}.chevron.disabled>calcite-icon{opacity:var(--calcite-opacity-disabled)}:host([hidden]){display:none}[hidden]{display:none}";
+
+const firstAndLastPageCount = 2;
+const ellipsisCount = 2;
+const maxItemBreakpoints = {
+    large: 11,
+    medium: 9,
+    small: 7,
+    xsmall: 5,
+    xxsmall: 1,
+};
+const Pagination = /*@__PURE__*/ proxyCustomElement(class Pagination extends HTMLElement {
+    constructor() {
+        super();
+        this.__registerHost();
+        this.__attachShadow();
+        this.calcitePaginationChange = createEvent(this, "calcitePaginationChange", 6);
+        this.resizeObserver = createObserver("resize", (entries) => entries.forEach(this.resizeHandler));
+        this.resizeHandler = ({ contentRect: { width } }) => this.setMaxItemsToBreakpoint(width);
+        this.firstClicked = () => {
+            this.startItem = 1;
+            this.emitUpdate();
+        };
+        this.lastClicked = () => {
+            this.startItem = this.lastStartItem;
+            this.emitUpdate();
+        };
+        this.previousClicked = async () => {
+            await this.previousPage();
+            this.emitUpdate();
+        };
+        this.nextClicked = async () => {
+            await this.nextPage();
+            this.emitUpdate();
+        };
+        this.handlePageClick = (event) => {
+            const target = event.target;
+            this.startItem = parseInt(target.value, 10);
+            this.emitUpdate();
+        };
+        this.groupSeparator = false;
+        this.messages = undefined;
+        this.messageOverrides = undefined;
+        this.numberingSystem = undefined;
+        this.pageSize = 20;
+        this.scale = "m";
+        this.startItem = 1;
+        this.totalItems = 0;
+        this.defaultMessages = undefined;
+        this.effectiveLocale = "";
+        this.maxItems = maxItemBreakpoints.xxsmall;
+        this.totalPages = undefined;
+        this.lastStartItem = undefined;
+        this.isXXSmall = undefined;
+    }
+    onMessagesChange() {
+        /* wired up by t9n util */
+    }
+    handleTotalPages() {
+        if (this.pageSize < 1) {
+            this.pageSize = 1;
+        }
+        this.totalPages = this.totalItems / this.pageSize;
+    }
+    effectiveLocaleChange() {
+        updateMessages(this, this.effectiveLocale);
+    }
+    effectiveLocaleWatcher() {
+        numberStringFormatter.numberFormatOptions = {
+            locale: this.effectiveLocale,
+            numberingSystem: this.numberingSystem,
+            useGrouping: this.groupSeparator,
+        };
+    }
+    handleLastStartItemChange() {
+        const { totalItems, pageSize, totalPages } = this;
+        this.lastStartItem =
+            (totalItems % pageSize === 0 ? totalItems - pageSize : Math.floor(totalPages) * pageSize) + 1;
+    }
+    handleIsXXSmall() {
+        this.isXXSmall = this.maxItems === maxItemBreakpoints.xxsmall;
+    }
+    // --------------------------------------------------------------------------
+    //
+    //  Lifecycle
+    //
+    // --------------------------------------------------------------------------
+    connectedCallback() {
+        var _a;
+        connectLocalized(this);
+        connectMessages(this);
+        (_a = this.resizeObserver) === null || _a === void 0 ? void 0 : _a.observe(this.el);
+    }
+    async componentWillLoad() {
+        await setUpMessages(this);
+        setUpLoadableComponent(this);
+        this.handleTotalPages();
+        this.handleLastStartItemChange();
+        this.handleIsXXSmall();
+    }
+    componentDidLoad() {
+        setComponentLoaded(this);
+        this.setMaxItemsToBreakpoint(this.el.clientWidth);
+    }
+    disconnectedCallback() {
+        var _a;
+        disconnectLocalized(this);
+        disconnectMessages(this);
+        (_a = this.resizeObserver) === null || _a === void 0 ? void 0 : _a.disconnect();
+    }
+    // --------------------------------------------------------------------------
+    //
+    //  Public Methods
+    //
+    // --------------------------------------------------------------------------
+    /** Sets focus on the component's first focusable element. */
+    async setFocus() {
+        await componentFocusable(this);
+        this.el.focus();
+    }
+    /** Go to the next page of results. */
+    async nextPage() {
+        this.startItem = Math.min(this.lastStartItem, this.startItem + this.pageSize);
+    }
+    /** Go to the previous page of results. */
+    async previousPage() {
+        this.startItem = Math.max(1, this.startItem - this.pageSize);
+    }
+    // --------------------------------------------------------------------------
+    //
+    //  Private Methods
+    //
+    // --------------------------------------------------------------------------
+    setMaxItemsToBreakpoint(width) {
+        if (!breakpoints || !width) {
+            return;
+        }
+        if (width >= breakpoints.width.medium) {
+            this.maxItems = maxItemBreakpoints.large;
+            return;
+        }
+        if (width >= breakpoints.width.small) {
+            this.maxItems = maxItemBreakpoints.medium;
+            return;
+        }
+        if (width >= breakpoints.width.xsmall) {
+            this.maxItems = maxItemBreakpoints.small;
+            return;
+        }
+        if (width >= breakpoints.width.xxsmall) {
+            this.maxItems = maxItemBreakpoints.xsmall;
+            return;
+        }
+        this.maxItems = maxItemBreakpoints.xxsmall;
+    }
+    showStartEllipsis() {
+        return (this.totalPages > this.maxItems &&
+            Math.floor(this.startItem / this.pageSize) >
+                this.maxItems - firstAndLastPageCount - ellipsisCount);
+    }
+    showEndEllipsis() {
+        return (this.totalPages > this.maxItems &&
+            (this.totalItems - this.startItem) / this.pageSize >
+                this.maxItems - firstAndLastPageCount - (ellipsisCount - 1));
+    }
+    emitUpdate() {
+        this.calcitePaginationChange.emit();
+    }
+    //--------------------------------------------------------------------------
+    //
+    //  Render Methods
+    //
+    //--------------------------------------------------------------------------
+    renderEllipsis(type) {
+        return (h("span", { class: CSS.ellipsis, "data-test-ellipsis": type, key: type }, "\u2026"));
+    }
+    renderItems() {
+        const { totalItems, pageSize, startItem, maxItems, totalPages, lastStartItem, isXXSmall } = this;
+        const items = [];
+        if (isXXSmall) {
+            items.push(this.renderPage(startItem));
+            return items;
+        }
+        const renderFirstPage = totalItems > pageSize;
+        const renderStartEllipsis = this.showStartEllipsis();
+        const renderEndEllipsis = this.showEndEllipsis();
+        if (renderFirstPage) {
+            items.push(this.renderPage(1));
+        }
+        if (renderStartEllipsis) {
+            items.push(this.renderEllipsis("start"));
+        }
+        const remainingItems = maxItems -
+            firstAndLastPageCount -
+            (renderEndEllipsis ? 1 : 0) -
+            (renderStartEllipsis ? 1 : 0);
+        let end;
+        let nextStart;
+        // if we don't need ellipses render the whole set
+        if (totalPages - 1 <= remainingItems) {
+            nextStart = 1 + pageSize;
+            end = lastStartItem - pageSize;
+        }
+        else {
+            // if we're within max pages of page 1
+            if (startItem / pageSize < remainingItems) {
+                nextStart = 1 + pageSize;
+                end = 1 + remainingItems * pageSize;
+            }
+            else {
+                // if we're within max pages of last page
+                if (startItem + remainingItems * pageSize >= totalItems) {
+                    nextStart = lastStartItem - remainingItems * pageSize;
+                    end = lastStartItem - pageSize;
+                }
+                else {
+                    // if we're within the center pages
+                    nextStart = startItem - pageSize * ((remainingItems - 1) / 2);
+                    end = startItem + pageSize * ((remainingItems - 1) / 2);
+                }
+            }
+        }
+        for (let i = 0; i < remainingItems && nextStart <= end; i++) {
+            items.push(this.renderPage(nextStart));
+            nextStart = nextStart + pageSize;
+        }
+        if (renderEndEllipsis) {
+            items.push(this.renderEllipsis("end"));
+        }
+        items.push(this.renderPage(lastStartItem));
+        return items;
+    }
+    renderPage(start) {
+        const { pageSize } = this;
+        const page = Math.floor(start / pageSize) + (pageSize === 1 ? 0 : 1);
+        numberStringFormatter.numberFormatOptions = {
+            locale: this.effectiveLocale,
+            numberingSystem: this.numberingSystem,
+            useGrouping: this.groupSeparator,
+        };
+        const displayedPage = numberStringFormatter.localize(page.toString());
+        const selected = start === this.startItem;
+        return (h("button", { "aria-current": selected ? "page" : "false", class: {
+                [CSS.page]: true,
+                [CSS.selected]: selected,
+            }, onClick: this.handlePageClick, value: start }, displayedPage));
+    }
+    renderPreviousChevron() {
+        const { pageSize, startItem, messages } = this;
+        const disabled = pageSize === 1 ? startItem <= pageSize : startItem < pageSize;
+        return (h("button", { "aria-label": messages.previous, class: {
+                [CSS.chevron]: true,
+                [CSS.disabled]: disabled,
+            }, "data-test-chevron": "previous", disabled: disabled, key: "previous", onClick: this.previousClicked }, h("calcite-icon", { flipRtl: true, icon: ICONS.previous, scale: getIconScale(this.scale) })));
+    }
+    renderNextChevron() {
+        const { totalItems, pageSize, startItem, messages } = this;
+        const disabled = pageSize === 1 ? startItem + pageSize > totalItems : startItem + pageSize > totalItems;
+        return (h("button", { "aria-label": messages.next, class: {
+                [CSS.chevron]: true,
+                [CSS.disabled]: disabled,
+            }, "data-test-chevron": "next", disabled: disabled, key: "next-button", onClick: this.nextClicked }, h("calcite-icon", { flipRtl: true, icon: ICONS.next, scale: getIconScale(this.scale) })));
+    }
+    renderFirstChevron() {
+        const { messages, startItem, isXXSmall } = this;
+        const disabled = startItem === 1;
+        return isXXSmall ? (h("button", { "aria-label": messages.first, class: {
+                [CSS.chevron]: true,
+                [CSS.disabled]: disabled,
+            }, disabled: disabled, key: "first-button", onClick: this.firstClicked }, h("calcite-icon", { flipRtl: true, icon: ICONS.first, scale: getIconScale(this.scale) }))) : null;
+    }
+    renderLastChevron() {
+        const { messages, startItem, isXXSmall, lastStartItem } = this;
+        const disabled = startItem === lastStartItem;
+        return isXXSmall ? (h("button", { "aria-label": messages.last, class: {
+                [CSS.chevron]: true,
+                [CSS.disabled]: disabled,
+            }, disabled: disabled, key: "last-button", onClick: this.lastClicked }, h("calcite-icon", { flipRtl: true, icon: ICONS.last, scale: getIconScale(this.scale) }))) : null;
+    }
+    render() {
+        return (h(Fragment, null, this.renderFirstChevron(), this.renderPreviousChevron(), this.renderItems(), this.renderNextChevron(), this.renderLastChevron()));
+    }
+    static get delegatesFocus() { return true; }
+    static get assetsDirs() { return ["assets"]; }
+    get el() { return this; }
+    static get watchers() { return {
+        "messageOverrides": ["onMessagesChange"],
+        "totalItems": ["handleTotalPages", "handleLastStartItemChange"],
+        "pageSize": ["handleTotalPages", "handleLastStartItemChange"],
+        "effectiveLocale": ["effectiveLocaleChange", "effectiveLocaleWatcher"],
+        "totalPages": ["handleLastStartItemChange"],
+        "maxItems": ["handleIsXXSmall"]
+    }; }
+    static get style() { return paginationCss; }
+}, [17, "calcite-pagination", {
+        "groupSeparator": [516, "group-separator"],
+        "messages": [1040],
+        "messageOverrides": [1040],
+        "numberingSystem": [1, "numbering-system"],
+        "pageSize": [1538, "page-size"],
+        "scale": [513],
+        "startItem": [1538, "start-item"],
+        "totalItems": [514, "total-items"],
+        "defaultMessages": [32],
+        "effectiveLocale": [32],
+        "maxItems": [32],
+        "totalPages": [32],
+        "lastStartItem": [32],
+        "isXXSmall": [32],
+        "setFocus": [64],
+        "nextPage": [64],
+        "previousPage": [64]
+    }, undefined, {
+        "messageOverrides": ["onMessagesChange"],
+        "totalItems": ["handleTotalPages", "handleLastStartItemChange"],
+        "pageSize": ["handleTotalPages", "handleLastStartItemChange"],
+        "effectiveLocale": ["effectiveLocaleChange", "effectiveLocaleWatcher"],
+        "totalPages": ["handleLastStartItemChange"],
+        "maxItems": ["handleIsXXSmall"]
+    }]);
+function defineCustomElement() {
+    if (typeof customElements === "undefined") {
+        return;
+    }
+    const components = ["calcite-pagination", "calcite-icon"];
+    components.forEach(tagName => { switch (tagName) {
+        case "calcite-pagination":
+            if (!customElements.get(tagName)) {
+                customElements.define(tagName, Pagination);
+            }
+            break;
+        case "calcite-icon":
+            if (!customElements.get(tagName)) {
+                defineCustomElement$1();
+            }
+            break;
+    } });
+}
+defineCustomElement();
+
+export { Pagination as P, defineCustomElement as d };

@@ -1,0 +1,8 @@
+{
+  "cancel": "キャンセル",
+  "confirmMultiple": "これらのフィーチャは完全に削除されます。",
+  "confirmSingle": "このフィーチャは完全に削除されます。",
+  "delete": "削除",
+  "deleteCount": "削除 ({{n}})",
+  "deleteFeature": "フィーチャの削除"
+}

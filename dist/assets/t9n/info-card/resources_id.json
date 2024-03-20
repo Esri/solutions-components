@@ -1,0 +1,10 @@
+{
+  "fetchingData": "Mengambil data",
+  "edit": "Edit",
+  "enableEditing": "Kapabilitas pembaruan harus diaktifkan di layer.",
+  "editDisabled": "Pengeditan dinonaktifkan",
+  "next": "Selanjutnya",
+  "back": "Kembali",
+  "indexOfTotal": "{{index}} dari {{total}}",
+  "delete": "Hapus"
+}

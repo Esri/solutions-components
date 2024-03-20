@@ -1,0 +1,65 @@
+/** @license
+* Copyright 2022 Esri
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*    http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+.inputBottomSeparation {
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 0px;
+  margin-bottom: 1.5rem;
+}
+
+.icon-inline--on-left, .icon-inline--on-right {
+  display: inline;
+  vertical-align: middle;
+  margin-inline-end: 0.375rem;
+  fill: #0079c1;
+}
+
+.scale-down {
+  -o-object-fit: scale-down;
+     object-fit: scale-down;
+}
+
+.img-container {
+  display: inline;
+  margin-inline-end: 1rem;
+  max-width: 363px;
+}
+
+.summary-count-container {
+  display: inline;
+  flex-grow: 1;
+  margin-inline-start: 0.75rem;
+}
+
+.snippet-count-container {
+  width: calc(100vw - 363px);
+}
+
+.parent-container {
+  max-width: 100%;
+  padding: 1rem;
+}
+
+label {
+  position: relative;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 0px;
+  margin-bottom: 1.5rem;
+  display: block;
+  min-width: -moz-min-content;
+  min-width: min-content;
+}

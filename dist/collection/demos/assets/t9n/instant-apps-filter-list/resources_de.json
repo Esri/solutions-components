@@ -1,0 +1,16 @@
+{
+  "andOperator": "In den Ergebnissen werden ALLE übereinstimmenden Filter angezeigt.",
+  "andOperator2": "AND: In den Ergebnissen werden ALLE übereinstimmenden Filter angezeigt.",
+  "close": "Schließen",
+  "maxSlider": "{field}, Maximum",
+  "minSlider": "{field}, Minimum",
+  "nextMonth": "Nächster Monat",
+  "orOperator": "In den Ergebnissen werden BELIEBIGE übereinstimmende Filter angezeigt.",
+  "orOperator2": "OR: In den Ergebnissen werden BELIEBIGE übereinstimmende Filter angezeigt.",
+  "previousMonth": "Vorheriger Monat",
+  "resetDatePicker": "Datumsauswahl zurücksetzen",
+  "resetFilter": "Filter zurücksetzen",
+  "selectFilter": "Filter auswählen",
+  "zoomTo": "Zoomen auf",
+  "zoomToExtent": "Auf Ausdehnung zoomen"
+}

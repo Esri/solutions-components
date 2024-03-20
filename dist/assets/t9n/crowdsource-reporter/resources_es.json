@@ -1,0 +1,22 @@
+{
+  "createReportHeader": "Crear un informe",
+  "share": "Compartir",
+  "sort": "Ordenar",
+  "filter": "Filtrar",
+  "expand": "Expandir",
+  "collapse": "Contraer",
+  "next": "Siguiente",
+  "submit": "Enviar",
+  "cancel": "Cancelar",
+  "back": "Atrás",
+  "error": "Error",
+  "invalidConfigurationErrorMsg": "Configuración no válida",
+  "noLayerToDisplayErrorMsg": "El mapa web configurado no tiene ninguna capa de entidades editable.",
+  "chooseCategoryMsg": "Choose a category for your report.",
+  "featureErrorMsg": "Entidades no encontradas.",
+  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "currentLocationMsg": "Utilizar mi ubicación actual",
+  "addLocationMsg": "Add the location for your report.",
+  "reportSubmit": "Informe enviado.",
+  "submitMsg": "Gracias. Su informe se ha enviado correctamente."
+}

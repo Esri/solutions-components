@@ -1,0 +1,9 @@
+{
+  "add": "Aggiungi",
+  "remove": "Rimuovi",
+  "featuresAdded": "Feature aggiunte: {{n}}",
+  "featuresRemoved": "Feature rimosse: {{n}}",
+  "totalSelected": "Totale selezionato: {{n}}",
+  "inputLayer": "Layer di input",
+  "inputLayerTip": "Scegliere il layer di input per rivedere, aggiornare le feature selezionate da un layer di input alla volta."
+}

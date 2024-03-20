@@ -1,0 +1,9 @@
+{
+  "add": "添加",
+  "remove": "移除",
+  "featuresAdded": "添加的要素：{{n}}",
+  "featuresRemoved": "移除的要素：{{n}}",
+  "totalSelected": "所选总数：{{n}}",
+  "inputLayer": "输入图层",
+  "inputLayerTip": "选择输入图层以查看所选要素，一次从一个输入图层更新所选要素。"
+}

@@ -1,0 +1,22 @@
+{
+  "createReportHeader": "Створити звіт",
+  "share": "Поділитися",
+  "sort": "Сортувати",
+  "filter": "Фільтр",
+  "expand": "Розширити",
+  "collapse": "Згорнути",
+  "next": "Далі",
+  "submit": "Надіслати",
+  "cancel": "Скасувати",
+  "back": "Назад",
+  "error": "Помилка",
+  "invalidConfigurationErrorMsg": "Недійсна конфігурація",
+  "noLayerToDisplayErrorMsg": "Налаштована веб-карта не містить векторного шару, який можна редагувати.",
+  "chooseCategoryMsg": "Choose a category for your report.",
+  "featureErrorMsg": "Об'єкти не знайдено.",
+  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "currentLocationMsg": "Використовувати моє поточне місце розташування",
+  "addLocationMsg": "Add the location for your report.",
+  "reportSubmit": "Звіт відправлено.",
+  "submitMsg": "Дякуємо! Ваш звіт було успішно надіслано."
+}

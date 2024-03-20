@@ -1,0 +1,6 @@
+/*!
+ * Copyright 2022 Esri
+ * Licensed under the Apache License, Version 2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
+ */
+import{r as e,h as t,g as s}from"./p-7d280d8a.js";import{c as i,u as a,d,I as o}from"./p-6d520a58.js";import"./p-ba7d55ea.js";const l=class{constructor(t){e(this,t),this.disabled=!1,this.layout="horizontal"}connectedCallback(){i(this)}componentDidRender(){a(this)}disconnectedCallback(){d(this)}render(){return t(o,{disabled:this.disabled},t("slot",null))}get el(){return s(this)}};l.style=":host([disabled]){cursor:default;-webkit-user-select:none;-moz-user-select:none;user-select:none;opacity:var(--calcite-opacity-disabled)}:host([disabled]) *,:host([disabled]) ::slotted(*){pointer-events:none}:host{display:flex;flex-wrap:wrap}:host ::slotted(calcite-tile-select){margin-block-end:1px;margin-inline-end:1px}:host([layout=vertical]){flex-direction:column}:host([disabled]) ::slotted([calcite-hydrated][disabled]),:host([disabled]) [calcite-hydrated][disabled]{opacity:1}.interaction-container{display:contents}:host([hidden]){display:none}[hidden]{display:none}";export{l as calcite_tile_select_group}

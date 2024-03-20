@@ -1,0 +1,8 @@
+{
+  "cancel": "取消",
+  "confirmMultiple": "这些要素将永久移除。",
+  "confirmSingle": "此要素将永久移除。",
+  "delete": "删除",
+  "deleteCount": "删除 ({{n}})",
+  "deleteFeature": "删除要素"
+}

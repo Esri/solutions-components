@@ -1,0 +1,38 @@
+{
+  "share": {
+    "label": "分享"
+  },
+  "embed": {
+    "label": "內嵌",
+    "copy": "複製",
+    "width": "寬度",
+    "height": "高度"
+  },
+  "info": {
+    "label": "您知道嗎?",
+    "tooltip": "複製連結將會保留目前的地圖視圖、可見圖層及開啟的快顯視窗。 使用此選項可分享您在應用程式中看見的內容。"
+  },
+  "success": {
+    "label": "成功!",
+    "url": "應用程式 URL 已複製到剪貼簿。",
+    "embed": "內嵌程式碼已複製到剪貼簿。"
+  },
+  "options": {
+    "link": {
+      "label": "複製連結",
+      "tooltip": "按一下以將連結複製到剪貼簿"
+    },
+    "facebook": {
+      "label": "Facebook",
+      "tooltip": "按一下以分享到您的 Facebook 帳號"
+    },
+    "twitter": {
+      "label": "Twitter",
+      "tooltip": "按一下以分享到您的 Twitter 帳號"
+    },
+    "linkedIn": {
+      "label": "LinkedIn",
+      "tooltip": "按一下以分享到您的 LinkedIn 帳號"
+    }
+  }
+}

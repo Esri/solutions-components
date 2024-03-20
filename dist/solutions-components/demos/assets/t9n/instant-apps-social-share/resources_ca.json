@@ -1,0 +1,38 @@
+{
+  "share": {
+    "label": "Comparteix"
+  },
+  "embed": {
+    "label": "Incrusta",
+    "copy": "Copia",
+    "width": "Amplada",
+    "height": "Altura"
+  },
+  "info": {
+    "label": "Ho sabíeu?",
+    "tooltip": "Copieu l'enllaç per mantenir la visualització actual, les capes visibles i els elements emergents oberts. Feu servir aquesta opció per compartir el que veieu al mapa."
+  },
+  "success": {
+    "label": "Molt bé!",
+    "url": "L'URL s'ha copiat al porta-retalls.",
+    "embed": "El codi incrustat s'ha copiat al porta-retalls."
+  },
+  "options": {
+    "link": {
+      "label": "Copia l'enllaç",
+      "tooltip": "Feu clic per copiar l'enllaç al porta-retalls"
+    },
+    "facebook": {
+      "label": "Facebook",
+      "tooltip": "Feu clic per compartir al vostre compte del Facebook"
+    },
+    "twitter": {
+      "label": "Twitter",
+      "tooltip": "Feu clic per compartir al vostre compte del Twitter"
+    },
+    "linkedIn": {
+      "label": "LinkedIn",
+      "tooltip": "Feu clic per compartir al vostre compte del LinkedIn"
+    }
+  }
+}

@@ -1,0 +1,91 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="initial-scale=1,maximum-scale=1,user-scalable=no"
+    />
+    <title>Feature list</title>
+    <!--
+      | Copyright 2022 Esri
+      |
+      | Licensed under the Apache License, Version 2.0 (the "License");
+      | you may not use this file except in compliance with the License.
+      | You may obtain a copy of the License at
+      |
+      |    http://www.apache.org/licenses/LICENSE-2.0
+      |
+      | Unless required by applicable law or agreed to in writing, software
+      | distributed under the License is distributed on an "AS IS" BASIS,
+      | WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+      | See the License for the specific language governing permissions and
+      | limitations under the License.
+      -->
+    <style>
+      #viewDiv {
+        padding: 0;
+        margin: 0;
+        height: 100%;
+        width: calc(50% - 2px);
+      }
+
+      .over-map {
+        position: absolute;
+        top: 0;
+        right: 0px;
+        background-color: var(--calcite-color-foreground-1);
+      }
+
+      .column {
+        width: 50%;
+        height: 100%;
+        border: 1px solid var(--calcite-color-border-2);
+      }
+
+      .column[dir="rtl"] {
+        float: left;
+      }
+
+      .full-height {
+        height: 100%;
+      }
+    </style>
+
+    <link rel="stylesheet" href="https://jsdev.arcgis.com/4.29/esri/themes/light/main.css" />
+    <link rel="stylesheet" href="https://webapps-cdn.esri.com/CDN/fonts/v1.4.1/fonts.css" />
+    <link rel="stylesheet" href="../solutions-components.css" type="text/css">
+    <link rel="stylesheet" type="text/css" href="https://js.arcgis.com/calcite-components/2.0.0/calcite.css" />
+
+    <script src="https://jsdev.arcgis.com/4.29/"></script>
+    <script type="module" src="../solutions-components.esm.js"></script>
+
+    <script>
+      require(["esri/WebMap", "esri/views/MapView"], (
+        WebMap,
+        MapView
+      ) => {
+        var webMap = new WebMap({
+          portalItem: {
+            id: "7377412d3bd7400cbd5b355404285682"
+          }
+        });
+        var view = new MapView({
+          container: "viewDiv",
+          map: webMap
+        });
+
+        view.when(function () {
+          const demo = document.getElementById("demo");
+          demo.mapView = view;
+          demo.selectedLayerId = 'BirdObservationTryItLive_2797';
+          demo.pageSize = 30;
+        })
+      });
+    </script>
+  </head>
+
+  <body>
+    <div id="viewDiv"></div>
+    <feature-list id="demo" class="over-map column full-height"></feature-list>
+  </body>
+</html>

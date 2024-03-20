@@ -1,0 +1,30 @@
+{
+  "mapShortcuts": {
+    "arrowKeys": "Teclas de dirección",
+    "nudge": "Desplazar hacia la izquierda, la derecha, arriba o abajo",
+    "N": "Ajustar para que apunte al norte",
+    "A": "Rotar en sentido antihorario",
+    "D": "Rotar en sentido horario",
+    "plus": "Acercar al centro",
+    "minus": "Alejar desde el centro"
+  },
+  "sceneShortcuts": {
+    "P": "Mover la cámara para mirar en sentido perpendicular a los datos que se muestran en el mapa",
+    "N": "Ajustar el mapa para que apunte al norte",
+    "W": "Inclinar la cámara hacia arriba",
+    "A": "Rotar la cámara en sentido antihorario",
+    "D": "Rotar la cámara en sentido horario",
+    "S": "Inclinar la cámara hacia abajo",
+    "globalCommands": {
+      "J": "Mover hacia abajo, más cerca del mapa",
+      "U": "Mover hacia arriba, más alejado del mapa"
+    }
+  },
+  "generalShortcuts": {
+    "menu": "menú de accesos directos",
+    "shortcut": "Acceso directo",
+    "action": "Acción",
+    "title": "Seleccione el mapa",
+    "label": "Accesos directos del teclado"
+  }
+}

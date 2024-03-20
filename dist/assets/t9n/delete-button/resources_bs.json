@@ -1,0 +1,8 @@
+{
+  "cancel": "Odustani",
+  "confirmMultiple": "Ti će geoobjekti biti trajno uklonjeni.",
+  "confirmSingle": "Ovaj će se geoobjekt trajno ukloniti.",
+  "delete": "Izbriši",
+  "deleteCount": "Izbriši ({{n}})",
+  "deleteFeature": "Izbriši geoobjekt"
+}

@@ -1,0 +1,8 @@
+{
+  "cancel": "Peruuta",
+  "confirmMultiple": "Nämä kohteet poistetaan pysyvästi.",
+  "confirmSingle": "Tämä kohde poistetaan pysyvästi.",
+  "delete": "Poista",
+  "deleteCount": "Poista ({{n}})",
+  "deleteFeature": "Poista kohde"
+}

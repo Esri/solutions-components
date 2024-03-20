@@ -1,0 +1,16 @@
+{
+  "andOperator": "Results will show ALL matching filters",
+  "andOperator2": "AND: Results will show ALL matching filters",
+  "close": "Close",
+  "maxSlider": "{field}, upper bound",
+  "minSlider": "{field}, lower bound",
+  "nextMonth": "Next month",
+  "orOperator": "Results will show ANY matching filters",
+  "orOperator2": "OR: Results will show ANY matching filters",
+  "previousMonth": "Previous month",
+  "resetDatePicker": "Reset date picker",
+  "resetFilter": "Reset Filter",
+  "selectFilter": "Select filter",
+  "zoomTo": "Zoom to",
+  "zoomToExtent": "Zoom to extent"
+}

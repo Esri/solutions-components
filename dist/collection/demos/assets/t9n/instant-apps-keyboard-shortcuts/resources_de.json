@@ -1,0 +1,30 @@
+{
+  "mapShortcuts": {
+    "arrowKeys": "Pfeiltasten",
+    "nudge": "Präzise nach links, rechts, oben oder unten ausrichten",
+    "N": "Nach Norden ausrichten",
+    "A": "Gegen den Uhrzeigersinn drehen",
+    "D": "Im Uhrzeigersinn drehen",
+    "plus": "Am Mittelpunkt vergrößern",
+    "minus": "Am Mittelpunkt verkleinern"
+  },
+  "sceneShortcuts": {
+    "P": "Kamera rechtwinklig zu den in der Karte angezeigten Daten bewegen",
+    "N": "Karte nach Norden ausrichten",
+    "W": "Kamera nach oben neigen",
+    "A": "Kamera gegen den Uhrzeigersinn drehen",
+    "D": "Kamera im Uhrzeigersinn drehen",
+    "S": "Kamera nach unten neigen",
+    "globalCommands": {
+      "J": "Nach unten verschieben, näher an die Karte heran",
+      "U": "Nach oben verschieben, weiter von der Karte weg"
+    }
+  },
+  "generalShortcuts": {
+    "menu": "Menü für Tastenkombinationen",
+    "shortcut": "Tastenkombination",
+    "action": "Aktion",
+    "title": "Karte auswählen",
+    "label": "Tastenkombinationen"
+  }
+}

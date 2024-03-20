@@ -1,0 +1,8 @@
+{
+  "cancel": "Cancelar",
+  "confirmMultiple": "Estes elementos serão permanentemente removidos.",
+  "confirmSingle": "Este elemento será permanentemente removido.",
+  "delete": "Eliminar",
+  "deleteCount": "Eliminar ({{n}})",
+  "deleteFeature": "Eliminar elemento"
+}

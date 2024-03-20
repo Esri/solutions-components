@@ -1,0 +1,6 @@
+/*!
+ * Copyright 2022 Esri
+ * Licensed under the Apache License, Version 2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
+ */
+import{d as _}from"./p-1065f4fa.js";import"./p-7d280d8a.js";import"./p-1f33a29d.js";import"./p-3dd92f0d.js";import"./p-5a9a971a.js";import"./p-7c2be8cc.js";import"./p-6d520a58.js";import"./p-ba7d55ea.js";import"./p-e7afc0a8.js";import"./p-9d53e0f2.js";import"./p-495e7b9d.js";import"./p-a4149333.js";import"./p-13f2d901.js";import"./p-1f65ab1e.js";import"./p-d7b02d3a.js";import"./p-8007ac36.js";import"./p-f0c7d964.js";import"./p-05cb50f9.js";import"./p-2b0454a0.js";import"./p-c94d2cec.js";var p={name:"zh-hk",months:"一月_二月_三月_四月_五月_六月_七月_八月_九月_十月_十一月_十二月".split("_"),monthsShort:"1月_2月_3月_4月_5月_6月_7月_8月_9月_10月_11月_12月".split("_"),weekdays:"星期日_星期一_星期二_星期三_星期四_星期五_星期六".split("_"),weekdaysShort:"週日_週一_週二_週三_週四_週五_週六".split("_"),weekdaysMin:"日_一_二_三_四_五_六".split("_"),ordinal:function(_,p){return"W"===p?_+"週":_+"日"},formats:{LT:"HH:mm",LTS:"HH:mm:ss",L:"YYYY/MM/DD",LL:"YYYY年M月D日",LLL:"YYYY年M月D日 HH:mm",LLLL:"YYYY年M月D日dddd HH:mm"},relativeTime:{future:"%s內",past:"%s前",s:"幾秒",m:"一分鐘",mm:"%d 分鐘",h:"一小時",hh:"%d 小時",d:"一天",dd:"%d 天",M:"一個月",MM:"%d 個月",y:"一年",yy:"%d 年"}};_.locale(p,null,!0);export default p;

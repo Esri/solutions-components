@@ -1,0 +1,22 @@
+{
+  "createReportHeader": "レポートの作成",
+  "share": "共有",
+  "sort": "並べ替え",
+  "filter": "フィルター",
+  "expand": "展開",
+  "collapse": "折りたたむ",
+  "next": "次へ",
+  "submit": "送信",
+  "cancel": "キャンセル",
+  "back": "戻る",
+  "error": "エラー",
+  "invalidConfigurationErrorMsg": "無効な構成",
+  "noLayerToDisplayErrorMsg": "構成済み Web マップに編集可能なフィーチャ レイヤーがありません。",
+  "chooseCategoryMsg": "Choose a category for your report.",
+  "featureErrorMsg": "フィーチャが見つかりません。",
+  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "currentLocationMsg": "現在地を使用",
+  "addLocationMsg": "Add the location for your report.",
+  "reportSubmit": "レポートが送信されました。",
+  "submitMsg": "ありがとうございます。 レポートが正常に送信されました。"
+}

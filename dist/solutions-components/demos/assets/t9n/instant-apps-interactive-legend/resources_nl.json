@@ -1,0 +1,15 @@
+{
+  "noLegend": "Geen legenda.",
+  "loading": "Bezig met laden interactieve legenda",
+  "open": "Openen",
+  "close": "Sluiten",
+  "expand": "Uitvouwen",
+  "collapse": "Samenvouwen",
+  "totalFeatureCount": "Totaal aantal objecten",
+  "showAll": "Alles weergeven",
+  "zoomTo": "Zoomen naar",
+  "relationship": {
+    "instructionalText": "Klik op gekleurde vierkanten om de kaart te filteren",
+    "notSupported": "Tekenstijl Relatie wordt momenteel niet ondersteund."
+  }
+}

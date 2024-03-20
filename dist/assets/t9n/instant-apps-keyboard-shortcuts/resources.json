@@ -1,0 +1,30 @@
+{
+  "mapShortcuts": {
+    "arrowKeys": "Arrow keys",
+    "nudge": "Nudge to left, right, up, or down",
+    "N": "Adjust to point north",
+    "A": "Rotate counterclockwise",
+    "D": "Rotate clockwise",
+    "plus": "Zoom in at the center",
+    "minus": "Zoom out at the center"
+  },
+  "sceneShortcuts": {
+    "P": "Move the camera to look perpindicular to the data displayed in the map",
+    "N": "Adjust the map to point north",
+    "W": "Tilt camera up",
+    "A": "Rotate camera counterclockwise",
+    "D": "Rotate camera clockwise",
+    "S": "Tilt camera down",
+    "globalCommands": {
+      "J": "Move down closer to the map",
+      "U": "Move up higher from the map"
+    }
+  },
+  "generalShortcuts": {
+    "menu": "shortcuts menu",
+    "shortcut": "Shortcut",
+    "action": "Action",
+    "title": "Select the map",
+    "label": "Keyboard shortcuts"
+  }
+}
