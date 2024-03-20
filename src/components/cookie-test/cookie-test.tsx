@@ -56,7 +56,7 @@ export class CookieTest {
     return this._shouldRender && !this._loaded ? (
       <Host>
         <calcite-panel
-          class="consent-panel"
+          class="consent-panel calcite-mode-dark"
           id="cookie-policy"
         >
           <div class="cookie-consent-popup-container">
