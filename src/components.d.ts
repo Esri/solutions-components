@@ -5,9 +5,9 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { ButtonType, DistanceUnit, EditType, EDrawMode, ELayoutMode, IBasemapConfig, IExportInfos, IInventoryItem, ILayerAndTableIds, IMapChange, IMapInfo, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange, theme } from "./utils/interfaces";
+import { ButtonType, DistanceUnit, EditType, EDrawMode, ELayoutMode, IBasemapConfig, IConsentResponse, IExportInfos, IInventoryItem, ILayerAndTableIds, IMapChange, IMapInfo, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange, theme } from "./utils/interfaces";
 import { UserSession } from "@esri/solution-common";
-export { ButtonType, DistanceUnit, EditType, EDrawMode, ELayoutMode, IBasemapConfig, IExportInfos, IInventoryItem, ILayerAndTableIds, IMapChange, IMapInfo, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange, theme } from "./utils/interfaces";
+export { ButtonType, DistanceUnit, EditType, EDrawMode, ELayoutMode, IBasemapConfig, IConsentResponse, IExportInfos, IInventoryItem, ILayerAndTableIds, IMapChange, IMapInfo, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange, theme } from "./utils/interfaces";
 export { UserSession } from "@esri/solution-common";
 export namespace Components {
     interface ArcgisLogin {
@@ -85,6 +85,22 @@ export namespace Components {
         "zoomAndScrollToSelected": boolean;
     }
     interface ConsentManager {
+        /**
+          * string: The name to use for the variable stored in the browsers local storge that will keep track of the users choice for consent
+         */
+        "firstUseVar": string;
+        /**
+          * Initialize and return the telemetry instance if consent has been granted
+         */
+        "getInstance": () => Promise<Telemetry | undefined>;
+        /**
+          * string[]: Any ids for the analytics configured to receive events from the telemety instance
+         */
+        "measurementIds": string[];
+        /**
+          * esri/portal/Portal: https://developers.arcgis.com/javascript/latest/api-reference/esri-portal-Portal.html Required prop for this component to function
+         */
+        "portal": __esri.Portal;
     }
     interface CreateFeature {
         /**
@@ -1309,6 +1325,10 @@ export interface BufferToolsCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLBufferToolsElement;
 }
+export interface ConsentManagerCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLConsentManagerElement;
+}
 export interface CreateFeatureCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLCreateFeatureElement;
@@ -1447,7 +1467,18 @@ declare global {
         prototype: HTMLCardManagerElement;
         new (): HTMLCardManagerElement;
     };
+    interface HTMLConsentManagerElementEventMap {
+        "consentGranted": IConsentResponse;
+    }
     interface HTMLConsentManagerElement extends Components.ConsentManager, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLConsentManagerElementEventMap>(type: K, listener: (this: HTMLConsentManagerElement, ev: ConsentManagerCustomEvent<HTMLConsentManagerElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLConsentManagerElementEventMap>(type: K, listener: (this: HTMLConsentManagerElement, ev: ConsentManagerCustomEvent<HTMLConsentManagerElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLConsentManagerElement: {
         prototype: HTMLConsentManagerElement;
@@ -2158,6 +2189,22 @@ declare namespace LocalJSX {
         "zoomAndScrollToSelected"?: boolean;
     }
     interface ConsentManager {
+        /**
+          * string: The name to use for the variable stored in the browsers local storge that will keep track of the users choice for consent
+         */
+        "firstUseVar"?: string;
+        /**
+          * string[]: Any ids for the analytics configured to receive events from the telemety instance
+         */
+        "measurementIds": string[];
+        /**
+          * Emitted on demand when the user accepts or denies consent
+         */
+        "onConsentGranted"?: (event: ConsentManagerCustomEvent<IConsentResponse>) => void;
+        /**
+          * esri/portal/Portal: https://developers.arcgis.com/javascript/latest/api-reference/esri-portal-Portal.html Required prop for this component to function
+         */
+        "portal": __esri.Portal;
     }
     interface CreateFeature {
         /**
