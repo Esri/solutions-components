@@ -190,7 +190,7 @@ export class ConsentManager {
                 {this._translations.moreInfo}&nbsp;
                 <calcite-link
                   class="link-text"
-                  href="https://www.europarl.europa.eu/privacy-policy/en/data-protection"
+                  href="https://www.arcgis.com/"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -198,16 +198,16 @@ export class ConsentManager {
                 </calcite-link>{this._translations.our}&nbsp;
                 <calcite-link
                   class="link-text"
-                  href="https://www.europarl.europa.eu/privacy-policy/en/cookies-policy"
+                  href="https://www.arcgis.com/"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
                   {this._translations.cookiePolicy}
                 </calcite-link>
-                  {this._translations.andOur}&nbsp;
+                  &nbsp;{this._translations.andOur}&nbsp;
                 <calcite-link
                   class="link-text"
-                  href="https://www.europarl.europa.eu/privacy-policy/en/cookies-inventory"
+                  href="https://www.arcgis.com/"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
