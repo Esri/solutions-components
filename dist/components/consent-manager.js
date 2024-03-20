@@ -1634,7 +1634,7 @@ class GoogleAnalytics {
     }
 }
 
-const consentManagerCss = ":host{display:block}.consent-panel{position:fixed;display:block;z-index:5000;bottom:0;left:0;width:100%;height:auto;text-align:center}.cookie-consent-popup-container{position:relative;display:block;bottom:0;left:0;width:100%;margin:0;padding-top:1rem;padding-bottom:1rem;transition:transform 0.5s ease-out 0s}.button-container{position:static;margin-bottom:1rem;display:flex;justify-content:center;flex-wrap:wrap}.padding-end-1{padding-inline-end:1rem}";
+const consentManagerCss = ":host{display:block}.consent-panel{position:fixed;display:block;z-index:5000;bottom:0;left:0;width:100%;height:auto;text-align:center}.cookie-consent-popup-container{position:relative;display:block;bottom:0;left:0;width:100%;margin:0;padding-top:1rem;padding-bottom:1rem;transition:transform 0.5s ease-out 0s;background-color:rgba(51, 51, 51, 0.95);color:#fff}.button-container{position:static;margin-bottom:1rem;display:flex;justify-content:center;flex-wrap:wrap}.padding-end-1{padding-inline-end:1rem}.link-text{--calcite-ui-text-link:var(--calcite-color-text-inverse);--calcite-ui-brand:var(--calcite-color-text-inverse);--calcite-color-text-link:var(--calcite-color-text-inverse);--calcite-color-brand-underline:var(--calcite-color-text-inverse);--calcite-color-brand:var(--calcite-color-text-inverse)}";
 
 const ConsentManager$1 = /*@__PURE__*/ proxyCustomElement(class ConsentManager extends HTMLElement {
     constructor() {
