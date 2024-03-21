@@ -202,9 +202,9 @@ export class ConsentManager {
                   rel="noopener noreferrer"
                   target="_blank"
                 >
-                  {this._translations.cookiePolicy}
+                  {this._translations.cookiePolicy}&nbsp;
                 </calcite-link>
-                  &nbsp;{this._translations.andOur}&nbsp;
+                  {this._translations.andOur}&nbsp;
                 <calcite-link
                   class="link-text"
                   href="https://www.arcgis.com/"
