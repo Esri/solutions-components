@@ -1,0 +1,8 @@
+{
+  "cancel": "Loobu",
+  "confirmMultiple": "Need objektid eemaldatakse jäädavalt.",
+  "confirmSingle": "Objekt eemaldatakse jäädavalt.",
+  "delete": "Kustuta",
+  "deleteCount": "Kustuta ({{n}})",
+  "deleteFeature": "Kustuta objekt"
+}

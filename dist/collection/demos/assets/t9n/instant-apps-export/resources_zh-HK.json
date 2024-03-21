@@ -1,0 +1,11 @@
+{
+  "export": "匯出",
+  "exportPopover": "匯出浮動提示",
+  "includeExtraContent": "包含結果",
+  "includeHeaderTheme": "包含標頭主題",
+  "includeLegend": "包括圖例",
+  "includeMap": "包含地圖",
+  "includePopup": "包含快顯視窗",
+  "title": "標題",
+  "toggleExport": "切換匯出"
+}

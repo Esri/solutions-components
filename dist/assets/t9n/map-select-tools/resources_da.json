@@ -1,0 +1,16 @@
+{
+  "listName": "Angiv navn på lister",
+  "listNamePlaceholder": "Indtast navn her",
+  "searchDistance": "Søgeafstand",
+  "select": "Lag",
+  "selectedFeatures": "{{n}} valgte objekter",
+  "selectionLoading": "Udvalg indlæses",
+  "sketch": "Skitse",
+  "bufferLayer": "Bufferlag",
+  "sketchLayer": "Skitselag",
+  "useLayerFeatures": "Brug lagobjekter",
+  "inputLayer": "Input-lag",
+  "useLayerFeaturesTooltip": "Vælg et lag, og brug skitseværktøjerne til at pege på objekter, der kan bruges som en grænse til at vælge gennemskærende objekter fra inputlaget.",
+  "useSearchDistanceTootip": "Definer en afstand til en søgebuffer, som vil vælge de inputobjekter, der gennemskærer bufferen.",
+  "placeholder": "Find adresse eller sted"
+}

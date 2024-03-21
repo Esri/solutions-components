@@ -1,0 +1,15 @@
+{
+  "noLegend": "Keine Legende.",
+  "loading": "Interaktive Legende wird geladen",
+  "open": "Öffnen",
+  "close": "Schließen",
+  "expand": "Einblenden",
+  "collapse": "Ausblenden",
+  "totalFeatureCount": "Gesamt-Feature-Anzahl",
+  "showAll": "Alle anzeigen",
+  "zoomTo": "Zoomen auf",
+  "relationship": {
+    "instructionalText": "Zum Filtern der Karte auf Farbquadrate klicken",
+    "notSupported": "Der für die Darstellung von Beziehungen ausgewählte Style wird derzeit nicht unterstützt."
+  }
+}

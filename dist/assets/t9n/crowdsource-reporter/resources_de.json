@@ -1,0 +1,22 @@
+{
+  "createReportHeader": "Einen Bericht erstellen",
+  "share": "Freigeben",
+  "sort": "Sortieren",
+  "filter": "Filtern",
+  "expand": "Einblenden",
+  "collapse": "Ausblenden",
+  "next": "Weiter",
+  "submit": "Senden",
+  "cancel": "Abbrechen",
+  "back": "Zurück",
+  "error": "Fehler",
+  "invalidConfigurationErrorMsg": "Ungültige Konfiguration",
+  "noLayerToDisplayErrorMsg": "Konfigurierte Webkarte enthält keine editierbaren Feature-Layer.",
+  "chooseCategoryMsg": "Choose a category for your report.",
+  "featureErrorMsg": "Features nicht gefunden.",
+  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "currentLocationMsg": "Aktuelle eigene Position verwenden",
+  "addLocationMsg": "Add the location for your report.",
+  "reportSubmit": "Bericht wurde gesendet.",
+  "submitMsg": "Vielen Dank. Ihr Bericht wurde erfolgreich gesendet."
+}

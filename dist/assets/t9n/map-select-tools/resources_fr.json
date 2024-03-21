@@ -1,0 +1,16 @@
+{
+  "listName": "Nom de la liste",
+  "listNamePlaceholder": "Saisir un nom ici",
+  "searchDistance": "Distance de recherche",
+  "select": "Couche",
+  "selectedFeatures": "{{n}} entités sélectionnées",
+  "selectionLoading": "Chargement de la sélection",
+  "sketch": "Dessin",
+  "bufferLayer": "Couche de zone tampon",
+  "sketchLayer": "Couche de dessin",
+  "useLayerFeatures": "Utiliser des entités de la couche",
+  "inputLayer": "Couche en entrée",
+  "useLayerFeaturesTooltip": "Choisir une couche et utiliser les outils de dessin afin de désigner les entités qui peuvent être utilisées comme limites pour sélectionner les entités d’intersection dans la couche en entrée.",
+  "useSearchDistanceTootip": "Définir une distance pour une zone tampon de recherche qui servira à sélectionner les entités en entrée qui intersectent la zone tampon.",
+  "placeholder": "Rechercher une adresse ou un lieu"
+}

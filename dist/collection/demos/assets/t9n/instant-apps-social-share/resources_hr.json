@@ -1,0 +1,38 @@
+{
+  "share": {
+    "label": "Podijeli"
+  },
+  "embed": {
+    "label": "Umetni",
+    "copy": "Kopiraj",
+    "width": "Širina",
+    "height": "Visina"
+  },
+  "info": {
+    "label": "Jeste li znali?",
+    "tooltip": "Kopiraj poveznicu sačuvat će trenutni prikaz karte, vidljive slojeve i otvorene skočne prozore. Koristite ovu opciju da podijelite ono što vidite u aplikaciji."
+  },
+  "success": {
+    "label": "Uspjeh!",
+    "url": "URL aplikacije kopiran u međuspremnik.",
+    "embed": "Kod za umetanje kopiran u međuspremnik."
+  },
+  "options": {
+    "link": {
+      "label": "Kopiraj poveznicu",
+      "tooltip": "Kliknite za kopiranje poveznice u međuspremnik"
+    },
+    "facebook": {
+      "label": "Facebook",
+      "tooltip": "Kliknite za dijeljenje na svom Facebook računu"
+    },
+    "twitter": {
+      "label": "Twitter",
+      "tooltip": "Kliknite za dijeljenje na svom Twitter računu"
+    },
+    "linkedIn": {
+      "label": "LinkedIn",
+      "tooltip": "Kliknite za dijeljenje na svom LinkedIn računu"
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "export": "Exporter",
+  "exportPopover": "Fenêtre contextuelle Exporter",
+  "includeExtraContent": "Inclure les résultats",
+  "includeHeaderTheme": "Inclure le thème d’en-tête",
+  "includeLegend": "Inclure la légende",
+  "includeMap": "Inclure la carte",
+  "includePopup": "Inclure la fenêtre contextuelle",
+  "title": "Titre",
+  "toggleExport": "Activer/désactiver Exporter"
+}

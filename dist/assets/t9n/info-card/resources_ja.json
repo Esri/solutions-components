@@ -1,0 +1,10 @@
+{
+  "fetchingData": "データを取得しています",
+  "edit": "編集",
+  "enableEditing": "更新機能をレイヤーに対して有効化する必要があります。",
+  "editDisabled": "編集が無効になっています",
+  "next": "次へ",
+  "back": "戻る",
+  "indexOfTotal": "{{index}} / {{total}}",
+  "delete": "削除"
+}

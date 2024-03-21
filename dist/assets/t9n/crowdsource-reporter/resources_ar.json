@@ -1,0 +1,22 @@
+{
+  "createReportHeader": "إنشاء تقرير",
+  "share": "مشاركة",
+  "sort": "فرز",
+  "filter": "تصفية",
+  "expand": "توسيع",
+  "collapse": "طي",
+  "next": "التالي",
+  "submit": "إرسال",
+  "cancel": "إلغاء الأمر",
+  "back": "رجوع",
+  "error": "خطأ",
+  "invalidConfigurationErrorMsg": "تكوين غير صحيح",
+  "noLayerToDisplayErrorMsg": "لا تحتوي خريطة الويب التي تم تكوينها على أي طبقة معالم قابلة للتحرير.",
+  "chooseCategoryMsg": "Choose a category for your report.",
+  "featureErrorMsg": "لم يتم العثور على المعالم.",
+  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "currentLocationMsg": "استخدم موقعي الحالي",
+  "addLocationMsg": "Add the location for your report.",
+  "reportSubmit": "تم إرسال التقرير.",
+  "submitMsg": "شكرًا لك! تم إرسال تقريرك بنجاح."
+}

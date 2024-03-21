@@ -1,0 +1,10 @@
+{
+  "fetchingData": "Získavanie dát",
+  "edit": "Editovať",
+  "enableEditing": "Pre vrstvu musí byť povolená editácia.",
+  "editDisabled": "Editácia deaktivovaná",
+  "next": "Ďalej",
+  "back": "Späť",
+  "indexOfTotal": "{{index}} z {{total}}",
+  "delete": "Zmazať"
+}

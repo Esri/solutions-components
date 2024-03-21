@@ -1,0 +1,15 @@
+{
+  "noLegend": "Ingen tegnforklaring.",
+  "loading": "Laster inn interaktiv tegnforklaring",
+  "open": "Åpne",
+  "close": "Lukk",
+  "expand": "Utvid",
+  "collapse": "Skjul",
+  "totalFeatureCount": "Totalt antall geoobjekter",
+  "showAll": "Vis alle",
+  "zoomTo": "Zoom til",
+  "relationship": {
+    "instructionalText": "Klikk på fargefirkanter for å filtrere kartet",
+    "notSupported": "Tegnestilen Relasjon støttes ikke for øyeblikket."
+  }
+}

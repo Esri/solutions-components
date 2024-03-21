@@ -1,0 +1,10 @@
+{
+  "legend": "Selite",
+  "search": "Hae",
+  "expand": "Laajenna",
+  "basemap": "Taustakartta",
+  "collapse": "Kutista",
+  "enterFullscreen": "Siirry koko näytön tilaan",
+  "exitFullscreen": "Poistu koko näytön tilasta",
+  "floorFilter": "Kerrossuodatin"
+}

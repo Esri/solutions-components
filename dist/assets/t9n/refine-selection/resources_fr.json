@@ -1,0 +1,9 @@
+{
+  "add": "Ajouter",
+  "remove": "Supprimer",
+  "featuresAdded": "Entités ajoutées : {{n}}",
+  "featuresRemoved": "Entités supprimées : {{n}}",
+  "totalSelected": "Nombre total d’entités sélectionnées : {{n}}",
+  "inputLayer": "Couche en entrée",
+  "inputLayerTip": "Choisissez la couche en entrée dans laquelle examiner les entités sélectionnées. Mettez à jour les entités sélectionnées d’une seule couche en entrée à la fois."
+}

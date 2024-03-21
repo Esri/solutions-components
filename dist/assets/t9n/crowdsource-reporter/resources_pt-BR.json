@@ -1,0 +1,22 @@
+{
+  "createReportHeader": "Criar um relatório",
+  "share": "Compartilhar",
+  "sort": "Classificar",
+  "filter": "Filtrar",
+  "expand": "Expandir",
+  "collapse": "Recolher",
+  "next": "Avançar",
+  "submit": "Enviar",
+  "cancel": "Cancelar",
+  "back": "Voltar",
+  "error": "Erro",
+  "invalidConfigurationErrorMsg": "Configuração inválida",
+  "noLayerToDisplayErrorMsg": "O mapa da web configurado não possui nenhuma camada de feição editável.",
+  "chooseCategoryMsg": "Choose a category for your report.",
+  "featureErrorMsg": "Feições não localizadas.",
+  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "currentLocationMsg": "Usar minha localização atual",
+  "addLocationMsg": "Add the location for your report.",
+  "reportSubmit": "Relatório Enviado.",
+  "submitMsg": "Obrigado! Seu relatório foi enviado com sucesso."
+}

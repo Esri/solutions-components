@@ -1,0 +1,6 @@
+/*!
+ * Copyright 2022 Esri
+ * Licensed under the Apache License, Version 2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
+ */
+import{d as _}from"./p-1065f4fa.js";import"./p-7d280d8a.js";import"./p-1f33a29d.js";import"./p-3dd92f0d.js";import"./p-5a9a971a.js";import"./p-7c2be8cc.js";import"./p-6d520a58.js";import"./p-ba7d55ea.js";import"./p-e7afc0a8.js";import"./p-9d53e0f2.js";import"./p-495e7b9d.js";import"./p-a4149333.js";import"./p-13f2d901.js";import"./p-1f65ab1e.js";import"./p-d7b02d3a.js";import"./p-8007ac36.js";import"./p-f0c7d964.js";import"./p-05cb50f9.js";import"./p-2b0454a0.js";import"./p-c94d2cec.js";var m={name:"ko",weekdays:"일요일_월요일_화요일_수요일_목요일_금요일_토요일".split("_"),weekdaysShort:"일_월_화_수_목_금_토".split("_"),weekdaysMin:"일_월_화_수_목_금_토".split("_"),months:"1월_2월_3월_4월_5월_6월_7월_8월_9월_10월_11월_12월".split("_"),monthsShort:"1월_2월_3월_4월_5월_6월_7월_8월_9월_10월_11월_12월".split("_"),ordinal:function(_){return _+"일"},formats:{LT:"A h:mm",LTS:"A h:mm:ss",L:"YYYY.MM.DD.",LL:"YYYY년 MMMM D일",LLL:"YYYY년 MMMM D일 A h:mm",LLLL:"YYYY년 MMMM D일 dddd A h:mm",l:"YYYY.MM.DD.",ll:"YYYY년 MMMM D일",lll:"YYYY년 MMMM D일 A h:mm",llll:"YYYY년 MMMM D일 dddd A h:mm"},meridiem:function(_){return _<12?"오전":"오후"},relativeTime:{future:"%s 후",past:"%s 전",s:"몇 초",m:"1분",mm:"%d분",h:"한 시간",hh:"%d시간",d:"하루",dd:"%d일",M:"한 달",MM:"%d달",y:"일 년",yy:"%d년"}};_.locale(m,null,!0);export default m;

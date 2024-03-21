@@ -1,0 +1,16 @@
+{
+  "andOperator": "结果将显示所有匹配的过滤器",
+  "andOperator2": "AND：结果将显示所有匹配的过滤器",
+  "close": "关闭",
+  "maxSlider": "{field}，上限",
+  "minSlider": "{field}，下限",
+  "nextMonth": "下个月",
+  "orOperator": "结果将显示任意匹配的过滤器",
+  "orOperator2": "OR：结果将显示任意匹配的过滤器",
+  "previousMonth": "上个月",
+  "resetDatePicker": "重置日期选取器",
+  "resetFilter": "重置过滤器",
+  "selectFilter": "选择过滤器",
+  "zoomTo": "缩放至",
+  "zoomToExtent": "缩放至范围"
+}

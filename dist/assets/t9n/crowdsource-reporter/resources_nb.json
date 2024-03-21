@@ -1,0 +1,22 @@
+{
+  "createReportHeader": "Opprett en rapport",
+  "share": "Del",
+  "sort": "Sorter",
+  "filter": "Filter",
+  "expand": "Utvid",
+  "collapse": "Skjul",
+  "next": "Neste",
+  "submit": "Send inn",
+  "cancel": "Avbryt",
+  "back": "Tilbake",
+  "error": "Feil",
+  "invalidConfigurationErrorMsg": "Ugyldig konfigurasjon",
+  "noLayerToDisplayErrorMsg": "Konfigurert webkart har ingen geoobjektlag som kan redigeres.",
+  "chooseCategoryMsg": "Choose a category for your report.",
+  "featureErrorMsg": "Finner ikke geoobjekter.",
+  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "currentLocationMsg": "Bruk min nåværende lokasjon",
+  "addLocationMsg": "Add the location for your report.",
+  "reportSubmit": "Rapporten er levert.",
+  "submitMsg": "Takk! Rapporten er innsendt."
+}

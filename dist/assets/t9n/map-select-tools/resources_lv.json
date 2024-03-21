@@ -1,0 +1,16 @@
+{
+  "listName": "Saraksta nosaukums",
+  "listNamePlaceholder": "Ievadiet nosaukumu šeit",
+  "searchDistance": "Meklēšanas attālums",
+  "select": "Slānis",
+  "selectedFeatures": "{{n}} izvēlētie elementi",
+  "selectionLoading": "Izvēle tiek ielādēta",
+  "sketch": "Skice",
+  "bufferLayer": "Buferzonas slānis",
+  "sketchLayer": "Skiču slānis",
+  "useLayerFeatures": "Izmantot slāņa elementus",
+  "inputLayer": "Ievades slānis",
+  "useLayerFeaturesTooltip": "Izvēlieties slāni un izmantojiet skiču rīkus, lai norādītu elementus, kurus var izmantot kā robežu, lai atlasītu krustojošos elementus no ievades slāņa.",
+  "useSearchDistanceTootip": "Nosakiet attālumu meklēšanas buferzonai, kas izvēlēsies ievades elementus, kas šķērso buferzonu.",
+  "placeholder": "Atrast adresi vai vietu"
+}

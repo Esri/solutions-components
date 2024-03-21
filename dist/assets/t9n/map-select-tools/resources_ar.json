@@ -1,0 +1,16 @@
+{
+  "listName": "اسم القائمة",
+  "listNamePlaceholder": "أدخل الاسم هنا",
+  "searchDistance": "مسافة البحث",
+  "select": "الطبقة",
+  "selectedFeatures": "{{n}} معالم محددة",
+  "selectionLoading": "تحميل التحديد",
+  "sketch": "مخطط",
+  "bufferLayer": "طبقة النطاق",
+  "sketchLayer": "طبقة المخطط",
+  "useLayerFeatures": "استخدام معالم الطبقة",
+  "inputLayer": "الطبقة المدخلة",
+  "useLayerFeaturesTooltip": "اختر طبقة واستخدم أدوات الرسم للإشارة إلى المعالم التي يمكن استخدامها كحدود لتحديد المعالم المتقاطعة من طبقة الإدخال.",
+  "useSearchDistanceTootip": "حدد مسافة لنطاق البحث والتي ستحدد المعالم المدخلة التي تتقاطع مع النطاق.",
+  "placeholder": "العثور على عنوان أو مكان"
+}

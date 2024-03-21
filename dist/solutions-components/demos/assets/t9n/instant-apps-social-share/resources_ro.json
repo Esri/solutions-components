@@ -1,0 +1,38 @@
+{
+  "share": {
+    "label": "Partajare"
+  },
+  "embed": {
+    "label": "Încorporat",
+    "copy": "Copiere",
+    "width": "Lăţime",
+    "height": "Înălţime"
+  },
+  "info": {
+    "label": "Știați?",
+    "tooltip": "Copierea linkului va păstra vizualizarea curentă a hărții, straturile tematice vizibile și ferestrele pop-up deschise. Utilizați această opțiune pentru a partaja ceea ce vedeți în aplicație."
+  },
+  "success": {
+    "label": "Succes!",
+    "url": "URL-ul aplicației a fost copiat pe clipboard.",
+    "embed": "Codul încorporat a fost copiat pe clipboard."
+  },
+  "options": {
+    "link": {
+      "label": "Copiere link",
+      "tooltip": "Faceți clic pentru a copia linkul pe clipboard"
+    },
+    "facebook": {
+      "label": "Facebook",
+      "tooltip": "Faceți clic pentru a partaja contul dvs. de Facebook"
+    },
+    "twitter": {
+      "label": "Twitter",
+      "tooltip": "Faceți clic pentru a partaja contul dvs. de Twitter"
+    },
+    "linkedIn": {
+      "label": "LinkedIn",
+      "tooltip": "Faceți clic pentru a partaja contul dvs. de LinkedIn"
+    }
+  }
+}

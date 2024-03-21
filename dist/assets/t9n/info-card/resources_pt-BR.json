@@ -1,0 +1,10 @@
+{
+  "fetchingData": "Buscando dados",
+  "edit": "Editar",
+  "enableEditing": "A capacidade de atualização deve estar habilitada na camada.",
+  "editDisabled": "Edição Desabilitada",
+  "next": "Avançar",
+  "back": "Voltar",
+  "indexOfTotal": "{{index}} de {{total}}",
+  "delete": "Excluir"
+}

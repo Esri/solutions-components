@@ -1,0 +1,15 @@
+{
+  "noLegend": "Nicio legendă.",
+  "loading": "Încărcare legendă interactivă",
+  "open": "Deschidere",
+  "close": "Închidere",
+  "expand": "Extindere",
+  "collapse": "Restrângere",
+  "totalFeatureCount": "Număr total de obiecte spațiale",
+  "showAll": "Afișare toate",
+  "zoomTo": "Transfocare la",
+  "relationship": {
+    "instructionalText": "Faceți clic pe pătratele colorate pentru a filtra harta",
+    "notSupported": "Stilul de trasare a relației nu este acceptat momentan."
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "createReportHeader": "Een rapport maken",
+  "share": "Delen",
+  "sort": "Sorteren",
+  "filter": "Filteren",
+  "expand": "Uitvouwen",
+  "collapse": "Samenvouwen",
+  "next": "Volgende",
+  "submit": "Verzenden",
+  "cancel": "Annuleren",
+  "back": "Terug",
+  "error": "Fout",
+  "invalidConfigurationErrorMsg": "Ongeldige configuratie",
+  "noLayerToDisplayErrorMsg": "Geconfigureerde web map bevat geen bewerkbare objectlagen.",
+  "chooseCategoryMsg": "Choose a category for your report.",
+  "featureErrorMsg": "Kan objecten niet vinden.",
+  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "currentLocationMsg": "Gebruik mijn huidige locatie",
+  "addLocationMsg": "Add the location for your report.",
+  "reportSubmit": "Rapport ingediend",
+  "submitMsg": "Bedankt! Uw rapport is ingediend."
+}

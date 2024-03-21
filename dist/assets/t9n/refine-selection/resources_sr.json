@@ -1,0 +1,9 @@
+{
+  "add": "Dodaj",
+  "remove": "Ukloni",
+  "featuresAdded": "Dodate osobine: {{n}}",
+  "featuresRemoved": "Uklonjene osobine: {{n}}",
+  "totalSelected": "Ukupno odabrano: {{n}}",
+  "inputLayer": "Ulazni sloj",
+  "inputLayerTip": "Odaberite ulazni sloj da pregledate osobine, ažurirate odabrane osobine iz ulaznih slojeva - jedan po jedan."
+}

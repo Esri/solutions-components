@@ -1,0 +1,22 @@
+{
+  "createReportHeader": "Luo raportti",
+  "share": "Jaa",
+  "sort": "Lajittele",
+  "filter": "Suodata",
+  "expand": "Laajenna",
+  "collapse": "Kutista",
+  "next": "Seuraava",
+  "submit": "Lähetä",
+  "cancel": "Peruuta",
+  "back": "Takaisin",
+  "error": "Virhe",
+  "invalidConfigurationErrorMsg": "Virheellinen määritys",
+  "noLayerToDisplayErrorMsg": "Määritetty web-kartta ei sisällä muokattavaa kohdekarttatasoa.",
+  "chooseCategoryMsg": "Choose a category for your report.",
+  "featureErrorMsg": "Kohteita ei löytynyt.",
+  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "currentLocationMsg": "Käytä nykyistä sijaintiani",
+  "addLocationMsg": "Add the location for your report.",
+  "reportSubmit": "Raportti on lähetetty.",
+  "submitMsg": "Kiitos! Raporttisi lähettäminen onnistui."
+}

@@ -1,0 +1,8 @@
+{
+  "cancel": "Abbrechen",
+  "confirmMultiple": "Diese Features werden dauerhaft entfernt.",
+  "confirmSingle": "Dieses Feature wird dauerhaft entfernt.",
+  "delete": "Löschen",
+  "deleteCount": "Löschen ({{n}})",
+  "deleteFeature": "Feature löschen"
+}

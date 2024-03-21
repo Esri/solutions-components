@@ -1,0 +1,8 @@
+{
+  "cancel": "Batalkan",
+  "confirmMultiple": "Fitur-fitur ini akan dihapus secara permanen.",
+  "confirmSingle": "Fitur ini akan dihapus secara permanen.",
+  "delete": "Hapus",
+  "deleteCount": "Hapus ({{n}})",
+  "deleteFeature": "Hapus fitur"
+}

@@ -1,0 +1,8 @@
+{
+  "cancel": "Annuler",
+  "confirmMultiple": "Ces entités seront définitivement supprimées.",
+  "confirmSingle": "Cette entité sera définitivement supprimée.",
+  "delete": "Supprimer",
+  "deleteCount": "Supprimer ({{n}})",
+  "deleteFeature": "Supprimer l’entité"
+}
