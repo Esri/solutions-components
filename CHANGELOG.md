@@ -6,6 +6,10 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.8.0] - Mar 27th 2024
+* Start work for R02 2024 release
+Add consent manager
+
 ## [0.7.52] - Mar 7th 2024
 Fix column info issue
 
