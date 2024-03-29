@@ -45,7 +45,7 @@ export class ConsentManager {
    * string: The name to use for the variable stored in the browsers local storge that
    * will keep track of the users choice for consent
    */
-  @Prop() firstUseVar = "solutions-first-use";
+  @Prop() firstUseVar!: string;
 
   /**
    * string[]: Any ids for the analytics configured to receive events from the telemety instance
@@ -219,6 +219,17 @@ export class ConsentManager {
         </calcite-panel>
       </Host>
     ) : undefined;
+  }
+
+  /**
+   * Called once after the component is loaded
+   *
+   * @returns Promise when complete
+   */
+  async componentDidLoad(): Promise<void> {
+    this.consentGranted.emit({
+      granted: localStorage.getItem(this.firstUseVar) === "true"
+    });
   }
 
   //--------------------------------------------------------------------------

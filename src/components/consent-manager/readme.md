@@ -7,11 +7,11 @@
 
 ## Properties
 
-| Property                      | Attribute       | Description                                                                                                                                            | Type       | Default                 |
-| ----------------------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------- | ----------------------- |
-| `firstUseVar`                 | `first-use-var` | string: The name to use for the variable stored in the browsers local storge that will keep track of the users choice for consent                      | `string`   | `"solutions-first-use"` |
-| `measurementIds` _(required)_ | --              | string[]: Any ids for the analytics configured to receive events from the telemety instance                                                            | `string[]` | `undefined`             |
-| `portal` _(required)_         | --              | esri/portal/Portal: https://developers.arcgis.com/javascript/latest/api-reference/esri-portal-Portal.html Required prop for this component to function | `Portal`   | `undefined`             |
+| Property                      | Attribute       | Description                                                                                                                                            | Type       | Default     |
+| ----------------------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------- | ----------- |
+| `firstUseVar` _(required)_    | `first-use-var` | string: The name to use for the variable stored in the browsers local storge that will keep track of the users choice for consent                      | `string`   | `undefined` |
+| `measurementIds` _(required)_ | --              | string[]: Any ids for the analytics configured to receive events from the telemety instance                                                            | `string[]` | `undefined` |
+| `portal` _(required)_         | --              | esri/portal/Portal: https://developers.arcgis.com/javascript/latest/api-reference/esri-portal-Portal.html Required prop for this component to function | `Portal`   | `undefined` |
 
 
 ## Events

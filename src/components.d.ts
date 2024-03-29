@@ -2192,7 +2192,7 @@ declare namespace LocalJSX {
         /**
           * string: The name to use for the variable stored in the browsers local storge that will keep track of the users choice for consent
          */
-        "firstUseVar"?: string;
+        "firstUseVar": string;
         /**
           * string[]: Any ids for the analytics configured to receive events from the telemety instance
          */
