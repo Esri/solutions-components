@@ -476,7 +476,7 @@ export class MapDrawTools {
    * @protected
    */
   protected _clearSketch(): void {
-    this._sketchWidget.viewModel.cancel();
+    this._sketchWidget?.viewModel.cancel();
     this.graphics = [];
     this._sketchGraphicsLayer?.removeAll();
   }
