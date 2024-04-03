@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.8.2] - Apr 3rd 2024
+Hot fix for PN search config
+
 ## [0.8.1] - Apr 1st 2024
 Update consent manager
 
@@ -517,4 +520,5 @@ Recover from test releases
 [0.7.52]: https://github.com/Esri/solution.js/compare/v0.7.51...v0.7.52 "v0.7.52"
 [0.8.0]: https://github.com/Esri/solution.js/compare/v0.7.52...v0.8.0 "v0.8.0"
 [0.8.1]: https://github.com/Esri/solution.js/compare/v0.8.0...v0.8.1 "v0.8.1"
-[Unreleased]: https://github.com/Esri/solution.js/compare/v0.8.1...HEAD "Unreleased Changes"
+[0.8.2]: https://github.com/Esri/solution.js/compare/v0.8.1...v0.8.2 "v0.8.2"
+[Unreleased]: https://github.com/Esri/solution.js/compare/v0.8.2...HEAD "Unreleased Changes"
