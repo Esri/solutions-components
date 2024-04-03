@@ -326,6 +326,16 @@ export class MapSelectTools {
   }
 
   /**
+   * Called each time the mapView prop is changed.
+   */
+  @Watch("mapView")
+  async mapViewWatchHandler(v: any, oldV: any): Promise<void> {
+    if (v && v !== oldV) {
+      await this._init();
+    }
+  }
+
+  /**
    * Called each time the searchConfiguration prop is changed.
    *
    * @returns Promise when complete
@@ -336,7 +346,7 @@ export class MapSelectTools {
     oldValue: ISearchConfiguration
   ): Promise<void> {
     if (JSON.stringify(newValue) !== JSON.stringify(oldValue)) {
-      this._initSearchWidget();
+      await this._initSearchWidget();
     }
   }
 
@@ -445,11 +455,6 @@ export class MapSelectTools {
    */
   async componentDidLoad(): Promise<void> {
     await this._init();
-    await this._searchWidget.when(() => {
-      this._searchWidget.allPlaceholder = this.searchConfiguration?.allPlaceholder &&
-        this.searchConfiguration.allPlaceholder.toLowerCase() !== "find address or place" ?
-        this.searchConfiguration.allPlaceholder : this._translations.placeholder;
-    })
   }
 
   /**
@@ -693,7 +698,7 @@ export class MapSelectTools {
   protected async _init(): Promise<void> {
     this._initGraphicsLayer();
     await this._initSelectionSet();
-    this._initSearchWidget();
+    await this._initSearchWidget();
   }
 
   /**
@@ -745,7 +750,7 @@ export class MapSelectTools {
    *
    * @protected
    */
-  protected _initSearchWidget(): void {
+  protected async _initSearchWidget(): Promise<void> {
     if (this.mapView && this._searchElement) {
       const searchConfiguration = this._getSearchConfig(this.searchConfiguration, this.mapView);
 
@@ -786,6 +791,12 @@ export class MapSelectTools {
           void this._clearResults(false, clearLabel);
         }
       });
+
+      await this._searchWidget.when(() => {
+        this._searchWidget.allPlaceholder = this.searchConfiguration?.allPlaceholder &&
+          this.searchConfiguration.allPlaceholder.toLowerCase() !== "find address or place" ?
+          this.searchConfiguration.allPlaceholder : this._translations.placeholder;
+      })
     }
   }
 
@@ -863,17 +874,19 @@ export class MapSelectTools {
   protected _initGraphicsLayer(): void {
     const title = this._translations.bufferLayer;
 
-    const bufferIndex = this.mapView.map.layers.findIndex((l) => l.title === title);
-    if (bufferIndex > -1) {
-      this._bufferGraphicsLayer = this.mapView.map.layers.getItemAt(bufferIndex) as __esri.GraphicsLayer;
-    } else {
-      this._bufferGraphicsLayer = new this.GraphicsLayer({ title, listMode: "hide" });
-      state.managedLayers.push(title);
-      const sketchIndex = this.mapView.map.layers.findIndex((l) => l.title === this._translations.sketchLayer);
-      if (sketchIndex > -1) {
-        this.mapView.map.layers.add(this._bufferGraphicsLayer, sketchIndex);
+    if (this.mapView) {
+      const bufferIndex = this.mapView.map.layers.findIndex((l) => l.title === title);
+      if (bufferIndex > -1) {
+        this._bufferGraphicsLayer = this.mapView.map.layers.getItemAt(bufferIndex) as __esri.GraphicsLayer;
       } else {
-        this.mapView.map.layers.add(this._bufferGraphicsLayer);
+        this._bufferGraphicsLayer = new this.GraphicsLayer({ title, listMode: "hide" });
+        state.managedLayers.push(title);
+        const sketchIndex = this.mapView.map.layers.findIndex((l) => l.title === this._translations.sketchLayer);
+        if (sketchIndex > -1) {
+          this.mapView.map.layers.add(this._bufferGraphicsLayer, sketchIndex);
+        } else {
+          this.mapView.map.layers.add(this._bufferGraphicsLayer);
+        }
       }
     }
   }

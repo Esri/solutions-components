@@ -310,6 +310,7 @@ export class PublicNotification {
     if (v?.popup) {
       this._popupsEnabled = v?.popup.autoOpenEnabled;
     }
+    this._initSearchConfiguration(this.searchConfiguration)
   }
 
   /**
@@ -323,7 +324,7 @@ export class PublicNotification {
     oldValue: ISearchConfiguration
   ): Promise<void> {
     const s_newValue = JSON.stringify(newValue);
-    if (s_newValue !== JSON.stringify(oldValue)) {
+    if (this.mapView && (s_newValue !== JSON.stringify(oldValue) || (s_newValue && !this._searchConfiguration))) {
       this._searchConfiguration = JSON.parse(s_newValue);
       this.searchConfigurationChange.emit(this._searchConfiguration);
       // force back to list page before we create Search
@@ -472,6 +473,13 @@ export class PublicNotification {
   }
 
   /**
+   * StencilJS: Called once just after the component is first loaded.
+   */
+  async componentDidLoad(): Promise<void> {
+    this._initSearchConfiguration(this.searchConfiguration)
+  }
+
+  /**
    * StencilJS: Called every time the component is disconnected from the DOM
    */
   disconnectedCallback(): void {
@@ -501,6 +509,25 @@ export class PublicNotification {
     ]);
     this._geometryEngine = geometryEngine;
     this._jsonUtils = jsonUtils;
+  }
+
+  /**
+   * Load the search configuration
+   *
+   * @returns Promise resolving when function is done
+   *
+   * @protected
+   */
+  protected _initSearchConfiguration(
+    v: ISearchConfiguration
+  ): void {
+    if (this.searchConfiguration && !this._searchConfiguration  && this.mapView) {
+      this._searchConfiguration = v;
+      this.searchConfigurationChange.emit(this._searchConfiguration);
+      // force back to list page before we create Search
+      // https://devtopia.esri.com/WebGIS/arcgis-template-configuration/issues/3402
+      void this._home();
+    }
   }
 
   /**
