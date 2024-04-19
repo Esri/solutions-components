@@ -686,7 +686,7 @@ export async function _getLabelFormat(
 
         if (webmapLayers.length > 0) {
           labelFormatProps = await _getLabelFormat(webmap, webmapLayers[0], formatUsingLayerPopup);
-          labelFormatProps.relationshipId = relationshipId;
+          labelFormatProps.relationshipId = relationshipId.toString();
 
         } else {
           // Related layer info is not in webmap; get the label info from the related layer
@@ -733,7 +733,7 @@ export async function _getLabelFormat(
             labelFormatProps.labelFormat = _convertPopupFieldsToLabelSpec(layer.popupTemplate.fieldInfos);
           } else {
             labelFormatProps = await labelFormatPropsPromise;
-            labelFormatProps.relationshipId = relationshipId;
+            labelFormatProps.relationshipId = relationshipId.toString();
           }
         }
 
