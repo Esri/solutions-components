@@ -6,8 +6,11 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.8.4] - Apr 19th 2024
+Convert relationshipId to string
+
 ## [0.8.3] - Apr 19th 2024
-Fix PN CSV column headings 
+Fix PN CSV column headings
 
 ## [0.8.2] - Apr 3rd 2024
 Hot fix for PN search config
@@ -525,4 +528,5 @@ Recover from test releases
 [0.8.1]: https://github.com/Esri/solution.js/compare/v0.8.0...v0.8.1 "v0.8.1"
 [0.8.2]: https://github.com/Esri/solution.js/compare/v0.8.1...v0.8.2 "v0.8.2"
 [0.8.3]: https://github.com/Esri/solution.js/compare/v0.8.2...v0.8.3 "v0.8.3"
-[Unreleased]: https://github.com/Esri/solution.js/compare/v0.8.3...HEAD "Unreleased Changes"
+[0.8.4]: https://github.com/Esri/solution.js/compare/v0.8.3...v0.8.4 "v0.8.4"
+[Unreleased]: https://github.com/Esri/solution.js/compare/v0.8.4...HEAD "Unreleased Changes"
