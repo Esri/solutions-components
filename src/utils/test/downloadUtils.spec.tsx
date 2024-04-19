@@ -251,10 +251,49 @@ describe("downloadUtils", () => {
 
   });
 
+  describe("_extractHeaderNames", () => {
+
+    it("handles a single-line label", () => {
+      const labelSpec = "{PSTLCITY}, {PSTLSTATE} {PSTLZIP5}";
+      const headerNames = downloadUtils._extractHeaderNames(labelSpec);
+      const expectedHeaderNames = ["PSTLCITY__PSTLSTATE__PSTLZIP5"];
+      expect(headerNames).toEqual(expectedHeaderNames);
+    });
+
+    it("handles a multi-line label", () => {
+      const labelSpec = "{OWNERNM1}|{PSTLADDRESS}|{PSTLCITY}, {PSTLSTATE} {PSTLZIP5}";
+      const headerNames = downloadUtils._extractHeaderNames(labelSpec);
+      const expectedHeaderNames = ["OWNERNM1", "PSTLADDRESS", "PSTLCITY__PSTLSTATE__PSTLZIP5"];
+      expect(headerNames).toEqual(expectedHeaderNames);
+    });
+
+    it("handles a multi-line label with a line without attributes", () => {
+      const labelSpec = "{OWNERNM1}|Line without attributes|{PSTLCITY}, {PSTLSTATE} {PSTLZIP5}";
+      const headerNames = downloadUtils._extractHeaderNames(labelSpec);
+      const expectedHeaderNames = ["OWNERNM1", "column_2", "PSTLCITY__PSTLSTATE__PSTLZIP5"];
+      expect(headerNames).toEqual(expectedHeaderNames);
+    });
+
+    it("handles a label with an Arcade expression", () => {
+      const labelSpec = "{expression/expr0}|{OWNERNM1}|{PSTLADDRESS}|{PSTLCITY}, {PSTLSTATE} {PSTLZIP5}";
+      const headerNames = downloadUtils._extractHeaderNames(labelSpec);
+      const expectedHeaderNames = ["expr0", "OWNERNM1", "PSTLADDRESS", "PSTLCITY__PSTLSTATE__PSTLZIP5"];
+      expect(headerNames).toEqual(expectedHeaderNames);
+    });
+
+    it("handles a label with multiple Arcade expressions", () => {
+      const labelSpec = "{expression/expr3}: {expression/expr1}|{OWNERNM1}|{expression/expr0}|{PSTLCITY}, {PSTLSTATE} {PSTLZIP5}";
+      const headerNames = downloadUtils._extractHeaderNames(labelSpec);
+      const expectedHeaderNames = ["expr3__expr1", "OWNERNM1", "expr0", "PSTLCITY__PSTLSTATE__PSTLZIP5"];
+      expect(headerNames).toEqual(expectedHeaderNames);
+    });
+
+  });
+
   describe("_getExpressionsFromLabel", () => {
 
     it("handles a label with ASCII expression names", () => {
-      const labelSpec = "{expression/expr0}\n{OWNERNM1}\n{PSTLADDRESS}\n{PSTLCITY}, {PSTLSTATE} {PSTLZIP5}";
+      const labelSpec = "{expression/expr0}|{OWNERNM1}|{PSTLADDRESS}|{PSTLCITY}, {PSTLSTATE} {PSTLZIP5}";
       const expectedExpressions = ["{expression/expr0}"];
       const expressions = downloadUtils._getExpressionsFromLabel(labelSpec);
       expect(expressions).toEqual(expectedExpressions);

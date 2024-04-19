@@ -117,7 +117,11 @@ import {
  * @param exportInfos Key details about what to export (ids, layer, and selectionSetNames)
  * @param formatUsingLayerPopup When true, the layer's popup is used to choose attributes for each column; when false,
  * all attributes are exported
- * @param includeHeaderNames Add the label format at the front of the list of generated labels
+ * @param includeHeaderNames Add a heading entries at the beginning of the list of generated labels
+ * @param isCSVExport Indicates if the export is for a CSV file
+ * @param fields Fields to include in the export
+ * @param useFieldAliasNames Indicates if field alias names should be used in the export
+ * @param filterFields Indicates if fields should be filtered
  * @returns selectionSetNames that will be used for export filenames
  */
 export async function consolidateLabels(
@@ -156,6 +160,9 @@ export async function consolidateLabels(
  * all attributes are exported
  * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
  * @param addColumnTitle Indicates if column headings should be included in output
+ * @param fields Fields to include in the export
+ * @param useFieldAliasNames Indicates if field alias names should be used in the export
+ * @param filterFields Indicates if fields should be filtered
  * @returns Promise resolving when function is done
  */
 export async function downloadCSV(
@@ -470,6 +477,38 @@ export function _createFilename(
   // Windows doesn't permit the characters \/:*?"<>|
   const title = selectionSetNames.length > 0 ? selectionSetNames.join(", ") : "download";
   return title;
+}
+
+/**
+ * Creates headings from a label format.
+ *
+ * @param labelFormat Format for label
+ * @returns A list of headings, with one heading for each line in the label format
+ */
+export function _extractHeaderNames(
+  labelFormat: string
+): string[] {
+  // Split the format into lines
+  const lines = labelFormat.split(lineSeparatorChar);
+
+  // Generate a header for each line
+  const headerNames = lines.map(
+    (line, i) => {
+      // Find the field names in the line
+      const fieldNameSyms = line.match(/\{[^\}]*\}/g);
+
+      // Extract the field names from the symbols; if there are no symbols, use a default name; if a field name
+      // is an Arcade expression, extract the expression name
+      return fieldNameSyms
+        ? fieldNameSyms
+          .map(fieldName => fieldName.substring(1, fieldName.length - 1))
+          .map(fieldName => fieldName.startsWith("expression/") ? fieldName.substring(fieldName.indexOf("/") + 1) : fieldName)
+          .join("__")
+        : `column_${i + 1}`;
+    }
+  );
+
+  return headerNames;
 }
 
 /**
@@ -836,7 +875,7 @@ export function _prepareAttributeValue(
  * @param ids List of ids to download
  * @param formatUsingLayerPopup When true, the layer's popup is used to choose attributes for each column; when false,
  * all attributes are exported
- * @param includeHeaderNames Add the label format at the front of the list of generated labels
+ * @param includeHeaderNames Add a heading entries at the beginning of the list of generated labels
  * @returns Promise resolving when function is done
  */
 export async function _prepareLabels(
@@ -973,7 +1012,7 @@ export async function _prepareLabels(
  * @param featureSet Features to convert to labels
  * @param attributeTypes Type for each attribute in a feature
  * @param attributeDomains Domains for each attribute in a feature
- * @param includeHeaderNames Add the label format at the front of the list of generated labels
+ * @param includeHeaderNames Add a heading entries at the beginning of the list of generated labels
  * @returns Promise resolving with list of labels, each of which is a list of label lines
  */
 export async function _prepareLabelsFromAll(
@@ -1025,7 +1064,7 @@ export async function _prepareLabelsFromAll(
  * @param attributeDomains Domains for each attribute in a feature
  * @param attributeFormats Formats for each attribute in a feature
  * @param labelFormat Format for label
- * @param includeHeaderNames Add the label format at the front of the list of generated labels
+ * @param includeHeaderNames Add a heading entries at the beginning of the list of generated labels
  * @returns Promise resolving with list of labels, each of which is a list of label lines
  */
 export async function _prepareLabelsFromPattern(
@@ -1089,7 +1128,7 @@ export async function _prepareLabelsFromPattern(
 
   // Add header names
   if (includeHeaderNames) {
-    labels.unshift(attributeNames);
+    labels.unshift(_extractHeaderNames(labelFormat));
   }
 
   return Promise.resolve(labels);
