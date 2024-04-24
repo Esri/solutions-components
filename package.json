@@ -90,6 +90,7 @@
     "@esri/hub-teams": "^12.4.1",
     "@esri/instant-apps-components": "1.0.0-beta.206",
     "@esri/solution-common": "^5.0.9",
+    "templates-common-library-esm": "npm:templates-common-library@0.0.449-esm",
     "@pdf-lib/fontkit": "^1.1.1",
     "focus-trap": "7.2.0",
     "jspdf": "^2.5.1",

@@ -128,6 +128,10 @@ export namespace Components {
     }
     interface CrowdsourceManager {
         /**
+          * Array of objects containing proxy information for premium platform services.
+         */
+        "appProxies": any;
+        /**
           * IBasemapConfig: List of any basemaps to filter out from the basemap widget
          */
         "basemapConfig": IBasemapConfig;
@@ -599,6 +603,10 @@ export namespace Components {
     interface LocationFlowItem {
     }
     interface MapCard {
+        /**
+          * Array of objects containing proxy information for premium platform services.
+         */
+        "appProxies": any;
         /**
           * IBasemapConfig: List of any basemaps to filter out from the basemap widget
          */
@@ -2238,6 +2246,10 @@ declare namespace LocalJSX {
     }
     interface CrowdsourceManager {
         /**
+          * Array of objects containing proxy information for premium platform services.
+         */
+        "appProxies"?: any;
+        /**
           * IBasemapConfig: List of any basemaps to filter out from the basemap widget
          */
         "basemapConfig"?: IBasemapConfig;
@@ -2743,6 +2755,10 @@ declare namespace LocalJSX {
     interface LocationFlowItem {
     }
     interface MapCard {
+        /**
+          * Array of objects containing proxy information for premium platform services.
+         */
+        "appProxies"?: any;
         /**
           * IBasemapConfig: List of any basemaps to filter out from the basemap widget
          */
