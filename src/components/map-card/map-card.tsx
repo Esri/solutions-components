@@ -17,6 +17,7 @@
 import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, State, Watch } from "@stencil/core";
 import { loadModules } from "../../utils/loadModules";
 import { IBasemapConfig, IMapChange, IMapInfo, ISearchConfiguration, theme } from "../../utils/interfaces";
+import { joinAppProxies } from "templates-common-library-esm/functionality/proxy";
 
 // TODO navigation and accessability isn't right for the map list
 //   tab does not go into the list when it's open
@@ -44,6 +45,11 @@ export class MapCard {
   //  Properties (public)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Array of objects containing proxy information for premium platform services.
+   */
+  @Prop() appProxies: any;
 
   /**
    * string: Item ID of the web map that should be selected by default when the app loads
@@ -178,6 +184,11 @@ export class MapCard {
   //  Properties (protected)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * esri/config: https://developers.arcgis.com/javascript/latest/api-reference/esri-config.html
+   */
+  protected esriConfig: typeof import("esri/config");
 
   /**
    * esri/widgets/Home: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Home.html
@@ -332,14 +343,16 @@ export class MapCard {
    * @protected
    */
   protected async _initModules(): Promise<void> {
-    const [WebMap, MapView, Home] = await loadModules([
+    const [WebMap, MapView, Home, esriConfig] = await loadModules([
       "esri/WebMap",
       "esri/views/MapView",
-      "esri/widgets/Home"
+      "esri/widgets/Home",
+      "esri/config"
     ]);
     this.WebMap = WebMap;
     this.MapView = MapView;
     this.Home = Home;
+    this.esriConfig = esriConfig;
   }
 
   /**
@@ -366,6 +379,11 @@ export class MapCard {
       const webMap = new this.WebMap({
         portalItem: { id }
       });
+
+      if (this.appProxies) {
+        await webMap.load();
+        await joinAppProxies(webMap, this.esriConfig, this.appProxies);
+      }
 
       this.mapView = new this.MapView({
         container: this._mapDiv,

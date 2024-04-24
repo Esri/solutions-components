@@ -40,6 +40,11 @@ export class CrowdsourceManager {
   //--------------------------------------------------------------------------
 
   /**
+   * Array of objects containing proxy information for premium platform services.
+   */
+  @Prop() appProxies: any;
+
+  /**
    * string: default center point values for the map
    * ; delimited x;y pair
    */
@@ -633,6 +638,7 @@ export class CrowdsourceManager {
     return (
       <div class={`${mapContainerClass} overflow-hidden`} >
         <map-card
+          appProxies={this.appProxies}
           basemapConfig={this.basemapConfig}
           class="width-full"
           defaultWebmapId={this.defaultWebmap}

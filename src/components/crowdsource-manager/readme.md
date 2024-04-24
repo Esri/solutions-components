@@ -9,6 +9,7 @@
 
 | Property                  | Attribute                     | Description                                                                                                        | Type                   | Default     |
 | ------------------------- | ----------------------------- | ------------------------------------------------------------------------------------------------------------------ | ---------------------- | ----------- |
+| `appProxies`              | `app-proxies`                 | Array of objects containing proxy information for premium platform services.                                       | `any`                  | `undefined` |
 | `basemapConfig`           | --                            | IBasemapConfig: List of any basemaps to filter out from the basemap widget                                         | `IBasemapConfig`       | `undefined` |
 | `defaultCenter`           | `default-center`              | string: default center point values for the map ; delimited x;y pair                                               | `string`               | `""`        |
 | `defaultGlobalId`         | `default-global-id`           | string: Global ID of the feature to select                                                                         | `string`               | `""`        |
