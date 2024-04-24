@@ -162,6 +162,11 @@ export class PublicNotification {
   //--------------------------------------------------------------------------
 
   /**
+   * boolean: When true a graphics will be added to the map on export
+   */
+  @State() _exportGraphics = false;
+
+  /**
    * boolean: When true a map will be added on export
    */
   @State() _addMap = false;
@@ -1065,6 +1070,7 @@ export class PublicNotification {
   protected _getExportOptions(): VNode {
     const displayClass = this._exportType === EExportType.PDF ? "display-block" : "display-none";
     const titleOptionsClass = this._addTitle ? "display-block" : "display-none";
+    const graphicsOptionsClass = this._addMap ? "display-flex" : "display-none";
     const title = this._titleValue ? this._titleValue : this.defaultExportTitle ? this.defaultExportTitle : "";
     const formatOptionsClass = this._addResults ? "" : "display-none";
     return (
@@ -1129,6 +1135,29 @@ export class PublicNotification {
             />
             {this._translations.includeMap}
           </calcite-label>
+        </div>
+
+        <div class={`padding-top-sides-1 ${graphicsOptionsClass}`}>
+          <calcite-label class="label-margin-0" layout="inline">
+            <calcite-checkbox
+              checked={this._exportGraphics}
+              onCalciteCheckboxChange={() => this._exportGraphics = !this._exportGraphics}
+            />
+            {this._translations.listGraphics}
+          </calcite-label>
+          <calcite-icon
+              class="padding-start-1-2 icon"
+              icon="question"
+              id="list-graphics-icon"
+              scale="s"
+            />
+            <calcite-popover
+              closable={true}
+              label=""
+              referenceElement="list-graphics-icon"
+            >
+              <span class="tooltip-message">{this._translations.listGraphicsTip}</span>
+            </calcite-popover>
         </div>
       </div>
     );
