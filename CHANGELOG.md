@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.8.5] - Apr 24th 2024
+Add appProxies
+
 ## [0.8.4] - Apr 19th 2024
 Convert relationshipId to string
 
@@ -529,4 +532,5 @@ Recover from test releases
 [0.8.2]: https://github.com/Esri/solution.js/compare/v0.8.1...v0.8.2 "v0.8.2"
 [0.8.3]: https://github.com/Esri/solution.js/compare/v0.8.2...v0.8.3 "v0.8.3"
 [0.8.4]: https://github.com/Esri/solution.js/compare/v0.8.3...v0.8.4 "v0.8.4"
-[Unreleased]: https://github.com/Esri/solution.js/compare/v0.8.4...HEAD "Unreleased Changes"
+[0.8.5]: https://github.com/Esri/solution.js/compare/v0.8.4...v0.8.5 "v0.8.5"
+[Unreleased]: https://github.com/Esri/solution.js/compare/v0.8.5...HEAD "Unreleased Changes"
