@@ -380,8 +380,10 @@ export class MapCard {
         portalItem: { id }
       });
 
-      await webMap.load();
-      await joinAppProxies(webMap, this.esriConfig, this.appProxies);
+      if (this.appProxies) {
+        await webMap.load();
+        await joinAppProxies(webMap, this.esriConfig, this.appProxies);
+      }
 
       this.mapView = new this.MapView({
         container: this._mapDiv,
