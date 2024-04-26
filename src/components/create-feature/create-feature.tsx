@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-import { Component, Element, EventEmitter, Prop, Host, h, Event, Watch, Method } from "@stencil/core";
+import { Component, Element, EventEmitter, Prop, Fragment, h, Event, Watch, Method, State} from "@stencil/core";
 import { loadModules } from "../../utils/loadModules";
-import { getAllLayers } from "../../utils/mapViewUtils";
+import { getAllLayers, getLayerOrTable } from "../../utils/mapViewUtils";
+import { ILayerSourceConfigItem, ILocatorSourceConfigItem, ISearchConfiguration } from "../../utils/interfaces";
 
 @Component({
   tag: "create-feature",
@@ -54,11 +55,21 @@ export class CreateFeature {
    */
   @Prop() customizeSubmit?: boolean = false;
 
+  /**
+   * ISearchConfiguration: Configuration details for the Search widget
+   */
+  @Prop() searchConfiguration: ISearchConfiguration;
+
   //--------------------------------------------------------------------------
   //
   //  State (internal)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * boolean: When true the search widget will shown
+   */
+  @State() showSearchWidget: boolean;
 
   //--------------------------------------------------------------------------
   //
@@ -79,6 +90,24 @@ export class CreateFeature {
   protected _editor: __esri.Editor;
 
   /**
+   * https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html
+   * The Feature layer instance
+   */
+  protected FeatureLayer: typeof import("esri/layers/FeatureLayer");
+
+  /**
+   * "esri/widgets/Search": https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search.html
+   * The Search instance
+   */
+  protected Search: typeof import("esri/widgets/Search");
+
+  /**
+   * "esri/widgets/Search": https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search.html
+   * The Search instance
+   */
+  protected _search: __esri.widgetsSearch;
+
+  /**
    * esri/core/reactiveUtils: https://developers.arcgis.com/javascript/latest/api-reference/esri-core-reactiveUtils.html
    */
   protected reactiveUtils: typeof import("esri/core/reactiveUtils");
@@ -87,6 +116,11 @@ export class CreateFeature {
    * boolean: Flag to maintain the add attachment
    */
   protected _addingAttachment: boolean
+
+  /**
+   * ISearchConfiguration: config for search widget
+   */
+  protected searchConfiguration1: ISearchConfiguration;
 
   //--------------------------------------------------------------------------
   //
@@ -182,10 +216,12 @@ export class CreateFeature {
    * Renders the component.
    */
   render() {
+    const showSearchWidget = this.showSearchWidget ? '' : 'display-none';
     return (
-      <Host
-        id="feature-form"
-      />
+      <Fragment>
+        <div id="feature-form" />
+        <div class={`search-widget ${showSearchWidget}`} id="search-widget-ref"/>
+      </Fragment>
     );
   }
 
@@ -196,11 +232,12 @@ export class CreateFeature {
   //--------------------------------------------------------------------------
 
   /**
-   * Init Editor widget and starts the create workflow
+   * Init Editor widget and Search widget
    */
   protected async init(): Promise<void> {
     if (this.mapView && this.selectedLayerId) {
       await this.createEditorWidget();
+      await this.createSearchWidget();
     }
   }
 
@@ -210,12 +247,14 @@ export class CreateFeature {
    * @protected
    */
   protected async initModules(): Promise<void> {
-    const [Editor, reactiveUtils] = await loadModules([
+    const [Editor, reactiveUtils, Search] = await loadModules([
       "esri/widgets/Editor",
-      "esri/core/reactiveUtils"
+      "esri/core/reactiveUtils",
+      "esri/widgets/Search"
     ]);
     this.Editor = Editor;
     this.reactiveUtils = reactiveUtils;
+    this.Search = Search;
   }
 
   /**
@@ -276,6 +315,16 @@ export class CreateFeature {
         }
       });
     this._editor.viewModel.addHandles(handle);
+
+    //Add handle to watch editor viewmodel state and then show the search widget
+    const formHandle = this.reactiveUtils.watch(
+      () =>  this._editor.viewModel.state,
+      (state) => {
+        if(state === 'creating-features'){
+          this.showSearchWidget = true;
+        }
+      });
+    this._editor.viewModel.addHandles(formHandle);
   }
 
   /**
@@ -294,6 +343,7 @@ export class CreateFeature {
           //on sketch complete emit the event
           this._editor.viewModel.sketchViewModel.on("create", (evt) => {
             if (evt.state === "complete") {
+              this.showSearchWidget = false;
               this.drawComplete.emit();
             }
           })
@@ -309,6 +359,108 @@ export class CreateFeature {
       //hides the header and footer elements in editor widget
       this.hideEditorsElements()
     }
+  }
+
+  /**
+   * Display search widget to search location
+   * @protected
+   */
+  protected async createSearchWidget(): Promise<void> {
+    let searchOptions: __esri.widgetsSearchProperties = {
+      view: this.mapView,
+    };
+    if (this.searchConfiguration) {
+      const searchConfiguration = this._getSearchConfig(this.searchConfiguration, this.mapView);
+      searchOptions = {
+        ...searchConfiguration
+      }
+    }
+    this._search = new this.Search(searchOptions);
+    this._search.container = 'search-widget-ref';
+    this._search.popupEnabled = false;
+    this._search.resultGraphicEnabled = false;
+
+    const layer = await getLayerOrTable(this.mapView, this.selectedLayerId);
+    let pointGeometry = null;
+    // on search get the geometry of the searched location and pass it in sketchViewModel and go to featureForm page
+    this._search.on('search-complete', (e) => {
+      void this.mapView.goTo(e.results[0].results[0].extent);
+      if (layer.geometryType === 'point') {
+        pointGeometry = e.results[0].results[0]?.feature.geometry;
+      }
+    });
+
+    //Add handle to watch if search viewModel state is ready
+    const createFeatureHandle = this.reactiveUtils.watch(
+      () => this._search.viewModel.state,
+      (state) => {
+        if (state === 'ready') {
+          setTimeout(() => {
+            if (this._editor.viewModel.sketchViewModel.createGraphic && pointGeometry) {
+              this._editor.viewModel.sketchViewModel.createGraphic.set('geometry', pointGeometry);
+              this._editor.viewModel.sketchViewModel.complete();
+              this.hideEditorsElements();
+            }
+          }, 100);
+        }
+      });
+    this._search.viewModel.addHandles(createFeatureHandle);
+  }
+
+  /**
+   * Initialize the search widget based on user defined configuration
+   *
+   * @param searchConfiguration search configuration defined by the user
+   * @param view the current map view
+   *
+   * @protected
+   */
+  protected _getSearchConfig(
+    searchConfiguration: ISearchConfiguration,
+    view: __esri.MapView
+  ): ISearchConfiguration {
+    const INCLUDE_DEFAULT_SOURCES = "includeDefaultSources";
+    const sources = searchConfiguration.sources;
+
+    if (sources?.length > 0) {
+      searchConfiguration[INCLUDE_DEFAULT_SOURCES] = false;
+
+      sources.forEach((source) => {
+        const isLayerSource = source.hasOwnProperty("layer");
+        if (isLayerSource) {
+          const layerSource = source as ILayerSourceConfigItem;
+          const layerId = layerSource.layer?.id;
+          const layerFromMap = layerId ? view.map.findLayerById(layerId) : null;
+          const layerUrl = layerSource?.layer?.url;
+          if (layerFromMap) {
+            layerSource.layer = layerFromMap as __esri.FeatureLayer;
+          } else if (layerUrl) {
+            layerSource.layer = new this.FeatureLayer(layerUrl as any);
+          }
+        }
+      });
+
+      sources?.forEach((source) => {
+        const isLocatorSource = source.hasOwnProperty("locator");
+        if (isLocatorSource) {
+          const locatorSource = (source as ILocatorSourceConfigItem);
+          if (locatorSource?.name === "ArcGIS World Geocoding Service") {
+            const outFields = locatorSource.outFields || ["Addr_type", "Match_addr", "StAddr", "City"];
+            locatorSource.outFields = outFields;
+            locatorSource.singleLineFieldName = "SingleLine";
+          }
+
+          locatorSource.url = locatorSource.url;
+          delete locatorSource.url;
+        }
+      });
+    } else {
+      searchConfiguration = {
+        ...searchConfiguration,
+        includeDefaultSources: true
+      }
+    }
+    return searchConfiguration;
   }
 
   /**
@@ -328,7 +480,7 @@ export class CreateFeature {
         //hide the footer
         article?.querySelector('footer')?.setAttribute('style', 'display: none');
       })
-    }, 700)
+    }, 700);
   }
 
   /**

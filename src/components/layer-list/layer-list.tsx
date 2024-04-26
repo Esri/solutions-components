@@ -20,7 +20,7 @@ import LayerList_T9n from "../../assets/t9n/layer-list/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { formatNumber } from "../../utils/languageUtil"
 
-interface ILayerItemsHash {
+export interface ILayerItemsHash {
   [key: string]: ILayerDetailsHash;
 }
 interface ILayerDetailsHash {
@@ -196,7 +196,7 @@ export class LayerList {
         {!this._isLoading && this.mapView &&
           <calcite-list
             selection-appearance="border"
-            selection-mode={this.showNextIcon ? "none" : "single-persist"}>
+            selection-mode="none">
             {this.renderLayerList()}
           </calcite-list>}
       </Fragment>
@@ -250,7 +250,7 @@ export class LayerList {
       }
     });
     await Promise.all(def).then(() => {
-      const editableLayerIds = this.getEditableIds(this._layerItemsHash);
+      const editableLayerIds = this.getLayersToBeShownInList(this._layerItemsHash);
       this._mapLayerIds = editableLayerIds.reverse();
       this.handleNoLayersToDisplay();
     }, () => {
@@ -268,18 +268,18 @@ export class LayerList {
   }
 
   /**
-   * Returns the ids of all OR configured layers that support edits with the update capability
+   * Returns the ids of all OR configured layers that needs to be shown in the list
    * @param hash each layer item details
    * @returns array of layer ids
    */
-  protected getEditableIds(
+  protected getLayersToBeShownInList(
     hash: ILayerItemsHash
   ): string[] {
     const configuredLayers = this.layers?.length > 0 ? this.layers : [];
     return Object.keys(hash).reduce((prev, cur) => {
-      let showLayer = hash[cur].supportsAdd;
+      let showLayer = true;
       if (configuredLayers?.length > 0) {
-        showLayer = configuredLayers.indexOf(cur) > -1 ? hash[cur].supportsAdd : false;
+        showLayer = configuredLayers.indexOf(cur) > -1;
       }
       if (showLayer) {
         prev.push(cur);

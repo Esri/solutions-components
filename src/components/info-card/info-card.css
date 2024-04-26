@@ -40,7 +40,7 @@
   overflow: auto;
 }
 
-.esri-features__footer {
+.feature-node .esri-features__footer {
   display: none !important;
 }
 

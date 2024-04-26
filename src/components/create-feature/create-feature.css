@@ -48,3 +48,12 @@
   padding-block: 0px !important;
   padding-inline: 10px !important;
 }
+
+.search-widget {
+  width: 92% !important;
+  margin: 5px 0 20px 14px;
+}
+
+.display-none {
+  display: none !important;
+}

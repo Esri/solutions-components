@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-import { Component, Element, Prop, VNode, h, State, Event, Watch, EventEmitter } from "@stencil/core";
+import { Component, Element, Prop, VNode, h, State, Event, Watch, EventEmitter, Method } from "@stencil/core";
+import { loadModules } from "../../utils/loadModules";
 import { PopupUtils } from "../../utils/popupUtils";
 import { IPopupUtils } from "../../utils/interfaces";
 import { getFeatureLayerView, getLayerOrTable, highlightFeatures } from "../../utils/mapViewUtils";
@@ -66,6 +67,11 @@ export class FeatureList {
    */
   @Prop() highlightOnMap?: boolean = false;
 
+  /**
+   * boolean: Highlight feature on map optional (default false) boolean to indicate if we should highlight when hover on Feature in list
+   */
+  @Prop() highlightOnHover?: boolean = false;
+  
   //--------------------------------------------------------------------------
   //
   //  State (internal)
@@ -100,6 +106,12 @@ export class FeatureList {
   //--------------------------------------------------------------------------
 
   /**
+   * "esri/Color": https://developers.arcgis.com/javascript/latest/api-reference/esri-Color.html
+   * The Color instance
+   */
+  protected Color: typeof import("esri/Color");
+
+  /**
    * IPopupUtils: To fetch the list label using popup titles
    */
   protected _popupUtils: IPopupUtils;
@@ -132,6 +144,16 @@ export class FeatureList {
   //--------------------------------------------------------------------------
   //
   //  Methods (public)
+
+  /**
+   * Refresh the feature list which will fetch the latest features and update the features list
+   * @returns Promise that resolves when the operation is complete
+   */
+  @Method()
+  async refresh(): Promise<void> {
+    await this.initializeFeatureItems();
+  }
+
   //
   //--------------------------------------------------------------------------
 
@@ -157,6 +179,7 @@ export class FeatureList {
    * @returns Promise when complete
    */
   async componentWillLoad(): Promise<void> {
+    await this.initModules();
     await this._getTranslations();
     this._isLoading = true;
     this._popupUtils = new PopupUtils();
@@ -216,6 +239,18 @@ export class FeatureList {
   //
   //--------------------------------------------------------------------------
 
+    /**
+   * Load esri javascript api modules
+   * @returns Promise resolving when function is done
+   * @protected
+   */
+    protected async initModules(): Promise<void> {
+      const [Color] = await loadModules([
+        "esri/Color"
+      ]);
+      this.Color = Color;
+    }
+
   /**
    * Initialize the features list using the selected layer
    * @protected
@@ -253,10 +288,7 @@ export class FeatureList {
   */
   protected async featureClicked(event: any, selectedFeature: __esri.Graphic): Promise<void> {
     //clear previous highlight and remove the highlightHandle
-    if (this.highlightOnMap && this._highlightHandle) {
-      this._highlightHandle.remove();
-      this._highlightHandle = null;
-    }
+    this.clearHighlights();
     //highlight on map only if it is selected item
     if (this.highlightOnMap) {
       const selectedFeatureObjectId = Number(event.target.value);
@@ -265,6 +297,33 @@ export class FeatureList {
     }
     this.featureSelect.emit(selectedFeature);
   }
+
+  /**
+   * On feature hover in feature list highlight the feature on the map
+   * @param selectedFeature mouseovered feature graphic
+   * @protected
+   */
+  protected async onFeatureHover(selectedFeature: __esri.Graphic): Promise<void> {
+    //clear previous highlight and remove the highlightHandle
+    this.clearHighlights();
+    if (this.highlightOnHover) {
+      const oId = selectedFeature.getObjectId();
+      const selectedLayerView = await getFeatureLayerView(this.mapView, this.selectedLayerId);
+      selectedLayerView.highlightOptions = {color: new this.Color("#FFFF00")};
+      this._highlightHandle = selectedLayerView.highlight([oId]);
+    }
+  }
+
+  /**
+   * Clears the highlight
+   * @protected
+   */
+    protected clearHighlights():void {
+      //if a feature is already highlighted, then remove the highlight
+      if(this._highlightHandle) {
+        this._highlightHandle.remove();
+       }
+    }
 
   /**
    * Query the selected feature layer, in descending order of object id's
@@ -321,6 +380,8 @@ export class FeatureList {
     return (
       <calcite-list-item
         onCalciteListItemSelect={(e) => { void this.featureClicked(e, selectedFeature) }}
+        onMouseLeave={() => { void this.clearHighlights() }}
+        onMouseOver={() => { void this.onFeatureHover(selectedFeature) }}
         value={oId}>
         {/* --TODO ellipsis-- */}
         <div
