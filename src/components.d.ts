@@ -117,6 +117,10 @@ export namespace Components {
          */
         "mapView": __esri.MapView;
         /**
+          * ISearchConfiguration: Configuration details for the Search widget
+         */
+        "searchConfiguration": ISearchConfiguration;
+        /**
           * string: Layer id of the feature layer in which the new feature is to be created
          */
         "selectedLayerId": string;
@@ -2248,6 +2252,10 @@ declare namespace LocalJSX {
           * Emitted on demand when the feature is created successfully
          */
         "onSuccess"?: (event: CreateFeatureCustomEvent<void>) => void;
+        /**
+          * ISearchConfiguration: Configuration details for the Search widget
+         */
+        "searchConfiguration"?: ISearchConfiguration;
         /**
           * string: Layer id of the feature layer in which the new feature is to be created
          */
