@@ -307,7 +307,7 @@ export class FeatureList {
     //clear previous highlight and remove the highlightHandle
     this.clearHighlights();
     if (this.highlightOnHover) {
-      let oId = selectedFeature.getObjectId();
+      const oId = selectedFeature.getObjectId();
       const selectedLayerView = await getFeatureLayerView(this.mapView, this.selectedLayerId);
       selectedLayerView.highlightOptions = {color: new this.Color("#FFFF00")};
       this._highlightHandle = selectedLayerView.highlight([oId]);
@@ -379,9 +379,9 @@ export class FeatureList {
     popupTitle = popupTitle ?? oId;
     return (
       <calcite-list-item
-        onMouseOver={() => { void this.onFeatureHover(selectedFeature) }}
-        onMouseLeave={() => { void this.clearHighlights() }}
         onCalciteListItemSelect={(e) => { void this.featureClicked(e, selectedFeature) }}
+        onMouseLeave={() => { void this.clearHighlights() }}
+        onMouseOver={() => { void this.onFeatureHover(selectedFeature) }}
         value={oId}>
         {/* --TODO ellipsis-- */}
         <div

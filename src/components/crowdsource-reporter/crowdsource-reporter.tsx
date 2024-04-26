@@ -610,8 +610,8 @@ export class CrowdsourceReporter {
             onFail={this.createFeatureFailed.bind(this)}
             onSuccess={this.onReportSubmitted.bind(this)}
             ref={el => this._createFeature = el as HTMLCreateFeatureElement}
-            selectedLayerId={this._selectedLayerId}
             searchConfiguration={this.searchConfiguration}
+            selectedLayerId={this._selectedLayerId}
           />
         </calcite-panel>
       </calcite-flow-item>);
@@ -824,8 +824,8 @@ export class CrowdsourceReporter {
             noFeaturesFoundMsg={this._translations.featureErrorMsg}
             onFeatureSelect={this.onFeatureSelectFromList.bind(this)}
             pageSize={30}
-            selectedLayerId={layerId}
             ref={el => this._featureList = el as HTMLFeatureListElement}
+            selectedLayerId={layerId}
           />}
         </calcite-panel>
       </calcite-flow-item>);
@@ -1098,7 +1098,7 @@ export class CrowdsourceReporter {
    * @protected
    */
   protected async renderFeaturesList(): Promise<void> {
-    let evt = {
+    const evt = {
       detail: this._editableLayerIds
     } as CustomEvent
     await this.layerListLoaded(evt);

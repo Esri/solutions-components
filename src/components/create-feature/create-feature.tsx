@@ -122,8 +122,6 @@ export class CreateFeature {
    */
   protected searchConfiguration1: ISearchConfiguration;
 
-
-
   //--------------------------------------------------------------------------
   //
   //  Watch handlers
@@ -218,11 +216,11 @@ export class CreateFeature {
    * Renders the component.
    */
   render() {
-    let showSearchWidget = this.showSearchWidget ? '' : 'display-none';
+    const showSearchWidget = this.showSearchWidget ? '' : 'display-none';
     return (
       <Fragment>
-        <div id="feature-form"></div>
-        <div id="search-widget-ref" class={`search-widget ${showSearchWidget}`}/>
+        <div id="feature-form" />
+        <div class={`search-widget ${showSearchWidget}`} id="search-widget-ref"/>
       </Fragment>
     );
   }
@@ -382,17 +380,17 @@ export class CreateFeature {
     this._search.popupEnabled = false;
     this._search.resultGraphicEnabled = false;
 
-    let layer = await getLayerOrTable(this.mapView, this.selectedLayerId);
+    const layer = await getLayerOrTable(this.mapView, this.selectedLayerId);
     let pointGeometry = null;
-    // on search get the geometry of the searched location and pass it in sketchviewmodel and go to featureform page
+    // on search get the geometry of the searched location and pass it in sketchViewModel and go to featureForm page
     this._search.on('search-complete', (e) => {
-      this.mapView.goTo(e.results[0].results[0].extent);
+      void this.mapView.goTo(e.results[0].results[0].extent);
       if (layer.geometryType === 'point') {
         pointGeometry = e.results[0].results[0]?.feature.geometry;
       }
     });
 
-    //Add handle to watch if search viewmodel state is ready
+    //Add handle to watch if search viewModel state is ready
     const createFeatureHandle = this.reactiveUtils.watch(
       () => this._search.viewModel.state,
       (state) => {
