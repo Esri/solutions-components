@@ -611,7 +611,7 @@ export class MapLayerPicker {
     id: string
   ): boolean {
     const name = this._layerNameHash[id]?.name;
-    return name && state.managedLayers.indexOf(name) < 0 && (this.enabledLayerIds.length > 0 ?
+    return name && Object.keys(state.managedLayers).indexOf(name) < 0 && (this.enabledLayerIds.length > 0 ?
       this.enabledLayerIds.indexOf(id) > -1 : true);
   }
 
