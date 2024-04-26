@@ -821,6 +821,7 @@ export class CrowdsourceReporter {
         <calcite-panel full-height>
           {<feature-list
             class="height-full"
+            highlightOnHover
             mapView={this.mapView}
             noFeaturesFoundMsg={this._translations.featureErrorMsg}
             onFeatureSelect={this.onFeatureSelectFromList.bind(this)}

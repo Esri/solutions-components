@@ -390,6 +390,10 @@ export namespace Components {
     }
     interface FeatureList {
         /**
+          * boolean: Highlight feature on map optional (default false) boolean to indicate if we should highlight when hover on Feature in list
+         */
+        "highlightOnHover"?: boolean;
+        /**
           * boolean: Highlight feature on map optional (default false) boolean to indicate if we should highlight and zoom to the extent of the feature geometry
          */
         "highlightOnMap"?: boolean;
@@ -405,6 +409,11 @@ export namespace Components {
           * number: Number features to be fetched per page, by default 100 features will be fetched
          */
         "pageSize"?: number;
+        /**
+          * Refresh the feature list which will fetch the latest features and update the features list
+          * @returns Promise that resolves when the operation is complete
+         */
+        "refresh": () => Promise<void>;
         /**
           * string: Layer id of the feature layer to show the list
          */
@@ -2531,6 +2540,10 @@ declare namespace LocalJSX {
     interface FeatureFormFlowItem {
     }
     interface FeatureList {
+        /**
+          * boolean: Highlight feature on map optional (default false) boolean to indicate if we should highlight when hover on Feature in list
+         */
+        "highlightOnHover"?: boolean;
         /**
           * boolean: Highlight feature on map optional (default false) boolean to indicate if we should highlight and zoom to the extent of the feature geometry
          */
