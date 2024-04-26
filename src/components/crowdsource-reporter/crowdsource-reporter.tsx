@@ -372,7 +372,6 @@ export class CrowdsourceReporter {
           onCalciteAlertClose={() => { this._reportSubmitted = false }}
           open
           placement={"top"}>
-          <div slot="title">{this._translations.reportSubmit}</div>
           <div slot="message">{this.reportSubmittedMessage ? this.reportSubmittedMessage : this._translations.submitMsg}</div>
         </calcite-alert>}
         {this._featureCreationFailedErrorMsg && <calcite-alert
@@ -497,7 +496,7 @@ export class CrowdsourceReporter {
             onClick={this.navigateToChooseCategory.bind(this)}
             slot="footer"
             width="full">
-            {this.reportButtonText}
+            {this.reportButtonText ? this.reportButtonText : this._translations.createReportButtonText}
           </calcite-button>}
         <calcite-panel
           full-height
@@ -525,7 +524,7 @@ export class CrowdsourceReporter {
     return (
       <calcite-flow-item
         collapsed={this.isMobile && this._sidePanelCollapsed}
-        heading={this._translations.createReportHeader}
+        heading={this.reportButtonText ? this.reportButtonText : this._translations.createReportButtonText}
         onCalciteFlowItemBack={this.backFromSelectedPanel.bind(this)}>
         {this.isMobile && this.getActionToExpandCollapsePanel()}
         <div class={"width-full"}
@@ -817,7 +816,7 @@ export class CrowdsourceReporter {
             onClick={this.navigateToCreateFeature.bind(this)}
             slot="footer"
             width="full">
-            {this.reportButtonText}
+            {this.reportButtonText ? this.reportButtonText : this._translations.createReportButtonText}
           </calcite-button>}
         <calcite-panel full-height>
           {<feature-list
