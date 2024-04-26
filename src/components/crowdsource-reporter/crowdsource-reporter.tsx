@@ -365,7 +365,7 @@ export class CrowdsourceReporter {
       <Host>
         {this._reportSubmitted && <calcite-alert
           auto-close
-          class={themeClass}
+          class={themeClass + " report-submitted-msg"}
           icon="check-circle"
           kind="success"
           label=""

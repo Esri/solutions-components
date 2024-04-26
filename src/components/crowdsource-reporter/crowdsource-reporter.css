@@ -56,3 +56,8 @@
 .footer-button {
   height: 35px;
 }
+
+.report-submitted-msg {
+  position: absolute;
+  z-index: 1000;
+}
