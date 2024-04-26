@@ -9,6 +9,7 @@
 
 | Property             | Attribute               | Description                                                                                                                                          | Type      | Default     |
 | -------------------- | ----------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | ----------- |
+| `highlightOnHover`   | `highlight-on-hover`    | boolean: Highlight feature on map optional (default false) boolean to indicate if we should highlight when hover on Feature in list                  | `boolean` | `false`     |
 | `highlightOnMap`     | `highlight-on-map`      | boolean: Highlight feature on map optional (default false) boolean to indicate if we should highlight and zoom to the extent of the feature geometry | `boolean` | `false`     |
 | `mapView`            | --                      | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html                                               | `MapView` | `undefined` |
 | `noFeaturesFoundMsg` | `no-features-found-msg` | string: Message to be displayed when features are not found                                                                                          | `string`  | `undefined` |
@@ -21,6 +22,19 @@
 | Event           | Description                                               | Type                   |
 | --------------- | --------------------------------------------------------- | ---------------------- |
 | `featureSelect` | Emitted on demand when feature is selected using the list | `CustomEvent<Graphic>` |
+
+
+## Methods
+
+### `refresh() => Promise<void>`
+
+Refresh the feature list which will fetch the latest features and update the features list
+
+#### Returns
+
+Type: `Promise<void>`
+
+Promise that resolves when the operation is complete
 
 
 ## Dependencies
