@@ -565,3 +565,10 @@ export interface IPopupUtils {
 export interface IConsentResponse {
   granted: boolean;
 }
+
+/**
+ * Key is the layer name and the value is the type of layer
+ */
+export interface IManagedLayers {
+  [key: string]: "buffer" | "sketch";
+}

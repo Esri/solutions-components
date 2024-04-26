@@ -880,7 +880,7 @@ export class MapSelectTools {
         this._bufferGraphicsLayer = this.mapView.map.layers.getItemAt(bufferIndex) as __esri.GraphicsLayer;
       } else {
         this._bufferGraphicsLayer = new this.GraphicsLayer({ title, listMode: "hide" });
-        state.managedLayers.push(title);
+        state.managedLayers[title] = "buffer";
         const sketchIndex = this.mapView.map.layers.findIndex((l) => l.title === this._translations.sketchLayer);
         if (sketchIndex > -1) {
           this.mapView.map.layers.add(this._bufferGraphicsLayer, sketchIndex);
