@@ -19,8 +19,9 @@ import { IMapChange, IMapClick, IMapInfo, ISearchConfiguration, theme } from "..
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { loadModules } from "../../utils/loadModules";
 import CrowdsourceReporter_T9n from "../../assets/t9n/crowdsource-reporter/resources.json";
-import { getAllLayers, getFeatureLayerView, getLayerOrTable, highlightFeatures } from "../../utils/mapViewUtils";
+import { getAllLayers, getFeatureLayerView, getLayerOrTable, getMapLayerHash, highlightFeatures } from "../../utils/mapViewUtils";
 import { queryFeaturesByID } from "../../utils/queryUtils";
+import { ILayerItemsHash } from "../layer-list/layer-list";
 
 @Component({
   tag: "crowdsource-reporter",
@@ -181,7 +182,7 @@ export class CrowdsourceReporter {
   /**
    * string[]: Reporter flow items list
    */
-  @State() _flowItems: string[] = ["layer-list"];
+  @State() _flowItems: string[] = [];
 
   /**
    * boolean: Controls the state for panel in mobile view
@@ -246,6 +247,11 @@ export class CrowdsourceReporter {
   protected _validLayers: __esri.FeatureLayer[];
 
   /**
+   * string[]: Configured/all layers id from current map which can be used for reporting
+   */
+  protected _editableLayerIds: string[];
+
+  /**
    * string: The selected feature layer's id from the layer's list
    */
   protected _selectedLayerId: string;
@@ -274,6 +280,11 @@ export class CrowdsourceReporter {
    * HTMLLayerListElement: Create Layer list component instance
    */
   protected _layerList: HTMLLayerListElement;
+
+  /**
+   * HTMLFeatureListElement: Create feature list component instance
+   */
+  protected _featureList: HTMLFeatureListElement;
 
   /**
    * HTMLInstantAppsSocialShareElement: Share element
@@ -354,6 +365,9 @@ export class CrowdsourceReporter {
     this._urlParamsLoaded = false;
     await this._initModules();
     await this._getTranslations();
+    await this.mapView?.when(async () => {
+      await this.setMapView();
+    });
   }
 
   /**
@@ -503,7 +517,7 @@ export class CrowdsourceReporter {
           full-width>
           <layer-list
             class="height-full"
-            layers={this.layers}
+            layers={this._editableLayerIds?.length > 0 ? this._editableLayerIds : this.layers}
             mapView={this.mapView}
             noLayerErrorMsg={this._noLayerToDisplayErrorMsg}
             onLayerSelect={this.displayFeaturesList.bind(this)}
@@ -527,24 +541,6 @@ export class CrowdsourceReporter {
         heading={this.reportButtonText ? this.reportButtonText : this._translations.createReportButtonText}
         onCalciteFlowItemBack={this.backFromSelectedPanel.bind(this)}>
         {this.isMobile && this.getActionToExpandCollapsePanel()}
-        <div class={"width-full"}
-             slot="footer">
-          <calcite-button
-            appearance="solid"
-            class={"footer-top-button footer-button"}
-            disabled={!this._selectedLayerId}
-            onClick={this.navigateToCreateFeature.bind(this)}
-            width="full">
-            {this._translations.next}
-          </calcite-button>
-          <calcite-button
-            appearance="outline"
-            class={"footer-button"}
-            onClick={this.backFromSelectedPanel.bind(this)}
-            width="full">
-            {this._translations.cancel}
-          </calcite-button>
-        </div>
         <calcite-panel
           full-height
           full-width>
@@ -560,7 +556,7 @@ export class CrowdsourceReporter {
             layers={this.layers}
             mapView={this.mapView}
             noLayerErrorMsg={this._noLayerToDisplayErrorMsg}
-            onLayerSelect={this.highlightSelectedLayer.bind(this)}
+            onLayerSelect={this.navigateToCreateFeature.bind(this)}
             showFeatureCount={false}
             showNextIcon={false} />
         </calcite-panel>
@@ -615,6 +611,7 @@ export class CrowdsourceReporter {
             onSuccess={this.onReportSubmitted.bind(this)}
             ref={el => this._createFeature = el as HTMLCreateFeatureElement}
             selectedLayerId={this._selectedLayerId}
+            searchConfiguration={this.searchConfiguration}
           />
         </calcite-panel>
       </calcite-flow-item>);
@@ -673,14 +670,14 @@ export class CrowdsourceReporter {
    */
   protected onReportSubmitted(): void {
     this._reportSubmitted = true;
-    this.navigateToHomePage()
+    void this.navigateToHomePage()
   }
 
   /**
    * Navigates to layer-list
    * @protected
    */
-  protected navigateToHomePage(): void {
+  protected async navigateToHomePage(): Promise<void> {
     if (this._createFeature) {
       this._createFeature.close();
     }
@@ -688,23 +685,24 @@ export class CrowdsourceReporter {
       this._layerList.refresh();
     }
     this.setSelectedFeatures([]);
-    this._flowItems = ["layer-list"];
+
+    if (this._editableLayerIds.length === 1) {
+      await this._featureList.refresh();
+      this._flowItems = ["feature-list"];
+    } else {
+      this._flowItems = ["layer-list"];
+    }
   }
 
   /**
-   * Update the selected layer id and name
+   * On layer select open the feature create flow item
    * @param evt Event which has details of selected layerId and layerName
    * @protected
    */
-  protected highlightSelectedLayer(evt: CustomEvent): void {
-    this.setSelectedLayer(evt.detail.layerId, evt.detail.layerName);
-  }
-
-  /**
-   * On next button click open the feature create flow item
-   * @protected
-   */
-  protected async navigateToCreateFeature(): Promise<void> {
+  protected async navigateToCreateFeature(evt: CustomEvent): Promise<void> {
+    if (evt.detail.layerId && evt.detail.layerName) {
+      this.setSelectedLayer(evt.detail.layerId, evt.detail.layerName);
+    }
     this._showSubmitCancelButton = false;
     this._flowItems = [...this._flowItems, "feature-create"];
   }
@@ -761,8 +759,8 @@ export class CrowdsourceReporter {
     updatedFlowItems.pop();
     this.clearHighlights();
     //Back to layer list, and return as the flowItems will be reset in navigateToHomePage
-    if (updatedFlowItems.length === 1) {
-      this.navigateToHomePage();
+    if (updatedFlowItems.length === 1 && updatedFlowItems[0] === 'layer-list') {
+      void this.navigateToHomePage();
       return;
     }
     this._flowItems = [...updatedFlowItems];
@@ -827,6 +825,7 @@ export class CrowdsourceReporter {
             onFeatureSelect={this.onFeatureSelectFromList.bind(this)}
             pageSize={30}
             selectedLayerId={layerId}
+            ref={el => this._featureList = el as HTMLFeatureListElement}
           />}
         </calcite-panel>
       </calcite-flow-item>);
@@ -891,7 +890,9 @@ export class CrowdsourceReporter {
       this.setSelectedLayer(layer.id, layer.title);
       this._currentFeatureId = selectedFeature.attributes[layer.objectIdField];
     } else {
-      this.setSelectedLayer('', '');
+      if (this._editableLayerIds.length > 1) {
+        this.setSelectedLayer('', '');
+      }
       this._currentFeatureId = '';
     }
     this._updateShareURL();
@@ -916,6 +917,8 @@ export class CrowdsourceReporter {
     // highlight the newly selected feature only when it has valid geometry
     if (selectedFeature && selectedFeature.geometry && selectedFeature.layer) {
       const selectedLayerView = await getFeatureLayerView(this.mapView, selectedFeature.layer.id);
+      // remove previous highlight options (if any) to highlight the feature by default color 
+      selectedLayerView.highlightOptions = null;
       this._highlightHandle = await highlightFeatures(
         [selectedFeature.getObjectId()],
         selectedLayerView,
@@ -955,6 +958,14 @@ export class CrowdsourceReporter {
    * @protected
    */
   protected async setMapView(): Promise<void> {
+    await this.getLayersToShowInList();
+    // if only one valid layer is present then directly render features list
+    if (this._editableLayerIds?.length === 1) {
+      await this.renderFeaturesList();
+    } else {
+      this._flowItems = ['layer-list'];
+    }
+
     this.mapView.popupEnabled = false;
     if (this._defaultCenter && this._defaultLevel) {
       await this.mapView.goTo({
@@ -1045,9 +1056,59 @@ export class CrowdsourceReporter {
     this._translations = messages[0] as typeof CrowdsourceReporter_T9n;
   }
 
-   /**
-    * Updates the share url for current selected feature
-    * @protected
+  /**
+   * Returns the ids of all OR configured layers that support edits with the update capability
+   * @param hash each layer item details
+   * @param layers list of layers id
+   * @returns array of editable layer ids
+   */
+  protected reduceToConfiguredLayers(
+    hash: ILayerItemsHash
+  ): string[] {
+    const configuredLayers = this.layers?.length > 0 ? this.layers : [];
+    return Object.keys(hash).reduce((prev, cur) => {
+      let showLayer = hash[cur].supportsAdd;
+      if (configuredLayers?.length > 0) {
+        showLayer = configuredLayers.indexOf(cur) > -1 ? hash[cur].supportsAdd : false;
+      }
+      if (showLayer) {
+        prev.push(cur);
+      }
+      return prev;
+    }, []);
+  }
+
+  /**
+   * Creates the list of layers to be listed in layer list
+   * @protected
+   */
+  protected async getLayersToShowInList(): Promise<void> {
+    const layerItemsHash = await getMapLayerHash(this.mapView, true) as ILayerItemsHash;
+    const allMapLayers = await getAllLayers(this.mapView);
+    allMapLayers.forEach((eachLayer: __esri.FeatureLayer) => {
+      if (eachLayer?.type === "feature" && eachLayer?.editingEnabled && eachLayer?.capabilities?.operations?.supportsAdd) {
+        layerItemsHash[eachLayer.id].supportsAdd = true;
+      }
+    })
+    this._editableLayerIds = this.reduceToConfiguredLayers(layerItemsHash);
+  }
+
+  /**
+   * renders feature list
+   * @protected
+   */
+  protected async renderFeaturesList(): Promise<void> {
+    let evt = {
+      detail: this._editableLayerIds
+    } as CustomEvent
+    await this.layerListLoaded(evt);
+    this.setSelectedLayer(this._validLayers[0].id, this._validLayers[0].title);
+    this._flowItems = ['feature-list'];
+  }
+
+  /**
+   * Updates the share url for current selected feature
+   * @protected
    */
    protected _updateShareURL(): void {
     const url = this._shareNode?.shareUrl;
