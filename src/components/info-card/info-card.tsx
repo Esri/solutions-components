@@ -298,7 +298,7 @@ export class InfoCard {
             label={this._translations.fetchingData}
           />
           <div
-            class={"esri-widget " + featureNodeClass}
+            class={"esri-widget feature-node " + featureNodeClass}
             id="features-node"
           />
           <div class={`${editButtonClass} width-100`} slot="footer">

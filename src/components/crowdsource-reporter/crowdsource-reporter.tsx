@@ -983,7 +983,7 @@ export class CrowdsourceReporter {
   }
 
   /**
-   * On map click do hitTest and get the clicked graphics of valid layers and show feature details
+   * On map click do hitTest and get the clicked graphics from both reporting and non-reporting layers, and show feature details
    * @param event IMapClick map click event details
    *
    * @protected
@@ -991,12 +991,8 @@ export class CrowdsourceReporter {
   protected async onMapClick(event: IMapClick): Promise<void> {
     //disable map popup
     this.mapView.popupEnabled = false;
-    // only include graphics from valid layers listed in the layer list widget
-    const opts = {
-      include: this._validLayers
-    };
     // Perform a hitTest on the View
-    const hitTest = await this.mapView.hitTest(event, opts);
+    const hitTest = await this.mapView.hitTest(event);
     if (hitTest.results.length > 0) {
       const clickedGraphics = [];
       hitTest.results.forEach(function (result) {
@@ -1005,15 +1001,35 @@ export class CrowdsourceReporter {
           clickedGraphics.push(result.graphic);
         }
       });
-      //update the selectedFeature
-      this.setSelectedFeatures(clickedGraphics);
-      //if featureDetails not open then add it to the list else just reInit flowItems which will update details with newly selected features
-      // eslint-disable-next-line unicorn/prefer-ternary
-      if (this._flowItems.length && this._flowItems[this._flowItems.length - 1] !== "feature-details") {
-        this._flowItems = [...this._flowItems, "feature-details"];
-      } else {
-        this._flowItems = [...this._flowItems];
-        void this.highlightOnMap(clickedGraphics[0]);
+      const reportingLayerGraphics = clickedGraphics.filter((graphic) => {
+        return this._validLayers.includes(graphic.layer);
+      })
+      const nonReportingLayerGraphics = clickedGraphics.filter((graphic) => {
+        return !this._validLayers.includes(graphic.layer) && graphic?.layer?.id;
+      })
+
+      // if clicked graphic's layer is one of the reporting layers then show details in layer panel 
+      if (reportingLayerGraphics.length > 0) {
+        //update the selectedFeature
+        this.setSelectedFeatures(reportingLayerGraphics);
+        //if featureDetails not open then add it to the list else just reInit flowItems which will update details with newly selected features
+        // eslint-disable-next-line unicorn/prefer-ternary
+        if (this._flowItems.length && this._flowItems[this._flowItems.length - 1] !== "feature-details") {
+          this._flowItems = [...this._flowItems, "feature-details"];
+        } else {
+          this._flowItems = [...this._flowItems];
+          void this.highlightOnMap(clickedGraphics[0]);
+        }
+      }
+
+      // if clicked graphic's layer is from non reporting layers then show popup on map
+      if (nonReportingLayerGraphics.length > 0) {
+        this.mapView.popupEnabled = true;
+        const options = {
+          features: nonReportingLayerGraphics,
+          updateLocationEnabled: true
+        };
+        await this.mapView.openPopup(options);
       }
     }
   }
