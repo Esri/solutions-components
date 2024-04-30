@@ -45,6 +45,11 @@ export class CrowdsourceManager {
   @Prop() appProxies: any;
 
   /**
+   * IBasemapConfig: List of any basemaps to filter out from the basemap widget
+   */
+  @Prop() basemapConfig: IBasemapConfig;
+
+  /**
    * string: default center point values for the map
    * ; delimited x;y pair
    */
@@ -81,6 +86,11 @@ export class CrowdsourceManager {
   @Prop() enableAutoRefresh = false;
 
   /**
+   * boolean: when true the basemap widget will be available
+   */
+  @Prop() enableBasemap = true;
+
+  /**
    * boolean: when true the layer table will support drag/drop of columns to adjust order
    */
   @Prop() enableColumnReorder = true;
@@ -99,6 +109,11 @@ export class CrowdsourceManager {
    * boolean: when true the fullscreen widget will be available
    */
   @Prop() enableFullscreen = true;
+
+  /**
+   * boolean: when true the home widget will be available
+   */
+  @Prop() enableHome = true;
 
   /**
    * boolean: when true edits can be applied directly within the table
@@ -121,29 +136,14 @@ export class CrowdsourceManager {
   @Prop() enableShare = false;
 
   /**
-   * boolean: when true the home widget will be available
-   */
-  @Prop() enableHome = true;
-
-  /**
    * boolean: when true the zoom widget will be available
    */
   @Prop() enableZoom = true;
 
   /**
-   * boolean: when true the basemap widget will be available
+   * boolean: when true the map will be hidden on load
    */
-  @Prop() enableBasemap = true;
-
-  /**
-   * IBasemapConfig: List of any basemaps to filter out from the basemap widget
-   */
-  @Prop() basemapConfig: IBasemapConfig;
-
-  /**
-   * boolean: when true the table will be sorted by objectid in descending order by default
-   */
-  @Prop() showNewestFirst = true;
+  @Prop() hideMapOnLoad: boolean;
 
   /**
    * IMapInfo[]: array of map infos (name and id)
@@ -171,6 +171,11 @@ export class CrowdsourceManager {
   @Prop() shareIncludeSocial: boolean;
 
   /**
+   * boolean: when true the table will be sorted by objectid in descending order by default
+   */
+  @Prop() showNewestFirst = true;
+
+  /**
    * theme: "light" | "dark" theme to be used
    */
   @Prop() theme: theme = "light";
@@ -179,6 +184,11 @@ export class CrowdsourceManager {
    * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
    */
   @Prop() zoomAndScrollToSelected = false;
+
+  /**
+   * number: default scale to zoom to when zooming to a single point feature
+   */
+  @Prop() zoomToScale: number;
 
   //--------------------------------------------------------------------------
   //

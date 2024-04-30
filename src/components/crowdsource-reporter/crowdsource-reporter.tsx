@@ -114,6 +114,16 @@ export class CrowdsourceReporter {
   @Prop() level: string;
 
   /**
+   * string: The color that will be displayed on hover when expanding the popup header
+   */
+  @Prop() popupHeaderHoverColor: string;
+
+  /**
+   * string: The background color to apply to the popup header
+   */
+  @Prop() popupHeaderColor: string;
+
+  /**
    * string: The word(s) to display in the reports submit button
    */
   @Prop() reportButtonText: string;
@@ -167,6 +177,11 @@ export class CrowdsourceReporter {
    * boolean: when true the zoom widget will be available
    */
   @Prop() enableZoom = true;
+
+  /**
+   * number: default scale to zoom to when zooming to a single point feature
+   */
+  @Prop() zoomToScale: number;
 
   //--------------------------------------------------------------------------
   //
@@ -917,7 +932,7 @@ export class CrowdsourceReporter {
     // highlight the newly selected feature only when it has valid geometry
     if (selectedFeature && selectedFeature.geometry && selectedFeature.layer) {
       const selectedLayerView = await getFeatureLayerView(this.mapView, selectedFeature.layer.id);
-      // remove previous highlight options (if any) to highlight the feature by default color 
+      // remove previous highlight options (if any) to highlight the feature by default color
       selectedLayerView.highlightOptions = null;
       this._highlightHandle = await highlightFeatures(
         [selectedFeature.getObjectId()],
@@ -1020,7 +1035,7 @@ export class CrowdsourceReporter {
         return !this._validLayers.includes(graphic.layer) && graphic?.layer?.id;
       })
 
-      // if clicked graphic's layer is one of the reporting layers then show details in layer panel 
+      // if clicked graphic's layer is one of the reporting layers then show details in layer panel
       if (reportingLayerGraphics.length > 0) {
         //update the selectedFeature
         this.setSelectedFeatures(reportingLayerGraphics);

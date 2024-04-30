@@ -212,6 +212,10 @@ export namespace Components {
          */
         "enableZoom": boolean;
         /**
+          * boolean: when true the map will be hidden on load
+         */
+        "hideMapOnLoad": boolean;
+        /**
           * IMapInfo[]: array of map infos (name and id)
          */
         "mapInfos": IMapInfo[];
@@ -243,6 +247,10 @@ export namespace Components {
           * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
          */
         "zoomAndScrollToSelected": boolean;
+        /**
+          * number: default scale to zoom to when zooming to a single point feature
+         */
+        "zoomToScale": number;
     }
     interface CrowdsourceReporter {
         /**
@@ -322,6 +330,14 @@ export namespace Components {
          */
         "objectId": string;
         /**
+          * string: The background color to apply to the popup header
+         */
+        "popupHeaderColor": string;
+        /**
+          * string: The color that will be displayed on hover when expanding the popup header
+         */
+        "popupHeaderHoverColor": string;
+        /**
           * string: The word(s) to display in the reports submit button
          */
         "reportButtonText": string;
@@ -345,6 +361,10 @@ export namespace Components {
           * theme: "light" | "dark" theme to be used
          */
         "theme": theme;
+        /**
+          * number: default scale to zoom to when zooming to a single point feature
+         */
+        "zoomToScale": number;
     }
     interface DeductCalculator {
     }
@@ -2343,6 +2363,10 @@ declare namespace LocalJSX {
          */
         "enableZoom"?: boolean;
         /**
+          * boolean: when true the map will be hidden on load
+         */
+        "hideMapOnLoad"?: boolean;
+        /**
           * IMapInfo[]: array of map infos (name and id)
          */
         "mapInfos"?: IMapInfo[];
@@ -2374,6 +2398,10 @@ declare namespace LocalJSX {
           * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
          */
         "zoomAndScrollToSelected"?: boolean;
+        /**
+          * number: default scale to zoom to when zooming to a single point feature
+         */
+        "zoomToScale"?: number;
     }
     interface CrowdsourceReporter {
         /**
@@ -2457,6 +2485,14 @@ declare namespace LocalJSX {
          */
         "onTogglePanel"?: (event: CrowdsourceReporterCustomEvent<boolean>) => void;
         /**
+          * string: The background color to apply to the popup header
+         */
+        "popupHeaderColor"?: string;
+        /**
+          * string: The color that will be displayed on hover when expanding the popup header
+         */
+        "popupHeaderHoverColor"?: string;
+        /**
           * string: The word(s) to display in the reports submit button
          */
         "reportButtonText"?: string;
@@ -2480,6 +2516,10 @@ declare namespace LocalJSX {
           * theme: "light" | "dark" theme to be used
          */
         "theme"?: theme;
+        /**
+          * number: default scale to zoom to when zooming to a single point feature
+         */
+        "zoomToScale"?: number;
     }
     interface DeductCalculator {
         /**
