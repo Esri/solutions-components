@@ -572,3 +572,19 @@ export interface IConsentResponse {
 export interface IManagedLayers {
   [key: string]: "buffer" | "sketch";
 }
+
+/**
+ * Key is the layers guid
+ */
+export interface IReportingOptions {
+  [key: string]: IReportOption;
+}
+
+export interface IReportOption {
+  reporting: boolean;
+  comment: boolean;
+  like: boolean;
+  dislike: boolean;
+  likeField: string;
+  dislikeField: string;
+}

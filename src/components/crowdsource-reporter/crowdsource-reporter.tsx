@@ -15,7 +15,7 @@
  */
 
 import { Component, Element, Host, h, Prop, VNode, State, Watch, Event, EventEmitter } from "@stencil/core";
-import { IMapChange, IMapClick, IMapInfo, ISearchConfiguration, theme } from "../../utils/interfaces";
+import { IMapChange, IMapClick, IMapInfo, IReportingOptions, ISearchConfiguration, theme } from "../../utils/interfaces";
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { loadModules } from "../../utils/loadModules";
 import CrowdsourceReporter_T9n from "../../assets/t9n/crowdsource-reporter/resources.json";
@@ -132,6 +132,11 @@ export class CrowdsourceReporter {
    * string: The word(s) to display in the reports header
    */
   @Prop() reportsHeader: string;
+
+  /**
+   * IReportingOptions: Key options for reporting
+   */
+  @Prop() reportingOptions: IReportingOptions;
 
   /**
    * string: The message to display when the report has been submitted

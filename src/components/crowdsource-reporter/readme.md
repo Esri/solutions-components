@@ -32,6 +32,7 @@
 | `popupHeaderHoverColor`   | `popup-header-hover-color`  | string: The color that will be displayed on hover when expanding the popup header                         | `string`               | `undefined` |
 | `reportButtonText`        | `report-button-text`        | string: The word(s) to display in the reports submit button                                               | `string`               | `undefined` |
 | `reportSubmittedMessage`  | `report-submitted-message`  | string: The message to display when the report has been submitted                                         | `string`               | `undefined` |
+| `reportingOptions`        | --                          | IReportingOptions: Key options for reporting                                                              | `IReportingOptions`    | `undefined` |
 | `reportsHeader`           | `reports-header`            | string: The word(s) to display in the reports header                                                      | `string`               | `undefined` |
 | `searchConfiguration`     | --                          | ISearchConfiguration: Configuration details for the Search widget                                         | `ISearchConfiguration` | `undefined` |
 | `showComments`            | `show-comments`             | boolean: When true the comments from all users will be visible                                            | `boolean`              | `undefined` |
