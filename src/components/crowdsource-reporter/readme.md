@@ -34,6 +34,7 @@
 | `searchConfiguration`     | --                          | ISearchConfiguration: Configuration details for the Search widget                                         | `ISearchConfiguration` | `undefined` |
 | `showComments`            | `show-comments`             | boolean: When true the comments from all users will be visible                                            | `boolean`              | `undefined` |
 | `theme`                   | `theme`                     | theme: "light" \| "dark" theme to be used                                                                 | `"dark" \| "light"`    | `"light"`   |
+| `zoomToScale`             | `zoom-to-scale`             | number: default scale to zoom to when zooming to a single point feature                                   | `number`               | `undefined` |
 
 
 ## Events

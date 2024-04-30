@@ -243,6 +243,10 @@ export namespace Components {
           * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
          */
         "zoomAndScrollToSelected": boolean;
+        /**
+          * number: default scale to zoom to when zooming to a single point feature
+         */
+        "zoomToScale": number;
     }
     interface CrowdsourceReporter {
         /**
@@ -345,6 +349,10 @@ export namespace Components {
           * theme: "light" | "dark" theme to be used
          */
         "theme": theme;
+        /**
+          * number: default scale to zoom to when zooming to a single point feature
+         */
+        "zoomToScale": number;
     }
     interface DeductCalculator {
     }
@@ -2374,6 +2382,10 @@ declare namespace LocalJSX {
           * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
          */
         "zoomAndScrollToSelected"?: boolean;
+        /**
+          * number: default scale to zoom to when zooming to a single point feature
+         */
+        "zoomToScale"?: number;
     }
     interface CrowdsourceReporter {
         /**
@@ -2480,6 +2492,10 @@ declare namespace LocalJSX {
           * theme: "light" | "dark" theme to be used
          */
         "theme"?: theme;
+        /**
+          * number: default scale to zoom to when zooming to a single point feature
+         */
+        "zoomToScale"?: number;
     }
     interface DeductCalculator {
         /**

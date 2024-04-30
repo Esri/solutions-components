@@ -37,6 +37,7 @@
 | `showNewestFirst`         | `show-newest-first`           | boolean: when true the table will be sorted by objectid in descending order by default                             | `boolean`              | `true`      |
 | `theme`                   | `theme`                       | theme: "light" \| "dark" theme to be used                                                                          | `"dark" \| "light"`    | `"light"`   |
 | `zoomAndScrollToSelected` | `zoom-and-scroll-to-selected` | boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table | `boolean`              | `false`     |
+| `zoomToScale`             | `zoom-to-scale`               | number: default scale to zoom to when zooming to a single point feature                                            | `number`               | `undefined` |
 
 
 ## Dependencies

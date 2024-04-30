@@ -180,6 +180,11 @@ export class CrowdsourceManager {
    */
   @Prop() zoomAndScrollToSelected = false;
 
+  /**
+   * number: default scale to zoom to when zooming to a single point feature
+   */
+  @Prop() zoomToScale: number;
+
   //--------------------------------------------------------------------------
   //
   //  State (internal)
