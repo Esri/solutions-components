@@ -326,6 +326,14 @@ export namespace Components {
          */
         "objectId": string;
         /**
+          * string: The background color to apply to the popup header
+         */
+        "popupHeaderColor": string;
+        /**
+          * string: The color that will be displayed on hover when expanding the popup header
+         */
+        "popupHeaderHoverColor": string;
+        /**
           * string: The word(s) to display in the reports submit button
          */
         "reportButtonText": string;
@@ -2468,6 +2476,14 @@ declare namespace LocalJSX {
           * Emitted when toggle panel button is clicked in reporter
          */
         "onTogglePanel"?: (event: CrowdsourceReporterCustomEvent<boolean>) => void;
+        /**
+          * string: The background color to apply to the popup header
+         */
+        "popupHeaderColor"?: string;
+        /**
+          * string: The color that will be displayed on hover when expanding the popup header
+         */
+        "popupHeaderHoverColor"?: string;
         /**
           * string: The word(s) to display in the reports submit button
          */
