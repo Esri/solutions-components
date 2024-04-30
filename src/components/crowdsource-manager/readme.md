@@ -29,6 +29,7 @@
 | `enableSearch`            | `enable-search`               | boolean: when true the search widget will be available                                                             | `boolean`              | `true`      |
 | `enableShare`             | `enable-share`                | boolean: when true the share widget will be available                                                              | `boolean`              | `false`     |
 | `enableZoom`              | `enable-zoom`                 | boolean: when true the zoom widget will be available                                                               | `boolean`              | `true`      |
+| `hideMapOnLoad`           | `hide-map-on-load`            | boolean: when true the map will be hidden on load                                                                  | `boolean`              | `undefined` |
 | `mapInfos`                | --                            | IMapInfo[]: array of map infos (name and id)                                                                       | `IMapInfo[]`           | `[]`        |
 | `onlyShowUpdatableLayers` | `only-show-updatable-layers`  | boolean: When true only editable layers that support the update capability will be available                       | `boolean`              | `true`      |
 | `searchConfiguration`     | --                            | ISearchConfiguration: Configuration details for the Search widget                                                  | `ISearchConfiguration` | `undefined` |

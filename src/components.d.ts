@@ -212,6 +212,10 @@ export namespace Components {
          */
         "enableZoom": boolean;
         /**
+          * boolean: when true the map will be hidden on load
+         */
+        "hideMapOnLoad": boolean;
+        /**
           * IMapInfo[]: array of map infos (name and id)
          */
         "mapInfos": IMapInfo[];
@@ -2358,6 +2362,10 @@ declare namespace LocalJSX {
           * boolean: when true the zoom widget will be available
          */
         "enableZoom"?: boolean;
+        /**
+          * boolean: when true the map will be hidden on load
+         */
+        "hideMapOnLoad"?: boolean;
         /**
           * IMapInfo[]: array of map infos (name and id)
          */

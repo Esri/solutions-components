@@ -141,6 +141,11 @@ export class CrowdsourceManager {
   @Prop() enableZoom = true;
 
   /**
+   * boolean: when true the map will be hidden on load
+   */
+  @Prop() hideMapOnLoad: boolean;
+
+  /**
    * IMapInfo[]: array of map infos (name and id)
    */
   @Prop() mapInfos: IMapInfo[] = [];
