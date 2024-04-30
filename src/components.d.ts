@@ -224,6 +224,22 @@ export namespace Components {
          */
         "onlyShowUpdatableLayers": boolean;
         /**
+          * string: The background color to apply to the popup header
+         */
+        "popupHeaderColor": string;
+        /**
+          * string: The color that will be displayed on hover when expanding the popup header
+         */
+        "popupHeaderHoverColor": string;
+        /**
+          * string: The font color that will be displayed on hover when expanding the popup header
+         */
+        "popupHeaderHoverTextColor": string;
+        /**
+          * string: The font color to apply to the popup header
+         */
+        "popupHeaderTextColor": string;
+        /**
           * ISearchConfiguration: Configuration details for the Search widget
          */
         "searchConfiguration": ISearchConfiguration;
@@ -329,14 +345,6 @@ export namespace Components {
           * string: Object id of the feature from URL params
          */
         "objectId": string;
-        /**
-          * string: The background color to apply to the popup header
-         */
-        "popupHeaderColor": string;
-        /**
-          * string: The color that will be displayed on hover when expanding the popup header
-         */
-        "popupHeaderHoverColor": string;
         /**
           * string: The word(s) to display in the reports submit button
          */
@@ -2379,6 +2387,22 @@ declare namespace LocalJSX {
          */
         "onlyShowUpdatableLayers"?: boolean;
         /**
+          * string: The background color to apply to the popup header
+         */
+        "popupHeaderColor"?: string;
+        /**
+          * string: The color that will be displayed on hover when expanding the popup header
+         */
+        "popupHeaderHoverColor"?: string;
+        /**
+          * string: The font color that will be displayed on hover when expanding the popup header
+         */
+        "popupHeaderHoverTextColor"?: string;
+        /**
+          * string: The font color to apply to the popup header
+         */
+        "popupHeaderTextColor"?: string;
+        /**
           * ISearchConfiguration: Configuration details for the Search widget
          */
         "searchConfiguration"?: ISearchConfiguration;
@@ -2488,14 +2512,6 @@ declare namespace LocalJSX {
           * Emitted when toggle panel button is clicked in reporter
          */
         "onTogglePanel"?: (event: CrowdsourceReporterCustomEvent<boolean>) => void;
-        /**
-          * string: The background color to apply to the popup header
-         */
-        "popupHeaderColor"?: string;
-        /**
-          * string: The color that will be displayed on hover when expanding the popup header
-         */
-        "popupHeaderHoverColor"?: string;
         /**
           * string: The word(s) to display in the reports submit button
          */
