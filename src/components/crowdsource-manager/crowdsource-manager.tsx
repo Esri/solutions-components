@@ -156,6 +156,26 @@ export class CrowdsourceManager {
   @Prop() onlyShowUpdatableLayers = true;
 
   /**
+   * string: The background color to apply to the popup header
+   */
+  @Prop() popupHeaderColor: string;
+
+  /**
+   * string: The color that will be displayed on hover when expanding the popup header
+   */
+  @Prop() popupHeaderHoverColor: string;
+
+  /**
+   * string: The font color that will be displayed on hover when expanding the popup header
+   */
+  @Prop() popupHeaderHoverTextColor: string;
+
+  /**
+   * string: The font color to apply to the popup header
+   */
+  @Prop() popupHeaderTextColor: string;
+
+  /**
    * ISearchConfiguration: Configuration details for the Search widget
    */
   @Prop() searchConfiguration: ISearchConfiguration;

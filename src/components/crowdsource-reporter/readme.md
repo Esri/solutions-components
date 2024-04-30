@@ -28,8 +28,6 @@
 | `mapInfos`                | --                          | IMapInfo[]: array of map infos (name and id)                                                              | `IMapInfo[]`           | `[]`        |
 | `mapView`                 | --                          | esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html | `MapView`              | `undefined` |
 | `objectId`                | `object-id`                 | string: Object id of the feature from URL params                                                          | `string`               | `undefined` |
-| `popupHeaderColor`        | `popup-header-color`        | string: The background color to apply to the popup header                                                 | `string`               | `undefined` |
-| `popupHeaderHoverColor`   | `popup-header-hover-color`  | string: The color that will be displayed on hover when expanding the popup header                         | `string`               | `undefined` |
 | `reportButtonText`        | `report-button-text`        | string: The word(s) to display in the reports submit button                                               | `string`               | `undefined` |
 | `reportSubmittedMessage`  | `report-submitted-message`  | string: The message to display when the report has been submitted                                         | `string`               | `undefined` |
 | `reportingOptions`        | --                          | IReportingOptions: Key options for reporting                                                              | `IReportingOptions`    | `undefined` |

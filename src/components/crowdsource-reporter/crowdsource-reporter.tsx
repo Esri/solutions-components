@@ -114,16 +114,6 @@ export class CrowdsourceReporter {
   @Prop() level: string;
 
   /**
-   * string: The color that will be displayed on hover when expanding the popup header
-   */
-  @Prop() popupHeaderHoverColor: string;
-
-  /**
-   * string: The background color to apply to the popup header
-   */
-  @Prop() popupHeaderColor: string;
-
-  /**
    * string: The word(s) to display in the reports submit button
    */
   @Prop() reportButtonText: string;

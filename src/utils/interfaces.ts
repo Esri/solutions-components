@@ -577,14 +577,14 @@ export interface IManagedLayers {
  * Key is the layers guid
  */
 export interface IReportingOptions {
-  [key: string]: IReportOption;
+  [key: string]: IReportingOption;
 }
 
-export interface IReportOption {
+export interface IReportingOption {
   reporting: boolean;
   comment: boolean;
   like: boolean;
+  likeField?: string;
   dislike: boolean;
-  likeField: string;
-  dislikeField: string;
+  dislikeField?: string;
 }
