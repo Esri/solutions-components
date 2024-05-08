@@ -117,11 +117,6 @@ export class CreateFeature {
    */
   protected _addingAttachment: boolean
 
-  /**
-   * ISearchConfiguration: config for search widget
-   */
-  protected searchConfiguration1: ISearchConfiguration;
-
   //--------------------------------------------------------------------------
   //
   //  Watch handlers
