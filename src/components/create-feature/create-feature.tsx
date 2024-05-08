@@ -186,6 +186,11 @@ export class CreateFeature {
   */
   @Event() editingAttachment: EventEmitter<boolean>;
 
+  /**
+   * Emitted on demand when editor panel changes
+   */
+  @Event() progressStatus: EventEmitter<number>;
+
   //--------------------------------------------------------------------------
   //
   //  Functions (lifecycle)
@@ -306,6 +311,7 @@ export class CreateFeature {
       () =>  this._editor.viewModel.featureTemplatesViewModel.state,
       (state) => {
         if(state === 'ready'){
+          this.progressStatus.emit(0.5);
           void this.startCreate();
         }
       });
@@ -332,6 +338,7 @@ export class CreateFeature {
       //once the feature template is selected handle the event for formSubmit and sketch complete
       //also, hide the headers and footer in the editor as we will be showing our own submit and cancel button
       this._editor.viewModel.featureTemplatesViewModel.on('select', () => {
+        this.progressStatus.emit(0.75);
         setTimeout(() => {
           //on form submit 
           this._editor.viewModel.featureFormViewModel.on('submit', this.submitted.bind(this));
@@ -339,6 +346,7 @@ export class CreateFeature {
           this._editor.viewModel.sketchViewModel.on("create", (evt) => {
             if (evt.state === "complete") {
               this.showSearchWidget = false;
+	      this.progressStatus.emit(1);
               this.drawComplete.emit();
             }
           })

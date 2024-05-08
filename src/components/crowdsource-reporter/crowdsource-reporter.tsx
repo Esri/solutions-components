@@ -230,6 +230,11 @@ export class CrowdsourceReporter {
    */
   @State() _featureCreationFailedErrorMsg: string;
 
+  /**
+   * number: Show the updated progress bar status
+   */
+  @State() _updatedProgressBarStatus = 0.25;
+
   //--------------------------------------------------------------------------
   //
   //  Properties (protected)
@@ -554,6 +559,9 @@ export class CrowdsourceReporter {
         <calcite-panel
           full-height
           full-width>
+          <div class="progress-bar">
+            <calcite-progress type="determinate" value={this._updatedProgressBarStatus} />
+          </div>
           <calcite-notice
             class="notice-msg"
             icon="lightbulb"
@@ -605,6 +613,9 @@ export class CrowdsourceReporter {
         <calcite-panel
           full-height
           full-width>
+          <div class="progress-bar">
+            <calcite-progress type="determinate" value={this._updatedProgressBarStatus} />
+          </div>
           <calcite-notice
             class="notice-msg"
             icon="lightbulb"
@@ -618,13 +629,23 @@ export class CrowdsourceReporter {
             onDrawComplete={this.onDrawComplete.bind(this)}
             onEditingAttachment={this.showSubmitCancelButton.bind(this)}
             onFail={this.createFeatureFailed.bind(this)}
+            onProgressStatus={this.updatedProgressStatus.bind(this)}
             onSuccess={this.onReportSubmitted.bind(this)}
-            ref={el => this._createFeature = el as HTMLCreateFeatureElement}
+            ref={el => this._createFeature = el }
             searchConfiguration={this.searchConfiguration}
             selectedLayerId={this._selectedLayerId}
           />
         </calcite-panel>
       </calcite-flow-item>);
+  }
+
+  /**
+   * Update the progress bar status when editor panel changes
+   * @param evt Event which has progress bar status
+   * @protected
+   */
+  protected updatedProgressStatus(evt: CustomEvent): void {
+    this._updatedProgressBarStatus = evt.detail;
   }
 
   /**
@@ -765,6 +786,7 @@ export class CrowdsourceReporter {
    * @protected
    */
   protected backFromSelectedPanel(): void {
+    this._updatedProgressBarStatus = 0.25;
     const updatedFlowItems = [...this._flowItems];
     updatedFlowItems.pop();
     this.clearHighlights();

@@ -49,6 +49,10 @@
   width: calc(100% - 20px);
 }
 
+.progress-bar {
+  padding: 12px;
+}
+
 .footer-top-button {
   padding-bottom: 7px;
 }
