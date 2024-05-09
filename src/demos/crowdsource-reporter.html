@@ -210,6 +210,74 @@
             ]
           }
         ];
+        //Set the reporting layer options, layers from this object with reporting set to true will only be shown in layer list
+        //if all the layers from map should be considered for reporting then pass true for each layer 
+        demo.reportingOptions = {
+          "Requests_681":{
+            reporting: true,
+            comment: false,
+            like: false,
+            likeField: "Like_field",
+            dislike: false,
+            dislikeField: "Dislike_field"
+          },
+          "18cdb191817-layer-5": {
+            reporting: true,
+            comment: false,
+            like: true,
+            likeField: "Like_field",
+            dislike: true,
+            dislikeField: "Dislike_field"
+          },
+          "18f056682a4-layer-12":{
+            reporting: true,
+            comment: false,
+            like: true,
+            likeField: "shrt",
+            dislike: false,
+            dislikeField: "dislike_field"
+          },
+          "18f2a1562a8-layer-7": {
+            reporting: true,
+            comment: true,
+            like: true,
+            likeField: "like_field",
+            dislike: true,
+            dislikeField: "dislike_field"
+          },
+          "18f2a1562a5-layer-3": {
+            reporting: true,
+            comment: true,
+            like: true,
+            likeField: "like_field",
+            dislike: true,
+            dislikeField: "dislike_field"
+          },
+          "18f2a1562a7-layer-4": {
+            reporting: true,
+            comment: true,
+            like: true,
+            likeField: "like_field",
+            dislike: true,
+            dislikeField: "dislike_field"
+          },
+          "18f2a1562a7-layer-5": {
+            reporting: true,
+            comment: true,
+            like: true,
+            likeField: "like_field",
+            dislike: true,
+            dislikeField: "dislike_field"
+          },
+          "18f2a1562a8-layer-6": {
+            reporting: true,
+            comment: true,
+            like: true,
+            likeField: "like_field",
+            dislike: true,
+            dislikeField: "dislike_field"
+          }
+        }
         //Select reporting layers -
         //demo.layers = ['SE_field_mapping_9688', 'SE_field_mapping_5784', 'SE_field_mapping_1853']; //Se mapping
         //demo.layers = ['Three_Layers_nested_4042', 'SE_sort_2889', 'SE_sort_756']; //screening layers

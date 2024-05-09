@@ -61,6 +61,18 @@
   height: 35px;
 }
 
+.feature-pagination {
+  align-items: center;
+  margin: 5% 124%;
+  display: flex;
+}
+
+.pagination-count {
+  width: 32px;
+  color: var(--calcite-color-brand);
+  border-bottom: 1px solid var(--calcite-color-brand);
+}
+
 .report-submitted-msg {
   position: absolute;
   z-index: 1000;
