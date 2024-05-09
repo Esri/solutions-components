@@ -22,6 +22,7 @@
 | `drawComplete`      | Emitted on demand when drawing is completed                | `CustomEvent<void>`    |
 | `editingAttachment` | Emitted on demand when editing attachments                 | `CustomEvent<boolean>` |
 | `fail`              | Emitted on demand when the feature creation is failed      | `CustomEvent<Error>`   |
+| `progressStatus`    | Emitted on demand when editor panel changes                | `CustomEvent<number>`  |
 | `success`           | Emitted on demand when the feature is created successfully | `CustomEvent<void>`    |
 
 

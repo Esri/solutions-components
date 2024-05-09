@@ -551,7 +551,7 @@ export class RefineSelection {
     const oids = Array.isArray(graphics) ? graphics.map(g => g.attributes[g?.layer?.objectIdField]) : [];
     await this._updateIds(oids, this._selectionMode, this._refineSelectionSet.undoStack, this._refineLayer);
 
-    this._drawTools.clear();
+    void this._drawTools.clear();
   }
 
   /**

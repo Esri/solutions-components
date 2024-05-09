@@ -473,7 +473,7 @@ export class MapSelectTools {
               editGraphicsEnabled={!this._useLayerFeaturesEnabled}
               graphics={this._graphics}
               mapView={this.mapView}
-              onSketchGraphicsChange={(evt) => this._sketchGraphicsChanged(evt)}
+              onSketchGraphicsChange={(evt) => void this._sketchGraphicsChanged(evt)}
               pointSymbol={this.sketchPointSymbol}
               polygonSymbol={this.sketchPolygonSymbol}
               polylineSymbol={this.sketchLineSymbol}
@@ -530,7 +530,7 @@ export class MapSelectTools {
             disabled={!this._searchDistanceEnabled}
             distance={bufferDistance}
             geometries={this.geometries}
-            onBufferComplete={(evt) => this._bufferComplete(evt)}
+            onBufferComplete={(evt) => void this._bufferComplete(evt)}
             ref={(el) => this._bufferTools = el}
             unit={this.selectionSet?.unit || this.defaultBufferUnit}
           />
@@ -653,7 +653,7 @@ export class MapSelectTools {
           <map-layer-picker
             enabledLayerIds={this.enabledLayerIds}
             mapView={this.mapView}
-            onLayerSelectionChange={(evt) => this._inputLayerSelectionChange(evt)}
+            onLayerSelectionChange={(evt) => void this._inputLayerSelectionChange(evt)}
             selectedIds={this.selectLayerView ? [this.selectLayerView.layer.id] : this.selectionSet ? [this.selectionSet.layerView.layer.id] : []}
             showTables={false}
           />
@@ -738,7 +738,7 @@ export class MapSelectTools {
       this._selectionLabel = this.selectionSet?.label;
 
       if (!this._useLayerFeaturesEnabled) {
-        this._drawTools?.updateGraphics();
+        await this._drawTools?.updateGraphics();
       }
 
       await goToSelection(this.selectionSet.selectedIds, this.selectionSet.layerView, this.mapView, false);
@@ -912,7 +912,7 @@ export class MapSelectTools {
       this._workflowType = this._useLayerFeaturesEnabled ? EWorkflowType.SELECT : EWorkflowType.SKETCH;
 
       if (this._workflowType === EWorkflowType.SKETCH) {
-        this._drawTools.updateGraphics();
+        await this._drawTools.updateGraphics();
       }
 
       await this._updateLabel();

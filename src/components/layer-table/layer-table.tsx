@@ -794,7 +794,7 @@ export class LayerTable {
             height={50}
             isMobile={this.isMobile}
             mapView={this.mapView}
-            onLayerSelectionChange={(evt) => this._layerSelectionChanged(evt)}
+            onLayerSelectionChange={(evt) => void this._layerSelectionChanged(evt)}
             onlyShowUpdatableLayers={this.onlyShowUpdatableLayers}
             placeholderIcon="layers"
             scale="l"

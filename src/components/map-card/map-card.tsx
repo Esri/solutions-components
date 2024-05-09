@@ -407,7 +407,7 @@ export class MapCard {
       });
     } else if (loadDefaultMap) {
       this._defaultWebmapHonored = true;
-      this._mapPicker.setMapByID(id);
+      void this._mapPicker.setMapByID(id);
     } else if (mapConfigChanged) {
       // Map is the same so no need to reload but we need to update for any changes from the config
       this._searchConfiguration = this._webMapInfo.searchConfiguration;
