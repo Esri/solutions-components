@@ -140,9 +140,11 @@
           //id: "c720e337ff814fe4a83bc244c46f8e43" //15 Layers
           //id: "f5186c798b9e40dab1078658ddbc28cf" // 30K features
           //id: "dda88d905a6748a5ab46bea5be795f33" // screening layers
-          id: "b5bdcb1e5d684dd3b21a2d44b8e4f928" //Popup content
+          id: "b5bdcb1e5d684dd3b21a2d44b8e4f928" //Popup content + like dislike
           //id: "d399ec39959a4aac8617ae4f05dd6785" //Arcade
           //id: "024e8a5e73a34c5aade9632d651c5750" //Attachments
+          //id: "ae6d5d1936e84ce7adde44c7a7908846" //like dislike
+          // id: "ce3dec81bf714d3bb71da9691ab686d1" //Filter
         }
         const webMap = new WebMap({
           portalItem: custom ?? portalItem
@@ -164,6 +166,118 @@
         demo.enableNewReports = true;
         demo.theme = "light";
         demo.reportSubmittedMessage = "Thank you! Your request was successfully submitted";
+        
+        //Set the zoomScale to be used when zooming to single point feature
+        //demo.zoomToScale = 139596221; //World
+        //demo.zoomToScale = 33800278;//Country
+        //demo.zoomToScale = 4291772;//States
+        demo.zoomToScale = 96610;//City
+        //demo.zoomToScale = 3495; //Building
+        
+        //Set filter config
+        demo.layerExpressions = [
+          {
+            id: "Requests_681",
+            title: "Requests",
+            operator: " AND ",
+            expressions: [
+              {
+                definitionExpression: "OBJECTID > 690",
+                id: 1701793260225,
+                index: 0,
+                name: "greater than 690",
+                active: false
+              },
+              {
+                id: 1654881457794,
+                name: 'status',
+                type: 'string',
+                field: 'status'
+              }
+            ]
+          },{
+            id: "18f056682a4-layer-12",
+            title: "PopUp with date in title",
+            operator: " AND ",
+            expressions: [
+              {
+                definitionExpression: "shrt > 0",
+                id: 1901793260225,
+                index: 0,
+                name: "Like greater than 0",
+                active: false
+              }
+            ]
+          }
+        ];
+        //Set the reporting layer options, layers from this object with reporting set to true will only be shown in layer list
+        //if all the layers from map should be considered for reporting then pass true for each layer 
+        demo.reportingOptions = {
+          "Requests_681":{
+            reporting: true,
+            comment: false,
+            like: false,
+            likeField: "Like_field",
+            dislike: false,
+            dislikeField: "Dislike_field"
+          },
+          "18cdb191817-layer-5": {
+            reporting: true,
+            comment: false,
+            like: true,
+            likeField: "Like_field",
+            dislike: true,
+            dislikeField: "Dislike_field"
+          },
+          "18f056682a4-layer-12":{
+            reporting: true,
+            comment: false,
+            like: true,
+            likeField: "shrt",
+            dislike: false,
+            dislikeField: "dislike_field"
+          },
+          "18f2a1562a8-layer-7": {
+            reporting: true,
+            comment: true,
+            like: true,
+            likeField: "like_field",
+            dislike: true,
+            dislikeField: "dislike_field"
+          },
+          "18f2a1562a5-layer-3": {
+            reporting: true,
+            comment: true,
+            like: true,
+            likeField: "like_field",
+            dislike: true,
+            dislikeField: "dislike_field"
+          },
+          "18f2a1562a7-layer-4": {
+            reporting: true,
+            comment: true,
+            like: true,
+            likeField: "like_field",
+            dislike: true,
+            dislikeField: "dislike_field"
+          },
+          "18f2a1562a7-layer-5": {
+            reporting: true,
+            comment: true,
+            like: true,
+            likeField: "like_field",
+            dislike: true,
+            dislikeField: "dislike_field"
+          },
+          "18f2a1562a8-layer-6": {
+            reporting: true,
+            comment: true,
+            like: true,
+            likeField: "like_field",
+            dislike: true,
+            dislikeField: "dislike_field"
+          }
+        }
         //Select reporting layers -
         //demo.layers = ['SE_field_mapping_9688', 'SE_field_mapping_5784', 'SE_field_mapping_1853']; //Se mapping
         //demo.layers = ['Three_Layers_nested_4042', 'SE_sort_2889', 'SE_sort_756']; //screening layers

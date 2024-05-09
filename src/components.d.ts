@@ -5,9 +5,11 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { ButtonType, DistanceUnit, EditType, EDrawMode, ELayoutMode, IBasemapConfig, IConsentResponse, IExportInfos, IInventoryItem, ILayerAndTableIds, IMapChange, IMapInfo, IReportingOptions, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange, theme } from "./utils/interfaces";
+import { ButtonType, DistanceUnit, EditType, EDrawMode, ELayoutMode, IBasemapConfig, IConsentResponse, IExportInfos, IInventoryItem, ILayerAndTableIds, ILayerExpression, IMapChange, IMapInfo, IReportingOptions, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange, theme } from "./utils/interfaces";
+import { IReportingOptions as IReportingOptions1 } from "./components";
 import { UserSession } from "@esri/solution-common";
-export { ButtonType, DistanceUnit, EditType, EDrawMode, ELayoutMode, IBasemapConfig, IConsentResponse, IExportInfos, IInventoryItem, ILayerAndTableIds, IMapChange, IMapInfo, IReportingOptions, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange, theme } from "./utils/interfaces";
+export { ButtonType, DistanceUnit, EditType, EDrawMode, ELayoutMode, IBasemapConfig, IConsentResponse, IExportInfos, IInventoryItem, ILayerAndTableIds, ILayerExpression, IMapChange, IMapInfo, IReportingOptions, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange, theme } from "./utils/interfaces";
+export { IReportingOptions as IReportingOptions1 } from "./components";
 export { UserSession } from "@esri/solution-common";
 export namespace Components {
     interface ArcgisLogin {
@@ -318,13 +320,13 @@ export namespace Components {
          */
         "isMobile": boolean;
         /**
+          * ILayerExpression[]: Array of layer expressions for layers (filter configuration)
+         */
+        "layerExpressions": ILayerExpression[];
+        /**
           * string: Layer id of the feature from URL params
          */
         "layerId": string;
-        /**
-          * string[]: list of layer ids
-         */
-        "layers": string[];
         /**
           * string: Id of the zoom level from URL params
          */
@@ -422,6 +424,37 @@ export namespace Components {
     }
     interface FeatureComments {
     }
+    interface FeatureDetails {
+        /**
+          * Go to the previous feature in the features widget
+         */
+        "back": () => Promise<void>;
+        /**
+          * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
+         */
+        "graphics": __esri.Graphic[];
+        /**
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.MapView;
+        /**
+          * Go to the next feature in the features widget
+         */
+        "next": () => Promise<void>;
+        /**
+          * Refresh the features comments which will fetch like, dislike and update the component
+          * @returns Promise that resolves when the operation is complete
+         */
+        "refresh": (graphic?: __esri.Graphic) => Promise<void>;
+        /**
+          * IReportingOptions: Key options for reporting
+         */
+        "reportingOptions": IReportingOptions1;
+        /**
+          * Toggle the visibility of the features list view
+         */
+        "toggleListView": () => Promise<void>;
+    }
     interface FeatureFormFlowItem {
     }
     interface FeatureList {
@@ -477,6 +510,10 @@ export namespace Components {
          */
         "allowEditing"?: boolean;
         /**
+          * Go to the previous feature in the features widget
+         */
+        "back": () => Promise<void>;
+        /**
           * Get the current selected feature from the Features widget
           * @returns Promise resolving with the current feature
          */
@@ -501,6 +538,31 @@ export namespace Components {
           * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
+        /**
+          * Go to the next feature in the features widget
+         */
+        "next": () => Promise<void>;
+        /**
+          * boolean: If true will show the pagination for multiple features
+         */
+        "paginationEnabled"?: boolean;
+        /**
+          * string: Set the position of the feature info
+         */
+        "position"?: string;
+        /**
+          * Get the current selected feature from the Features widget
+          * @returns Promise resolving with the current feature
+         */
+        "refresh": () => Promise<any>;
+        /**
+          * Toggle the visibility of the features list view
+         */
+        "toggleListView": () => Promise<void>;
+        /**
+          * update the current graphics to the features widget
+         */
+        "updateCurrentGraphic": (selectedGraphic: __esri.Graphic) => Promise<void>;
         /**
           * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
          */
@@ -1402,6 +1464,10 @@ export interface EditCardCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLEditCardElement;
 }
+export interface FeatureDetailsCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLFeatureDetailsElement;
+}
 export interface FeatureListCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLFeatureListElement;
@@ -1542,6 +1608,7 @@ declare global {
         "fail": Error;
         "drawComplete": void;
         "editingAttachment": boolean;
+        "progressStatus": number;
     }
     interface HTMLCreateFeatureElement extends Components.CreateFeature, HTMLStencilElement {
         addEventListener<K extends keyof HTMLCreateFeatureElementEventMap>(type: K, listener: (this: HTMLCreateFeatureElement, ev: CreateFeatureCustomEvent<HTMLCreateFeatureElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -1639,6 +1706,23 @@ declare global {
         prototype: HTMLFeatureCommentsElement;
         new (): HTMLFeatureCommentsElement;
     };
+    interface HTMLFeatureDetailsElementEventMap {
+        "loadingStatus": boolean;
+    }
+    interface HTMLFeatureDetailsElement extends Components.FeatureDetails, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLFeatureDetailsElementEventMap>(type: K, listener: (this: HTMLFeatureDetailsElement, ev: FeatureDetailsCustomEvent<HTMLFeatureDetailsElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLFeatureDetailsElementEventMap>(type: K, listener: (this: HTMLFeatureDetailsElement, ev: FeatureDetailsCustomEvent<HTMLFeatureDetailsElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLFeatureDetailsElement: {
+        prototype: HTMLFeatureDetailsElement;
+        new (): HTMLFeatureDetailsElement;
+    };
     interface HTMLFeatureFormFlowItemElement extends Components.FeatureFormFlowItem, HTMLStencilElement {
     }
     var HTMLFeatureFormFlowItemElement: {
@@ -1689,7 +1773,7 @@ declare global {
     };
     interface HTMLInfoCardElementEventMap {
         "popupClosed": void;
-        "selectionChanged": __esri.Graphic[];
+        "selectionChanged": { selectedFeature: __esri.Graphic[], selectedFeatureIndex: number };
     }
     interface HTMLInfoCardElement extends Components.InfoCard, HTMLStencilElement {
         addEventListener<K extends keyof HTMLInfoCardElementEventMap>(type: K, listener: (this: HTMLInfoCardElement, ev: InfoCardCustomEvent<HTMLInfoCardElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2118,6 +2202,7 @@ declare global {
         "delete-button": HTMLDeleteButtonElement;
         "edit-card": HTMLEditCardElement;
         "feature-comments": HTMLFeatureCommentsElement;
+        "feature-details": HTMLFeatureDetailsElement;
         "feature-form-flow-item": HTMLFeatureFormFlowItemElement;
         "feature-list": HTMLFeatureListElement;
         "features-flow-item": HTMLFeaturesFlowItemElement;
@@ -2280,6 +2365,10 @@ declare namespace LocalJSX {
           * Emitted on demand when the feature creation is failed
          */
         "onFail"?: (event: CreateFeatureCustomEvent<Error>) => void;
+        /**
+          * Emitted on demand when editor panel changes
+         */
+        "onProgressStatus"?: (event: CreateFeatureCustomEvent<number>) => void;
         /**
           * Emitted on demand when the feature is created successfully
          */
@@ -2481,13 +2570,13 @@ declare namespace LocalJSX {
          */
         "isMobile"?: boolean;
         /**
+          * ILayerExpression[]: Array of layer expressions for layers (filter configuration)
+         */
+        "layerExpressions"?: ILayerExpression[];
+        /**
           * string: Layer id of the feature from URL params
          */
         "layerId"?: string;
-        /**
-          * string[]: list of layer ids
-         */
-        "layers"?: string[];
         /**
           * string: Id of the zoom level from URL params
          */
@@ -2609,6 +2698,24 @@ declare namespace LocalJSX {
     }
     interface FeatureComments {
     }
+    interface FeatureDetails {
+        /**
+          * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
+         */
+        "graphics"?: __esri.Graphic[];
+        /**
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView"?: __esri.MapView;
+        /**
+          * Emitted on demand when like or dislike button is clicked
+         */
+        "onLoadingStatus"?: (event: FeatureDetailsCustomEvent<boolean>) => void;
+        /**
+          * IReportingOptions: Key options for reporting
+         */
+        "reportingOptions"?: IReportingOptions1;
+    }
     interface FeatureFormFlowItem {
     }
     interface FeatureList {
@@ -2701,7 +2808,15 @@ declare namespace LocalJSX {
         /**
           * Emitted on demand when the selected index changes
          */
-        "onSelectionChanged"?: (event: InfoCardCustomEvent<__esri.Graphic[]>) => void;
+        "onSelectionChanged"?: (event: InfoCardCustomEvent<{ selectedFeature: __esri.Graphic[], selectedFeatureIndex: number }>) => void;
+        /**
+          * boolean: If true will show the pagination for multiple features
+         */
+        "paginationEnabled"?: boolean;
+        /**
+          * string: Set the position of the feature info
+         */
+        "position"?: string;
         /**
           * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
          */
@@ -3585,6 +3700,7 @@ declare namespace LocalJSX {
         "delete-button": DeleteButton;
         "edit-card": EditCard;
         "feature-comments": FeatureComments;
+        "feature-details": FeatureDetails;
         "feature-form-flow-item": FeatureFormFlowItem;
         "feature-list": FeatureList;
         "features-flow-item": FeaturesFlowItem;
@@ -3642,6 +3758,7 @@ declare module "@stencil/core" {
             "delete-button": LocalJSX.DeleteButton & JSXBase.HTMLAttributes<HTMLDeleteButtonElement>;
             "edit-card": LocalJSX.EditCard & JSXBase.HTMLAttributes<HTMLEditCardElement>;
             "feature-comments": LocalJSX.FeatureComments & JSXBase.HTMLAttributes<HTMLFeatureCommentsElement>;
+            "feature-details": LocalJSX.FeatureDetails & JSXBase.HTMLAttributes<HTMLFeatureDetailsElement>;
             "feature-form-flow-item": LocalJSX.FeatureFormFlowItem & JSXBase.HTMLAttributes<HTMLFeatureFormFlowItemElement>;
             "feature-list": LocalJSX.FeatureList & JSXBase.HTMLAttributes<HTMLFeatureListElement>;
             "features-flow-item": LocalJSX.FeaturesFlowItem & JSXBase.HTMLAttributes<HTMLFeaturesFlowItemElement>;

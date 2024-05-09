@@ -49,12 +49,28 @@
   width: calc(100% - 20px);
 }
 
+.progress-bar {
+  padding: 12px;
+}
+
 .footer-top-button {
   padding-bottom: 7px;
 }
 
 .footer-button {
   height: 35px;
+}
+
+.feature-pagination {
+  align-items: center;
+  margin: 5% 124%;
+  display: flex;
+}
+
+.pagination-count {
+  width: 32px;
+  color: var(--calcite-color-brand);
+  border-bottom: 1px solid var(--calcite-color-brand);
 }
 
 .report-submitted-msg {

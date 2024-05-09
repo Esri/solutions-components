@@ -21,8 +21,8 @@
 | `enableSearch`            | `enable-search`             | boolean: when true the search widget will be available                                                    | `boolean`              | `true`      |
 | `enableZoom`              | `enable-zoom`               | boolean: when true the zoom widget will be available                                                      | `boolean`              | `true`      |
 | `isMobile`                | `is-mobile`                 | boolean: When true the application will be in mobile mode, controls the mobile or desktop view            | `boolean`              | `undefined` |
+| `layerExpressions`        | --                          | ILayerExpression[]: Array of layer expressions for layers (filter configuration)                          | `ILayerExpression[]`   | `undefined` |
 | `layerId`                 | `layer-id`                  | string: Layer id of the feature from URL params                                                           | `string`               | `undefined` |
-| `layers`                  | --                          | string[]: list of layer ids                                                                               | `string[]`             | `undefined` |
 | `level`                   | `level`                     | string: Id of the zoom level from URL params                                                              | `string`               | `undefined` |
 | `loginTitle`              | `login-title`               | string: The text that will display at the top of the landing page                                         | `string`               | `undefined` |
 | `mapInfos`                | --                          | IMapInfo[]: array of map infos (name and id)                                                              | `IMapInfo[]`           | `[]`        |
@@ -54,15 +54,19 @@
 - calcite-panel
 - calcite-flow
 - calcite-loader
+- calcite-modal
+- instant-apps-filter-list
 - calcite-flow-item
 - calcite-button
 - [layer-list](../layer-list)
+- calcite-progress
 - calcite-notice
 - [create-feature](../create-feature)
+- calcite-action
 - [feature-list](../feature-list)
 - instant-apps-social-share
-- [info-card](../info-card)
-- calcite-action
+- [feature-details](../feature-details)
+- calcite-tooltip
 
 ### Graph
 ```mermaid
@@ -72,15 +76,19 @@ graph TD;
   crowdsource-reporter --> calcite-panel
   crowdsource-reporter --> calcite-flow
   crowdsource-reporter --> calcite-loader
+  crowdsource-reporter --> calcite-modal
+  crowdsource-reporter --> instant-apps-filter-list
   crowdsource-reporter --> calcite-flow-item
   crowdsource-reporter --> calcite-button
   crowdsource-reporter --> layer-list
+  crowdsource-reporter --> calcite-progress
   crowdsource-reporter --> calcite-notice
   crowdsource-reporter --> create-feature
+  crowdsource-reporter --> calcite-action
   crowdsource-reporter --> feature-list
   crowdsource-reporter --> instant-apps-social-share
-  crowdsource-reporter --> info-card
-  crowdsource-reporter --> calcite-action
+  crowdsource-reporter --> feature-details
+  crowdsource-reporter --> calcite-tooltip
   calcite-alert --> calcite-icon
   calcite-alert --> calcite-chip
   calcite-chip --> calcite-icon
@@ -94,10 +102,42 @@ graph TD;
   calcite-popover --> calcite-action
   calcite-popover --> calcite-icon
   calcite-scrim --> calcite-loader
-  calcite-flow-item --> calcite-action
-  calcite-flow-item --> calcite-panel
+  calcite-modal --> calcite-scrim
+  calcite-modal --> calcite-icon
+  instant-apps-filter-list --> calcite-panel
+  instant-apps-filter-list --> calcite-loader
+  instant-apps-filter-list --> calcite-checkbox
+  instant-apps-filter-list --> calcite-block
+  instant-apps-filter-list --> calcite-combobox
+  instant-apps-filter-list --> calcite-combobox-item
+  instant-apps-filter-list --> calcite-slider
+  instant-apps-filter-list --> calcite-input-date-picker
+  instant-apps-filter-list --> calcite-action
+  instant-apps-filter-list --> calcite-button
+  calcite-block --> calcite-scrim
+  calcite-block --> calcite-loader
+  calcite-block --> calcite-icon
+  calcite-block --> calcite-handle
+  calcite-block --> calcite-action-menu
+  calcite-handle --> calcite-icon
+  calcite-combobox --> calcite-combobox-item
+  calcite-combobox --> calcite-chip
+  calcite-combobox --> calcite-icon
+  calcite-combobox-item --> calcite-icon
+  calcite-slider --> calcite-graph
+  calcite-input-date-picker --> calcite-input-text
+  calcite-input-date-picker --> calcite-date-picker
+  calcite-input-date-picker --> calcite-icon
+  calcite-input-text --> calcite-progress
+  calcite-input-text --> calcite-icon
+  calcite-date-picker --> calcite-date-picker-month-header
+  calcite-date-picker --> calcite-date-picker-month
+  calcite-date-picker-month-header --> calcite-icon
+  calcite-date-picker-month --> calcite-date-picker-day
   calcite-button --> calcite-loader
   calcite-button --> calcite-icon
+  calcite-flow-item --> calcite-action
+  calcite-flow-item --> calcite-panel
   layer-list --> calcite-loader
   layer-list --> calcite-notice
   layer-list --> calcite-list
@@ -113,7 +153,6 @@ graph TD;
   calcite-list-item --> calcite-icon
   calcite-list-item --> calcite-handle
   calcite-list-item --> calcite-action
-  calcite-handle --> calcite-icon
   feature-list --> calcite-panel
   feature-list --> calcite-loader
   feature-list --> calcite-notice
@@ -126,6 +165,9 @@ graph TD;
   instant-apps-social-share --> calcite-button
   instant-apps-social-share --> calcite-icon
   instant-apps-social-share --> calcite-action
+  feature-details --> calcite-panel
+  feature-details --> info-card
+  feature-details --> calcite-button
   info-card --> calcite-shell
   info-card --> calcite-loader
   info-card --> calcite-button
@@ -138,8 +180,6 @@ graph TD;
   delete-button --> calcite-button
   delete-button --> calcite-action
   delete-button --> calcite-modal
-  calcite-modal --> calcite-scrim
-  calcite-modal --> calcite-icon
   edit-card --> calcite-notice
   edit-card --> calcite-loader
   style crowdsource-reporter fill:#f9f,stroke:#333,stroke-width:4px

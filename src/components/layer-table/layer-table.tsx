@@ -551,7 +551,7 @@ export class LayerTable {
   async selectionChanged(
     evt: CustomEvent
   ): Promise<void> {
-    const g: __esri.Graphic = evt.detail[0];
+    const g: __esri.Graphic = evt.detail.selectedFeature[0];
     const oid = g.getObjectId();
     if (this.zoomAndScrollToSelected) {
       const i: number = this._table.viewModel.getObjectIdIndex(oid);
@@ -794,7 +794,7 @@ export class LayerTable {
             height={50}
             isMobile={this.isMobile}
             mapView={this.mapView}
-            onLayerSelectionChange={(evt) => this._layerSelectionChanged(evt)}
+            onLayerSelectionChange={(evt) => void this._layerSelectionChanged(evt)}
             onlyShowUpdatableLayers={this.onlyShowUpdatableLayers}
             placeholderIcon="layers"
             scale="l"

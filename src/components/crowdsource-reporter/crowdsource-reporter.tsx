@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Prop, VNode, State, Watch, Event, EventEmitter } from "@stencil/core";
-import { IMapChange, IMapClick, IMapInfo, IReportingOptions, ISearchConfiguration, theme } from "../../utils/interfaces";
+import { Component, Element, Host, h, Prop, VNode, State, Watch, Event, EventEmitter, Listen } from "@stencil/core";
+import { ILayerExpression, IMapChange, IMapClick, IMapInfo, IReportingOptions, ISearchConfiguration, theme } from "../../utils/interfaces";
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { loadModules } from "../../utils/loadModules";
 import CrowdsourceReporter_T9n from "../../assets/t9n/crowdsource-reporter/resources.json";
@@ -77,11 +77,6 @@ export class CrowdsourceReporter {
    * boolean: When true the user will be allowed to submit new reports
    */
   @Prop() enableNewReports: boolean;
-
-  /**
-   * string[]: list of layer ids
-   */
-  @Prop() layers: string[];
 
   /**
    * string: The text that will display at the top of the landing page
@@ -178,6 +173,11 @@ export class CrowdsourceReporter {
    */
   @Prop() zoomToScale: number;
 
+  /**
+   * ILayerExpression[]: Array of layer expressions for layers (filter configuration)
+   */
+  @Prop() layerExpressions: ILayerExpression[];
+
   //--------------------------------------------------------------------------
   //
   //  State (internal)
@@ -226,9 +226,29 @@ export class CrowdsourceReporter {
   @State() _showSubmitCancelButton = false;
 
   /**
+   * boolean: show loading indicator for feature details component upto completing pending operations
+   */
+  @State() _loadingFeatureDetails: boolean;
+
+  /**
    * string: Error message when feature creation fails
    */
   @State() _featureCreationFailedErrorMsg: string;
+
+  /**
+   * number: Show the updated progress bar status
+   */
+  @State() _updatedProgressBarStatus = 0.25;
+
+  /**
+   * boolean: When true the filter component will be displayed
+   */
+  @State() _filterOpen = false;
+
+  /**
+   * boolean: When true an indicator will be shown on the action
+   */
+  @State() _filterActive = false;
 
   //--------------------------------------------------------------------------
   //
@@ -250,6 +270,11 @@ export class CrowdsourceReporter {
    * number: zoom level the map should go to
    */
   protected _defaultLevel: number;
+
+  /**
+   * string[]: list of configured reporting layer ids
+   */
+  protected layers: string[];
 
   /**
    * __esri.FeatureLayer[]: Valid layers from the current map
@@ -287,6 +312,11 @@ export class CrowdsourceReporter {
   protected _createFeature: HTMLCreateFeatureElement;
 
   /**
+   * HTMLCreateFeatureElement: features details component instance
+   */
+  protected _featureDetails: HTMLFeatureDetailsElement;
+
+  /**
    * HTMLLayerListElement: Create Layer list component instance
    */
   protected _layerList: HTMLLayerListElement;
@@ -319,6 +349,16 @@ export class CrowdsourceReporter {
   //HARDCODED IN EN
   protected _noLayerToDisplayErrorMsg = "Web map does not contain any editable layers.";
 
+  /**
+   * HTMLInstantAppsFilterListElement: Component from Instant Apps that supports interacting with the current filter config
+   */
+  protected _filterList: HTMLInstantAppsFilterListElement;
+
+  /**
+   * number: selected feature index
+   */
+  protected selectedFeatureIndex: number;
+  
   //--------------------------------------------------------------------------
   //
   //  Watch handlers
@@ -341,6 +381,22 @@ export class CrowdsourceReporter {
     await this.mapView.when(async () => {
       await this.setMapView();
     });
+  }
+
+  /**
+   * On Feature details change update the Layer title and the current selected layer id
+   * @param evt Event hold the details of current feature graphic in the info-card
+   */
+  @Listen("selectionChanged", { target: "window" })
+  async selectionChanged(
+    evt: CustomEvent
+  ): Promise<void> {
+    void this.updatingFeatureDetails(true);
+    this.setCurrentFeature(evt.detail.selectedFeature[0]);
+    void this.highlightOnMap(evt.detail.selectedFeature[0]);
+    this.selectedFeatureIndex = evt.detail.selectedFeatureIndex;
+    //update the feature details to reflect the like dislike values 
+    await this._featureDetails.refresh(evt.detail.selectedFeature[0]);
   }
 
   //--------------------------------------------------------------------------
@@ -376,6 +432,10 @@ export class CrowdsourceReporter {
     await this._initModules();
     await this._getTranslations();
     await this.mapView?.when(async () => {
+      //set configured reporting layers array
+      this.layers = this.reportingOptions ? Object.keys(this.reportingOptions).filter((layerId: string) => {
+          return this.reportingOptions[layerId].reporting
+        }) : [];
       await this.setMapView();
     });
   }
@@ -415,6 +475,7 @@ export class CrowdsourceReporter {
             {this._getReporter()}
           </calcite-shell>
         </div>
+        {this.filterModal()}
       </Host>
     );
   }
@@ -492,6 +553,89 @@ export class CrowdsourceReporter {
   }
 
   /**
+   * Show filter component in modal
+   * @returns node to interact with any configured filters for the current layer
+   */
+     protected filterModal(): VNode {
+       //get layer expression for current selected layer
+       const currentLayersExpressions = this.layerExpressions ? this.layerExpressions.filter(
+         (exp) => exp.id === this._selectedLayerId) : [];
+       return (currentLayersExpressions.length > 0 &&
+         <calcite-modal
+           aria-labelledby="modal-title"
+           class="modal"
+           kind="brand"
+           onCalciteModalClose={() => void this._closeFilter()}
+           open={this._filterOpen}
+           widthScale="s"
+         >
+           <div
+             class="display-flex align-center"
+             id="modal-title"
+             slot="header"
+           >
+             {this._translations?.filterLayerTitle?.replace("{{title}}", this._selectedLayerName)}
+           </div>
+           <div slot="content">
+             <instant-apps-filter-list
+               autoUpdateUrl={false}
+               closeBtn={true}
+               closeBtnOnClick={async () => this._closeFilter()}
+               comboboxOverlayPositioning="fixed"
+               layerExpressions={currentLayersExpressions}
+               onFilterListReset={() => this._handleFilterListReset()}
+               onFilterUpdate={() => this._handleFilterUpdate()}
+               ref={(el) => this._filterList = el}
+               view={this.mapView}
+               zoomBtn={false}
+             />
+           </div>
+         </calcite-modal>
+       );
+    }
+
+  /**
+   * Close the filter modal
+   * @protected
+   */
+  protected _closeFilter(): void {
+    if (this._filterOpen) {
+      this._filterOpen = false;
+    }
+  }
+
+  /**
+   * When true the filter modal will be displayed
+   * @protected
+   */
+  protected _toggleFilter(): void {
+    this._filterOpen = !this._filterOpen;
+  }
+
+  /**
+   * Reset the filter active prop
+   * @protected
+   */
+  protected _handleFilterListReset(): void {
+    //on reset filter list reset the filter active state
+    this._filterActive = false;
+    //reset the features list to reflect the applied filters
+    void this._featureList.refresh()
+  }
+
+  /**
+   * Check if the layers definitionExpression has been modified
+   * @protected
+   */
+  protected _handleFilterUpdate(): void {
+    //if filter are applied the url params will be generated
+    //set the filter active state based on the length of applied filters
+    this._filterActive = this._filterList.urlParams.getAll('filter').length > 0;
+    //reset the features list to reflect the applied filters
+    void this._featureList.refresh();
+  }
+
+  /**
    * Get the feature layer list
    * @returns the layer list items
    * @protected
@@ -532,7 +676,7 @@ export class CrowdsourceReporter {
             noLayerErrorMsg={this._noLayerToDisplayErrorMsg}
             onLayerSelect={this.displayFeaturesList.bind(this)}
             onLayersListLoaded={this.layerListLoaded.bind(this)}
-            ref={el => this._layerList = el as HTMLLayerListElement}
+            ref={el => this._layerList = el }
             showFeatureCount
             showNextIcon />
         </calcite-panel>
@@ -554,6 +698,9 @@ export class CrowdsourceReporter {
         <calcite-panel
           full-height
           full-width>
+          <div class="progress-bar">
+            <calcite-progress type="determinate" value={this._updatedProgressBarStatus} />
+          </div>
           <calcite-notice
             class="notice-msg"
             icon="lightbulb"
@@ -605,6 +752,9 @@ export class CrowdsourceReporter {
         <calcite-panel
           full-height
           full-width>
+          <div class="progress-bar">
+            <calcite-progress type="determinate" value={this._updatedProgressBarStatus} />
+          </div>
           <calcite-notice
             class="notice-msg"
             icon="lightbulb"
@@ -618,13 +768,23 @@ export class CrowdsourceReporter {
             onDrawComplete={this.onDrawComplete.bind(this)}
             onEditingAttachment={this.showSubmitCancelButton.bind(this)}
             onFail={this.createFeatureFailed.bind(this)}
+            onProgressStatus={this.updatedProgressStatus.bind(this)}
             onSuccess={this.onReportSubmitted.bind(this)}
-            ref={el => this._createFeature = el as HTMLCreateFeatureElement}
+            ref={el => this._createFeature = el }
             searchConfiguration={this.searchConfiguration}
             selectedLayerId={this._selectedLayerId}
           />
         </calcite-panel>
       </calcite-flow-item>);
+  }
+
+  /**
+   * Update the progress bar status when editor panel changes
+   * @param evt Event which has progress bar status
+   * @protected
+   */
+  protected updatedProgressStatus(evt: CustomEvent): void {
+    this._updatedProgressBarStatus = evt.detail;
   }
 
   /**
@@ -649,7 +809,7 @@ export class CrowdsourceReporter {
    */
   protected onSubmitButtonClick(): void {
     if (this._createFeature) {
-      this._createFeature.submit();
+      void this._createFeature.submit();
     }
   }
 
@@ -659,7 +819,7 @@ export class CrowdsourceReporter {
    */
   protected backFromCreateFeaturePanel(): void {
     if(this._createFeature){
-      this._createFeature.close();
+      void this._createFeature.close();
     }
     this.backFromSelectedPanel();
   }
@@ -689,10 +849,10 @@ export class CrowdsourceReporter {
    */
   protected async navigateToHomePage(): Promise<void> {
     if (this._createFeature) {
-      this._createFeature.close();
+      void this._createFeature.close();
     }
     if (this._layerList) {
-      this._layerList.refresh();
+      void this._layerList.refresh();
     }
     this.setSelectedFeatures([]);
 
@@ -765,6 +925,7 @@ export class CrowdsourceReporter {
    * @protected
    */
   protected backFromSelectedPanel(): void {
+    this._updatedProgressBarStatus = 0.25;
     const updatedFlowItems = [...this._flowItems];
     updatedFlowItems.pop();
     this.clearHighlights();
@@ -795,6 +956,14 @@ export class CrowdsourceReporter {
   }
 
   /**
+   * Show loading indicator while updating the feature details component 
+   * @param isLoading is feature detail component loading
+   */
+  protected async updatingFeatureDetails(isLoading: boolean): Promise<void> {
+    this._loadingFeatureDetails = isLoading;
+  }
+
+  /**
    * Get feature list of the selected feature layer
    * @param layerId Layer id
    * @param layerName Layer name
@@ -802,6 +971,8 @@ export class CrowdsourceReporter {
    * @protected
    */
   protected getFeatureListFlowItem(layerId: string, layerName: string): Node {
+    const layerExpressions = this.layerExpressions?.filter((exp) => exp.id === this._selectedLayerId)
+    const showFilterIcon = layerExpressions.length > 0;
     return (
       <calcite-flow-item
         collapsed={this.isMobile && this._sidePanelCollapsed}
@@ -811,12 +982,14 @@ export class CrowdsourceReporter {
           icon="sort-ascending-arrow"
           slot={this.isMobile ? "header-menu-actions" : "header-actions-end"}
           text={this._translations.sort}
-          text-enabled={this.isMobile} />
-        <calcite-action
+          text-enabled={this.isMobile} />*/}
+        {showFilterIcon && <calcite-action
           icon="filter"
+          indicator={this._filterActive}
+          onClick={this._toggleFilter.bind(this)}
           slot={this.isMobile ? "header-menu-actions" : "header-actions-end"}
           text={this._translations.filter}
-          text-enabled={this.isMobile} /> */}
+          text-enabled={this.isMobile} />}
         {this.isMobile && this.getActionToExpandCollapsePanel()}
         {this.enableNewReports &&
           <calcite-button
@@ -834,7 +1007,7 @@ export class CrowdsourceReporter {
             noFeaturesFoundMsg={this._translations.featureErrorMsg}
             onFeatureSelect={this.onFeatureSelectFromList.bind(this)}
             pageSize={30}
-            ref={el => this._featureList = el as HTMLFeatureListElement}
+            ref={el => this._featureList = el }
             selectedLayerId={layerId}
           />}
         </calcite-panel>
@@ -850,6 +1023,7 @@ export class CrowdsourceReporter {
       <calcite-flow-item
         collapsed={this.isMobile && this._sidePanelCollapsed}
         heading={this._selectedLayerName}
+        loading={this._loadingFeatureDetails}
         onCalciteFlowItemBack={this.backFromSelectedPanel.bind(this)}>
         {this.isMobile && this.getActionToExpandCollapsePanel()}
         {/* Create share button */}
@@ -865,20 +1039,66 @@ export class CrowdsourceReporter {
           socialMedia={true}
           view={this.mapView}
         />
-        <calcite-panel full-height>
-          <info-card
-            allowEditing={false}
+        <calcite-panel>
+          {this._selectedFeature.length > 1 && this.getFeaturesPagination()}
+          <feature-details
+            class={'full-height'}
             graphics={this._selectedFeature}
-            highlightEnabled={false}
-            isLoading={false}
-            isMobile={false}
             mapView={this.mapView}
-            onSelectionChanged={this.featureDetailsChanged.bind(this)}
-            zoomAndScrollToSelected={true}
+            onLoadingStatus={(evt) => {void this.updatingFeatureDetails(evt.detail)}}
+            ref={el => this._featureDetails = el }
+            reportingOptions={this.reportingOptions}
           />
         </calcite-panel>
       </calcite-flow-item>
     );
+  }
+
+  /**
+   * Returns the pagination for the multiple features
+   * Create pagination to avoid the overlap of like, dislike and comment section 
+   * @returns Node
+   */
+  protected getFeaturesPagination(): Node {
+    return (
+      <div class="feature-pagination" slot="header-actions-start">
+        <div>
+          <calcite-button
+            appearance='transparent'
+            disabled={false}
+            iconStart="chevron-left"
+            id="solutions-back"
+            onClick={() => void this._featureDetails.back()}
+            scale="s"
+            width="full"
+           />
+          <calcite-tooltip label="" placement="top" reference-element="solutions-back">
+            <span>{this._translations.back}</span>
+          </calcite-tooltip>
+        </div>
+          <calcite-button
+            appearance='transparent'
+            class='pagination-action'
+            onClick={() => void this._featureDetails.toggleListView()}
+            scale="s">
+          <span class="pagination-count">{this._getCount()}</span>
+        </calcite-button>
+        <div>
+          <calcite-button
+            appearance="transparent"
+            disabled={false}
+            iconStart="chevron-right"
+            id="solutions-next"
+            onClick={() => void this._featureDetails.next()}
+            scale="s"
+            width="full"
+           />
+          <calcite-tooltip placement="top" reference-element="solutions-next">
+            <span>{this._translations.next}</span>
+          </calcite-tooltip>
+        </div>
+      </div>
+    )
   }
 
   /**
@@ -909,15 +1129,6 @@ export class CrowdsourceReporter {
   }
 
   /**
-   * On Feature details change update the Layer title and the current selected layer id
-   * @param evt Event hold the details of current feature graphic in the info-card
-   */
-  protected featureDetailsChanged(evt: CustomEvent): void {
-    this.setCurrentFeature(evt.detail[0]);
-    void this.highlightOnMap(evt.detail[0]);
-  }
-
-  /**
    * Highlights the feature on map
    * @param selectedFeature Graphic currently shown in feature details
    */
@@ -933,9 +1144,11 @@ export class CrowdsourceReporter {
         [selectedFeature.getObjectId()],
         selectedLayerView,
         this.mapView,
-        true
+        true,
+        this.zoomToScale
       )
     }
+    void this.updatingFeatureDetails(false);
   }
 
   /**
@@ -1055,6 +1268,20 @@ export class CrowdsourceReporter {
       }
     }
   }
+
+    /**
+   * Get the current index of total string
+   *
+   * @returns the index of total string
+   * @protected
+   */
+    protected _getCount(): string {
+      const index = (this.selectedFeatureIndex + 1).toString();
+      const total = this._selectedFeature.length.toString();
+      return this._translations.indexOfTotal
+        .replace("{{index}}", index)
+        .replace("{{total}}", total);
+    }
 
   /**
    * Fetches the component's translations

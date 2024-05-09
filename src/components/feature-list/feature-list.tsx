@@ -295,8 +295,22 @@ export class FeatureList {
       const selectedLayerView = await getFeatureLayerView(this.mapView, this.selectedLayerId);
       this._highlightHandle = await highlightFeatures([selectedFeatureObjectId], selectedLayerView, this.mapView, true);
     }
-    this.featureSelect.emit(selectedFeature);
+    await this.emitSelectedFeature(selectedFeature)
   }
+
+  /**
+   * Emit selected feature with its complete graphics and attributes
+   * @param graphic selected feature graphic
+   * @protected
+   */
+    protected async emitSelectedFeature(graphic: __esri.Graphic): Promise<void> {
+      const layer = graphic.layer as __esri.FeatureLayer;
+      const query = layer.createQuery();
+      query.returnGeometry = true;
+      query.objectIds = [graphic.getObjectId()];
+      const completeGraphic = await layer.queryFeatures(query);
+      this.featureSelect.emit(completeGraphic.features[0]);
+    }
 
   /**
    * On feature hover in feature list highlight the feature on the map
