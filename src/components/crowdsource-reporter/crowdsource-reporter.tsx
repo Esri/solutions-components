@@ -1045,7 +1045,7 @@ export class CrowdsourceReporter {
             class={'full-height'}
             graphics={this._selectedFeature}
             mapView={this.mapView}
-            onLoadingStatus={(evt) => this.updatingFeatureDetails(evt.detail)}
+            onLoadingStatus={(evt) => {void this.updatingFeatureDetails(evt.detail)}}
             ref={el => this._featureDetails = el }
             reportingOptions={this.reportingOptions}
           />
