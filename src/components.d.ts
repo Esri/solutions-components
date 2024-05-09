@@ -318,13 +318,13 @@ export namespace Components {
          */
         "isMobile": boolean;
         /**
+          * ILayerExpression[]: Array of layer expressions for layers (filter configuration)
+         */
+        "layerExpressions": ILayerExpression[];
+        /**
           * string: Layer id of the feature from URL params
          */
         "layerId": string;
-        /**
-          * string[]: list of layer ids
-         */
-        "layers": string[];
         /**
           * string: Id of the zoom level from URL params
          */
@@ -2481,13 +2481,13 @@ declare namespace LocalJSX {
          */
         "isMobile"?: boolean;
         /**
+          * ILayerExpression[]: Array of layer expressions for layers (filter configuration)
+         */
+        "layerExpressions"?: ILayerExpression[];
+        /**
           * string: Layer id of the feature from URL params
          */
         "layerId"?: string;
-        /**
-          * string[]: list of layer ids
-         */
-        "layers"?: string[];
         /**
           * string: Id of the zoom level from URL params
          */

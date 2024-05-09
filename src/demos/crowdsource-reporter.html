@@ -174,6 +174,42 @@
         demo.zoomToScale = 96610;//City
         //demo.zoomToScale = 3495; //Building
         
+        //Set filter config
+        demo.layerExpressions = [
+          {
+            id: "Requests_681",
+            title: "Requests",
+            operator: " AND ",
+            expressions: [
+              {
+                definitionExpression: "OBJECTID > 690",
+                id: 1701793260225,
+                index: 0,
+                name: "greater than 690",
+                active: false
+              },
+              {
+                id: 1654881457794,
+                name: 'status',
+                type: 'string',
+                field: 'status'
+              }
+            ]
+          },{
+            id: "18f056682a4-layer-12",
+            title: "PopUp with date in title",
+            operator: " AND ",
+            expressions: [
+              {
+                definitionExpression: "shrt > 0",
+                id: 1901793260225,
+                index: 0,
+                name: "Like greater than 0",
+                active: false
+              }
+            ]
+          }
+        ];
         //Select reporting layers -
         //demo.layers = ['SE_field_mapping_9688', 'SE_field_mapping_5784', 'SE_field_mapping_1853']; //Se mapping
         //demo.layers = ['Three_Layers_nested_4042', 'SE_sort_2889', 'SE_sort_756']; //screening layers
