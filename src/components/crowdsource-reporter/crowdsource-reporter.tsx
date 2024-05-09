@@ -955,7 +955,8 @@ export class CrowdsourceReporter {
         [selectedFeature.getObjectId()],
         selectedLayerView,
         this.mapView,
-        true
+        true,
+        this.zoomToScale
       )
     }
   }
