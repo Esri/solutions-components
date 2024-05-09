@@ -79,11 +79,6 @@ export class CrowdsourceReporter {
   @Prop() enableNewReports: boolean;
 
   /**
-   * string[]: list of layer ids
-   */
-  @Prop() layers: string[];
-
-  /**
    * string: The text that will display at the top of the landing page
    */
   @Prop() loginTitle: string;
@@ -257,6 +252,11 @@ export class CrowdsourceReporter {
   protected _defaultLevel: number;
 
   /**
+   * string[]: list of configured reporting layer ids
+   */
+  protected layers: string[];
+
+  /**
    * __esri.FeatureLayer[]: Valid layers from the current map
    */
   protected _validLayers: __esri.FeatureLayer[];
@@ -381,6 +381,10 @@ export class CrowdsourceReporter {
     await this._initModules();
     await this._getTranslations();
     await this.mapView?.when(async () => {
+      //set configured reporting layers array
+      this.layers = this.reportingOptions ? Object.keys(this.reportingOptions).filter((layerId: string) => {
+          return this.reportingOptions[layerId].reporting
+        }) : [];
       await this.setMapView();
     });
   }
