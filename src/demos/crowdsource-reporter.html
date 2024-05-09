@@ -140,9 +140,11 @@
           //id: "c720e337ff814fe4a83bc244c46f8e43" //15 Layers
           //id: "f5186c798b9e40dab1078658ddbc28cf" // 30K features
           //id: "dda88d905a6748a5ab46bea5be795f33" // screening layers
-          id: "b5bdcb1e5d684dd3b21a2d44b8e4f928" //Popup content
+          id: "b5bdcb1e5d684dd3b21a2d44b8e4f928" //Popup content + like dislike
           //id: "d399ec39959a4aac8617ae4f05dd6785" //Arcade
           //id: "024e8a5e73a34c5aade9632d651c5750" //Attachments
+          //id: "ae6d5d1936e84ce7adde44c7a7908846" //like dislike
+          // id: "ce3dec81bf714d3bb71da9691ab686d1" //Filter
         }
         const webMap = new WebMap({
           portalItem: custom ?? portalItem
@@ -164,6 +166,14 @@
         demo.enableNewReports = true;
         demo.theme = "light";
         demo.reportSubmittedMessage = "Thank you! Your request was successfully submitted";
+        
+        //Set the zoomScale to be used when zooming to single point feature
+        //demo.zoomToScale = 139596221; //World
+        //demo.zoomToScale = 33800278;//Country
+        //demo.zoomToScale = 4291772;//States
+        demo.zoomToScale = 96610;//City
+        //demo.zoomToScale = 3495; //Building
+        
         //Select reporting layers -
         //demo.layers = ['SE_field_mapping_9688', 'SE_field_mapping_5784', 'SE_field_mapping_1853']; //Se mapping
         //demo.layers = ['Three_Layers_nested_4042', 'SE_sort_2889', 'SE_sort_756']; //screening layers

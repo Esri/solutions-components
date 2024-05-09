@@ -182,6 +182,7 @@ export async function getAllLayers(
  * @param layerView the layer view to highlight
  * @param mapView the map view used if updateExtent is true
  * @param updateExtent optional (default false) boolean to indicate if we should zoom to the extent
+ * @param zoomToScale optional (default 0) zoomScale that individual points will use when zoomed to
  *
  * @returns Promise resolving with the highlight handle
  */
@@ -189,10 +190,11 @@ export async function highlightFeatures(
   ids: number[],
   layerView: __esri.FeatureLayerView,
   mapView: __esri.MapView,
-  updateExtent = false
+  updateExtent = false,
+  zoomToScale = 0
 ): Promise<__esri.Handle> {
   if (updateExtent) {
-    await goToSelection(ids, layerView, mapView, false);
+    await goToSelection(ids, layerView, mapView, false, undefined, zoomToScale);
     //wait for sometime to load the feature in layerView then only the highlight will work
     await new Promise(resolve => setTimeout(resolve, 1000));
   }
@@ -295,7 +297,8 @@ export async function flashSelection(
  * @param layerView the layer view that contains the OIDs
  * @param mapView the map view to show the extent change
  * @param flashFeatures optional (default true) boolean to indicate if we should flash the features
- *
+ * @param featureEffect optional (default undefined) feature effect when flashing the features
+ * @param zoomToScale optional (default to 0) zoomScale that individual points will use when zoomed to
  * @returns Promise resolving when the operation is complete
  *
  */
@@ -304,10 +307,15 @@ export async function goToSelection(
   layerView: __esri.FeatureLayerView,
   mapView: __esri.MapView,
   flashFeatures = true,
-  featureEffect: __esri.FeatureEffect = undefined
+  featureEffect: __esri.FeatureEffect = undefined,
+  zoomToScale = 0
 ): Promise<void> {
   const result = await queryExtent(ids, layerView.layer);
-  await mapView.goTo(result.extent);
+  const goToParams: { target: __esri.Extent; scale?: number; } = { target: result.extent };
+  if (result.count === 1 && layerView.layer.geometryType === 'point' && zoomToScale) {
+    goToParams.scale = zoomToScale
+  }
+  await mapView.goTo(goToParams);
   if (flashFeatures) {
     await flashSelection(ids, layerView, featureEffect);
   }
