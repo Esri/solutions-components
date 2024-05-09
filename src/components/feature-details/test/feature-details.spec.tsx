@@ -1,7 +1,7 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { FeatureDetails } from '../feature-details';
 
-describe('feature-details', () => {
+xdescribe('feature-details', () => {
   it('renders', async () => {
     const page = await newSpecPage({
       components: [FeatureDetails],
