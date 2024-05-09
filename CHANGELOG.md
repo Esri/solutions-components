@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.8.9] - Apr 30th 2024
+Delivery for Reporter Instant App - Sprint2 - AGOL-2024.R02
+
 ## [0.8.8] - Apr 30th 2024
 Adds new props for manager (popupHeaderHoverColor, popupHeaderColor, popupHeaderHoverTextColor, popupHeaderTextColor)
 
@@ -547,4 +550,5 @@ Recover from test releases
 [0.8.6]: https://github.com/Esri/solution.js/compare/v0.8.5...v0.8.6 "v0.8.6"
 [0.8.7]: https://github.com/Esri/solution.js/compare/v0.8.6...v0.8.7 "v0.8.7"
 [0.8.8]: https://github.com/Esri/solution.js/compare/v0.8.7...v0.8.8 "v0.8.8"
-[Unreleased]: https://github.com/Esri/solution.js/compare/v0.8.8...HEAD "Unreleased Changes"
+[0.8.9]: https://github.com/Esri/solution.js/compare/v0.8.8...v0.8.9 "v0.8.9"
+[Unreleased]: https://github.com/Esri/solution.js/compare/v0.8.9...HEAD "Unreleased Changes"
