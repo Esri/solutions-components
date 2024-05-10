@@ -719,7 +719,13 @@ export class CrowdsourceManager {
     const headerTheme = !this._isMobile ? "calcite-mode-dark" : "calcite-mode-light";
     const containerClass = this._isMobile && this._hideTable ? "position-absolute-0 width-full height-full" : this._isMobile ? "display-none height-0" : "";
     return (
-      <div class={`${headerTheme} ${popupNodeClass} ${containerClass}`}>
+      <div class={`${headerTheme} ${popupNodeClass} ${containerClass}`}
+        style={{
+          '--calcite-color-foreground-1': this.popupHeaderColor, /* background color to apply to the popup header */
+          '--calcite-color-foreground-2': this.popupHeaderHoverColor, /* color that will be displayed on hover when expanding the popup header */
+          '--calcite-color-text-3': this.popupHeaderHoverTextColor, /* font color that will be displayed on hover when expanding the popup header */
+          '--calcite-color-text-2': this.popupHeaderTextColor, /* font color to apply to the popup header */
+        }}>
         <calcite-panel>
           {
             !this._isMobile ? (
