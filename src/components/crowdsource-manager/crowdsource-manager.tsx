@@ -143,7 +143,7 @@ export class CrowdsourceManager {
   /**
    * boolean: when true the map will be hidden on load
    */
-  @Prop() hideMapOnLoad: boolean;
+  @Prop() hideMapOnLoad = false;
 
   /**
    * IMapInfo[]: array of map infos (name and id)
@@ -219,7 +219,7 @@ export class CrowdsourceManager {
   /**
    * When true the info panel with the popup details will take the full height and prevent the map from displaying
    */
-  @State() _expandPopup = false;
+  @State() _expandPopup = this.hideMapOnLoad;
 
   /**
    * When true the mobile footer will be hidden
@@ -406,7 +406,6 @@ export class CrowdsourceManager {
   async beforeMapChanged(): Promise<void> {
     if (this._expandPopup) {
       this._shouldSetMapView = true;
-      this._expandPopup = false;
     }
   }
 
@@ -422,6 +421,15 @@ export class CrowdsourceManager {
     await layer.when(() => {
       this._layer = layer;
     });
+  }
+
+  /**
+   * Update the state expandPopup when mapInfoChange event occurs
+   */
+  @Listen("mapInfoChange", { target: "window" })
+  async mapInfoChange(
+  ): Promise<void> {
+    this._expandPopup = this.hideMapOnLoad;
   }
 
   //--------------------------------------------------------------------------
