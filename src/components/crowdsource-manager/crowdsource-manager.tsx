@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Listen, Prop, State, VNode, Watch } from "@stencil/core";
+import { Component, Element, Host, h, Listen, Prop, State, VNode, Watch, Event, EventEmitter } from "@stencil/core";
 import CrowdsourceManager_T9n from "../../assets/t9n/crowdsource-manager/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { ELayoutMode, IBasemapConfig, ILayerAndTableIds, IMapChange, IMapInfo, ISearchConfiguration, theme } from "../../utils/interfaces";
@@ -343,6 +343,11 @@ export class CrowdsourceManager {
   //--------------------------------------------------------------------------
 
   /**
+ * Emitted on demand when a info button is clicked
+ */
+  @Event() infoIconButtonClick: EventEmitter<void>;
+
+  /**
    * Listen for changes in feature selection and show or hide the map, popup, and table
    */
   @Listen("featureSelectionChange", { target: "window" })
@@ -626,14 +631,34 @@ export class CrowdsourceManager {
     hideTable: boolean
   ): VNode {
     const contentClass = layoutMode === ELayoutMode.HORIZONTAL ? "" : "display-flex";
+    const themeClass = this.theme === "dark" ? "calcite-mode-dark" : "calcite-mode-light";
     return (
       <calcite-panel class={"width-full height-full"}>
         <div class={`width-full height-full overflow-hidden ${contentClass}`}>
           {this._getMapAndCard(layoutMode, panelOpen, hideTable)}
           {this._getTable(layoutMode, panelOpen, hideTable)}
         </div>
+        <div class="floating-container" onClick={this.infoButtonClick.bind(this)}>
+          <calcite-button
+            appearance="solid"
+            class={`floating-button ${themeClass}`}
+            icon-start="information-letter"
+            kind="neutral"
+            label=""
+            round
+            scale="l"
+            split-child="primary"
+            width="auto" />
+        </div>
       </calcite-panel>
     );
+  }
+
+  /**
+   * Emit the event when info button clicked
+   */
+  protected infoButtonClick(): void {
+    this.infoIconButtonClick.emit();
   }
 
   /**

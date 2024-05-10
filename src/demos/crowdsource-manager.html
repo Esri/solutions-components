@@ -44,9 +44,13 @@
     //   esriConfig.portalUrl = "https://holistic.mapsdevext.arcgis.com";
     // });
 
-    function addValues() {
-      const demo = document.getElementById("demo");
+      function infoIconButtonClick(evt) {
+        alert('Info button Clicked');
+      }
 
+      function addValues() {
+      const demo = document.getElementById("demo");
+      demo.addEventListener('infoIconButtonClick', infoIconButtonClick);
       let headerSet = false;
       let custom = [];
       var vars = window.location.search.substring(1).split('&');
@@ -198,6 +202,7 @@
           }
         }]
       ];
+      demo.hideMapOnLoad = true;
     }
   </script>
 </head>
