@@ -33,7 +33,7 @@ export async function getMapLayerHash(
   let layerHash;
   await mapView.when(() => {
     layerHash = mapView.map.allLayers.toArray().reduce((prev, cur) => {
-      if (cur.type === "feature") {
+      if (cur.type === "feature" || cur?.type === "subtype-group") {
         prev[cur.id] = {
           name: cur.title,
           supportsUpdate: undefined
