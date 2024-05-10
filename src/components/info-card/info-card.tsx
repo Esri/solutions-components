@@ -531,6 +531,7 @@ export class InfoCard {
         this.reactiveUtils.watch(
           () => (this._features.viewModel as any).featureMenuOpen,
           (isOpen) => {
+            this._count = this._getCount();
             if (!isOpen) {
               this._showListView = isOpen;
             }
