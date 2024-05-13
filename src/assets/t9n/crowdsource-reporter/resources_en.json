@@ -12,7 +12,7 @@
   "error": "Error",
   "invalidConfigurationErrorMsg": "Invalid configuration",
   "noLayerToDisplayErrorMsg": "Configured web map don't have any editable feature layer.",
-  "chooseCategoryMsg": "Please choose a category.",
+  "chooseCategoryMsg": "Make a selection from the list below.",
   "featureErrorMsg": "No records found.",
   "featureEditFormInfoMsg": "Please provide the details.",
   "currentLocationMsg": "Use my current location",

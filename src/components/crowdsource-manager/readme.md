@@ -29,7 +29,7 @@
 | `enableSearch`              | `enable-search`                 | boolean: when true the search widget will be available                                                             | `boolean`              | `true`      |
 | `enableShare`               | `enable-share`                  | boolean: when true the share widget will be available                                                              | `boolean`              | `false`     |
 | `enableZoom`                | `enable-zoom`                   | boolean: when true the zoom widget will be available                                                               | `boolean`              | `true`      |
-| `hideMapOnLoad`             | `hide-map-on-load`              | boolean: when true the map will be hidden on load                                                                  | `boolean`              | `undefined` |
+| `hideMapOnLoad`             | `hide-map-on-load`              | boolean: when true the map will be hidden on load                                                                  | `boolean`              | `false`     |
 | `mapInfos`                  | --                              | IMapInfo[]: array of map infos (name and id)                                                                       | `IMapInfo[]`           | `[]`        |
 | `onlyShowUpdatableLayers`   | `only-show-updatable-layers`    | boolean: When true only editable layers that support the update capability will be available                       | `boolean`              | `true`      |
 | `popupHeaderColor`          | `popup-header-color`            | string: The background color to apply to the popup header                                                          | `string`               | `undefined` |
@@ -43,6 +43,13 @@
 | `theme`                     | `theme`                         | theme: "light" \| "dark" theme to be used                                                                          | `"dark" \| "light"`    | `"light"`   |
 | `zoomAndScrollToSelected`   | `zoom-and-scroll-to-selected`   | boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table | `boolean`              | `false`     |
 | `zoomToScale`               | `zoom-to-scale`                 | number: default scale to zoom to when zooming to a single point feature                                            | `number`               | `undefined` |
+
+
+## Events
+
+| Event                 | Description                                     | Type                |
+| --------------------- | ----------------------------------------------- | ------------------- |
+| `infoIconButtonClick` | Emitted on demand when a info button is clicked | `CustomEvent<void>` |
 
 
 ## Dependencies
