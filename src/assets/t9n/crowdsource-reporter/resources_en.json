@@ -19,5 +19,12 @@
   "addLocationMsg": "Please add a location.",
   "submitMsg": "Thank you! Your report was successfully submitted.",
   "filterLayerTitle": "Filter: {{title}}",
-  "indexOfTotal": "{{index}} of {{total}}"
+  "indexOfTotal": "{{index}} of {{total}}",
+  "comment": "Comment",
+  "commentSubmittedMsg": "Comment submitted",
+  "addingCommentFailedMsg": "Comment not submitted",
+  "sortNewest": "Newest",
+  "sortOldest": "Oldest",
+  "sortHighestVoted": "Highest voted",
+  "sortLowestVoted": "Lowest voted"
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Listen, Prop, State, VNode, Watch } from "@stencil/core";
+import { Component, Element, Host, h, Listen, Prop, State, VNode, Watch, Event, EventEmitter } from "@stencil/core";
 import CrowdsourceManager_T9n from "../../assets/t9n/crowdsource-manager/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { ELayoutMode, IBasemapConfig, ILayerAndTableIds, IMapChange, IMapInfo, ISearchConfiguration, theme } from "../../utils/interfaces";
@@ -143,7 +143,7 @@ export class CrowdsourceManager {
   /**
    * boolean: when true the map will be hidden on load
    */
-  @Prop() hideMapOnLoad: boolean;
+  @Prop() hideMapOnLoad = false;
 
   /**
    * IMapInfo[]: array of map infos (name and id)
@@ -219,7 +219,7 @@ export class CrowdsourceManager {
   /**
    * When true the info panel with the popup details will take the full height and prevent the map from displaying
    */
-  @State() _expandPopup = false;
+  @State() _expandPopup = this.hideMapOnLoad;
 
   /**
    * When true the mobile footer will be hidden
@@ -343,6 +343,11 @@ export class CrowdsourceManager {
   //--------------------------------------------------------------------------
 
   /**
+ * Emitted on demand when a info button is clicked
+ */
+  @Event() infoIconButtonClick: EventEmitter<void>;
+
+  /**
    * Listen for changes in feature selection and show or hide the map, popup, and table
    */
   @Listen("featureSelectionChange", { target: "window" })
@@ -406,7 +411,6 @@ export class CrowdsourceManager {
   async beforeMapChanged(): Promise<void> {
     if (this._expandPopup) {
       this._shouldSetMapView = true;
-      this._expandPopup = false;
     }
   }
 
@@ -422,6 +426,15 @@ export class CrowdsourceManager {
     await layer.when(() => {
       this._layer = layer;
     });
+  }
+
+  /**
+   * Update the state expandPopup when mapInfoChange event occurs
+   */
+  @Listen("mapInfoChange", { target: "window" })
+  async mapInfoChange(
+  ): Promise<void> {
+    this._expandPopup = this.hideMapOnLoad;
   }
 
   //--------------------------------------------------------------------------
@@ -618,14 +631,34 @@ export class CrowdsourceManager {
     hideTable: boolean
   ): VNode {
     const contentClass = layoutMode === ELayoutMode.HORIZONTAL ? "" : "display-flex";
+    const themeClass = this.theme === "dark" ? "calcite-mode-dark" : "calcite-mode-light";
     return (
       <calcite-panel class={"width-full height-full"}>
         <div class={`width-full height-full overflow-hidden ${contentClass}`}>
           {this._getMapAndCard(layoutMode, panelOpen, hideTable)}
           {this._getTable(layoutMode, panelOpen, hideTable)}
         </div>
+        <div class="floating-container" onClick={this.infoButtonClick.bind(this)}>
+          <calcite-button
+            appearance="solid"
+            class={`floating-button ${themeClass}`}
+            icon-start="information-letter"
+            kind="neutral"
+            label=""
+            round
+            scale="l"
+            split-child="primary"
+            width="auto" />
+        </div>
       </calcite-panel>
     );
+  }
+
+  /**
+   * Emit the event when info button clicked
+   */
+  protected infoButtonClick(): void {
+    this.infoIconButtonClick.emit();
   }
 
   /**
@@ -711,7 +744,13 @@ export class CrowdsourceManager {
     const headerTheme = !this._isMobile ? "calcite-mode-dark" : "calcite-mode-light";
     const containerClass = this._isMobile && this._hideTable ? "position-absolute-0 width-full height-full" : this._isMobile ? "display-none height-0" : "";
     return (
-      <div class={`${headerTheme} ${popupNodeClass} ${containerClass}`}>
+      <div class={`${headerTheme} ${popupNodeClass} ${containerClass}`}
+        style={{
+          '--calcite-color-foreground-1': this.popupHeaderColor, /* background color to apply to the popup header */
+          '--calcite-color-foreground-2': this.popupHeaderHoverColor, /* color that will be displayed on hover when expanding the popup header */
+          '--calcite-color-text-3': this.popupHeaderHoverTextColor, /* font color that will be displayed on hover when expanding the popup header */
+          '--calcite-color-text-2': this.popupHeaderTextColor, /* font color to apply to the popup header */
+        }}>
         <calcite-panel>
           {
             !this._isMobile ? (
