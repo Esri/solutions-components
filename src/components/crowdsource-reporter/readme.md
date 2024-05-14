@@ -21,7 +21,7 @@
 | `enableSearch`            | `enable-search`             | boolean: when true the search widget will be available                                                    | `boolean`              | `true`      |
 | `enableZoom`              | `enable-zoom`               | boolean: when true the zoom widget will be available                                                      | `boolean`              | `true`      |
 | `isMobile`                | `is-mobile`                 | boolean: When true the application will be in mobile mode, controls the mobile or desktop view            | `boolean`              | `undefined` |
-| `layerExpressions`        | --                          | ILayerExpression[]: Array of layer expressions for layers (filter configuration)                          | `ILayerExpression[]`   | `undefined` |
+| `layerExpressions`        | --                          | ILayerExpression[]: Array of layer expressions for layers (filter configuration)                          | `ILayerExpression[]`   | `[]`        |
 | `layerId`                 | `layer-id`                  | string: Layer id of the feature from URL params                                                           | `string`               | `undefined` |
 | `level`                   | `level`                     | string: Id of the zoom level from URL params                                                              | `string`               | `undefined` |
 | `loginTitle`              | `login-title`               | string: The text that will display at the top of the landing page                                         | `string`               | `undefined` |

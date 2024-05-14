@@ -176,7 +176,7 @@ export class CrowdsourceReporter {
   /**
    * ILayerExpression[]: Array of layer expressions for layers (filter configuration)
    */
-  @Prop() layerExpressions: ILayerExpression[];
+  @Prop() layerExpressions: ILayerExpression[] = [];
 
   //--------------------------------------------------------------------------
   //
@@ -358,7 +358,7 @@ export class CrowdsourceReporter {
    * number: selected feature index
    */
   protected selectedFeatureIndex: number;
-  
+
   //--------------------------------------------------------------------------
   //
   //  Watch handlers
@@ -395,7 +395,7 @@ export class CrowdsourceReporter {
     this.setCurrentFeature(evt.detail.selectedFeature[0]);
     void this.highlightOnMap(evt.detail.selectedFeature[0]);
     this.selectedFeatureIndex = evt.detail.selectedFeatureIndex;
-    //update the feature details to reflect the like dislike values 
+    //update the feature details to reflect the like dislike values
     await this._featureDetails.refresh(evt.detail.selectedFeature[0]);
   }
 
@@ -956,7 +956,7 @@ export class CrowdsourceReporter {
   }
 
   /**
-   * Show loading indicator while updating the feature details component 
+   * Show loading indicator while updating the feature details component
    * @param isLoading is feature detail component loading
    */
   protected async updatingFeatureDetails(isLoading: boolean): Promise<void> {
@@ -1056,7 +1056,7 @@ export class CrowdsourceReporter {
 
   /**
    * Returns the pagination for the multiple features
-   * Create pagination to avoid the overlap of like, dislike and comment section 
+   * Create pagination to avoid the overlap of like, dislike and comment section
    * @returns Node
    */
   protected getFeaturesPagination(): Node {
