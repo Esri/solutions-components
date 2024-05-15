@@ -18,7 +18,7 @@ import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, State, 
 import LayerTable_T9n from "../../assets/t9n/layer-table/resources.json";
 import { loadModules } from "../../utils/loadModules";
 import { getLocaleComponentStrings } from "../../utils/locale";
-import { getLayerOrTable, goToSelection } from "../../utils/mapViewUtils";
+import { getFeatureLayerView, getLayerOrTable, goToSelection } from "../../utils/mapViewUtils";
 import { queryAllIds, queryFeatureIds, queryFeaturesByGlobalID } from "../../utils/queryUtils";
 import * as downloadUtils from "../../utils/downloadUtils";
 import { EditType, IColumnsInfo, IExportInfos, ILayerDef, IMapClick, IMapInfo, IToolInfo, IToolSizeInfo, TooltipPlacement } from "../../utils/interfaces";
@@ -125,9 +125,24 @@ export class LayerTable {
   @Prop() showNewestFirst: boolean;
 
   /**
+   * string: Field using which table will be sorted
+   */
+  @Prop() sortField: string;
+
+  /**
+   * string(asc/desc): Sorting order - Ascending or Descending  
+   */
+  @Prop() sortOrder: 'asc' | 'desc';
+
+  /**
    * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
    */
   @Prop() zoomAndScrollToSelected: boolean;
+
+  /**
+   * number: default scale to zoom to when zooming to a single point feature
+   */
+  @Prop() zoomToScale: number;
 
   //--------------------------------------------------------------------------
   //
@@ -567,7 +582,7 @@ export class LayerTable {
       });
 
       if (layerView) {
-        await goToSelection([oid], layerView, this.mapView, true);
+        await goToSelection([oid], layerView, this.mapView, true, undefined, this.zoomToScale);
       }
     }
   }
@@ -1782,13 +1797,19 @@ export class LayerTable {
   }
 
   /**
-   * Sort the objectid field in descending order
+   * Sort the table with the configured field in the configured sort order
    */
-  protected async _sortTable(): Promise<void> {
-    if (this._table && this._layer && this.showNewestFirst) {
+  protected async _sortTable(): Promise<void> {   
+    let sortField = this.sortField ? this.sortField : this._layer.objectIdField;
+    if (this.mapInfo?.layerOptions?.layers?.length > 0) {
+      const configuredLayer = this.mapInfo.layerOptions?.layers.filter((layer) => layer.id === this._layer.id);
+      sortField = configuredLayer[0]?.fields?.includes(this.sortField) ? this.sortField : this._layer.objectIdField;
+    }
+    const sortOrder = this.sortOrder ? this.sortOrder : 'desc';
+    if (this._table && this._layer) {
       await this._table.when();
       await this._layer.when(() => {
-        this._table.sortColumn(this._layer.objectIdField, "desc");
+        this._table.sortColumn(sortField, sortOrder);
       });
     }
   }
@@ -2102,8 +2123,11 @@ export class LayerTable {
    *
    * @returns a promise that will resolve when the operation is complete
    */
-  protected _zoom(): void {
-    this._table.zoomToSelection();
+  protected async _zoom(): Promise<void> {
+    if (this._layer) {
+      const selectedLayerView = await getFeatureLayerView(this.mapView, this._layer.id);
+      await goToSelection(this.selectedIds, selectedLayerView, this.mapView, true, undefined, this.zoomToScale);
+    }
   }
 
   /**

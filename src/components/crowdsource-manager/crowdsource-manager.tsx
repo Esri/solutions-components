@@ -210,6 +210,16 @@ export class CrowdsourceManager {
    */
   @Prop() zoomToScale: number;
 
+  /**
+   * string: Field using which table will be sorted
+   */
+  @Prop() sortField: string;
+
+  /**
+   * string(asc/desc): Sorting order - Ascending or Descending  
+   */
+  @Prop() sortOrder: 'asc' | 'desc';
+
   //--------------------------------------------------------------------------
   //
   //  State (internal)
@@ -889,7 +899,10 @@ export class CrowdsourceManager {
             shareIncludeEmbed={this.shareIncludeEmbed}
             shareIncludeSocial={this.shareIncludeSocial}
             showNewestFirst={this.showNewestFirst}
+	    sortField={this.sortField}
+            sortOrder={this.sortOrder}
             zoomAndScrollToSelected={this.zoomAndScrollToSelected}
+            zoomToScale={this.zoomToScale}
           />
         </div>
       </calcite-shell>
