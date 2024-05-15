@@ -902,6 +902,7 @@ export class CrowdsourceManager {
 	    sortField={this.sortField}
             sortOrder={this.sortOrder}
             zoomAndScrollToSelected={this.zoomAndScrollToSelected}
+            zoomToScale={this.zoomToScale}
           />
         </div>
       </calcite-shell>

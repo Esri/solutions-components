@@ -139,6 +139,11 @@ export class LayerTable {
    */
   @Prop() zoomAndScrollToSelected: boolean;
 
+  /**
+   * number: default scale to zoom to when zooming to a single point feature
+   */
+  @Prop() zoomToScale: number;
+
   //--------------------------------------------------------------------------
   //
   //  State (internal)
@@ -577,7 +582,7 @@ export class LayerTable {
       });
 
       if (layerView) {
-        await goToSelection([oid], layerView, this.mapView, true);
+        await goToSelection([oid], layerView, this.mapView, true, undefined, this.zoomToScale);
       }
     }
   }
@@ -2118,8 +2123,11 @@ export class LayerTable {
    *
    * @returns a promise that will resolve when the operation is complete
    */
-  protected _zoom(): void {
-    this._table.zoomToSelection();
+  protected async _zoom(): Promise<void> {
+    if (this._layer) {
+      const selectedLayerView = await getFeatureLayerView(this.mapView, this._layer.id);
+      await goToSelection(this.selectedIds, selectedLayerView, this.mapView, true, undefined, this.zoomToScale);
+    }
   }
 
   /**

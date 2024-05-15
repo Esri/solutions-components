@@ -714,6 +714,10 @@ export namespace Components {
           * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
          */
         "zoomAndScrollToSelected": boolean;
+        /**
+          * number: default scale to zoom to when zooming to a single point feature
+         */
+        "zoomToScale": number;
     }
     interface LayoutManager {
     }
@@ -2986,6 +2990,10 @@ declare namespace LocalJSX {
           * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
          */
         "zoomAndScrollToSelected"?: boolean;
+        /**
+          * number: default scale to zoom to when zooming to a single point feature
+         */
+        "zoomToScale"?: number;
     }
     interface LayoutManager {
         /**
