@@ -254,9 +254,13 @@ export namespace Components {
          */
         "shareIncludeSocial": boolean;
         /**
-          * boolean: when true the table will be sorted by objectid in descending order by default
+          * string: Field using which table will be sorted
          */
-        "showNewestFirst": boolean;
+        "sortField": string;
+        /**
+          * string(asc/desc): Sorting order - Ascending or Descending
+         */
+        "sortOrder": 'asc' | 'desc';
         /**
           * theme: "light" | "dark" theme to be used
          */
@@ -698,6 +702,14 @@ export namespace Components {
           * boolean: when true the table will be sorted by objectid in descending order by default
          */
         "showNewestFirst": boolean;
+        /**
+          * string: Field using which table will be sorted
+         */
+        "sortField": string;
+        /**
+          * string(asc/desc): Sorting order - Ascending or Descending
+         */
+        "sortOrder": 'asc' | 'desc';
         /**
           * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
          */
@@ -2523,9 +2535,13 @@ declare namespace LocalJSX {
          */
         "shareIncludeSocial"?: boolean;
         /**
-          * boolean: when true the table will be sorted by objectid in descending order by default
+          * string: Field using which table will be sorted
          */
-        "showNewestFirst"?: boolean;
+        "sortField"?: string;
+        /**
+          * string(asc/desc): Sorting order - Ascending or Descending
+         */
+        "sortOrder"?: 'asc' | 'desc';
         /**
           * theme: "light" | "dark" theme to be used
          */
@@ -2958,6 +2974,14 @@ declare namespace LocalJSX {
           * boolean: when true the table will be sorted by objectid in descending order by default
          */
         "showNewestFirst"?: boolean;
+        /**
+          * string: Field using which table will be sorted
+         */
+        "sortField"?: string;
+        /**
+          * string(asc/desc): Sorting order - Ascending or Descending
+         */
+        "sortOrder"?: 'asc' | 'desc';
         /**
           * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
          */
