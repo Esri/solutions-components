@@ -457,13 +457,11 @@ export class CrowdsourceManager {
    * Renders the component.
    */
   render() {
-    const borderClass = this._isMobile && this._hideTable ? "border-width-0" :
-      this._isMobile ? "border-bottom-width-0" : "";
     return (
       <Host>
         <calcite-shell class="position-relative">
           <calcite-panel
-            class={`width-full height-full ${borderClass}`}
+            class={`width-full height-full border-width-0`}
           >
             {this._getBody(this._layoutMode, this._panelOpen, this._hideTable)}
           </calcite-panel>
@@ -741,7 +739,7 @@ export class CrowdsourceManager {
     const themeClass = this.theme === "dark" ? "calcite-mode-dark" : "calcite-mode-light";
     const popupNodeClass = !this._expandPopup ? "height-full" : this.mapInfos?.length === 1 || this._isMobile ? "position-absolute-0" : "position-absolute-50";
     const headerClass = this._isMobile ? "display-none height-0" : "";
-    const headerTheme = !this._isMobile ? "calcite-mode-dark" : "calcite-mode-light";
+    const headerTheme = this.popupHeaderColor ? "" : !this._isMobile ? "calcite-mode-dark" : "calcite-mode-light";
     const containerClass = this._isMobile && this._hideTable ? "position-absolute-0 width-full height-full" : this._isMobile ? "display-none height-0" : "";
     return (
       <div class={`${headerTheme} ${popupNodeClass} ${containerClass}`}
