@@ -254,6 +254,10 @@ export namespace Components {
          */
         "shareIncludeSocial": boolean;
         /**
+          * boolean: when true the table will be sorted by objectid in descending order by default
+         */
+        "showNewestFirst": boolean;
+        /**
           * string: Field using which table will be sorted
          */
         "sortField": string;
@@ -2538,6 +2542,10 @@ declare namespace LocalJSX {
           * boolean: When true the share options will include social media sharing
          */
         "shareIncludeSocial"?: boolean;
+        /**
+          * boolean: when true the table will be sorted by objectid in descending order by default
+         */
+        "showNewestFirst"?: boolean;
         /**
           * string: Field using which table will be sorted
          */
