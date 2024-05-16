@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.8.14] - Map 16th 2024
+Reverts icon name change
+
 ## [0.8.13] - Map 16th 2024
 Update calcite components
 
@@ -567,4 +570,5 @@ Recover from test releases
 [0.8.11]: https://github.com/Esri/solution.js/compare/v0.8.10...v0.8.11 "v0.8.11"
 [0.8.12]: https://github.com/Esri/solution.js/compare/v0.8.11...v0.8.12 "v0.8.12"
 [0.8.13]: https://github.com/Esri/solution.js/compare/v0.8.12...v0.8.13 "v0.8.13"
-[Unreleased]: https://github.com/Esri/solution.js/compare/v0.8.13...HEAD "Unreleased Changes"
+[0.8.14]: https://github.com/Esri/solution.js/compare/v0.8.13...v0.8.14 "v0.8.14"
+[Unreleased]: https://github.com/Esri/solution.js/compare/v0.8.14...HEAD "Unreleased Changes"
