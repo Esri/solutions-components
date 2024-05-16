@@ -130,7 +130,7 @@ export class LayerTable {
   @Prop() sortField: string;
 
   /**
-   * string(asc/desc): Sorting order - Ascending or Descending  
+   * string(asc/desc): Sorting order - Ascending or Descending
    */
   @Prop() sortOrder: 'asc' | 'desc';
 
@@ -1799,7 +1799,7 @@ export class LayerTable {
   /**
    * Sort the table with the configured field in the configured sort order
    */
-  protected async _sortTable(): Promise<void> {   
+  protected async _sortTable(): Promise<void> {
     let sortField = this.sortField ? this.sortField : this._layer.objectIdField;
     if (this.mapInfo?.layerOptions?.layers?.length > 0) {
       const configuredLayer = this.mapInfo.layerOptions?.layers.filter((layer) => layer.id === this._layer.id);
@@ -2221,7 +2221,7 @@ export class LayerTable {
       items: [
         {
           label: this._translations.hideField,
-          iconClass: "esri-icon-non-visible",
+          iconClass: "view-hide",
           autoCloseMenu: true,
           clickFunction: () => {
             this._handleHideClick(name);
