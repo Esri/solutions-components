@@ -2221,7 +2221,7 @@ export class LayerTable {
       items: [
         {
           label: this._translations.hideField,
-          iconClass: "esri-icon-non-visible",
+          icon: "view-hide",
           autoCloseMenu: true,
           clickFunction: () => {
             this._handleHideClick(name);
