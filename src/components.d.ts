@@ -284,6 +284,10 @@ export namespace Components {
          */
         "center": string;
         /**
+          * boolean: When true a cover page has been enabled in the consuming application. Also when true a floating button will be shown in the lower right of the window that will emit an event when clicked that the consuming application can respond to that will open the cover page.
+         */
+        "coverPageEnabled": string;
+        /**
           * string: Item ID of the web map that should be selected by default
          */
         "defaultWebmap": string;
@@ -2572,6 +2576,10 @@ declare namespace LocalJSX {
           * string: Semicolon delimited numbers that will be used as the maps center point from URL params
          */
         "center"?: string;
+        /**
+          * boolean: When true a cover page has been enabled in the consuming application. Also when true a floating button will be shown in the lower right of the window that will emit an event when clicked that the consuming application can respond to that will open the cover page.
+         */
+        "coverPageEnabled"?: string;
         /**
           * string: Item ID of the web map that should be selected by default
          */
