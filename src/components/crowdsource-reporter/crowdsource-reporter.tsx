@@ -677,7 +677,6 @@ export class CrowdsourceReporter {
             class="height-full"
             layers={this._editableLayerIds?.length > 0 ? this._editableLayerIds : this._layers}
             mapView={this.mapView}
-            noLayerErrorMsg={this._translations.noLayerToDisplayErrorMsg}
             onLayerSelect={this.displayFeaturesList.bind(this)}
             onLayersListLoaded={this.layerListLoaded.bind(this)}
             ref={el => this._layerList = el }
@@ -716,7 +715,6 @@ export class CrowdsourceReporter {
             class="height-full"
             layers={this._layers}
             mapView={this.mapView}
-            noLayerErrorMsg={this._translations.noLayerToDisplayErrorMsg}
             onLayerSelect={this.navigateToCreateFeature.bind(this)}
             showFeatureCount={false}
             showNextIcon={false} />

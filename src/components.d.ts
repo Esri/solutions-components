@@ -628,10 +628,6 @@ export namespace Components {
          */
         "mapView": __esri.MapView;
         /**
-          * string: Error message to be displayed when no layers found
-         */
-        "noLayerErrorMsg"?: string;
-        /**
           * Refresh the layer list which will fetch the latest layer count and update the list
           * @returns Promise that resolves when the operation is complete
          */
@@ -2904,10 +2900,6 @@ declare namespace LocalJSX {
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
-        /**
-          * string: Error message to be displayed when no layers found
-         */
-        "noLayerErrorMsg"?: string;
         /**
           * Emitted on demand when feature layer clicked with details layerId and layerName
          */
