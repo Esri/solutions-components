@@ -1,5 +1,5 @@
 {
-  "createReportHeader": "Ustvari poročilo",
+  "createReportButtonText": "Š_Create a Report________________č",
   "share": "Deli",
   "sort": "Razvrsti",
   "filter": "Filter",
@@ -12,11 +12,19 @@
   "error": "Napaka",
   "invalidConfigurationErrorMsg": "Neveljavna konfiguracija",
   "noLayerToDisplayErrorMsg": "Konfigurirana spletna karta nima nobenega sloja geoobjektov, ki bi ga bilo mogoče urejati.",
-  "chooseCategoryMsg": "Choose a category for your report.",
-  "featureErrorMsg": "Geoobjektov ni mogoče najti.",
-  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "chooseCategoryMsg": "Š_Make a selection from the list below____________________č.",
+  "featureErrorMsg": "Š_No records found__________________č.",
+  "featureEditFormInfoMsg": "Š_Please provide the details____________________________č.",
   "currentLocationMsg": "Uporabi mojo trenutno lokacijo",
-  "addLocationMsg": "Add the location for your report.",
-  "reportSubmit": "Poročilo poslano.",
-  "submitMsg": "Hvala! Vaše poročilo je bilo uspešno poslano."
+  "addLocationMsg": "Š_Please add a location_______________________č.",
+  "submitMsg": "Hvala! Vaše poročilo je bilo uspešno poslano.",
+  "filterLayerTitle": "Š_Filter: {{title}}__________________č",
+  "indexOfTotal": "Š_{{index}} of {{total}}_______________________č",
+  "comment": "Š_Comment_______________č",
+  "commentSubmittedMsg": "Š_Comment submitted__________________č",
+  "addingCommentFailedMsg": "Š_Comment not submitted______________________č",
+  "sortNewest": "Š_Newest_____________č",
+  "sortOldest": "Š_Oldest_____________č",
+  "sortHighestVoted": "Š_Highest voted______________č",
+  "sortLowestVoted": "Š_Lowest voted_____________č"
 }

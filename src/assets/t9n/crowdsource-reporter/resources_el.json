@@ -1,5 +1,5 @@
 {
-  "createReportHeader": "Δημιουργία αναφοράς",
+  "createReportButtonText": "Đ_Create a Report________________ớ",
   "share": "Κοινοποίηση",
   "sort": "Ταξινόμηση",
   "filter": "Φίλτρο",
@@ -12,11 +12,19 @@
   "error": "Σφάλμα",
   "invalidConfigurationErrorMsg": "Μη έγκυρη διαμόρφωση",
   "noLayerToDisplayErrorMsg": "Ο διαμορφωμένος web χάρτης δεν έχει κανένα επεξεργάσιμο θεματικό επίπεδο στοιχείων.",
-  "chooseCategoryMsg": "Choose a category for your report.",
-  "featureErrorMsg": "Δεν βρέθηκαν στοιχεία.",
-  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "chooseCategoryMsg": "Đ_Make a selection from the list below____________________ớ.",
+  "featureErrorMsg": "Đ_No records found__________________ớ.",
+  "featureEditFormInfoMsg": "Đ_Please provide the details____________________________ớ.",
   "currentLocationMsg": "Χρήση τρέχουσας τοποθεσίας μου",
-  "addLocationMsg": "Add the location for your report.",
-  "reportSubmit": "Επιτυχής υποβολή αναφοράς",
-  "submitMsg": "Σας ευχαριστούμε! Η αναφορά υποβολήθηκε με επιτυχία."
+  "addLocationMsg": "Đ_Please add a location_______________________ớ.",
+  "submitMsg": "Σας ευχαριστούμε! Η αναφορά υποβολήθηκε με επιτυχία.",
+  "filterLayerTitle": "Đ_Filter: {{title}}__________________ớ",
+  "indexOfTotal": "Đ_{{index}} of {{total}}_______________________ớ",
+  "comment": "Đ_Comment_______________ớ",
+  "commentSubmittedMsg": "Đ_Comment submitted__________________ớ",
+  "addingCommentFailedMsg": "Đ_Comment not submitted______________________ớ",
+  "sortNewest": "Đ_Newest_____________ớ",
+  "sortOldest": "Đ_Oldest_____________ớ",
+  "sortHighestVoted": "Đ_Highest voted______________ớ",
+  "sortLowestVoted": "Đ_Lowest voted_____________ớ"
 }

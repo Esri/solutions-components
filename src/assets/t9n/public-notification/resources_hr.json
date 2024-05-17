@@ -38,5 +38,7 @@
   "refineTip": "Pročistite i finalizirajte svoje popise pomoću alata za skiciranje za dodavanje ili uklanjanje odabranih geoobjekata.",
   "refineTipNoSelections": "Nema odabira za precizirati. Idite na Moje popise da biste stvorili popis geoobjekata.",
   "duplicatesTip": "Duplicirani geoobjekti uvijek se uklanjaju. Kada je omogućeno, skočni prozori sa svakog sloja će se uspoređivati i svi dupli podaci u skočnim prozorima bit će uklonjeni.",
-  "exportListsLabel": "Moji popisi"
+  "exportListsLabel": "Moji popisi",
+  "listGraphics": "Č_List graphics______________ž",
+  "listGraphicsTip": "Č_Include any graphics like search buffers or graphics from the sketch tools in the map export________________________________________________ž."
 }

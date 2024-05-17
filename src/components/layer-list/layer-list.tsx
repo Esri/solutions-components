@@ -62,11 +62,6 @@ export class LayerList {
   @Prop() layers: string[];
 
   /**
-   * string: Error message to be displayed when no layers found
-   */
-  @Prop() noLayerErrorMsg?: string;
-
-  /**
    * boolean: if true display's feature count for each layer
    */
   @Prop() showFeatureCount?: boolean = true;
@@ -112,9 +107,6 @@ export class LayerList {
    * ILayerItemHash: id/name lookup
    */
   protected _layerItemsHash: ILayerItemsHash;
-
-  //HARDCODED IN EN
-  protected _noLayerToDisplayErrorMsg = "Web map does not contain any editable layers.";
 
   //--------------------------------------------------------------------------
   //
@@ -191,7 +183,7 @@ export class LayerList {
             kind="danger"
             open>
             <div slot="title">{this._translations.error}</div>
-            <div slot="message">{this.noLayerErrorMsg ? this.noLayerErrorMsg : this._noLayerToDisplayErrorMsg}</div>
+            <div slot="message">{this._translations.noLayerToDisplayErrorMsg}</div>
           </calcite-notice>}
         {!this._isLoading && this.mapView &&
           <calcite-list

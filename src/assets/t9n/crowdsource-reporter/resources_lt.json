@@ -1,5 +1,5 @@
 {
-  "createReportHeader": "Kurti ataskaitą",
+  "createReportButtonText": "Į_Create a Report________________š",
   "share": "Bendrinti",
   "sort": "Rūšiuoti",
   "filter": "Filtruoti",
@@ -12,11 +12,19 @@
   "error": "Klaida",
   "invalidConfigurationErrorMsg": "Netinkama konfigūracija",
   "noLayerToDisplayErrorMsg": "Sukonfigūruotas internetinis žemėlapis neturi redaguojamo elementų sluoksnio.",
-  "chooseCategoryMsg": "Choose a category for your report.",
-  "featureErrorMsg": "Elementų nerasta.",
-  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "chooseCategoryMsg": "Į_Make a selection from the list below____________________š.",
+  "featureErrorMsg": "Į_No records found__________________š.",
+  "featureEditFormInfoMsg": "Į_Please provide the details____________________________š.",
   "currentLocationMsg": "Naudoti mano dabartinę vietą",
-  "addLocationMsg": "Add the location for your report.",
-  "reportSubmit": "Ataskaita pateikta.",
-  "submitMsg": "Ačiū! Jūsų ataskaita sėkmingai pateikta."
+  "addLocationMsg": "Į_Please add a location_______________________š.",
+  "submitMsg": "Ačiū! Jūsų ataskaita sėkmingai pateikta.",
+  "filterLayerTitle": "Į_Filter: {{title}}__________________š",
+  "indexOfTotal": "Į_{{index}} of {{total}}_______________________š",
+  "comment": "Į_Comment_______________š",
+  "commentSubmittedMsg": "Į_Comment submitted__________________š",
+  "addingCommentFailedMsg": "Į_Comment not submitted______________________š",
+  "sortNewest": "Į_Newest_____________š",
+  "sortOldest": "Į_Oldest_____________š",
+  "sortHighestVoted": "Į_Highest voted______________š",
+  "sortLowestVoted": "Į_Lowest voted_____________š"
 }

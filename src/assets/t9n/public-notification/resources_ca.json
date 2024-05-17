@@ -38,5 +38,7 @@
   "refineTip": "Delimiteu i enllestiu les llistes mitjançant eines d'esbós per afegir o eliminar entitats seleccionades.",
   "refineTipNoSelections": "No hi ha cap selecció per delimitar. Aneu a Les meves llistes per crear una llista d'entitats.",
   "duplicatesTip": "Les entitats duplicades sempre s'eliminen. Si aquesta opció està habilitada, es compararan les finestres emergents de cada capa i se n'eliminarà la informació duplicada.",
-  "exportListsLabel": "Les meves llistes"
+  "exportListsLabel": "Les meves llistes",
+  "listGraphics": "ó_List graphics______________à",
+  "listGraphicsTip": "ó_Include any graphics like search buffers or graphics from the sketch tools in the map export________________________________________________à."
 }

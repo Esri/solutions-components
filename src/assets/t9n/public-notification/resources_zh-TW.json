@@ -38,5 +38,7 @@
   "refineTip": "使用描繪工具新增或移除所選圖徵，以精細化和完成您的清單。",
   "refineTipNoSelections": "沒有要精細化的選擇。 移至「我的清單」以建立圖徵清單。",
   "duplicatesTip": "一律移除重複的圖徵。 啟用後，將比較每個圖層的快顯視窗，並移除任何重複的快顯視窗資訊。",
-  "exportListsLabel": "我的清單"
+  "exportListsLabel": "我的清單",
+  "listGraphics": "試_List graphics______________驗",
+  "listGraphicsTip": "試_Include any graphics like search buffers or graphics from the sketch tools in the map export________________________________________________驗."
 }

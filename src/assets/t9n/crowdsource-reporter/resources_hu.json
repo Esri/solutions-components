@@ -1,5 +1,5 @@
 {
-  "createReportHeader": "Jelentés létrehozása",
+  "createReportButtonText": "í_Create a Report________________ő",
   "share": "Megosztás",
   "sort": "Rendezés",
   "filter": "Szűrő",
@@ -12,11 +12,19 @@
   "error": "Hiba",
   "invalidConfigurationErrorMsg": "Érvénytelen konfiguráció",
   "noLayerToDisplayErrorMsg": "A konfigurált webtérkép egyetlen szerkeszthető vektoros réteget sem tartalmaz.",
-  "chooseCategoryMsg": "Choose a category for your report.",
-  "featureErrorMsg": "Nem találhatók vektoros elemek.",
-  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "chooseCategoryMsg": "í_Make a selection from the list below____________________ő.",
+  "featureErrorMsg": "í_No records found__________________ő.",
+  "featureEditFormInfoMsg": "í_Please provide the details____________________________ő.",
   "currentLocationMsg": "Jelenlegi saját hely használata",
-  "addLocationMsg": "Add the location for your report.",
-  "reportSubmit": "Jelentés beküldve.",
-  "submitMsg": "Köszönjük! Az Ön jelentésének elküldése sikeresen megtörtént."
+  "addLocationMsg": "í_Please add a location_______________________ő.",
+  "submitMsg": "Köszönjük! Az Ön jelentésének elküldése sikeresen megtörtént.",
+  "filterLayerTitle": "í_Filter: {{title}}__________________ő",
+  "indexOfTotal": "í_{{index}} of {{total}}_______________________ő",
+  "comment": "í_Comment_______________ő",
+  "commentSubmittedMsg": "í_Comment submitted__________________ő",
+  "addingCommentFailedMsg": "í_Comment not submitted______________________ő",
+  "sortNewest": "í_Newest_____________ő",
+  "sortOldest": "í_Oldest_____________ő",
+  "sortHighestVoted": "í_Highest voted______________ő",
+  "sortLowestVoted": "í_Lowest voted_____________ő"
 }

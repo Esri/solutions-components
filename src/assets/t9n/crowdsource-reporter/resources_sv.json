@@ -1,5 +1,5 @@
 {
-  "createReportHeader": "Skapa en rapport",
+  "createReportButtonText": "Å_Create a Report________________ö",
   "share": "Dela",
   "sort": "Sortera",
   "filter": "Filter",
@@ -12,11 +12,19 @@
   "error": "Fel",
   "invalidConfigurationErrorMsg": "Ogiltig konfiguration",
   "noLayerToDisplayErrorMsg": "Konfigurerad webbkarta har inga redigerbara geoobjektlager.",
-  "chooseCategoryMsg": "Choose a category for your report.",
-  "featureErrorMsg": "Geoobjekten hittades inte.",
-  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "chooseCategoryMsg": "Å_Make a selection from the list below____________________ö.",
+  "featureErrorMsg": "Å_No records found__________________ö.",
+  "featureEditFormInfoMsg": "Å_Please provide the details____________________________ö.",
   "currentLocationMsg": "Använd min aktuella plats",
-  "addLocationMsg": "Add the location for your report.",
-  "reportSubmit": "Rapporten har skickats.",
-  "submitMsg": "Tack! Din rapport har skickats in."
+  "addLocationMsg": "Å_Please add a location_______________________ö.",
+  "submitMsg": "Tack! Din rapport har skickats in.",
+  "filterLayerTitle": "Å_Filter: {{title}}__________________ö",
+  "indexOfTotal": "Å_{{index}} of {{total}}_______________________ö",
+  "comment": "Å_Comment_______________ö",
+  "commentSubmittedMsg": "Å_Comment submitted__________________ö",
+  "addingCommentFailedMsg": "Å_Comment not submitted______________________ö",
+  "sortNewest": "Å_Newest_____________ö",
+  "sortOldest": "Å_Oldest_____________ö",
+  "sortHighestVoted": "Å_Highest voted______________ö",
+  "sortLowestVoted": "Å_Lowest voted_____________ö"
 }
