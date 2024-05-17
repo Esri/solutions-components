@@ -2,11 +2,12 @@
   display: block;
 }
 
-.buttons{
+.buttons-container{
   align-items: center;
-  background-color: white;
   display: flex;
   padding: 10px 0 10px 15px;
+  color: var(--calcite-color-text-1) !important;
+  background-color: var(--calcite-color-foreground-1) !important;
   border-block-start: 1px solid var(--calcite-color-border-3);
   border-block-end: 1px solid var(--calcite-color-border-3);
 }
@@ -14,5 +15,7 @@
 .comment-btn{
   display: flex;
   gap: 5px;
-  width: 35px;
+  width: 37px;
+  font-size: var(--calcite-font-size--2);
+  align-items: center;
 }

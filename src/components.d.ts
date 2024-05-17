@@ -5,10 +5,10 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { ButtonType, DistanceUnit, EditType, EDrawMode, ELayoutMode, IBasemapConfig, IConsentResponse, IExportInfos, IInventoryItem, ILayerAndTableIds, ILayerExpression, IMapChange, IMapInfo, IReportingOptions, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange, theme } from "./utils/interfaces";
+import { ButtonType, DistanceUnit, EditType, EDrawMode, ELayoutMode, IBasemapConfig, IConsentResponse, IExportInfos, IInventoryItem, ILayerAndTableIds, ILayerExpression, IMapChange, IMapInfo, IReportingOptions, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISortingInfo, ISpatialRefRepresentation, IValueChange, theme } from "./utils/interfaces";
 import { IReportingOptions as IReportingOptions1 } from "./components";
 import { UserSession } from "@esri/solution-common";
-export { ButtonType, DistanceUnit, EditType, EDrawMode, ELayoutMode, IBasemapConfig, IConsentResponse, IExportInfos, IInventoryItem, ILayerAndTableIds, ILayerExpression, IMapChange, IMapInfo, IReportingOptions, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange, theme } from "./utils/interfaces";
+export { ButtonType, DistanceUnit, EditType, EDrawMode, ELayoutMode, IBasemapConfig, IConsentResponse, IExportInfos, IInventoryItem, ILayerAndTableIds, ILayerExpression, IMapChange, IMapInfo, IReportingOptions, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISortingInfo, ISpatialRefRepresentation, IValueChange, theme } from "./utils/interfaces";
 export { IReportingOptions as IReportingOptions1 } from "./components";
 export { UserSession } from "@esri/solution-common";
 export namespace Components {
@@ -131,6 +131,32 @@ export namespace Components {
           * @returns Promise that resolves when the operation is complete
          */
         "submit": () => Promise<void>;
+    }
+    interface CreateRelatedFeature {
+        /**
+          * Destroy the Editor widget instance
+         */
+        "close": () => Promise<void>;
+        /**
+          * boolean: Set this to true when have a custom submit button in the app. This will hide the header and footer elements of the editor and user needs to execute the submit method manually.
+         */
+        "customizeSubmit"?: boolean;
+        /**
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.MapView;
+        /**
+          * __esri.Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
+         */
+        "selectedFeature": __esri.Graphic;
+        /**
+          * Submit the comment
+         */
+        "submit": () => Promise<void>;
+        /**
+          * __esri.FeatureLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html
+         */
+        "table": __esri.FeatureLayer;
     }
     interface CrowdsourceManager {
         /**
@@ -258,7 +284,7 @@ export namespace Components {
          */
         "showNewestFirst": boolean;
         /**
-          * string: Field using which table will be sorted
+          * string: The table will be sorted by sortField
          */
         "sortField": string;
         /**
@@ -499,6 +525,22 @@ export namespace Components {
           * string: Layer id of the feature layer to show the list
          */
         "selectedLayerId": string;
+        /**
+          * boolean: Show initial loading indicator when creating list
+         */
+        "showInitialLoading"?: boolean;
+        /**
+          * ISortingInfo: Sorting field and order using which features list will be sorted
+         */
+        "sortingInfo"?: ISortingInfo;
+        /**
+          * string(small/large): Controls the font size of the title
+         */
+        "textSize"?: "small" | "large";
+        /**
+          * string: where clause to filter the features list
+         */
+        "whereClause"?: string;
     }
     interface FeaturesFlowItem {
     }
@@ -563,8 +605,8 @@ export namespace Components {
          */
         "position"?: string;
         /**
-          * Get the current selected feature from the Features widget
-          * @returns Promise resolving with the current feature
+          * Refresh the feature info
+          * @returns Promise when complete
          */
         "refresh": () => Promise<any>;
         /**
@@ -707,7 +749,7 @@ export namespace Components {
          */
         "showNewestFirst": boolean;
         /**
-          * string: Field using which table will be sorted
+          * string: The table will be sorted by sortField
          */
         "sortField": string;
         /**
@@ -1468,6 +1510,10 @@ export interface CreateFeatureCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLCreateFeatureElement;
 }
+export interface CreateRelatedFeatureCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLCreateRelatedFeatureElement;
+}
 export interface CrowdsourceManagerCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLCrowdsourceManagerElement;
@@ -1648,6 +1694,25 @@ declare global {
         prototype: HTMLCreateFeatureElement;
         new (): HTMLCreateFeatureElement;
     };
+    interface HTMLCreateRelatedFeatureElementEventMap {
+        "success": void;
+        "fail": Error;
+        "isActionPending": boolean;
+    }
+    interface HTMLCreateRelatedFeatureElement extends Components.CreateRelatedFeature, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLCreateRelatedFeatureElementEventMap>(type: K, listener: (this: HTMLCreateRelatedFeatureElement, ev: CreateRelatedFeatureCustomEvent<HTMLCreateRelatedFeatureElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLCreateRelatedFeatureElementEventMap>(type: K, listener: (this: HTMLCreateRelatedFeatureElement, ev: CreateRelatedFeatureCustomEvent<HTMLCreateRelatedFeatureElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLCreateRelatedFeatureElement: {
+        prototype: HTMLCreateRelatedFeatureElement;
+        new (): HTMLCreateRelatedFeatureElement;
+    };
     interface HTMLCrowdsourceManagerElementEventMap {
         "infoIconButtonClick": void;
     }
@@ -1743,6 +1808,7 @@ declare global {
     };
     interface HTMLFeatureDetailsElementEventMap {
         "loadingStatus": boolean;
+        "featureSelect": __esri.Graphic;
     }
     interface HTMLFeatureDetailsElement extends Components.FeatureDetails, HTMLStencilElement {
         addEventListener<K extends keyof HTMLFeatureDetailsElementEventMap>(type: K, listener: (this: HTMLFeatureDetailsElement, ev: FeatureDetailsCustomEvent<HTMLFeatureDetailsElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2231,6 +2297,7 @@ declare global {
         "card-manager": HTMLCardManagerElement;
         "consent-manager": HTMLConsentManagerElement;
         "create-feature": HTMLCreateFeatureElement;
+        "create-related-feature": HTMLCreateRelatedFeatureElement;
         "crowdsource-manager": HTMLCrowdsourceManagerElement;
         "crowdsource-reporter": HTMLCrowdsourceReporterElement;
         "deduct-calculator": HTMLDeductCalculatorElement;
@@ -2417,6 +2484,36 @@ declare namespace LocalJSX {
          */
         "selectedLayerId"?: string;
     }
+    interface CreateRelatedFeature {
+        /**
+          * boolean: Set this to true when have a custom submit button in the app. This will hide the header and footer elements of the editor and user needs to execute the submit method manually.
+         */
+        "customizeSubmit"?: boolean;
+        /**
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView"?: __esri.MapView;
+        /**
+          * Emitted on demand when the comment submission is failed
+         */
+        "onFail"?: (event: CreateRelatedFeatureCustomEvent<Error>) => void;
+        /**
+          * Emitted on demand when any action is pending or completed
+         */
+        "onIsActionPending"?: (event: CreateRelatedFeatureCustomEvent<boolean>) => void;
+        /**
+          * Emitted on demand when the comment is submitted successfully
+         */
+        "onSuccess"?: (event: CreateRelatedFeatureCustomEvent<void>) => void;
+        /**
+          * __esri.Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
+         */
+        "selectedFeature"?: __esri.Graphic;
+        /**
+          * __esri.FeatureLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html
+         */
+        "table"?: __esri.FeatureLayer;
+    }
     interface CrowdsourceManager {
         /**
           * Array of objects containing proxy information for premium platform services.
@@ -2547,7 +2644,7 @@ declare namespace LocalJSX {
          */
         "showNewestFirst"?: boolean;
         /**
-          * string: Field using which table will be sorted
+          * string: The table will be sorted by sortField
          */
         "sortField"?: string;
         /**
@@ -2759,6 +2856,10 @@ declare namespace LocalJSX {
          */
         "mapView"?: __esri.MapView;
         /**
+          * Emitted on demand when feature is selected using the list
+         */
+        "onFeatureSelect"?: (event: FeatureDetailsCustomEvent<__esri.Graphic>) => void;
+        /**
           * Emitted on demand when like or dislike button is clicked
          */
         "onLoadingStatus"?: (event: FeatureDetailsCustomEvent<boolean>) => void;
@@ -2798,6 +2899,22 @@ declare namespace LocalJSX {
           * string: Layer id of the feature layer to show the list
          */
         "selectedLayerId"?: string;
+        /**
+          * boolean: Show initial loading indicator when creating list
+         */
+        "showInitialLoading"?: boolean;
+        /**
+          * ISortingInfo: Sorting field and order using which features list will be sorted
+         */
+        "sortingInfo"?: ISortingInfo;
+        /**
+          * string(small/large): Controls the font size of the title
+         */
+        "textSize"?: "small" | "large";
+        /**
+          * string: where clause to filter the features list
+         */
+        "whereClause"?: string;
     }
     interface FeaturesFlowItem {
     }
@@ -2987,7 +3104,7 @@ declare namespace LocalJSX {
          */
         "showNewestFirst"?: boolean;
         /**
-          * string: Field using which table will be sorted
+          * string: The table will be sorted by sortField
          */
         "sortField"?: string;
         /**
@@ -3753,6 +3870,7 @@ declare namespace LocalJSX {
         "card-manager": CardManager;
         "consent-manager": ConsentManager;
         "create-feature": CreateFeature;
+        "create-related-feature": CreateRelatedFeature;
         "crowdsource-manager": CrowdsourceManager;
         "crowdsource-reporter": CrowdsourceReporter;
         "deduct-calculator": DeductCalculator;
@@ -3811,6 +3929,7 @@ declare module "@stencil/core" {
             "card-manager": LocalJSX.CardManager & JSXBase.HTMLAttributes<HTMLCardManagerElement>;
             "consent-manager": LocalJSX.ConsentManager & JSXBase.HTMLAttributes<HTMLConsentManagerElement>;
             "create-feature": LocalJSX.CreateFeature & JSXBase.HTMLAttributes<HTMLCreateFeatureElement>;
+            "create-related-feature": LocalJSX.CreateRelatedFeature & JSXBase.HTMLAttributes<HTMLCreateRelatedFeatureElement>;
             "crowdsource-manager": LocalJSX.CrowdsourceManager & JSXBase.HTMLAttributes<HTMLCrowdsourceManagerElement>;
             "crowdsource-reporter": LocalJSX.CrowdsourceReporter & JSXBase.HTMLAttributes<HTMLCrowdsourceReporterElement>;
             "deduct-calculator": LocalJSX.DeductCalculator & JSXBase.HTMLAttributes<HTMLDeductCalculatorElement>;

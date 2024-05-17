@@ -176,6 +176,24 @@ export async function getAllLayers(
 }
 
 /**
+ * Get all of the tables from the current map when the map and their layerView is ready
+ * @param mapView the map view to fetch the table names from
+ * @returns Promise resolving with an array of all tables
+ *
+ */
+export async function getAllTables(
+  mapView: __esri.MapView
+): Promise<__esri.Layer[]> {
+  const tables = mapView.map.allTables.toArray();
+  let layerViewPromises;
+  await mapView.when(() => {
+    layerViewPromises = tables.map(t => t.load());
+  });
+  await Promise.allSettled(layerViewPromises);
+  return tables;
+}
+
+/**
  * Highlight features by OID
  *
  * @param ids the OIDs from the layer to highlight
@@ -313,7 +331,7 @@ export async function goToSelection(
   const result = await queryExtent(ids, layerView.layer);
   const goToParams: { target: __esri.Extent; scale?: number; } = { target: result.extent };
   if (result.count === 1 && layerView.layer.geometryType === 'point' && zoomToScale) {
-    goToParams.scale = zoomToScale
+    goToParams.scale = zoomToScale;
   }
   await mapView.goTo(goToParams);
   if (flashFeatures) {
