@@ -588,3 +588,8 @@ export interface IReportingOption {
   dislike: boolean;
   dislikeField?: string;
 }
+
+export interface ISortingInfo {
+  field: string;
+  order: 'asc' | 'desc';
+}
