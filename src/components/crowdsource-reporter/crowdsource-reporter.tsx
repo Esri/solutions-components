@@ -44,14 +44,26 @@ export class CrowdsourceReporter {
   //--------------------------------------------------------------------------
 
   /**
+   * string: Semicolon delimited numbers that will be used as the maps center point from URL params
+   */
+  @Prop() center: string;
+
+  /**
+   * boolean: When true a cover page has been enabled in the consuming application.
+   * Also when true a floating button will be shown in the lower right of the window that
+   * will emit an event when clicked that the consuming application can respond to that will open the cover page.
+   */
+  @Prop() coverPageEnabled: string;
+
+  /**
+   * string: Item ID of the web map that should be selected by default
+   */
+  @Prop() defaultWebmap = "";
+
+  /**
    * string: The text that will display under the title on the landing page
    */
   @Prop() description: string;
-
-  /**
-   * boolean: When true the application will be in mobile mode, controls the mobile or desktop view
-   */
-  @Prop() isMobile: boolean;
 
   /**
    * boolean: When true the anonymous users will be allowed to submit reports and comments
@@ -69,6 +81,11 @@ export class CrowdsourceReporter {
   @Prop() enableComments: boolean;
 
   /**
+   * boolean: when true the home widget will be available
+   */
+  @Prop() enableHome = true;
+
+  /**
    * boolean: When true the user will be provided a login page
    */
   @Prop() enableLogin: boolean;
@@ -79,14 +96,24 @@ export class CrowdsourceReporter {
   @Prop() enableNewReports: boolean;
 
   /**
-   * string: The text that will display at the top of the landing page
+   * boolean: when true the search widget will be available
    */
-  @Prop() loginTitle: string;
+  @Prop() enableSearch = true;
 
   /**
-   * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+   * boolean: when true the zoom widget will be available
    */
-  @Prop() mapView: __esri.MapView;
+  @Prop() enableZoom = true;
+
+  /**
+   * boolean: When true the application will be in mobile mode, controls the mobile or desktop view
+   */
+  @Prop() isMobile: boolean;
+
+  /**
+   * ILayerExpression[]: Array of layer expressions for layers (filter configuration)
+   */
+  @Prop() layerExpressions: ILayerExpression[] = [];
 
   /**
    * string: Layer id of the feature from URL params
@@ -94,19 +121,29 @@ export class CrowdsourceReporter {
   @Prop() layerId: string;
 
   /**
-   * string: Object id of the feature from URL params
-   */
-  @Prop() objectId: string;
-
-  /**
-   * string: Semicolon delimited numbers that will be used as the maps center point from URL params
-   */
-  @Prop() center: string;
-
-  /**
    * string: Id of the zoom level from URL params
    */
   @Prop() level: string;
+
+  /**
+   * string: The text that will display at the top of the landing page
+   */
+  @Prop() loginTitle: string;
+
+  /**
+   * IMapInfo[]: array of map infos (name and id)
+   */
+  @Prop() mapInfos: IMapInfo[] = [];
+
+  /**
+   * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+   */
+  @Prop() mapView: __esri.MapView;
+
+  /**
+   * string: Object id of the feature from URL params
+   */
+  @Prop() objectId: string;
 
   /**
    * string: The word(s) to display in the reports submit button
@@ -114,14 +151,14 @@ export class CrowdsourceReporter {
   @Prop() reportButtonText: string;
 
   /**
-   * string: The word(s) to display in the reports header
-   */
-  @Prop() reportsHeader: string;
-
-  /**
    * IReportingOptions: Key options for reporting
    */
   @Prop() reportingOptions: IReportingOptions;
+
+  /**
+   * string: The word(s) to display in the reports header
+   */
+  @Prop() reportsHeader: string;
 
   /**
    * string: The message to display when the report has been submitted
@@ -139,44 +176,14 @@ export class CrowdsourceReporter {
   @Prop() showComments: boolean;
 
   /**
-   * string: Item ID of the web map that should be selected by default
-   */
-  @Prop() defaultWebmap = "";
-
-  /**
-   * boolean: when true the search widget will be available
-   */
-  @Prop() enableSearch = true;
-
-  /**
-   * boolean: when true the home widget will be available
-   */
-  @Prop() enableHome = true;
-
-  /**
-   * IMapInfo[]: array of map infos (name and id)
-   */
-  @Prop() mapInfos: IMapInfo[] = [];
-
-  /**
    * theme: "light" | "dark" theme to be used
    */
   @Prop() theme: theme = "light";
 
   /**
-   * boolean: when true the zoom widget will be available
-   */
-  @Prop() enableZoom = true;
-
-  /**
    * number: default scale to zoom to when zooming to a single point feature
    */
   @Prop() zoomToScale: number;
-
-  /**
-   * ILayerExpression[]: Array of layer expressions for layers (filter configuration)
-   */
-  @Prop() layerExpressions: ILayerExpression[] = [];
 
   //--------------------------------------------------------------------------
   //
@@ -185,14 +192,54 @@ export class CrowdsourceReporter {
   //--------------------------------------------------------------------------
 
   /**
-   * IMapInfo: The current map info stores configuration details
+   * string: Error message when feature creation fails
    */
-  @State() _mapInfo: IMapInfo;
+  @State() _featureCreationFailedErrorMsg: string;
+
+  /**
+   * boolean: When true an indicator will be shown on the action
+   */
+  @State() _filterActive = false;
+
+  /**
+   * boolean: When true the filter component will be displayed
+   */
+  @State() _filterOpen = false;
 
   /**
    * string[]: Reporter flow items list
    */
   @State() _flowItems: string[] = [];
+
+  /**
+   * boolean: When true show the sort and filter icon
+   */
+  @State() _hasValidLayers = false;
+
+  /**
+   * boolean: show loading indicator for feature details component upto completing pending operations
+   */
+  @State() _loadingFeatureDetails: boolean;
+
+  /**
+   * IMapInfo: The current map info stores configuration details
+   */
+  @State() _mapInfo: IMapInfo;
+
+  /**
+   * boolean: When true show the success message in the panel
+   */
+  @State() _reportSubmitted = false;
+
+   /**
+   * string: The selected feature layer's name from the layer's list
+   */
+   @State() _selectedLayerName: string;
+
+  /**
+   * boolean: When true show the submit and cancel button
+   */
+  @State() _showSubmitCancelButton = false;
 
   /**
    * boolean: Controls the state for panel in mobile view
@@ -206,49 +253,9 @@ export class CrowdsourceReporter {
   @State() _translations: typeof CrowdsourceReporter_T9n;
 
   /**
-   * boolean: When true show the sort and filter icon
-   */
-  @State() _hasValidLayers = false;
-
-   /**
-   * string: The selected feature layer's name from the layer's list
-   */
-  @State() _selectedLayerName: string;
-
-  /**
-   * boolean: When true show the success message in the panel
-   */
-  @State() _reportSubmitted = false;
-
-  /**
-   * boolean: When true show the submit and cancel button
-   */
-  @State() _showSubmitCancelButton = false;
-
-  /**
-   * boolean: show loading indicator for feature details component upto completing pending operations
-   */
-  @State() _loadingFeatureDetails: boolean;
-
-  /**
-   * string: Error message when feature creation fails
-   */
-  @State() _featureCreationFailedErrorMsg: string;
-
-  /**
    * number: Show the updated progress bar status
    */
   @State() _updatedProgressBarStatus = 0.25;
-
-  /**
-   * boolean: When true the filter component will be displayed
-   */
-  @State() _filterOpen = false;
-
-  /**
-   * boolean: When true an indicator will be shown on the action
-   */
-  @State() _filterActive = false;
 
   //--------------------------------------------------------------------------
   //
@@ -257,9 +264,14 @@ export class CrowdsourceReporter {
   //--------------------------------------------------------------------------
 
   /**
-   * IMapChange: The current map change details
+   * HTMLCreateFeatureElement: Create Feature component instance
    */
-  protected _mapChange: IMapChange;
+  protected _createFeature: HTMLCreateFeatureElement;
+
+  /**
+   * ObjectId of the feature currently shown in the details
+   */
+  protected _currentFeatureId: string;
 
   /**
    * number[]: X,Y pair used to center the map
@@ -272,44 +284,9 @@ export class CrowdsourceReporter {
   protected _defaultLevel: number;
 
   /**
-   * string[]: list of configured reporting layer ids
-   */
-  protected layers: string[];
-
-  /**
-   * __esri.FeatureLayer[]: Valid layers from the current map
-   */
-  protected _validLayers: __esri.FeatureLayer[];
-
-  /**
    * string[]: Configured/all layers id from current map which can be used for reporting
    */
   protected _editableLayerIds: string[];
-
-  /**
-   * string: The selected feature layer's id from the layer's list
-   */
-  protected _selectedLayerId: string;
-
-  /**
-   * __esri.Graphic: The selected feature
-   */
-  protected _selectedFeature: __esri.Graphic[];
-
-  /**
-   * esri/core/reactiveUtils: https://developers.arcgis.com/javascript/latest/api-reference/esri-core-reactiveUtils.html
-   */
-  protected reactiveUtils: typeof import("esri/core/reactiveUtils");
-
-  /**
-   * IHandle: The map click handle
-   */
-  protected _mapClickHandle: IHandle;
-
-  /**
-   * HTMLCreateFeatureElement: Create Feature component instance
-   */
-  protected _createFeature: HTMLCreateFeatureElement;
 
   /**
    * HTMLCreateFeatureElement: features details component instance
@@ -317,37 +294,9 @@ export class CrowdsourceReporter {
   protected _featureDetails: HTMLFeatureDetailsElement;
 
   /**
-   * HTMLLayerListElement: Create Layer list component instance
-   */
-  protected _layerList: HTMLLayerListElement;
-
-  /**
    * HTMLFeatureListElement: Create feature list component instance
    */
   protected _featureList: HTMLFeatureListElement;
-
-  /**
-   * HTMLInstantAppsSocialShareElement: Share element
-   */
-  protected _shareNode: HTMLInstantAppsSocialShareElement;
-
-  /**
-   * ObjectId of the feature currently shown in the details
-   */
-  protected _currentFeatureId: string;
-
-  /**
-   * boolean: Maintains a flag to know if urls params are loaded or not
-   */
-  protected _urlParamsLoaded: boolean;
-
-  /**
-   * __esri.Handle: Highlight handles of the selections
-   */
-  protected _highlightHandle: __esri.Handle;
-
-  //HARDCODED IN EN
-  protected _noLayerToDisplayErrorMsg = "Web map does not contain any editable layers.";
 
   /**
    * HTMLInstantAppsFilterListElement: Component from Instant Apps that supports interacting with the current filter config
@@ -355,9 +304,68 @@ export class CrowdsourceReporter {
   protected _filterList: HTMLInstantAppsFilterListElement;
 
   /**
+   * __esri.Handle: Highlight handles of the selections
+   */
+  protected _highlightHandle: __esri.Handle;
+
+  /**
+   * HTMLLayerListElement: Create Layer list component instance
+   */
+  protected _layerList: HTMLLayerListElement;
+
+
+  /**
+   * string[]: list of configured reporting layer ids
+   */
+  protected _layers: string[];
+
+  /**
+   * IMapChange: The current map change details
+   */
+  protected _mapChange: IMapChange;
+
+  /**
+   * IHandle: The map click handle
+   */
+  protected _mapClickHandle: IHandle;
+
+  //HARDCODED IN EN
+  protected _noLayerToDisplayErrorMsg = "Web map does not contain any editable layers.";
+
+  /**
+   * esri/core/reactiveUtils: https://developers.arcgis.com/javascript/latest/api-reference/esri-core-reactiveUtils.html
+   */
+  protected reactiveUtils: typeof import("esri/core/reactiveUtils");
+
+  /**
+   * __esri.Graphic: The selected feature
+   */
+  protected _selectedFeature: __esri.Graphic[];
+
+  /**
    * number: selected feature index
    */
-  protected selectedFeatureIndex: number;
+  protected _selectedFeatureIndex: number;
+
+  /**
+   * string: The selected feature layer's id from the layer's list
+   */
+  protected _selectedLayerId: string;
+
+  /**
+   * HTMLInstantAppsSocialShareElement: Share element
+   */
+  protected _shareNode: HTMLInstantAppsSocialShareElement;
+
+  /**
+   * boolean: Maintains a flag to know if urls params are loaded or not
+   */
+  protected _urlParamsLoaded: boolean;
+
+  /**
+   * __esri.FeatureLayer[]: Valid layers from the current map
+   */
+  protected _validLayers: __esri.FeatureLayer[];
 
   //--------------------------------------------------------------------------
   //
@@ -394,7 +402,7 @@ export class CrowdsourceReporter {
     void this.updatingFeatureDetails(true);
     this.setCurrentFeature(evt.detail.selectedFeature[0]);
     void this.highlightOnMap(evt.detail.selectedFeature[0]);
-    this.selectedFeatureIndex = evt.detail.selectedFeatureIndex;
+    this._selectedFeatureIndex = evt.detail.selectedFeatureIndex;
     //update the feature details to reflect the like dislike values
     await this._featureDetails.refresh(evt.detail.selectedFeature[0]);
   }
@@ -433,7 +441,7 @@ export class CrowdsourceReporter {
     await this._getTranslations();
     await this.mapView?.when(async () => {
       //set configured reporting layers array
-      this.layers = this.reportingOptions ? Object.keys(this.reportingOptions).filter((layerId: string) => {
+      this._layers = this.reportingOptions ? Object.keys(this.reportingOptions).filter((layerId: string) => {
           return this.reportingOptions[layerId].reporting
         }) : [];
       await this.setMapView();
@@ -671,7 +679,7 @@ export class CrowdsourceReporter {
           full-width>
           <layer-list
             class="height-full"
-            layers={this._editableLayerIds?.length > 0 ? this._editableLayerIds : this.layers}
+            layers={this._editableLayerIds?.length > 0 ? this._editableLayerIds : this._layers}
             mapView={this.mapView}
             noLayerErrorMsg={this._noLayerToDisplayErrorMsg}
             onLayerSelect={this.displayFeaturesList.bind(this)}
@@ -710,7 +718,7 @@ export class CrowdsourceReporter {
           </calcite-notice>
           <layer-list
             class="height-full"
-            layers={this.layers}
+            layers={this._layers}
             mapView={this.mapView}
             noLayerErrorMsg={this._noLayerToDisplayErrorMsg}
             onLayerSelect={this.navigateToCreateFeature.bind(this)}
@@ -1276,7 +1284,7 @@ export class CrowdsourceReporter {
    * @protected
    */
     protected _getCount(): string {
-      const index = (this.selectedFeatureIndex + 1).toString();
+      const index = (this._selectedFeatureIndex + 1).toString();
       const total = this._selectedFeature.length.toString();
       return this._translations.indexOfTotal
         .replace("{{index}}", index)
@@ -1302,7 +1310,7 @@ export class CrowdsourceReporter {
   protected reduceToConfiguredLayers(
     hash: ILayerItemsHash
   ): string[] {
-    const configuredLayers = this.layers?.length > 0 ? this.layers : [];
+    const configuredLayers = this._layers?.length > 0 ? this._layers : [];
     return Object.keys(hash).reduce((prev, cur) => {
       let showLayer = hash[cur].supportsAdd;
       if (configuredLayers?.length > 0) {
