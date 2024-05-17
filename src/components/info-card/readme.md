@@ -62,13 +62,13 @@ Type: `Promise<void>`
 
 ### `refresh() => Promise<any>`
 
-Get the current selected feature from the Features widget
+Refresh the feature info
 
 #### Returns
 
 Type: `Promise<any>`
 
-Promise resolving with the current feature
+Promise when complete
 
 ### `toggleListView() => Promise<void>`
 
@@ -102,6 +102,7 @@ Type: `Promise<void>`
 ### Used by
 
  - [card-manager](../card-manager)
+ - [crowdsource-reporter](../crowdsource-reporter)
  - [feature-details](../feature-details)
 
 ### Depends on
@@ -152,6 +153,7 @@ graph TD;
   calcite-popover --> calcite-action
   calcite-popover --> calcite-icon
   card-manager --> info-card
+  crowdsource-reporter --> info-card
   feature-details --> info-card
   style info-card fill:#f9f,stroke:#333,stroke-width:4px
 ```

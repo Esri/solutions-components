@@ -266,12 +266,12 @@ export class CrowdsourceReporter {
    * ISortingInfo: Sort the feature list depending on the sort field and order
    */
   @State() _updatedSorting: ISortingInfo;
-  
+
   /**
    * string: Selected sort option
    */
   @State() _updatedSortOption = "sortNewest"
-  
+
   /**
    * boolean: When true show the success message in the panel
    */
@@ -448,8 +448,8 @@ export class CrowdsourceReporter {
     void this.updatingFeatureDetails(true);
     await this.setCurrentFeature(evt.detail.selectedFeature[0]);
     void this.highlightOnMap(evt.detail.selectedFeature[0]);
-    this.selectedFeatureIndex = evt.detail.selectedFeatureIndex;
-    //update the feature details to reflect the like, dislike and comment values 
+    this._selectedFeatureIndex = evt.detail.selectedFeatureIndex;
+    //update the feature details to reflect the like, dislike and comment values
     await this._featureDetails.refresh(evt.detail.selectedFeature[0]);
   }
 
@@ -527,7 +527,7 @@ export class CrowdsourceReporter {
         {this._commentSubmitted && <calcite-alert
           auto-close
           class={'report-submitted '+ themeClass}
-          icon="check-circle" 
+          icon="check-circle"
           kind="success"
           label=""
           onCalciteAlertClose={() => { this._commentSubmitted = false }}

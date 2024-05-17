@@ -57,6 +57,9 @@
 - calcite-loader
 - calcite-modal
 - instant-apps-filter-list
+- calcite-popover
+- calcite-list
+- calcite-list-item
 - calcite-flow-item
 - calcite-button
 - [layer-list](../layer-list)
@@ -68,6 +71,8 @@
 - instant-apps-social-share
 - [feature-details](../feature-details)
 - calcite-tooltip
+- [info-card](../info-card)
+- [create-related-feature](../create-related-feature)
 
 ### Graph
 ```mermaid
@@ -79,6 +84,9 @@ graph TD;
   crowdsource-reporter --> calcite-loader
   crowdsource-reporter --> calcite-modal
   crowdsource-reporter --> instant-apps-filter-list
+  crowdsource-reporter --> calcite-popover
+  crowdsource-reporter --> calcite-list
+  crowdsource-reporter --> calcite-list-item
   crowdsource-reporter --> calcite-flow-item
   crowdsource-reporter --> calcite-button
   crowdsource-reporter --> layer-list
@@ -90,6 +98,8 @@ graph TD;
   crowdsource-reporter --> instant-apps-social-share
   crowdsource-reporter --> feature-details
   crowdsource-reporter --> calcite-tooltip
+  crowdsource-reporter --> info-card
+  crowdsource-reporter --> create-related-feature
   calcite-alert --> calcite-icon
   calcite-alert --> calcite-chip
   calcite-chip --> calcite-icon
@@ -137,14 +147,6 @@ graph TD;
   calcite-date-picker-month --> calcite-date-picker-day
   calcite-button --> calcite-loader
   calcite-button --> calcite-icon
-  calcite-flow-item --> calcite-action
-  calcite-flow-item --> calcite-panel
-  layer-list --> calcite-loader
-  layer-list --> calcite-notice
-  layer-list --> calcite-list
-  layer-list --> calcite-list-item
-  layer-list --> calcite-icon
-  calcite-notice --> calcite-icon
   calcite-list --> calcite-scrim
   calcite-list --> calcite-stack
   calcite-list --> calcite-filter
@@ -154,6 +156,14 @@ graph TD;
   calcite-list-item --> calcite-icon
   calcite-list-item --> calcite-handle
   calcite-list-item --> calcite-action
+  calcite-flow-item --> calcite-action
+  calcite-flow-item --> calcite-panel
+  layer-list --> calcite-loader
+  layer-list --> calcite-notice
+  layer-list --> calcite-list
+  layer-list --> calcite-list-item
+  layer-list --> calcite-icon
+  calcite-notice --> calcite-icon
   feature-list --> calcite-panel
   feature-list --> calcite-loader
   feature-list --> calcite-notice
@@ -168,7 +178,9 @@ graph TD;
   instant-apps-social-share --> calcite-action
   feature-details --> calcite-panel
   feature-details --> info-card
+  feature-details --> calcite-icon
   feature-details --> calcite-button
+  feature-details --> feature-list
   info-card --> calcite-shell
   info-card --> calcite-loader
   info-card --> calcite-button

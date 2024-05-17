@@ -16,9 +16,10 @@
 
 ## Events
 
-| Event           | Description                                              | Type                   |
-| --------------- | -------------------------------------------------------- | ---------------------- |
-| `loadingStatus` | Emitted on demand when like or dislike button is clicked | `CustomEvent<boolean>` |
+| Event           | Description                                               | Type                   |
+| --------------- | --------------------------------------------------------- | ---------------------- |
+| `featureSelect` | Emitted on demand when feature is selected using the list | `CustomEvent<Graphic>` |
+| `loadingStatus` | Emitted on demand when like or dislike button is clicked  | `CustomEvent<boolean>` |
 
 
 ## Methods
@@ -80,14 +81,18 @@ Type: `Promise<void>`
 
 - calcite-panel
 - [info-card](../info-card)
+- calcite-icon
 - calcite-button
+- [feature-list](../feature-list)
 
 ### Graph
 ```mermaid
 graph TD;
   feature-details --> calcite-panel
   feature-details --> info-card
+  feature-details --> calcite-icon
   feature-details --> calcite-button
+  feature-details --> feature-list
   calcite-panel --> calcite-action
   calcite-panel --> calcite-action-menu
   calcite-panel --> calcite-scrim
@@ -120,6 +125,24 @@ graph TD;
   calcite-alert --> calcite-icon
   calcite-alert --> calcite-chip
   calcite-chip --> calcite-icon
+  feature-list --> calcite-panel
+  feature-list --> calcite-loader
+  feature-list --> calcite-notice
+  feature-list --> calcite-list
+  feature-list --> calcite-pagination
+  feature-list --> calcite-list-item
+  feature-list --> calcite-icon
+  calcite-list --> calcite-scrim
+  calcite-list --> calcite-stack
+  calcite-list --> calcite-filter
+  calcite-filter --> calcite-input
+  calcite-input --> calcite-progress
+  calcite-input --> calcite-icon
+  calcite-pagination --> calcite-icon
+  calcite-list-item --> calcite-icon
+  calcite-list-item --> calcite-handle
+  calcite-list-item --> calcite-action
+  calcite-handle --> calcite-icon
   crowdsource-reporter --> feature-details
   style feature-details fill:#f9f,stroke:#333,stroke-width:4px
 ```

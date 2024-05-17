@@ -284,7 +284,7 @@ export namespace Components {
          */
         "showNewestFirst": boolean;
         /**
-          * string: The table will be sorted by sortField
+          * string: Field using which table will be sorted
          */
         "sortField": string;
         /**
@@ -749,7 +749,7 @@ export namespace Components {
          */
         "showNewestFirst": boolean;
         /**
-          * string: The table will be sorted by sortField
+          * string: Field using which table will be sorted
          */
         "sortField": string;
         /**
@@ -2644,7 +2644,7 @@ declare namespace LocalJSX {
          */
         "showNewestFirst"?: boolean;
         /**
-          * string: The table will be sorted by sortField
+          * string: Field using which table will be sorted
          */
         "sortField"?: string;
         /**
@@ -3104,7 +3104,7 @@ declare namespace LocalJSX {
          */
         "showNewestFirst"?: boolean;
         /**
-          * string: The table will be sorted by sortField
+          * string: Field using which table will be sorted
          */
         "sortField"?: string;
         /**
