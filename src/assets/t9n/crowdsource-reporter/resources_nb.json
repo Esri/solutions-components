@@ -1,5 +1,5 @@
 {
-  "createReportHeader": "Opprett en rapport",
+  "createReportButtonText": "å_Create a Report________________ø",
   "share": "Del",
   "sort": "Sorter",
   "filter": "Filter",
@@ -12,11 +12,19 @@
   "error": "Feil",
   "invalidConfigurationErrorMsg": "Ugyldig konfigurasjon",
   "noLayerToDisplayErrorMsg": "Konfigurert webkart har ingen geoobjektlag som kan redigeres.",
-  "chooseCategoryMsg": "Choose a category for your report.",
-  "featureErrorMsg": "Finner ikke geoobjekter.",
-  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "chooseCategoryMsg": "å_Make a selection from the list below____________________ø.",
+  "featureErrorMsg": "å_No records found__________________ø.",
+  "featureEditFormInfoMsg": "å_Please provide the details____________________________ø.",
   "currentLocationMsg": "Bruk min nåværende lokasjon",
-  "addLocationMsg": "Add the location for your report.",
-  "reportSubmit": "Rapporten er levert.",
-  "submitMsg": "Takk! Rapporten er innsendt."
+  "addLocationMsg": "å_Please add a location_______________________ø.",
+  "submitMsg": "Takk! Rapporten er innsendt.",
+  "filterLayerTitle": "å_Filter: {{title}}__________________ø",
+  "indexOfTotal": "å_{{index}} of {{total}}_______________________ø",
+  "comment": "å_Comment_______________ø",
+  "commentSubmittedMsg": "å_Comment submitted__________________ø",
+  "addingCommentFailedMsg": "å_Comment not submitted______________________ø",
+  "sortNewest": "å_Newest_____________ø",
+  "sortOldest": "å_Oldest_____________ø",
+  "sortHighestVoted": "å_Highest voted______________ø",
+  "sortLowestVoted": "å_Lowest voted_____________ø"
 }

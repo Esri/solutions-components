@@ -1,5 +1,5 @@
 {
-  "createReportHeader": "Izveidot pārskatu",
+  "createReportButtonText": "ķ_Create a Report________________ū",
   "share": "Koplietot",
   "sort": "Kārtot",
   "filter": "Filtrs",
@@ -12,11 +12,19 @@
   "error": "Kļūda",
   "invalidConfigurationErrorMsg": "Nederīga konfigurācija",
   "noLayerToDisplayErrorMsg": "Konfigurētajai tīmekļa kartei nav rediģējamu elementu slāņu.",
-  "chooseCategoryMsg": "Choose a category for your report.",
-  "featureErrorMsg": "Elementi nav atrasti.",
-  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "chooseCategoryMsg": "ķ_Make a selection from the list below____________________ū.",
+  "featureErrorMsg": "ķ_No records found__________________ū.",
+  "featureEditFormInfoMsg": "ķ_Please provide the details____________________________ū.",
   "currentLocationMsg": "Izmantot manu pašreizējo novietojumu",
-  "addLocationMsg": "Add the location for your report.",
-  "reportSubmit": "Pārskats iesniegts.",
-  "submitMsg": "Paldies! Jūsu pārskats ir veiksmīgi iesniegts."
+  "addLocationMsg": "ķ_Please add a location_______________________ū.",
+  "submitMsg": "Paldies! Jūsu pārskats ir veiksmīgi iesniegts.",
+  "filterLayerTitle": "ķ_Filter: {{title}}__________________ū",
+  "indexOfTotal": "ķ_{{index}} of {{total}}_______________________ū",
+  "comment": "ķ_Comment_______________ū",
+  "commentSubmittedMsg": "ķ_Comment submitted__________________ū",
+  "addingCommentFailedMsg": "ķ_Comment not submitted______________________ū",
+  "sortNewest": "ķ_Newest_____________ū",
+  "sortOldest": "ķ_Oldest_____________ū",
+  "sortHighestVoted": "ķ_Highest voted______________ū",
+  "sortLowestVoted": "ķ_Lowest voted_____________ū"
 }

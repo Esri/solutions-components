@@ -1,5 +1,5 @@
 {
-  "createReportHeader": "สร้างรายงาน",
+  "createReportButtonText": "ก้_Create a Report________________ษฺ",
   "share": "แชร์",
   "sort": "เรียงลำดับ",
   "filter": "ตัวกรอง",
@@ -12,11 +12,19 @@
   "error": "ข้อผิดพลาด",
   "invalidConfigurationErrorMsg": "การกำหนดค่าไม่ถูกต้อง",
   "noLayerToDisplayErrorMsg": "เว็บแมปที่กำหนดค่าไว้ไม่มีชั้นข้อมูลฟีเจอร์ที่สามารถแก้ไขได้",
-  "chooseCategoryMsg": "Choose a category for your report.",
-  "featureErrorMsg": "ไม่พบฟีเจอร์",
-  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "chooseCategoryMsg": "ก้_Make a selection from the list below____________________ษฺ.",
+  "featureErrorMsg": "ก้_No records found__________________ษฺ.",
+  "featureEditFormInfoMsg": "ก้_Please provide the details____________________________ษฺ.",
   "currentLocationMsg": "ใช้ตำแหน่งปัจจุบันของฉัน",
-  "addLocationMsg": "Add the location for your report.",
-  "reportSubmit": "ส่งรายงานแล้ว",
-  "submitMsg": "ขอบคุณ ส่งรายงานของคุณเรียบร้อยแล้ว"
+  "addLocationMsg": "ก้_Please add a location_______________________ษฺ.",
+  "submitMsg": "ขอบคุณ ส่งรายงานของคุณเรียบร้อยแล้ว",
+  "filterLayerTitle": "ก้_Filter: {{title}}__________________ษฺ",
+  "indexOfTotal": "ก้_{{index}} of {{total}}_______________________ษฺ",
+  "comment": "ก้_Comment_______________ษฺ",
+  "commentSubmittedMsg": "ก้_Comment submitted__________________ษฺ",
+  "addingCommentFailedMsg": "ก้_Comment not submitted______________________ษฺ",
+  "sortNewest": "ก้_Newest_____________ษฺ",
+  "sortOldest": "ก้_Oldest_____________ษฺ",
+  "sortHighestVoted": "ก้_Highest voted______________ษฺ",
+  "sortLowestVoted": "ก้_Lowest voted_____________ษฺ"
 }

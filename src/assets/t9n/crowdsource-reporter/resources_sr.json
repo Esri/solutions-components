@@ -1,5 +1,5 @@
 {
-  "createReportHeader": "Kreiraj izveštaj",
+  "createReportButtonText": "Č_Create a Report________________ž",
   "share": "Podeli",
   "sort": "Sortiraj",
   "filter": "Filter",
@@ -12,11 +12,19 @@
   "error": "Greška",
   "invalidConfigurationErrorMsg": "Nevažeća konfiguracija",
   "noLayerToDisplayErrorMsg": "Konfigurisana veb mapa nema sloj geoobjekta koji se može uređivati.",
-  "chooseCategoryMsg": "Choose a category for your report.",
-  "featureErrorMsg": "Geoobjekti nisu pronađeni.",
-  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "chooseCategoryMsg": "Č_Make a selection from the list below____________________ž.",
+  "featureErrorMsg": "Č_No records found__________________ž.",
+  "featureEditFormInfoMsg": "Č_Please provide the details____________________________ž.",
   "currentLocationMsg": "Koristi moju trenutnu lokaciju",
-  "addLocationMsg": "Add the location for your report.",
-  "reportSubmit": "Izveštaj prosleđen.",
-  "submitMsg": "Hvala vam! Vaš izveštaj je uspešno prosleđen."
+  "addLocationMsg": "Č_Please add a location_______________________ž.",
+  "submitMsg": "Hvala vam! Vaš izveštaj je uspešno prosleđen.",
+  "filterLayerTitle": "Č_Filter: {{title}}__________________ž",
+  "indexOfTotal": "Č_{{index}} of {{total}}_______________________ž",
+  "comment": "Č_Comment_______________ž",
+  "commentSubmittedMsg": "Č_Comment submitted__________________ž",
+  "addingCommentFailedMsg": "Č_Comment not submitted______________________ž",
+  "sortNewest": "Č_Newest_____________ž",
+  "sortOldest": "Č_Oldest_____________ž",
+  "sortHighestVoted": "Č_Highest voted______________ž",
+  "sortLowestVoted": "Č_Lowest voted_____________ž"
 }

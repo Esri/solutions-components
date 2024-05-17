@@ -1,5 +1,5 @@
 {
-  "createReportHeader": "إنشاء تقرير",
+  "createReportButtonText": "بيت_Create a Report________________لاحقة",
   "share": "مشاركة",
   "sort": "فرز",
   "filter": "تصفية",
@@ -12,11 +12,19 @@
   "error": "خطأ",
   "invalidConfigurationErrorMsg": "تكوين غير صحيح",
   "noLayerToDisplayErrorMsg": "لا تحتوي خريطة الويب التي تم تكوينها على أي طبقة معالم قابلة للتحرير.",
-  "chooseCategoryMsg": "Choose a category for your report.",
-  "featureErrorMsg": "لم يتم العثور على المعالم.",
-  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "chooseCategoryMsg": "بيت_Make a selection from the list below____________________لاحقة.",
+  "featureErrorMsg": "بيت_No records found__________________لاحقة.",
+  "featureEditFormInfoMsg": "بيت_Please provide the details____________________________لاحقة.",
   "currentLocationMsg": "استخدم موقعي الحالي",
-  "addLocationMsg": "Add the location for your report.",
-  "reportSubmit": "تم إرسال التقرير.",
-  "submitMsg": "شكرًا لك! تم إرسال تقريرك بنجاح."
+  "addLocationMsg": "بيت_Please add a location_______________________لاحقة.",
+  "submitMsg": "شكرًا لك! تم إرسال تقريرك بنجاح.",
+  "filterLayerTitle": "بيت_Filter: {{title}}__________________لاحقة",
+  "indexOfTotal": "بيت_{{index}} of {{total}}_______________________لاحقة",
+  "comment": "بيت_Comment_______________لاحقة",
+  "commentSubmittedMsg": "بيت_Comment submitted__________________لاحقة",
+  "addingCommentFailedMsg": "بيت_Comment not submitted______________________لاحقة",
+  "sortNewest": "بيت_Newest_____________لاحقة",
+  "sortOldest": "بيت_Oldest_____________لاحقة",
+  "sortHighestVoted": "بيت_Highest voted______________لاحقة",
+  "sortLowestVoted": "بيت_Lowest voted_____________لاحقة"
 }

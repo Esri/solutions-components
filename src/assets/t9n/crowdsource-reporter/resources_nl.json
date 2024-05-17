@@ -1,5 +1,5 @@
 {
-  "createReportHeader": "Een rapport maken",
+  "createReportButtonText": "Ĳ_Create a Report________________ä",
   "share": "Delen",
   "sort": "Sorteren",
   "filter": "Filteren",
@@ -12,11 +12,19 @@
   "error": "Fout",
   "invalidConfigurationErrorMsg": "Ongeldige configuratie",
   "noLayerToDisplayErrorMsg": "Geconfigureerde web map bevat geen bewerkbare objectlagen.",
-  "chooseCategoryMsg": "Choose a category for your report.",
-  "featureErrorMsg": "Kan objecten niet vinden.",
-  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "chooseCategoryMsg": "Ĳ_Make a selection from the list below____________________ä.",
+  "featureErrorMsg": "Ĳ_No records found__________________ä.",
+  "featureEditFormInfoMsg": "Ĳ_Please provide the details____________________________ä.",
   "currentLocationMsg": "Gebruik mijn huidige locatie",
-  "addLocationMsg": "Add the location for your report.",
-  "reportSubmit": "Rapport ingediend",
-  "submitMsg": "Bedankt! Uw rapport is ingediend."
+  "addLocationMsg": "Ĳ_Please add a location_______________________ä.",
+  "submitMsg": "Bedankt! Uw rapport is ingediend.",
+  "filterLayerTitle": "Ĳ_Filter: {{title}}__________________ä",
+  "indexOfTotal": "Ĳ_{{index}} of {{total}}_______________________ä",
+  "comment": "Ĳ_Comment_______________ä",
+  "commentSubmittedMsg": "Ĳ_Comment submitted__________________ä",
+  "addingCommentFailedMsg": "Ĳ_Comment not submitted______________________ä",
+  "sortNewest": "Ĳ_Newest_____________ä",
+  "sortOldest": "Ĳ_Oldest_____________ä",
+  "sortHighestVoted": "Ĳ_Highest voted______________ä",
+  "sortLowestVoted": "Ĳ_Lowest voted_____________ä"
 }

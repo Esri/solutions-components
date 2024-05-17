@@ -1,5 +1,5 @@
 {
-  "createReportHeader": "Einen Bericht erstellen",
+  "createReportButtonText": "ä_Create a Report________________Ü",
   "share": "Freigeben",
   "sort": "Sortieren",
   "filter": "Filtern",
@@ -12,11 +12,19 @@
   "error": "Fehler",
   "invalidConfigurationErrorMsg": "Ungültige Konfiguration",
   "noLayerToDisplayErrorMsg": "Konfigurierte Webkarte enthält keine editierbaren Feature-Layer.",
-  "chooseCategoryMsg": "Choose a category for your report.",
-  "featureErrorMsg": "Features nicht gefunden.",
-  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "chooseCategoryMsg": "ä_Make a selection from the list below____________________Ü.",
+  "featureErrorMsg": "ä_No records found__________________Ü.",
+  "featureEditFormInfoMsg": "ä_Please provide the details____________________________Ü.",
   "currentLocationMsg": "Aktuelle eigene Position verwenden",
-  "addLocationMsg": "Add the location for your report.",
-  "reportSubmit": "Bericht wurde gesendet.",
-  "submitMsg": "Vielen Dank. Ihr Bericht wurde erfolgreich gesendet."
+  "addLocationMsg": "ä_Please add a location_______________________Ü.",
+  "submitMsg": "Vielen Dank. Ihr Bericht wurde erfolgreich gesendet.",
+  "filterLayerTitle": "ä_Filter: {{title}}__________________Ü",
+  "indexOfTotal": "ä_{{index}} of {{total}}_______________________Ü",
+  "comment": "ä_Comment_______________Ü",
+  "commentSubmittedMsg": "ä_Comment submitted__________________Ü",
+  "addingCommentFailedMsg": "ä_Comment not submitted______________________Ü",
+  "sortNewest": "ä_Newest_____________Ü",
+  "sortOldest": "ä_Oldest_____________Ü",
+  "sortHighestVoted": "ä_Highest voted______________Ü",
+  "sortLowestVoted": "ä_Lowest voted_____________Ü"
 }

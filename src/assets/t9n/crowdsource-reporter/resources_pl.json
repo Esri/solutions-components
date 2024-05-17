@@ -1,5 +1,5 @@
 {
-  "createReportHeader": "Utwórz raport",
+  "createReportButtonText": "ł_Create a Report________________ą",
   "share": "Udostępnij",
   "sort": "Sortuj",
   "filter": "Filtruj",
@@ -12,11 +12,19 @@
   "error": "Błąd",
   "invalidConfigurationErrorMsg": "Nieprawidłowa konfiguracja",
   "noLayerToDisplayErrorMsg": "Skonfigurowana mapa internetowa nie ma żadnej edytowalnej warstwy obiektowej.",
-  "chooseCategoryMsg": "Choose a category for your report.",
-  "featureErrorMsg": "Nie znaleziono obiektów.",
-  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "chooseCategoryMsg": "ł_Make a selection from the list below____________________ą.",
+  "featureErrorMsg": "ł_No records found__________________ą.",
+  "featureEditFormInfoMsg": "ł_Please provide the details____________________________ą.",
   "currentLocationMsg": "Użyj mojej bieżącej lokalizacji",
-  "addLocationMsg": "Add the location for your report.",
-  "reportSubmit": "Przesłano raport.",
-  "submitMsg": "Dziękujemy! Twój raport został pomyślnie przesłany."
+  "addLocationMsg": "ł_Please add a location_______________________ą.",
+  "submitMsg": "Dziękujemy! Twój raport został pomyślnie przesłany.",
+  "filterLayerTitle": "ł_Filter: {{title}}__________________ą",
+  "indexOfTotal": "ł_{{index}} of {{total}}_______________________ą",
+  "comment": "ł_Comment_______________ą",
+  "commentSubmittedMsg": "ł_Comment submitted__________________ą",
+  "addingCommentFailedMsg": "ł_Comment not submitted______________________ą",
+  "sortNewest": "ł_Newest_____________ą",
+  "sortOldest": "ł_Oldest_____________ą",
+  "sortHighestVoted": "ł_Highest voted______________ą",
+  "sortLowestVoted": "ł_Lowest voted_____________ą"
 }
