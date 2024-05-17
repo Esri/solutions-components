@@ -17,7 +17,7 @@
 import { Component, Element, Prop, VNode, h, State, Event, Watch, EventEmitter, Method } from "@stencil/core";
 import { loadModules } from "../../utils/loadModules";
 import { PopupUtils } from "../../utils/popupUtils";
-import { IPopupUtils } from "../../utils/interfaces";
+import { IPopupUtils, ISortingInfo } from "../../utils/interfaces";
 import { getFeatureLayerView, getLayerOrTable, highlightFeatures } from "../../utils/mapViewUtils";
 import FeatureList_T9n from "../../assets/t9n/feature-list/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
@@ -71,6 +71,26 @@ export class FeatureList {
    * boolean: Highlight feature on map optional (default false) boolean to indicate if we should highlight when hover on Feature in list
    */
   @Prop() highlightOnHover?: boolean = false;
+
+  /**
+   * ISortingInfo: Sorting field and order using which features list will be sorted
+   */
+  @Prop() sortingInfo?: ISortingInfo;
+
+  /**
+   * string: where clause to filter the features list
+   */
+  @Prop() whereClause?: string;
+
+  /**
+   * string(small/large): Controls the font size of the title
+   */
+  @Prop() textSize?: "small" | "large" = "large";
+
+  /**
+   * boolean: Show initial loading indicator when creating list
+   */
+  @Prop() showInitialLoading?: boolean = true;
   
   //--------------------------------------------------------------------------
   //
@@ -141,6 +161,22 @@ export class FeatureList {
     await this.initializeFeatureItems();
   }
 
+  /**
+   * Watch for sorting field or order change and update the features list
+   */
+  @Watch("sortingInfo")
+  async sortingInfoWatchHandler(): Promise<void> {
+    await this.initializeFeatureItems();
+  }
+  
+  /**
+   * Watch for whereclause change and update the features list
+   */
+  @Watch("whereClause")
+  async whereClauseHandler(): Promise<void> {
+    await this.initializeFeatureItems();
+  }
+
   //--------------------------------------------------------------------------
   //
   //  Methods (public)
@@ -181,7 +217,7 @@ export class FeatureList {
   async componentWillLoad(): Promise<void> {
     await this.initModules();
     await this._getTranslations();
-    this._isLoading = true;
+    this._isLoading = this.showInitialLoading;
     this._popupUtils = new PopupUtils();
     if (this.mapView && this.selectedLayerId) {
       this._selectedLayer = await getLayerOrTable(this.mapView, this.selectedLayerId);
@@ -192,7 +228,7 @@ export class FeatureList {
    * StencilJS: Called once just after the component is fully loaded and the first render() occurs.
    */
   async componentDidLoad() {
-    await this.initializeFeatureItems()
+    await this.initializeFeatureItems();
   }
 
   /**
@@ -252,14 +288,35 @@ export class FeatureList {
     }
 
   /**
+   * Return the where condition string considering the defined where clause and layer's definition expression 
+   * @protected
+   */
+  protected getWhereCondition(): string {
+    //By Default load all the features
+    let whereClause = '1=1';
+    //if where clause is defined use it
+    if (this.whereClause) {
+      whereClause = this.whereClause;
+    }
+    //if layer has definitionExpression append it to the where clause
+    if (this._selectedLayer?.definitionExpression) {
+      whereClause = whereClause + ' AND ' + this._selectedLayer.definitionExpression;
+    }
+    return whereClause;
+  }
+
+  /**
    * Initialize the features list using the selected layer
    * @protected
    */
   protected async initializeFeatureItems(): Promise<void> {
     if (this._selectedLayer) {
-      this._isLoading = true;
+      this._isLoading = this.showInitialLoading;
       this._featureItems = await this.queryPage(0);
-      this._featuresCount = await this._selectedLayer.queryFeatureCount();
+      const query: any = {
+        where: this.getWhereCondition()
+      };
+      this._featuresCount = await this._selectedLayer.queryFeatureCount(query);
       this._isLoading = false;
     }
   }
@@ -295,7 +352,7 @@ export class FeatureList {
       const selectedLayerView = await getFeatureLayerView(this.mapView, this.selectedLayerId);
       this._highlightHandle = await highlightFeatures([selectedFeatureObjectId], selectedLayerView, this.mapView, true);
     }
-    await this.emitSelectedFeature(selectedFeature)
+    await this.emitSelectedFeature(selectedFeature);
   }
 
   /**
@@ -314,7 +371,7 @@ export class FeatureList {
 
   /**
    * On feature hover in feature list highlight the feature on the map
-   * @param selectedFeature mouseovered feature graphic
+   * @param selectedFeature mouse hovered feature graphic
    * @protected
    */
   protected async onFeatureHover(selectedFeature: __esri.Graphic): Promise<void> {
@@ -347,18 +404,19 @@ export class FeatureList {
    */
   protected async queryPage(page: number): Promise<VNode[]> {
     const featureLayer = this._selectedLayer;
-    const objectIdField = featureLayer.objectIdField;
+    const sortField: string = this.sortingInfo?.field ? this.sortingInfo.field : featureLayer.objectIdField;
+    const sortOrder: 'asc' | 'desc' = this.sortingInfo?.order ? this.sortingInfo.order : 'desc';
     const query: any = {
       start: page,
       num: this.pageSize,
       outFields: ["*"],
       returnGeometry: true,
-      where: featureLayer.definitionExpression,
+      where: this.getWhereCondition(),
       outSpatialReference: this.mapView.spatialReference.toJSON()
     };
-    //sort only when objectId field is found
-    if (objectIdField) {
-      query.orderByFields = [objectIdField.toString() + " DESC"];
+    //sort only when sort field and order is valid
+    if (sortField && sortOrder) {
+      query.orderByFields = [sortField.toString() + " " + sortOrder];
     }
     const featureSet =  await featureLayer.queryFeatures(query);
     return await this.createFeatureItem(featureSet);
@@ -391,6 +449,7 @@ export class FeatureList {
     const oId = selectedFeature.attributes[this._selectedLayer.objectIdField].toString();
     //use object id if popupTitle is null or undefined
     popupTitle = popupTitle ?? oId;
+    const popupTitleClass = this.textSize === 'small' ? 'feature-list-popup-title-small' : 'feature-list-popup-title'
     return (
       <calcite-list-item
         onCalciteListItemSelect={(e) => { void this.featureClicked(e, selectedFeature) }}
@@ -399,7 +458,7 @@ export class FeatureList {
         value={oId}>
         {/* --TODO ellipsis-- */}
         <div
-          class="popup-title"
+          class={popupTitleClass}
           slot="content-start">
           {popupTitle}
         </div>
