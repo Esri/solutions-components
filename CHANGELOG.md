@@ -6,6 +6,10 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.8.15] - Map 16th 2024
+Interim Delivery for Reporter Instant App - Sprint3 - AGOL-2024.R02
+String updates
+
 ## [0.8.14] - Map 16th 2024
 Reverts icon name change
 
@@ -571,4 +575,5 @@ Recover from test releases
 [0.8.12]: https://github.com/Esri/solution.js/compare/v0.8.11...v0.8.12 "v0.8.12"
 [0.8.13]: https://github.com/Esri/solution.js/compare/v0.8.12...v0.8.13 "v0.8.13"
 [0.8.14]: https://github.com/Esri/solution.js/compare/v0.8.13...v0.8.14 "v0.8.14"
-[Unreleased]: https://github.com/Esri/solution.js/compare/v0.8.14...HEAD "Unreleased Changes"
+[0.8.15]: https://github.com/Esri/solution.js/compare/v0.8.14...v0.8.15 "v0.8.15"
+[Unreleased]: https://github.com/Esri/solution.js/compare/v0.8.15...HEAD "Unreleased Changes"
