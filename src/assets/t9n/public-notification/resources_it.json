@@ -38,5 +38,7 @@
   "refineTip": "Affinare e finalizzare gli elenchi utilizzando gli strumenti di schizzo per aggiungere o rimuovere feature selezionate.",
   "refineTipNoSelections": "Non ci sono selezioni da affinare. Vai su I miei elenchi per creare un elenco di feature.",
   "duplicatesTip": "Le feature duplicate vengono sempre rimosse. Quando abilitato, si confrontano i pop-up di ciascun layer e tutte le informazioni pop-up duplicate saranno rimosse.",
-  "exportListsLabel": "I miei elenchi"
+  "exportListsLabel": "I miei elenchi",
+  "listGraphics": "é_List graphics______________È",
+  "listGraphicsTip": "é_Include any graphics like search buffers or graphics from the sketch tools in the map export________________________________________________È."
 }

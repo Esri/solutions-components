@@ -38,5 +38,7 @@
   "refineTip": "S pomočjo orodij za skiciranje izpopolnite in dokončajte svoje sezname, da dodate ali odstranite izbrane geoobjekte.",
   "refineTipNoSelections": "Za izpopolnitev ni na voljo nobene izbire. Pojdite na Moji seznami, da ustvarite seznam geoobjektov.",
   "duplicatesTip": "Podvojeni geoobjekti so vedno odstranjeni. Ko je omogočeno, bodo pojavna okna z vsakega sloja primerjana in vsako podvojeno pojavno okno bo odstranjeno.",
-  "exportListsLabel": "Moji seznami"
+  "exportListsLabel": "Moji seznami",
+  "listGraphics": "Š_List graphics______________č",
+  "listGraphicsTip": "Š_Include any graphics like search buffers or graphics from the sketch tools in the map export________________________________________________č."
 }

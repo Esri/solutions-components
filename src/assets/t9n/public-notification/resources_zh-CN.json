@@ -38,5 +38,7 @@
   "refineTip": "通过使用草图工具添加或移除所选要素来优化和完成列表。",
   "refineTipNoSelections": "不存在要优化的选择内容。 转到“我的列表”以创建要素列表。",
   "duplicatesTip": "重复要素始终会被移除。 启用后，将比较每个图层的弹出窗口，并移除任何重复的弹出窗口信息。",
-  "exportListsLabel": "我的列表"
+  "exportListsLabel": "我的列表",
+  "listGraphics": "试_List graphics______________验",
+  "listGraphicsTip": "试_Include any graphics like search buffers or graphics from the sketch tools in the map export________________________________________________验."
 }

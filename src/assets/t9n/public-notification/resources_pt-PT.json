@@ -38,5 +38,7 @@
   "refineTip": "Refine e finalize as suas listas ao utilizar ferramentas de desenho para adicionar ou remover elementos selecionados.",
   "refineTipNoSelections": "Não existem seleções para refinar. Aceda a As minhas listas para criar uma lista de elementos.",
   "duplicatesTip": "Os elementos duplicados são sempre removidos. Quando esta opção está ativada, os pop-ups de cada camada são comparados e qualquer informação duplicada é removida.",
-  "exportListsLabel": "As minhas listas"
+  "exportListsLabel": "As minhas listas",
+  "listGraphics": "ã_List graphics______________Ç",
+  "listGraphicsTip": "ã_Include any graphics like search buffers or graphics from the sketch tools in the map export________________________________________________Ç."
 }

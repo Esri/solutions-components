@@ -38,5 +38,7 @@
   "refineTip": "Affinez et finalisez vos listes en utilisant les outils de dessin pour ajouter ou supprimer les entités sélectionnées.",
   "refineTipNoSelections": "Aucune sélection à affiner. Accédez à Mes listes pour créer une liste d’entités.",
   "duplicatesTip": "Les entités dupliquées sont toujours supprimées. Lorsque cette option est activée, les fenêtres contextuelles de chaque couche sont comparées et les informations dupliquées sont supprimées.",
-  "exportListsLabel": "Mes listes"
+  "exportListsLabel": "Mes listes",
+  "listGraphics": "æ_List graphics______________Â",
+  "listGraphicsTip": "æ_Include any graphics like search buffers or graphics from the sketch tools in the map export________________________________________________Â."
 }
