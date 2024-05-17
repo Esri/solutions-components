@@ -159,6 +159,11 @@ export class InfoCard {
   protected _popupUtils: IPopupUtils;
 
   /**
+   * string: unique id for the features node
+   */
+  protected _featuresNodeId: string = 'features-node'+ new Date().getMilliseconds().toString();
+
+  /**
    * esri/core/reactiveUtils: https://developers.arcgis.com/javascript/latest/api-reference/esri-core-reactiveUtils.html
    */
   protected reactiveUtils: typeof import("esri/core/reactiveUtils");
@@ -212,12 +217,12 @@ export class InfoCard {
   }
 
   /**
-   * Get the current selected feature from the Features widget
-   * @returns Promise resolving with the current feature
+   * Refresh the feature info
+   * @returns Promise when complete
    */
   @Method()
   async refresh(): Promise<any> {
-    await this.setGraphics()
+    await this.setGraphics();
   }
 
   /**
@@ -358,7 +363,7 @@ export class InfoCard {
           />
           <div
             class={"esri-widget feature-node " + featureNodeClass}
-            id="features-node"
+            id={this._featuresNodeId}
           />
           <div class={`${editButtonClass} width-100`} slot="footer">
             {this.allowEditing &&
@@ -520,7 +525,7 @@ export class InfoCard {
       if (!this._features) {
         this._features = new this.Features({
           view: this.mapView,
-          container: "features-node",
+          container: this._featuresNodeId,
           visibleElements: {
             actionBar: false,
             closeButton: false,
