@@ -1,5 +1,5 @@
 {
-  "createReportHeader": "Creare raport",
+  "createReportButtonText": "Ă_Create a Report________________ș",
   "share": "Partajare",
   "sort": "Sortare",
   "filter": "Filtrare",
@@ -12,11 +12,19 @@
   "error": "Eroare",
   "invalidConfigurationErrorMsg": "Configurare incorectă",
   "noLayerToDisplayErrorMsg": "Harta web configurată nu are niciun strat tematic de obiect spațial editabil.",
-  "chooseCategoryMsg": "Choose a category for your report.",
-  "featureErrorMsg": "Obiectele spațiale nu au fost găsite.",
-  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "chooseCategoryMsg": "Ă_Make a selection from the list below____________________ș.",
+  "featureErrorMsg": "Ă_No records found__________________ș.",
+  "featureEditFormInfoMsg": "Ă_Please provide the details____________________________ș.",
   "currentLocationMsg": "Folosiți locația mea curentă",
-  "addLocationMsg": "Add the location for your report.",
-  "reportSubmit": "Raport transmis.",
-  "submitMsg": "Vă mulțumim! Raportul dvs. a fost trimis cu succes."
+  "addLocationMsg": "Ă_Please add a location_______________________ș.",
+  "submitMsg": "Vă mulțumim! Raportul dvs. a fost trimis cu succes.",
+  "filterLayerTitle": "Ă_Filter: {{title}}__________________ș",
+  "indexOfTotal": "Ă_{{index}} of {{total}}_______________________ș",
+  "comment": "Ă_Comment_______________ș",
+  "commentSubmittedMsg": "Ă_Comment submitted__________________ș",
+  "addingCommentFailedMsg": "Ă_Comment not submitted______________________ș",
+  "sortNewest": "Ă_Newest_____________ș",
+  "sortOldest": "Ă_Oldest_____________ș",
+  "sortHighestVoted": "Ă_Highest voted______________ș",
+  "sortLowestVoted": "Ă_Lowest voted_____________ș"
 }

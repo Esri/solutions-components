@@ -1,5 +1,5 @@
 {
-  "createReportHeader": "Създаване на отчет",
+  "createReportButtonText": "й_Create a Report________________й",
   "share": "Споделяне",
   "sort": "Сортиране",
   "filter": "Филтър",
@@ -12,11 +12,19 @@
   "error": "Грешка",
   "invalidConfigurationErrorMsg": "Невалидна конфигурация",
   "noLayerToDisplayErrorMsg": "Конфигурираната уеб карта няма редактируеми обектни слоеве.",
-  "chooseCategoryMsg": "Choose a category for your report.",
-  "featureErrorMsg": "Няма намерени обекти.",
-  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "chooseCategoryMsg": "й_Make a selection from the list below____________________й.",
+  "featureErrorMsg": "й_No records found__________________й.",
+  "featureEditFormInfoMsg": "й_Please provide the details____________________________й.",
   "currentLocationMsg": "Използвай моето текущо местоположение",
-  "addLocationMsg": "Add the location for your report.",
-  "reportSubmit": "Отчетът е изпратен.",
-  "submitMsg": "Благодаря Ви! Отчетът Ви беше изпратен успешно."
+  "addLocationMsg": "й_Please add a location_______________________й.",
+  "submitMsg": "Благодаря Ви! Отчетът Ви беше изпратен успешно.",
+  "filterLayerTitle": "й_Filter: {{title}}__________________й",
+  "indexOfTotal": "й_{{index}} of {{total}}_______________________й",
+  "comment": "й_Comment_______________й",
+  "commentSubmittedMsg": "й_Comment submitted__________________й",
+  "addingCommentFailedMsg": "й_Comment not submitted______________________й",
+  "sortNewest": "й_Newest_____________й",
+  "sortOldest": "й_Oldest_____________й",
+  "sortHighestVoted": "й_Highest voted______________й",
+  "sortLowestVoted": "й_Lowest voted_____________й"
 }

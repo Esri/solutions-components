@@ -310,6 +310,10 @@ export namespace Components {
          */
         "center": string;
         /**
+          * boolean: When true a cover page has been enabled in the consuming application. Also when true a floating button will be shown in the lower right of the window that will emit an event when clicked that the consuming application can respond to that will open the cover page.
+         */
+        "coverPageEnabled": string;
+        /**
           * string: Item ID of the web map that should be selected by default
          */
         "defaultWebmap": string;
@@ -665,10 +669,6 @@ export namespace Components {
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
-        /**
-          * string: Error message to be displayed when no layers found
-         */
-        "noLayerErrorMsg"?: string;
         /**
           * Refresh the layer list which will fetch the latest layer count and update the list
           * @returns Promise that resolves when the operation is complete
@@ -2670,6 +2670,10 @@ declare namespace LocalJSX {
          */
         "center"?: string;
         /**
+          * boolean: When true a cover page has been enabled in the consuming application. Also when true a floating button will be shown in the lower right of the window that will emit an event when clicked that the consuming application can respond to that will open the cover page.
+         */
+        "coverPageEnabled"?: string;
+        /**
           * string: Item ID of the web map that should be selected by default
          */
         "defaultWebmap"?: string;
@@ -3013,10 +3017,6 @@ declare namespace LocalJSX {
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
-        /**
-          * string: Error message to be displayed when no layers found
-         */
-        "noLayerErrorMsg"?: string;
         /**
           * Emitted on demand when feature layer clicked with details layerId and layerName
          */

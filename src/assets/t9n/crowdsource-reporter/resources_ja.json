@@ -1,5 +1,5 @@
 {
-  "createReportHeader": "レポートの作成",
+  "createReportButtonText": "須_Create a Report________________鷗",
   "share": "共有",
   "sort": "並べ替え",
   "filter": "フィルター",
@@ -12,11 +12,19 @@
   "error": "エラー",
   "invalidConfigurationErrorMsg": "無効な構成",
   "noLayerToDisplayErrorMsg": "構成済み Web マップに編集可能なフィーチャ レイヤーがありません。",
-  "chooseCategoryMsg": "Choose a category for your report.",
-  "featureErrorMsg": "フィーチャが見つかりません。",
-  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "chooseCategoryMsg": "須_Make a selection from the list below____________________鷗.",
+  "featureErrorMsg": "須_No records found__________________鷗.",
+  "featureEditFormInfoMsg": "須_Please provide the details____________________________鷗.",
   "currentLocationMsg": "現在地を使用",
-  "addLocationMsg": "Add the location for your report.",
-  "reportSubmit": "レポートが送信されました。",
-  "submitMsg": "ありがとうございます。 レポートが正常に送信されました。"
+  "addLocationMsg": "須_Please add a location_______________________鷗.",
+  "submitMsg": "ありがとうございます。 レポートが正常に送信されました。",
+  "filterLayerTitle": "須_Filter: {{title}}__________________鷗",
+  "indexOfTotal": "須_{{index}} of {{total}}_______________________鷗",
+  "comment": "須_Comment_______________鷗",
+  "commentSubmittedMsg": "須_Comment submitted__________________鷗",
+  "addingCommentFailedMsg": "須_Comment not submitted______________________鷗",
+  "sortNewest": "須_Newest_____________鷗",
+  "sortOldest": "須_Oldest_____________鷗",
+  "sortHighestVoted": "須_Highest voted______________鷗",
+  "sortLowestVoted": "須_Lowest voted_____________鷗"
 }

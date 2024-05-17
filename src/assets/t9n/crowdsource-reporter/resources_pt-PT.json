@@ -1,5 +1,5 @@
 {
-  "createReportHeader": "Criar um relatório",
+  "createReportButtonText": "ã_Create a Report________________Ç",
   "share": "Partilhar",
   "sort": "Ordenar",
   "filter": "Filtrar",
@@ -12,11 +12,19 @@
   "error": "Erro",
   "invalidConfigurationErrorMsg": "Configuração inválida",
   "noLayerToDisplayErrorMsg": "O mapa web configurado não tem nenhuma camada de elementos editável.",
-  "chooseCategoryMsg": "Choose a category for your report.",
-  "featureErrorMsg": "Elementos não encontrados.",
-  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "chooseCategoryMsg": "ã_Make a selection from the list below____________________Ç.",
+  "featureErrorMsg": "ã_No records found__________________Ç.",
+  "featureEditFormInfoMsg": "ã_Please provide the details____________________________Ç.",
   "currentLocationMsg": "Usar a minha localização atual",
-  "addLocationMsg": "Add the location for your report.",
-  "reportSubmit": "Relatório Enviado.",
-  "submitMsg": "Obrigado! O seu relatório foi enviado com êxito."
+  "addLocationMsg": "ã_Please add a location_______________________Ç.",
+  "submitMsg": "Obrigado! O seu relatório foi enviado com êxito.",
+  "filterLayerTitle": "ã_Filter: {{title}}__________________Ç",
+  "indexOfTotal": "ã_{{index}} of {{total}}_______________________Ç",
+  "comment": "ã_Comment_______________Ç",
+  "commentSubmittedMsg": "ã_Comment submitted__________________Ç",
+  "addingCommentFailedMsg": "ã_Comment not submitted______________________Ç",
+  "sortNewest": "ã_Newest_____________Ç",
+  "sortOldest": "ã_Oldest_____________Ç",
+  "sortHighestVoted": "ã_Highest voted______________Ç",
+  "sortLowestVoted": "ã_Lowest voted_____________Ç"
 }

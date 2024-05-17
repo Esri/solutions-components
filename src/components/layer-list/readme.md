@@ -11,7 +11,6 @@
 | ------------------ | -------------------- | ------------------------------------------------------------------------------------------------------- | ---------- | ----------- |
 | `layers`           | --                   | string[]: If passed will show only these layers in the list if they are present in map and are editable | `string[]` | `undefined` |
 | `mapView`          | --                   | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html  | `MapView`  | `undefined` |
-| `noLayerErrorMsg`  | `no-layer-error-msg` | string: Error message to be displayed when no layers found                                              | `string`   | `undefined` |
 | `showFeatureCount` | `show-feature-count` | boolean: if true display's feature count for each layer                                                 | `boolean`  | `true`      |
 | `showNextIcon`     | `show-next-icon`     | boolean: If true display's arrow icon on each layer item                                                | `boolean`  | `false`     |
 

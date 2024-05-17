@@ -38,5 +38,7 @@
   "refineTip": "Sempurnakan dan selesaikan daftar Anda dengan menggunakan alat sketsa untuk menambah atau menghapus fitur yang dipilih.",
   "refineTipNoSelections": "Tidak ada pilihan yang dapat diperjelas. Buka Daftar saya untuk membuat daftar fitur.",
   "duplicatesTip": "Fitur duplikat selalu dihapus. Saat diaktifkan, pop-up dari setiap layer akan dibandingkan dan informasi pop-up duplikat apa pun akan dihapus.",
-  "exportListsLabel": "Daftar saya"
+  "exportListsLabel": "Daftar saya",
+  "listGraphics": "ng_List graphics______________ny",
+  "listGraphicsTip": "ng_Include any graphics like search buffers or graphics from the sketch tools in the map export________________________________________________ny."
 }

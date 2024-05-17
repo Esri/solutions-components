@@ -41,7 +41,7 @@ export function exportPDF(
   title = "",
   initialImageDataUrl = ""
 ): void {
-  downloadPDFFile(filename, labels, labelPageDescription, title, initialImageDataUrl);
+  void downloadPDFFile(filename, labels, labelPageDescription, title, initialImageDataUrl);
 }
 
 //#endregion
@@ -56,15 +56,15 @@ export function exportPDF(
  * @param title Title for each page
  * @param initialImageDataUrl Data URL of image for first page
  */
-function downloadPDFFile(
+async function downloadPDFFile(
   filename: string,
   labels: string[][],
   labelPageDescription: PDFLabels.ILabel,
   title = "",
   initialImageDataUrl = ""
-): void {
+): Promise<void> {
   const pdfLib = new PDFCreator_jsPDF.PDFCreator_jsPDF();
-  pdfLib.initialize(
+  await pdfLib.initialize(
     {
       pageType: "ANSI_A"
     },
@@ -72,52 +72,45 @@ function downloadPDFFile(
     "en",
     filename  // filename without ".pdf"
   )
-  .then(
-    () => {
-      const labeller = new PDFLabels.PDFLabels();
-      labeller.initialize(pdfLib)
-      .then(
-        async () => {
-          const labelSpec = labelPageDescription.labelSpec;
 
-          let startingPageNum = 1;
+  const labeller = new PDFLabels.PDFLabels();
+  await labeller.initialize(pdfLib)
 
-          // Add the screenshot to the PDF
-          if (initialImageDataUrl) {
-            const pageProperties = labelSpec.pageProperties;
-            const pageSize = PDFCreator.PDFCreator.getPageSize(pageProperties.pageType);
+  const labelSpec = labelPageDescription.labelSpec;
 
-            pdfLib.drawImage(initialImageDataUrl, {
-              x: pageProperties.leftMargin,
-              y: pageProperties.topMargin,
-              width: pageSize.width - pageProperties.leftMargin - pageProperties.rightMargin,
-              height: pageSize.height - pageProperties.topMargin - pageProperties.bottomMargin
-            });
+  let startingPageNum = 1;
 
-            if (title) {
-              labeller.drawSupplementalText(title, 0, -0.1);
-            }
+  // Add the screenshot to the PDF
+  if (initialImageDataUrl) {
+    const pageProperties = labelSpec.pageProperties;
+    const pageSize = PDFCreator.PDFCreator.getPageSize(pageProperties.pageType);
 
-            if (labels.length > 0) {
-              pdfLib.addPage();
-              ++startingPageNum;
-            }
-          }
+    pdfLib.drawImage(initialImageDataUrl, {
+      x: pageProperties.leftMargin,
+      y: pageProperties.topMargin,
+      width: pageSize.width - pageProperties.leftMargin - pageProperties.rightMargin,
+      height: pageSize.height - pageProperties.topMargin - pageProperties.bottomMargin
+    });
 
-          // Add the labels to the PDF
-          await labeller.addLabelsToDoc(
-            labels,
-            labelSpec,
-            startingPageNum,
-            title  // heading
-          );
-
-          pdfLib.save();
-        }
-      );
+    if (title) {
+      labeller.drawSupplementalText(title, 0, -0.1);
     }
+
+    if (labels.length > 0) {
+      pdfLib.addPage();
+      ++startingPageNum;
+    }
+  }
+
+  // Add the labels to the PDF
+  await labeller.addLabelsToDoc(
+    labels,
+    labelSpec,
+    startingPageNum,
+    title  // heading
   );
 
+  pdfLib.save();
 }
 
 //#endregion

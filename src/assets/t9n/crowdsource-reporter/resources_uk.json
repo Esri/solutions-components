@@ -1,5 +1,5 @@
 {
-  "createReportHeader": "Створити звіт",
+  "createReportButtonText": "ґ_Create a Report________________Ї",
   "share": "Поділитися",
   "sort": "Сортувати",
   "filter": "Фільтр",
@@ -12,11 +12,19 @@
   "error": "Помилка",
   "invalidConfigurationErrorMsg": "Недійсна конфігурація",
   "noLayerToDisplayErrorMsg": "Налаштована веб-карта не містить векторного шару, який можна редагувати.",
-  "chooseCategoryMsg": "Choose a category for your report.",
-  "featureErrorMsg": "Об'єкти не знайдено.",
-  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "chooseCategoryMsg": "ґ_Make a selection from the list below____________________Ї.",
+  "featureErrorMsg": "ґ_No records found__________________Ї.",
+  "featureEditFormInfoMsg": "ґ_Please provide the details____________________________Ї.",
   "currentLocationMsg": "Використовувати моє поточне місце розташування",
-  "addLocationMsg": "Add the location for your report.",
-  "reportSubmit": "Звіт відправлено.",
-  "submitMsg": "Дякуємо! Ваш звіт було успішно надіслано."
+  "addLocationMsg": "ґ_Please add a location_______________________Ї.",
+  "submitMsg": "Дякуємо! Ваш звіт було успішно надіслано.",
+  "filterLayerTitle": "ґ_Filter: {{title}}__________________Ї",
+  "indexOfTotal": "ґ_{{index}} of {{total}}_______________________Ї",
+  "comment": "ґ_Comment_______________Ї",
+  "commentSubmittedMsg": "ґ_Comment submitted__________________Ї",
+  "addingCommentFailedMsg": "ґ_Comment not submitted______________________Ї",
+  "sortNewest": "ґ_Newest_____________Ї",
+  "sortOldest": "ґ_Oldest_____________Ї",
+  "sortHighestVoted": "ґ_Highest voted______________Ї",
+  "sortLowestVoted": "ґ_Lowest voted_____________Ї"
 }

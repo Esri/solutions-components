@@ -1,5 +1,5 @@
 {
-  "createReportHeader": "Tạo Báo cáo",
+  "createReportButtonText": "Đ_Create a Report________________ớ",
   "share": "Chia sẻ",
   "sort": "Sắp xếp",
   "filter": "Bộ lọc",
@@ -12,11 +12,19 @@
   "error": "Lỗi",
   "invalidConfigurationErrorMsg": "Cấu hình không hợp lệ",
   "noLayerToDisplayErrorMsg": "Bản đồ web đã cấu hình không có lớp đối tượng nào có thể chỉnh sửa.",
-  "chooseCategoryMsg": "Choose a category for your report.",
-  "featureErrorMsg": "Không tìm thấy đối tượng.",
-  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "chooseCategoryMsg": "Đ_Make a selection from the list below____________________ớ.",
+  "featureErrorMsg": "Đ_No records found__________________ớ.",
+  "featureEditFormInfoMsg": "Đ_Please provide the details____________________________ớ.",
   "currentLocationMsg": "Sử dụng vị trí hiện tại của tôi",
-  "addLocationMsg": "Add the location for your report.",
-  "reportSubmit": "Đã gửi Báo cáo.",
-  "submitMsg": "Xin cảm ơn! Báo cáo của bạn đã được gửi thành công."
+  "addLocationMsg": "Đ_Please add a location_______________________ớ.",
+  "submitMsg": "Xin cảm ơn! Báo cáo của bạn đã được gửi thành công.",
+  "filterLayerTitle": "Đ_Filter: {{title}}__________________ớ",
+  "indexOfTotal": "Đ_{{index}} of {{total}}_______________________ớ",
+  "comment": "Đ_Comment_______________ớ",
+  "commentSubmittedMsg": "Đ_Comment submitted__________________ớ",
+  "addingCommentFailedMsg": "Đ_Comment not submitted______________________ớ",
+  "sortNewest": "Đ_Newest_____________ớ",
+  "sortOldest": "Đ_Oldest_____________ớ",
+  "sortHighestVoted": "Đ_Highest voted______________ớ",
+  "sortLowestVoted": "Đ_Lowest voted_____________ớ"
 }

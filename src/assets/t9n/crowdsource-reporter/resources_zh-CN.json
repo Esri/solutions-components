@@ -1,5 +1,5 @@
 {
-  "createReportHeader": "创建报告",
+  "createReportButtonText": "试_Create a Report________________验",
   "share": "共享",
   "sort": "排序",
   "filter": "过滤器",
@@ -12,11 +12,19 @@
   "error": "错误",
   "invalidConfigurationErrorMsg": "配置无效",
   "noLayerToDisplayErrorMsg": "配置的 web 地图没有任何可编辑的要素图层。",
-  "chooseCategoryMsg": "Choose a category for your report.",
-  "featureErrorMsg": "未找到要素。",
-  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "chooseCategoryMsg": "试_Make a selection from the list below____________________验.",
+  "featureErrorMsg": "试_No records found__________________验.",
+  "featureEditFormInfoMsg": "试_Please provide the details____________________________验.",
   "currentLocationMsg": "使用我的目前位置",
-  "addLocationMsg": "Add the location for your report.",
-  "reportSubmit": "报告已提交。",
-  "submitMsg": "谢谢! 您的报告已成功提交。"
+  "addLocationMsg": "试_Please add a location_______________________验.",
+  "submitMsg": "谢谢! 您的报告已成功提交。",
+  "filterLayerTitle": "试_Filter: {{title}}__________________验",
+  "indexOfTotal": "试_{{index}} of {{total}}_______________________验",
+  "comment": "试_Comment_______________验",
+  "commentSubmittedMsg": "试_Comment submitted__________________验",
+  "addingCommentFailedMsg": "试_Comment not submitted______________________验",
+  "sortNewest": "试_Newest_____________验",
+  "sortOldest": "试_Oldest_____________验",
+  "sortHighestVoted": "试_Highest voted______________验",
+  "sortLowestVoted": "试_Lowest voted_____________验"
 }

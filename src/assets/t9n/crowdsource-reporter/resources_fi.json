@@ -1,5 +1,5 @@
 {
-  "createReportHeader": "Luo raportti",
+  "createReportButtonText": "Å_Create a Report________________ö",
   "share": "Jaa",
   "sort": "Lajittele",
   "filter": "Suodata",
@@ -12,11 +12,19 @@
   "error": "Virhe",
   "invalidConfigurationErrorMsg": "Virheellinen määritys",
   "noLayerToDisplayErrorMsg": "Määritetty web-kartta ei sisällä muokattavaa kohdekarttatasoa.",
-  "chooseCategoryMsg": "Choose a category for your report.",
-  "featureErrorMsg": "Kohteita ei löytynyt.",
-  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "chooseCategoryMsg": "Å_Make a selection from the list below____________________ö.",
+  "featureErrorMsg": "Å_No records found__________________ö.",
+  "featureEditFormInfoMsg": "Å_Please provide the details____________________________ö.",
   "currentLocationMsg": "Käytä nykyistä sijaintiani",
-  "addLocationMsg": "Add the location for your report.",
-  "reportSubmit": "Raportti on lähetetty.",
-  "submitMsg": "Kiitos! Raporttisi lähettäminen onnistui."
+  "addLocationMsg": "Å_Please add a location_______________________ö.",
+  "submitMsg": "Kiitos! Raporttisi lähettäminen onnistui.",
+  "filterLayerTitle": "Å_Filter: {{title}}__________________ö",
+  "indexOfTotal": "Å_{{index}} of {{total}}_______________________ö",
+  "comment": "Å_Comment_______________ö",
+  "commentSubmittedMsg": "Å_Comment submitted__________________ö",
+  "addingCommentFailedMsg": "Å_Comment not submitted______________________ö",
+  "sortNewest": "Å_Newest_____________ö",
+  "sortOldest": "Å_Oldest_____________ö",
+  "sortHighestVoted": "Å_Highest voted______________ö",
+  "sortLowestVoted": "Å_Lowest voted_____________ö"
 }

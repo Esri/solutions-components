@@ -1,5 +1,5 @@
 {
-  "createReportHeader": "צור דוח",
+  "createReportButtonText": "כן_Create a Report________________ש",
   "share": "שתף",
   "sort": "מיין",
   "filter": "מסנן",
@@ -12,11 +12,19 @@
   "error": "שגיאה",
   "invalidConfigurationErrorMsg": "תצורה לא חוקית",
   "noLayerToDisplayErrorMsg": "מפת הווב שהוגדרה לא מכילה שכבת ישות ניתנת לעריכה.",
-  "chooseCategoryMsg": "Choose a category for your report.",
-  "featureErrorMsg": "הישויות לא נמצאו.",
-  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "chooseCategoryMsg": "כן_Make a selection from the list below____________________ש.",
+  "featureErrorMsg": "כן_No records found__________________ש.",
+  "featureEditFormInfoMsg": "כן_Please provide the details____________________________ש.",
   "currentLocationMsg": "השתמש במיקום הנוכחי שלי",
-  "addLocationMsg": "Add the location for your report.",
-  "reportSubmit": "הדוח נשלח.",
-  "submitMsg": "תודה! הדוח שלך נשלח בהצלחה."
+  "addLocationMsg": "כן_Please add a location_______________________ש.",
+  "submitMsg": "תודה! הדוח שלך נשלח בהצלחה.",
+  "filterLayerTitle": "כן_Filter: {{title}}__________________ש",
+  "indexOfTotal": "כן_{{index}} of {{total}}_______________________ש",
+  "comment": "כן_Comment_______________ש",
+  "commentSubmittedMsg": "כן_Comment submitted__________________ש",
+  "addingCommentFailedMsg": "כן_Comment not submitted______________________ש",
+  "sortNewest": "כן_Newest_____________ש",
+  "sortOldest": "כן_Oldest_____________ש",
+  "sortHighestVoted": "כן_Highest voted______________ש",
+  "sortLowestVoted": "כן_Lowest voted_____________ש"
 }

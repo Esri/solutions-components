@@ -1,5 +1,5 @@
 {
-  "createReportHeader": "Créer un rapport",
+  "createReportButtonText": "æ_Create a Report________________Â",
   "share": "Partager",
   "sort": "Trier",
   "filter": "Filtrer",
@@ -12,11 +12,19 @@
   "error": "Erreur",
   "invalidConfigurationErrorMsg": "Configuration non valide",
   "noLayerToDisplayErrorMsg": "La carte Web configurée ne comporte aucune couche d’entités modifiable.",
-  "chooseCategoryMsg": "Choose a category for your report.",
-  "featureErrorMsg": "Entités introuvables.",
-  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "chooseCategoryMsg": "æ_Make a selection from the list below____________________Â.",
+  "featureErrorMsg": "æ_No records found__________________Â.",
+  "featureEditFormInfoMsg": "æ_Please provide the details____________________________Â.",
   "currentLocationMsg": "Utiliser ma position actuelle",
-  "addLocationMsg": "Add the location for your report.",
-  "reportSubmit": "Rapport envoyé.",
-  "submitMsg": "Merci. Votre rapport a été envoyé."
+  "addLocationMsg": "æ_Please add a location_______________________Â.",
+  "submitMsg": "Merci. Votre rapport a été envoyé.",
+  "filterLayerTitle": "æ_Filter: {{title}}__________________Â",
+  "indexOfTotal": "æ_{{index}} of {{total}}_______________________Â",
+  "comment": "æ_Comment_______________Â",
+  "commentSubmittedMsg": "æ_Comment submitted__________________Â",
+  "addingCommentFailedMsg": "æ_Comment not submitted______________________Â",
+  "sortNewest": "æ_Newest_____________Â",
+  "sortOldest": "æ_Oldest_____________Â",
+  "sortHighestVoted": "æ_Highest voted______________Â",
+  "sortLowestVoted": "æ_Lowest voted_____________Â"
 }

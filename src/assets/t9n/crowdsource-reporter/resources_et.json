@@ -1,5 +1,5 @@
 {
-  "createReportHeader": "Aruande koostamine",
+  "createReportButtonText": "Š_Create a Report________________ä",
   "share": "Jagamine",
   "sort": "Sordi",
   "filter": "Filtreeri",
@@ -12,11 +12,19 @@
   "error": "Tõrge",
   "invalidConfigurationErrorMsg": "Vigane konfiguratsioon",
   "noLayerToDisplayErrorMsg": "Konfigureeritud veebikaardil pole muudetavaid objektikihte.",
-  "chooseCategoryMsg": "Choose a category for your report.",
-  "featureErrorMsg": "Objekte ei leitud.",
-  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "chooseCategoryMsg": "Š_Make a selection from the list below____________________ä.",
+  "featureErrorMsg": "Š_No records found__________________ä.",
+  "featureEditFormInfoMsg": "Š_Please provide the details____________________________ä.",
   "currentLocationMsg": "Kasuta minu praegust asukohta",
-  "addLocationMsg": "Add the location for your report.",
-  "reportSubmit": "Aruanne esitatud.",
-  "submitMsg": "Täname teid. Teie aruanne edastati."
+  "addLocationMsg": "Š_Please add a location_______________________ä.",
+  "submitMsg": "Täname teid. Teie aruanne edastati.",
+  "filterLayerTitle": "Š_Filter: {{title}}__________________ä",
+  "indexOfTotal": "Š_{{index}} of {{total}}_______________________ä",
+  "comment": "Š_Comment_______________ä",
+  "commentSubmittedMsg": "Š_Comment submitted__________________ä",
+  "addingCommentFailedMsg": "Š_Comment not submitted______________________ä",
+  "sortNewest": "Š_Newest_____________ä",
+  "sortOldest": "Š_Oldest_____________ä",
+  "sortHighestVoted": "Š_Highest voted______________ä",
+  "sortLowestVoted": "Š_Lowest voted_____________ä"
 }

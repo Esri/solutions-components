@@ -1,5 +1,5 @@
 {
-  "createReportHeader": "Vytvoriť report",
+  "createReportButtonText": "ĺ_Create a Report________________ľ",
   "share": "Zdieľať",
   "sort": "Zoradiť",
   "filter": "Filter",
@@ -12,11 +12,19 @@
   "error": "Chyba",
   "invalidConfigurationErrorMsg": "Neplatná konfigurácia",
   "noLayerToDisplayErrorMsg": "Nakonfigurovaná webová mapa neobsahuje žiadnu editovateľnú prvkovú vrstvu.",
-  "chooseCategoryMsg": "Choose a category for your report.",
-  "featureErrorMsg": "Prvky sa nenašli.",
-  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "chooseCategoryMsg": "ĺ_Make a selection from the list below____________________ľ.",
+  "featureErrorMsg": "ĺ_No records found__________________ľ.",
+  "featureEditFormInfoMsg": "ĺ_Please provide the details____________________________ľ.",
   "currentLocationMsg": "Použiť moju aktuálnu polohu",
-  "addLocationMsg": "Add the location for your report.",
-  "reportSubmit": "Report odoslaný.",
-  "submitMsg": "Ďakujeme! Váš report bol úspešne odoslaný."
+  "addLocationMsg": "ĺ_Please add a location_______________________ľ.",
+  "submitMsg": "Ďakujeme! Váš report bol úspešne odoslaný.",
+  "filterLayerTitle": "ĺ_Filter: {{title}}__________________ľ",
+  "indexOfTotal": "ĺ_{{index}} of {{total}}_______________________ľ",
+  "comment": "ĺ_Comment_______________ľ",
+  "commentSubmittedMsg": "ĺ_Comment submitted__________________ľ",
+  "addingCommentFailedMsg": "ĺ_Comment not submitted______________________ľ",
+  "sortNewest": "ĺ_Newest_____________ľ",
+  "sortOldest": "ĺ_Oldest_____________ľ",
+  "sortHighestVoted": "ĺ_Highest voted______________ľ",
+  "sortLowestVoted": "ĺ_Lowest voted_____________ľ"
 }

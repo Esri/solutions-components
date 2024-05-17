@@ -1,5 +1,5 @@
 {
-  "createReportHeader": "Rapor Oluştur",
+  "createReportButtonText": "ı_Create a Report________________İ",
   "share": "Paylaş",
   "sort": "Sırala",
   "filter": "Filtrele",
@@ -12,11 +12,19 @@
   "error": "Hata",
   "invalidConfigurationErrorMsg": "Geçersiz yapılandırma",
   "noLayerToDisplayErrorMsg": "Yapılandırılmış web haritasında herhangi bir düzenlenebilir detay katman yok.",
-  "chooseCategoryMsg": "Choose a category for your report.",
-  "featureErrorMsg": "Detaylar bulunamadı.",
-  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "chooseCategoryMsg": "ı_Make a selection from the list below____________________İ.",
+  "featureErrorMsg": "ı_No records found__________________İ.",
+  "featureEditFormInfoMsg": "ı_Please provide the details____________________________İ.",
   "currentLocationMsg": "Geçerli konumumu kullan",
-  "addLocationMsg": "Add the location for your report.",
-  "reportSubmit": "Rapor Gönderildi.",
-  "submitMsg": "Teşekkürler! Raporunuz başarıyla gönderildi."
+  "addLocationMsg": "ı_Please add a location_______________________İ.",
+  "submitMsg": "Teşekkürler! Raporunuz başarıyla gönderildi.",
+  "filterLayerTitle": "ı_Filter: {{title}}__________________İ",
+  "indexOfTotal": "ı_{{index}} of {{total}}_______________________İ",
+  "comment": "ı_Comment_______________İ",
+  "commentSubmittedMsg": "ı_Comment submitted__________________İ",
+  "addingCommentFailedMsg": "ı_Comment not submitted______________________İ",
+  "sortNewest": "ı_Newest_____________İ",
+  "sortOldest": "ı_Oldest_____________İ",
+  "sortHighestVoted": "ı_Highest voted______________İ",
+  "sortLowestVoted": "ı_Lowest voted_____________İ"
 }

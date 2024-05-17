@@ -1,5 +1,5 @@
 {
-  "createReportHeader": "Buat Laporan",
+  "createReportButtonText": "ng_Create a Report________________ny",
   "share": "Bagikan",
   "sort": "Urutkan",
   "filter": "Filter",
@@ -12,11 +12,19 @@
   "error": "Kesalahan",
   "invalidConfigurationErrorMsg": "Konfigurasi tidak valid",
   "noLayerToDisplayErrorMsg": "Web map yang dikonfigurasi tidak memiliki feature layer yang dapat diedit.",
-  "chooseCategoryMsg": "Choose a category for your report.",
-  "featureErrorMsg": "Fitur tidak ditemukan.",
-  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "chooseCategoryMsg": "ng_Make a selection from the list below____________________ny.",
+  "featureErrorMsg": "ng_No records found__________________ny.",
+  "featureEditFormInfoMsg": "ng_Please provide the details____________________________ny.",
   "currentLocationMsg": "Gunakan lokasi saya saat ini",
-  "addLocationMsg": "Add the location for your report.",
-  "reportSubmit": "Laporan Terkirim.",
-  "submitMsg": "Terima kasih! Laporan Anda berhasil dikirim."
+  "addLocationMsg": "ng_Please add a location_______________________ny.",
+  "submitMsg": "Terima kasih! Laporan Anda berhasil dikirim.",
+  "filterLayerTitle": "ng_Filter: {{title}}__________________ny",
+  "indexOfTotal": "ng_{{index}} of {{total}}_______________________ny",
+  "comment": "ng_Comment_______________ny",
+  "commentSubmittedMsg": "ng_Comment submitted__________________ny",
+  "addingCommentFailedMsg": "ng_Comment not submitted______________________ny",
+  "sortNewest": "ng_Newest_____________ny",
+  "sortOldest": "ng_Oldest_____________ny",
+  "sortHighestVoted": "ng_Highest voted______________ny",
+  "sortLowestVoted": "ng_Lowest voted_____________ny"
 }

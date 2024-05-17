@@ -1,5 +1,5 @@
 {
-  "createReportHeader": "보고서 생성",
+  "createReportButtonText": "한_Create a Report________________빠",
   "share": "공유",
   "sort": "정렬",
   "filter": "필터",
@@ -12,11 +12,19 @@
   "error": "오류",
   "invalidConfigurationErrorMsg": "유효하지 않은 구성",
   "noLayerToDisplayErrorMsg": "구성된 웹 맵에 편집 가능한 피처 레이어가 없습니다.",
-  "chooseCategoryMsg": "Choose a category for your report.",
-  "featureErrorMsg": "피처를 찾을 수 없습니다.",
-  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "chooseCategoryMsg": "한_Make a selection from the list below____________________빠.",
+  "featureErrorMsg": "한_No records found__________________빠.",
+  "featureEditFormInfoMsg": "한_Please provide the details____________________________빠.",
   "currentLocationMsg": "내 현재 위치 사용",
-  "addLocationMsg": "Add the location for your report.",
-  "reportSubmit": "보고서가 제출되었습니다.",
-  "submitMsg": "감사합니다! 보고서가 제출되었습니다."
+  "addLocationMsg": "한_Please add a location_______________________빠.",
+  "submitMsg": "감사합니다! 보고서가 제출되었습니다.",
+  "filterLayerTitle": "한_Filter: {{title}}__________________빠",
+  "indexOfTotal": "한_{{index}} of {{total}}_______________________빠",
+  "comment": "한_Comment_______________빠",
+  "commentSubmittedMsg": "한_Comment submitted__________________빠",
+  "addingCommentFailedMsg": "한_Comment not submitted______________________빠",
+  "sortNewest": "한_Newest_____________빠",
+  "sortOldest": "한_Oldest_____________빠",
+  "sortHighestVoted": "한_Highest voted______________빠",
+  "sortLowestVoted": "한_Lowest voted_____________빠"
 }

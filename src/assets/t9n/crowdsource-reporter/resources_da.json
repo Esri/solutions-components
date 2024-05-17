@@ -1,5 +1,5 @@
 {
-  "createReportHeader": "Opret en rapport",
+  "createReportButtonText": "ø_Create a Report________________å",
   "share": "Del",
   "sort": "Sortering",
   "filter": "Filtrér",
@@ -12,11 +12,19 @@
   "error": "Fejl",
   "invalidConfigurationErrorMsg": "Ugyldig konfiguration",
   "noLayerToDisplayErrorMsg": "Konfigurerede webkort har ikke noget redigerbart vektorlag.",
-  "chooseCategoryMsg": "Choose a category for your report.",
-  "featureErrorMsg": "Ingen objekter fundet.",
-  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "chooseCategoryMsg": "ø_Make a selection from the list below____________________å.",
+  "featureErrorMsg": "ø_No records found__________________å.",
+  "featureEditFormInfoMsg": "ø_Please provide the details____________________________å.",
   "currentLocationMsg": "Brug min nuværende position",
-  "addLocationMsg": "Add the location for your report.",
-  "reportSubmit": "Rapport sendt.",
-  "submitMsg": "Tak Din rapport er blevet sendt."
+  "addLocationMsg": "ø_Please add a location_______________________å.",
+  "submitMsg": "Tak Din rapport er blevet sendt.",
+  "filterLayerTitle": "ø_Filter: {{title}}__________________å",
+  "indexOfTotal": "ø_{{index}} of {{total}}_______________________å",
+  "comment": "ø_Comment_______________å",
+  "commentSubmittedMsg": "ø_Comment submitted__________________å",
+  "addingCommentFailedMsg": "ø_Comment not submitted______________________å",
+  "sortNewest": "ø_Newest_____________å",
+  "sortOldest": "ø_Oldest_____________å",
+  "sortHighestVoted": "ø_Highest voted______________å",
+  "sortLowestVoted": "ø_Lowest voted_____________å"
 }

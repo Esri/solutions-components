@@ -1,5 +1,5 @@
 {
-  "createReportHeader": "Crea un informe",
+  "createReportButtonText": "ó_Create a Report________________à",
   "share": "Comparteix",
   "sort": "Ordena",
   "filter": "Filtre",
@@ -12,11 +12,19 @@
   "error": "Error",
   "invalidConfigurationErrorMsg": "Configuració no vàlida",
   "noLayerToDisplayErrorMsg": "El mapa web configurat no té cap capa d'entitats editable.",
-  "chooseCategoryMsg": "Choose a category for your report.",
-  "featureErrorMsg": "No s'han trobat les entitats.",
-  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "chooseCategoryMsg": "ó_Make a selection from the list below____________________à.",
+  "featureErrorMsg": "ó_No records found__________________à.",
+  "featureEditFormInfoMsg": "ó_Please provide the details____________________________à.",
   "currentLocationMsg": "Utilitza la meva ubicació actual",
-  "addLocationMsg": "Add the location for your report.",
-  "reportSubmit": "S'ha enviat l'informe.",
-  "submitMsg": "Gràcies. El vostre informe s'ha enviat correctament."
+  "addLocationMsg": "ó_Please add a location_______________________à.",
+  "submitMsg": "Gràcies. El vostre informe s'ha enviat correctament.",
+  "filterLayerTitle": "ó_Filter: {{title}}__________________à",
+  "indexOfTotal": "ó_{{index}} of {{total}}_______________________à",
+  "comment": "ó_Comment_______________à",
+  "commentSubmittedMsg": "ó_Comment submitted__________________à",
+  "addingCommentFailedMsg": "ó_Comment not submitted______________________à",
+  "sortNewest": "ó_Newest_____________à",
+  "sortOldest": "ó_Oldest_____________à",
+  "sortHighestVoted": "ó_Highest voted______________à",
+  "sortLowestVoted": "ó_Lowest voted_____________à"
 }

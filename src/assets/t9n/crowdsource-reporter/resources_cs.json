@@ -1,5 +1,5 @@
 {
-  "createReportHeader": "Vytvořit zprávu",
+  "createReportButtonText": "Ř_Create a Report________________ů",
   "share": "Sdílet",
   "sort": "Seřadit",
   "filter": "Filtr",
@@ -12,11 +12,19 @@
   "error": "Chyba",
   "invalidConfigurationErrorMsg": "Neplatná konfigurace",
   "noLayerToDisplayErrorMsg": "Nakonfigurovaná webová mapa nemá žádnou vrstvu prvků, kterou lze editovat.",
-  "chooseCategoryMsg": "Choose a category for your report.",
-  "featureErrorMsg": "Prvky nenalezeny.",
-  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "chooseCategoryMsg": "Ř_Make a selection from the list below____________________ů.",
+  "featureErrorMsg": "Ř_No records found__________________ů.",
+  "featureEditFormInfoMsg": "Ř_Please provide the details____________________________ů.",
   "currentLocationMsg": "Použijte mou aktuální polohu",
-  "addLocationMsg": "Add the location for your report.",
-  "reportSubmit": "Zpráva odeslána",
-  "submitMsg": "Děkujeme! Váš report byl úspěšně odeslán."
+  "addLocationMsg": "Ř_Please add a location_______________________ů.",
+  "submitMsg": "Děkujeme! Váš report byl úspěšně odeslán.",
+  "filterLayerTitle": "Ř_Filter: {{title}}__________________ů",
+  "indexOfTotal": "Ř_{{index}} of {{total}}_______________________ů",
+  "comment": "Ř_Comment_______________ů",
+  "commentSubmittedMsg": "Ř_Comment submitted__________________ů",
+  "addingCommentFailedMsg": "Ř_Comment not submitted______________________ů",
+  "sortNewest": "Ř_Newest_____________ů",
+  "sortOldest": "Ř_Oldest_____________ů",
+  "sortHighestVoted": "Ř_Highest voted______________ů",
+  "sortLowestVoted": "Ř_Lowest voted_____________ů"
 }

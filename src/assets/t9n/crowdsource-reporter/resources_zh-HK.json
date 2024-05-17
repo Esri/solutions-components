@@ -1,5 +1,5 @@
 {
-  "createReportHeader": "建立報告",
+  "createReportButtonText": "試_Create a Report________________驗",
   "share": "分享",
   "sort": "排序",
   "filter": "篩選器",
@@ -12,11 +12,19 @@
   "error": "錯誤",
   "invalidConfigurationErrorMsg": "配置無效",
   "noLayerToDisplayErrorMsg": "配置的 Web 地圖沒有任何可編輯的圖徵圖層。",
-  "chooseCategoryMsg": "Choose a category for your report.",
-  "featureErrorMsg": "找不到圖徵。",
-  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "chooseCategoryMsg": "試_Make a selection from the list below____________________驗.",
+  "featureErrorMsg": "試_No records found__________________驗.",
+  "featureEditFormInfoMsg": "試_Please provide the details____________________________驗.",
   "currentLocationMsg": "使用我的目前位置",
-  "addLocationMsg": "Add the location for your report.",
-  "reportSubmit": "已提交報告。",
-  "submitMsg": "謝謝! 已成功提交您的報告。"
+  "addLocationMsg": "試_Please add a location_______________________驗.",
+  "submitMsg": "謝謝! 已成功提交您的報告。",
+  "filterLayerTitle": "試_Filter: {{title}}__________________驗",
+  "indexOfTotal": "試_{{index}} of {{total}}_______________________驗",
+  "comment": "試_Comment_______________驗",
+  "commentSubmittedMsg": "試_Comment submitted__________________驗",
+  "addingCommentFailedMsg": "試_Comment not submitted______________________驗",
+  "sortNewest": "試_Newest_____________驗",
+  "sortOldest": "試_Oldest_____________驗",
+  "sortHighestVoted": "試_Highest voted______________驗",
+  "sortLowestVoted": "試_Lowest voted_____________驗"
 }
