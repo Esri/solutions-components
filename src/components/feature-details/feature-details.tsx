@@ -1,5 +1,6 @@
 import { Component, h, Element, Prop, State, Method, Event, EventEmitter, Watch} from '@stencil/core';
 import { loadModules } from "../../utils/loadModules";
+import { getAllTables } from '../../utils/mapViewUtils';
 import { IReportingOptions } from '../../components';
 
 @Component({
@@ -64,6 +65,11 @@ export class FeatureDetails {
   @State() _dislikeFieldAvailable = false;
 
   /**
+   * boolean: When true comments are configured and its table is available in selected layer
+   */
+  @State() _commentsAvailable = false;
+
+  /**
    * boolean: When true button will get brand color
    */
   @State() _isLikeBtnClicked = false;
@@ -72,6 +78,11 @@ export class FeatureDetails {
    * boolean: When true button will get brand color
    */
   @State() _isDislikeBtnClicked = false;
+
+  /**
+   * string[]: objects ids of the related features (comments)
+   */
+  @State() _relatedFeaturesOIDs: string[];
 
   //--------------------------------------------------------------------------
   //
@@ -83,6 +94,11 @@ export class FeatureDetails {
    * HTMLCreateFeatureElement: info card component instance
    */
   protected _infoCard: HTMLInfoCardElement;
+
+  /**
+   * HTMLFeatureListElement: Feature list component's instance to show the comments
+   */
+  protected _commentsList: HTMLFeatureListElement;
 
   /**
    * __esri.Graphic: The current selected feature graphic
@@ -105,9 +121,20 @@ export class FeatureDetails {
   protected Graphic: typeof import("esri/Graphic");
 
   /**
+   * https://developers.arcgis.com/javascript/latest/api-reference/esri-rest-support-RelationshipQuery.html
+   * used for module import
+   */
+  protected RelationshipQuery: typeof import("esri/rest/support/RelationshipQuery");
+
+  /**
    * string[]: Valid field types for like and dislike 
    */
   protected _validFieldTypes = ["small-integer", "integer", "big-integer", "single", "long"];
+
+  /**
+   *string: related table id of selected feature
+   */
+  protected relatedTableId: string
 
   //--------------------------------------------------------------------------
   //
@@ -122,11 +149,14 @@ export class FeatureDetails {
   async graphicsWatchHandler(): Promise<void> {
     await this.getCompleteGraphic(this.graphics[0]);
     this.checkLikeDislikeFields();
+    await this.processComments();
   }
 
   //--------------------------------------------------------------------------
   //
   //  Methods (public)
+  //
+  //--------------------------------------------------------------------------
 
   /**
    * Refresh the features comments which will fetch like, dislike and update the component
@@ -134,10 +164,11 @@ export class FeatureDetails {
    */
   @Method()
   async refresh(graphic?: __esri.Graphic): Promise<void> {
+    await this.getCompleteGraphic(graphic);
+    await this.processComments();
     if (this.isLikeDislikeConfigured(graphic.layer as __esri.FeatureLayer)) {
       // in case of multiple features selected fetch complete feature and update like dislike for current feature 
       if (graphic && this.graphics.length > 1) {
-        await this.getCompleteGraphic(graphic);
         this.checkLikeDislikeFields();
       }
     } else {
@@ -182,17 +213,26 @@ export class FeatureDetails {
   @Event() loadingStatus: EventEmitter<boolean>;
 
   /**
+   * Emitted on demand when feature is selected using the list
+   */
+  @Event() featureSelect: EventEmitter<__esri.Graphic>;
+
+  /**
    * StencilJS: Called once just after the component is first connected to the DOM.
    *
    * @returns Promise when complete
    */
   async componentWillLoad(): Promise<void> {
     await this._initModules();
+    //Apply query to get complete graphic with complete attributes
     await this.getCompleteGraphic(this.graphics[0]);
     this.checkLikeDislikeFields();
+    await this.processComments();
   }
 
   render() {
+    //When related features found show comments list of only those features else comments list will be empty
+    const commentsListWhereClause = this._relatedFeaturesOIDs?.length > 0 ? `objectId in(${this._relatedFeaturesOIDs})` : '1=0';
     return (
       <calcite-panel full-height>
         <info-card
@@ -207,8 +247,17 @@ export class FeatureDetails {
           ref={el => this._infoCard = el}
           zoomAndScrollToSelected={true}
         />
-        {(this._likeFieldAvailable || this._dislikeFieldAvailable) &&
-          <div class={'buttons'}>
+        {(this._likeFieldAvailable || this._dislikeFieldAvailable || this._commentsAvailable) &&
+          <div class="buttons-container">
+            {this._commentsAvailable &&
+              <div class="comment-btn">
+                <span>{this._relatedFeaturesOIDs.length}</span>
+                <calcite-icon
+                  icon="speech-bubble"
+                  scale='s'
+                />
+              </div>
+            }
             {this._likeFieldAvailable &&
               <calcite-button
                 appearance={"transparent"}
@@ -228,6 +277,17 @@ export class FeatureDetails {
               >{this._disLikeCount ?? this._selectedGraphic.attributes[this._dislikeField] ?? 0}</calcite-button>
             }
           </div>}
+        {this.relatedTableId && this._commentsAvailable &&
+          <feature-list
+            class="height-full"
+            mapView={this.mapView}
+            pageSize={5}
+            ref={el => this._commentsList = el}
+            selectedLayerId={this.relatedTableId}
+            showInitialLoading={false}
+            textSize={"small"}
+            whereClause={commentsListWhereClause}
+          />}
       </calcite-panel>
     );
   }
@@ -240,9 +300,11 @@ export class FeatureDetails {
    * @protected
    */
   protected async _initModules(): Promise<void> {
-    const [Graphic] = await loadModules([
+    const [RelationshipQuery, Graphic] = await loadModules([
+      "esri/rest/support/RelationshipQuery",
       "esri/Graphic"
     ]);
+    this.RelationshipQuery = RelationshipQuery;
     this.Graphic = Graphic;
   }
 
@@ -257,6 +319,56 @@ export class FeatureDetails {
     query.objectIds = [graphic.getObjectId()];
     const completeGraphic = await layer.queryFeatures(query);
     this._selectedGraphic = completeGraphic.features[0];
+  }
+
+  /**
+   * Process the comments functionality.
+   * If comments are configured, fetches the related comments ans creates the input for comments list
+   * @protected
+   */
+  protected async processComments(): Promise<void> {
+    const selectedLayer = this._selectedGraphic.layer as __esri.FeatureLayer;
+    const commentsConfigured = this.reportingOptions[selectedLayer.id].comment && selectedLayer.relationships?.length > 0;
+    if (commentsConfigured) {
+      //Get comments table id from map
+      const relatedTableIdFromRelnship = selectedLayer.relationships[0].relatedTableId;
+      const allTables = await getAllTables(this.mapView);
+      const relatedTable = allTables.filter((table) => relatedTableIdFromRelnship === (table as __esri.FeatureLayer).layerId);
+      this.relatedTableId = relatedTable?.length > 0 ? relatedTable[0].id : ''
+
+      //**Get the related records for the current selected feature**
+      if (this.relatedTableId) {
+        //current selected feature's objectId
+        const objectId = this._selectedGraphic.attributes[selectedLayer.objectIdField];
+        //create relationship query to get all the related records with the current selected feature
+        const relationshipQuery = new this.RelationshipQuery({
+          objectIds: [objectId],
+          outFields: ['*'],
+          relationshipId: selectedLayer.relationships[0].id
+        })
+        const result = await selectedLayer.queryRelatedFeatures(relationshipQuery).catch((e) => {
+          console.error(e);
+        });
+        const relatedOIDs = [];
+        if (result[objectId]) {
+          result[objectId].features.forEach((feature) => {
+            relatedOIDs.push(feature.attributes.OBJECTID);
+          })
+        }
+
+        // Store the objectid's of the related features, this will be used to show the comments and its count
+        this._relatedFeaturesOIDs = relatedOIDs;
+        //Set comments available or not
+        this._commentsAvailable = true;
+      } else {
+        this._relatedFeaturesOIDs = [];
+        this._commentsAvailable = false;
+      }
+    } else {
+      this._relatedFeaturesOIDs = [];
+      this._commentsAvailable = false;
+      this.relatedTableId = ''
+    }
   }
 
   /**
@@ -281,7 +393,6 @@ export class FeatureDetails {
         return false;
       }
       //Check if selected layer have the configured like and dislike field and it is of integer types
-      ;
       selectedLayer.fields.forEach((eachField: __esri.Field) => {
         if (this._validFieldTypes.indexOf(eachField.type) > -1) {
           if (eachField.name === likeField && this.reportingOptions[selectedLayer.id].like) {
@@ -290,7 +401,7 @@ export class FeatureDetails {
             dislikeFieldAvailable = true;
           }
         }
-      })
+      });
     }
     return likeFieldAvailable || dislikeFieldAvailable;
   }
@@ -313,7 +424,7 @@ export class FeatureDetails {
       this._dislikeField = this.reportingOptions[selectedLayer.id].dislikeField;
       //if both fields are not found return
       if (!this._likeField && !this._dislikeField) {
-        return
+        return;
       }
       //Check if selected layer have the configured like and dislike fields
       //also, get the current value for like and dislike field from the attributes
@@ -327,10 +438,9 @@ export class FeatureDetails {
             this._disLikeCount = this._selectedGraphic.attributes[eachField.name];
           }
         }
-      })
-      this.getFromLocalStorage()
-    }
-    
+      });
+      this.getFromLocalStorage();
+    } 
   }
 
   /**
@@ -377,13 +487,13 @@ export class FeatureDetails {
    */
   protected async updateFeaturesLikeDislikeField(fieldName: string, buttonClicked: boolean): Promise<void> {
     const attributesToUpdate = {};
-    const selectedLayer = this._selectedGraphic.layer as __esri.FeatureLayer
+    const selectedLayer = this._selectedGraphic.layer as __esri.FeatureLayer;
     //Increment the value if button is clicked or else decrement it
     const selectFeatureAttr = this._selectedGraphic;
     if (buttonClicked) {
-      selectFeatureAttr.attributes[fieldName] = Number(selectFeatureAttr.attributes[fieldName]) + 1
+      selectFeatureAttr.attributes[fieldName] = Number(selectFeatureAttr.attributes[fieldName]) + 1;
     } else {
-      selectFeatureAttr.attributes[fieldName] = Number(selectFeatureAttr.attributes[fieldName]) - 1
+      selectFeatureAttr.attributes[fieldName] = Number(selectFeatureAttr.attributes[fieldName]) - 1;
     }
     //use the oid and like/dislike field value to update 
     attributesToUpdate[selectedLayer.objectIdField] = selectFeatureAttr.attributes[selectedLayer.objectIdField];
@@ -414,13 +524,13 @@ export class FeatureDetails {
   protected getFromLocalStorage(): void {
     const uniqueLayerId = this._selectedGraphic.layer.id;
     //get the data from local storage and check current feature is liked or disliked 
-    const localStorageUser = localStorage[uniqueLayerId]
+    const localStorageUser = localStorage[uniqueLayerId];
     if (localStorageUser) {
-      const parseArr = JSON.parse(localStorageUser)
-      const res = parseArr.filter((arr) => arr.id === this._selectedGraphic.getObjectId())
+      const parseArr = JSON.parse(localStorageUser);
+      const res = parseArr.filter((arr) => arr.id === this._selectedGraphic.getObjectId());
       if (res.length > 0) {
-        this._isLikeBtnClicked = res[0].like
-        this._isDislikeBtnClicked = res[0].dislike
+        this._isLikeBtnClicked = res[0].like;
+        this._isDislikeBtnClicked = res[0].dislike;
       }
     }
   }
@@ -431,16 +541,16 @@ export class FeatureDetails {
    */
   protected setInLocalStorage(): void {
     const uniqueLayerId = this._selectedGraphic.layer.id;
-    const localStorageInfo = localStorage[uniqueLayerId]
+    const localStorageInfo = localStorage[uniqueLayerId];
     let information = [];
     //if information for the current layer found in local storage update it
     //else add new information for the current layer in the local storage
     if (localStorageInfo) {
       information = JSON.parse(localStorageInfo);
-      const index = information.findIndex((arr) => arr.id === this._selectedGraphic.getObjectId())
+      const index = information.findIndex((arr) => arr.id === this._selectedGraphic.getObjectId());
       //if information for current objectid found delete it, so that we always have info for each oid in a layer only once
       if (index >= 0) {
-        information.splice(index, 1)
+        information.splice(index, 1);
       }
     } 
     //add the information for current selected graphic
@@ -448,7 +558,7 @@ export class FeatureDetails {
       id: this._selectedGraphic.getObjectId(),
       like: this._isLikeBtnClicked && this._likeCount !== 0,
       dislike: this._isDislikeBtnClicked && this._disLikeCount !== 0
-    })
+    });
     localStorage.setItem(uniqueLayerId, JSON.stringify(information));
   }
 }
