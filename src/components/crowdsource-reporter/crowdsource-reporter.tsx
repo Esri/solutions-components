@@ -49,13 +49,6 @@ export class CrowdsourceReporter {
   @Prop() center: string;
 
   /**
-   * boolean: When true a cover page has been enabled in the consuming application.
-   * Also when true a floating button will be shown in the lower right of the window that
-   * will emit an event when clicked that the consuming application can respond to that will open the cover page.
-   */
-  @Prop() coverPageEnabled: boolean;
-
-  /**
    * string: Item ID of the web map that should be selected by default
    */
   @Prop() defaultWebmap = "";

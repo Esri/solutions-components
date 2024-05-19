@@ -168,6 +168,10 @@ export namespace Components {
          */
         "basemapConfig": IBasemapConfig;
         /**
+          * boolean: When true a cover page has been enabled in the consuming application. Also when true a floating button will be shown in the lower right of the window that will emit an event when clicked that the consuming application can respond to that will open the cover page.
+         */
+        "coverPageEnabled": boolean;
+        /**
           * string: default center point values for the map ; delimited x;y pair
          */
         "defaultCenter": string;
@@ -309,10 +313,6 @@ export namespace Components {
           * string: Semicolon delimited numbers that will be used as the maps center point from URL params
          */
         "center": string;
-        /**
-          * boolean: When true a cover page has been enabled in the consuming application. Also when true a floating button will be shown in the lower right of the window that will emit an event when clicked that the consuming application can respond to that will open the cover page.
-         */
-        "coverPageEnabled": boolean;
         /**
           * string: Item ID of the web map that should be selected by default
          */
@@ -2524,6 +2524,10 @@ declare namespace LocalJSX {
          */
         "basemapConfig"?: IBasemapConfig;
         /**
+          * boolean: When true a cover page has been enabled in the consuming application. Also when true a floating button will be shown in the lower right of the window that will emit an event when clicked that the consuming application can respond to that will open the cover page.
+         */
+        "coverPageEnabled"?: boolean;
+        /**
           * string: default center point values for the map ; delimited x;y pair
          */
         "defaultCenter"?: string;
@@ -2669,10 +2673,6 @@ declare namespace LocalJSX {
           * string: Semicolon delimited numbers that will be used as the maps center point from URL params
          */
         "center"?: string;
-        /**
-          * boolean: When true a cover page has been enabled in the consuming application. Also when true a floating button will be shown in the lower right of the window that will emit an event when clicked that the consuming application can respond to that will open the cover page.
-         */
-        "coverPageEnabled"?: boolean;
         /**
           * string: Item ID of the web map that should be selected by default
          */

@@ -50,6 +50,13 @@ export class CrowdsourceManager {
   @Prop() basemapConfig: IBasemapConfig;
 
   /**
+   * boolean: When true a cover page has been enabled in the consuming application.
+   * Also when true a floating button will be shown in the lower right of the window that
+   * will emit an event when clicked that the consuming application can respond to that will open the cover page.
+   */
+  @Prop() coverPageEnabled: boolean;
+
+  /**
    * string: default center point values for the map
    * ; delimited x;y pair
    */
@@ -216,7 +223,7 @@ export class CrowdsourceManager {
   @Prop() sortField: string;
 
   /**
-   * string(asc/desc): Sorting order - Ascending or Descending  
+   * string(asc/desc): Sorting order - Ascending or Descending
    */
   @Prop() sortOrder: 'asc' | 'desc';
 
