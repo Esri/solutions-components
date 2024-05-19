@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.8.17] - Map 19th 2024
+Move 'coverPageEnabled' to manager
+
 ## [0.8.16] - Map 16th 2024
 Fix type error for 'coverPageEnabled'
 
@@ -580,4 +583,5 @@ Recover from test releases
 [0.8.14]: https://github.com/Esri/solution.js/compare/v0.8.13...v0.8.14 "v0.8.14"
 [0.8.15]: https://github.com/Esri/solution.js/compare/v0.8.14...v0.8.15 "v0.8.15"
 [0.8.16]: https://github.com/Esri/solution.js/compare/v0.8.15...v0.8.16 "v0.8.16"
-[Unreleased]: https://github.com/Esri/solution.js/compare/v0.8.16...HEAD "Unreleased Changes"
+[0.8.17]: https://github.com/Esri/solution.js/compare/v0.8.16...v0.8.17 "v0.8.17"
+[Unreleased]: https://github.com/Esri/solution.js/compare/v0.8.17...HEAD "Unreleased Changes"
