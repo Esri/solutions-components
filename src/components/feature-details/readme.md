@@ -16,10 +16,10 @@
 
 ## Events
 
-| Event           | Description                                               | Type                   |
-| --------------- | --------------------------------------------------------- | ---------------------- |
-| `featureSelect` | Emitted on demand when feature is selected using the list | `CustomEvent<Graphic>` |
-| `loadingStatus` | Emitted on demand when like or dislike button is clicked  | `CustomEvent<boolean>` |
+| Event           | Description                                                       | Type                   |
+| --------------- | ----------------------------------------------------------------- | ---------------------- |
+| `featureSelect` | Emitted on demand when comment is selected using the feature-list | `CustomEvent<Graphic>` |
+| `loadingStatus` | Emitted on demand when like or dislike button is clicked          | `CustomEvent<boolean>` |
 
 
 ## Methods
