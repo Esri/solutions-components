@@ -2856,7 +2856,7 @@ declare namespace LocalJSX {
          */
         "mapView"?: __esri.MapView;
         /**
-          * Emitted on demand when feature is selected using the list
+          * Emitted on demand when comment is selected using the feature-list
          */
         "onFeatureSelect"?: (event: FeatureDetailsCustomEvent<__esri.Graphic>) => void;
         /**

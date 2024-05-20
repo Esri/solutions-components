@@ -575,7 +575,10 @@ export class CrowdsourceReporter {
    * @param layerId string layerId of the selected layer
    * @param layerName string layerName of the selected layer
    */
-  protected async setSelectedLayer(layerId: string, layerName: string): Promise<void> {
+  protected async setSelectedLayer(
+    layerId: string,
+    layerName: string
+  ): Promise<void> {
     this._selectedLayerId = layerId;
     this._selectedLayer = await getLayerOrTable(this.mapView, layerId)
     this._selectedLayerName = layerName;
@@ -693,8 +696,13 @@ export class CrowdsourceReporter {
    * On sort option click update the sort field and sort order
    * @param sortField sort field
    * @param sortOrder sort order
+   * @param sortOption selected sort option (Newest/Oldest/Highest Voted/Lowest Voted)
    */
-  protected async sortOptionClick(sortField: string, sortOrder: "asc" | "desc", sortOption: string): Promise<void> {
+  protected async sortOptionClick(
+    sortField: string, 
+    sortOrder: "asc" | "desc",
+    sortOption: string
+  ): Promise<void> {
     this._updatedSorting = {
       field: sortField,
       order: sortOrder
@@ -1181,7 +1189,10 @@ export class CrowdsourceReporter {
    * @returns feature list node
    * @protected
    */
-  protected getFeatureListFlowItem(layerId: string, layerName: string): Node {
+  protected getFeatureListFlowItem(
+    layerId: string,
+    layerName: string
+  ): Node {
     const layerExpressions = this.layerExpressions?.filter((exp) => exp.id === this._selectedLayerId)
     const showFilterIcon = layerExpressions?.length > 0;
     return (
@@ -1255,8 +1266,8 @@ export class CrowdsourceReporter {
           socialMedia={true}
           view={this.mapView}
         />
+        {this._selectedFeature.length > 1 && this.getFeaturesPagination()}
         <calcite-panel>
-          {this._selectedFeature.length > 1 && this.getFeaturesPagination()}
           <feature-details
             class={'full-height'}
             graphics={this._selectedFeature}
@@ -1287,7 +1298,7 @@ export class CrowdsourceReporter {
    */
   protected getFeaturesPagination(): Node {
     return (
-      <div class="feature-pagination" slot="header-actions-start">
+      <div class="feature-pagination">
         <div>
           <calcite-button
             appearance='transparent'
@@ -1297,16 +1308,15 @@ export class CrowdsourceReporter {
             onClick={() => void this._featureDetails.back()}
             scale="s"
             width="full"
-           />
+          />
           <calcite-tooltip label="" placement="top" reference-element="solutions-back">
             <span>{this._translations.back}</span>
           </calcite-tooltip>
         </div>
-          <calcite-button
-            appearance='transparent'
-            class='pagination-action'
-            onClick={() => void this._featureDetails.toggleListView()}
-            scale="s">
+        <calcite-button
+          appearance='transparent'
+          onClick={() => void this._featureDetails.toggleListView()}
+          scale="s">
           <span class="pagination-count">{this._getCount()}</span>
         </calcite-button>
         <div>
@@ -1318,7 +1328,7 @@ export class CrowdsourceReporter {
             onClick={() => void this._featureDetails.next()}
             scale="s"
             width="full"
-           />
+          />
           <calcite-tooltip placement="top" reference-element="solutions-next">
             <span>{this._translations.next}</span>
           </calcite-tooltip>
