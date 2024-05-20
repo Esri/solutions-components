@@ -62,13 +62,14 @@
 }
 
 .feature-pagination {
-  align-items: center;
-  margin: 5% 124%;
+  background-color: var(--calcite-color-foreground-1) !important;
+  border-block-end: 1px solid var(--calcite-color-border-3);
   display: flex;
+  justify-content: center;
+  padding: 5px 0;
 }
 
 .pagination-count {
-  width: 32px;
   color: var(--calcite-color-brand);
   border-bottom: 1px solid var(--calcite-color-brand);
   font-weight: bold;

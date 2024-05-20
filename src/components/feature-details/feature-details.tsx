@@ -1,3 +1,19 @@
+/** @license
+ * Copyright 2022 Esri
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import { Component, h, Element, Prop, State, Method, Event, EventEmitter, Watch} from '@stencil/core';
 import { loadModules } from "../../utils/loadModules";
 import { getAllTables } from '../../utils/mapViewUtils';
@@ -213,7 +229,7 @@ export class FeatureDetails {
   @Event() loadingStatus: EventEmitter<boolean>;
 
   /**
-   * Emitted on demand when feature is selected using the list
+   * Emitted on demand when comment is selected using the feature-list
    */
   @Event() featureSelect: EventEmitter<__esri.Graphic>;
 
@@ -483,9 +499,12 @@ export class FeatureDetails {
    * Update the feature if user click on like or dislike button
    * @param fieldName field name of the feature for like or dislike attribute
    * @param buttonClicked is like or dislike button clicked  
-   * @protected 
+   * @protected
    */
-  protected async updateFeaturesLikeDislikeField(fieldName: string, buttonClicked: boolean): Promise<void> {
+  protected async updateFeaturesLikeDislikeField(
+    fieldName: string,
+    buttonClicked: boolean
+  ): Promise<void> {
     const attributesToUpdate = {};
     const selectedLayer = this._selectedGraphic.layer as __esri.FeatureLayer;
     //Increment the value if button is clicked or else decrement it

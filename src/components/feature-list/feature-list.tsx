@@ -146,6 +146,10 @@ export class FeatureList {
    */
   protected _highlightHandle: __esri.Handle;
 
+  /**
+   * HTMLCalcitePaginationElement: Calcite pagination element instance
+   */
+  protected _pagination: HTMLCalcitePaginationElement;
   //--------------------------------------------------------------------------
   //
   //  Watch handlers
@@ -263,7 +267,10 @@ export class FeatureList {
               class="pagination"
               full-width
               onCalcitePaginationChange={this.pageChanged.bind(this)}
-              page-size={this.pageSize} start-item="1" total-items={this._featuresCount} />
+              page-size={this.pageSize}
+              ref={el => this._pagination = el}
+              start-item="1"
+              total-items={this._featuresCount} />
           </div>
         }
       </calcite-panel>);
@@ -311,6 +318,7 @@ export class FeatureList {
    */
   protected async initializeFeatureItems(): Promise<void> {
     if (this._selectedLayer) {
+      void this._pagination?.goTo("start");
       this._isLoading = this.showInitialLoading;
       this._featureItems = await this.queryPage(0);
       const query: any = {
