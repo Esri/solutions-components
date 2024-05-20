@@ -318,7 +318,7 @@ export class FeatureList {
    */
   protected async initializeFeatureItems(): Promise<void> {
     if (this._selectedLayer) {
-      this._pagination?.goTo("start");
+      void this._pagination?.goTo("start");
       this._isLoading = this.showInitialLoading;
       this._featureItems = await this.queryPage(0);
       const query: any = {
