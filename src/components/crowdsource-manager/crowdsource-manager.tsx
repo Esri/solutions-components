@@ -217,16 +217,6 @@ export class CrowdsourceManager {
    */
   @Prop() zoomToScale: number;
 
-  /**
-   * string: Field using which table will be sorted
-   */
-  @Prop() sortField: string;
-
-  /**
-   * string(asc/desc): Sorting order - Ascending or Descending
-   */
-  @Prop() sortOrder: 'asc' | 'desc';
-
   //--------------------------------------------------------------------------
   //
   //  State (internal)
@@ -653,18 +643,20 @@ export class CrowdsourceManager {
           {this._getMapAndCard(layoutMode, panelOpen, hideTable)}
           {this._getTable(layoutMode, panelOpen, hideTable)}
         </div>
-        <div class="floating-container" onClick={this.infoButtonClick.bind(this)}>
-          <calcite-button
-            appearance="solid"
-            class={`floating-button ${themeClass}`}
-            icon-start="information-letter"
-            kind="neutral"
-            label=""
-            round
-            scale="l"
-            split-child="primary"
-            width="auto" />
-        </div>
+        {this.coverPageEnabled &&
+          <div class="floating-container" onClick={this.infoButtonClick.bind(this)}>
+            <calcite-button
+              appearance="solid"
+              class={`floating-button ${themeClass}`}
+              icon-start="information-letter"
+              kind="neutral"
+              label=""
+              round
+              scale="l"
+              split-child="primary"
+              width="auto" />
+          </div>
+        }
       </calcite-panel>
     );
   }
@@ -761,10 +753,10 @@ export class CrowdsourceManager {
     return (
       <div class={`${headerTheme} ${popupNodeClass} ${containerClass}`}
         style={{
-          '--calcite-color-foreground-1': this.popupHeaderColor, /* background color to apply to the popup header */
-          '--calcite-color-foreground-2': this.popupHeaderHoverColor, /* color that will be displayed on hover when expanding the popup header */
-          '--calcite-color-text-3': this.popupHeaderHoverTextColor, /* font color that will be displayed on hover when expanding the popup header */
-          '--calcite-color-text-2': this.popupHeaderTextColor, /* font color to apply to the popup header */
+          '--calcite-color-foreground-1': this.popupHeaderColor, /* background color that will be displayed on the popup header */
+          '--calcite-color-foreground-2': this.popupHeaderHoverColor, /* background color that will be displayed on button when hovered */
+          '--calcite-color-text-3': this.popupHeaderTextColor, /* font color that will be displayed on button */
+          '--calcite-color-text-2': this.popupHeaderTextColor, /* font color that will be displayed on popup header text*/
         }}>
         <calcite-panel>
           {
@@ -904,8 +896,6 @@ export class CrowdsourceManager {
             shareIncludeEmbed={this.shareIncludeEmbed}
             shareIncludeSocial={this.shareIncludeSocial}
             showNewestFirst={this.showNewestFirst}
-	    sortField={this.sortField}
-            sortOrder={this.sortOrder}
             zoomAndScrollToSelected={this.zoomAndScrollToSelected}
             zoomToScale={this.zoomToScale}
           />

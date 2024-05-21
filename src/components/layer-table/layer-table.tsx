@@ -125,16 +125,6 @@ export class LayerTable {
   @Prop() showNewestFirst: boolean;
 
   /**
-   * string: Field using which table will be sorted
-   */
-  @Prop() sortField: string;
-
-  /**
-   * string(asc/desc): Sorting order - Ascending or Descending
-   */
-  @Prop() sortOrder: 'asc' | 'desc';
-
-  /**
    * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
    */
   @Prop() zoomAndScrollToSelected: boolean;
@@ -1797,15 +1787,26 @@ export class LayerTable {
   }
 
   /**
-   * Sort the table with the configured field in the configured sort order
+   * Sort the table with the configured field and the sort order
    */
   protected async _sortTable(): Promise<void> {
-    let sortField = this.sortField ? this.sortField : this._layer.objectIdField;
+    //By default sort the table using objectIdField and in descending order
+    let sortField = this._layer.objectIdField;
+    let sortOrder: "asc" | "desc" = 'desc';
+    let configuredLayer;
+    //get the sortField and sortOrder from the configuration
     if (this.mapInfo?.layerOptions?.layers?.length > 0) {
-      const configuredLayer = this.mapInfo.layerOptions?.layers.filter((layer) => layer.id === this._layer.id);
-      sortField = configuredLayer[0]?.fields?.includes(this.sortField) ? this.sortField : this._layer.objectIdField;
+      configuredLayer = this.mapInfo.layerOptions.layers.filter((layer) => layer.id === this._layer.id);
+      if (configuredLayer && configuredLayer.length > 0) {
+        configuredLayer = configuredLayer[0];
+        //if sort field is defined and sortField is available in the fields then use it 
+        if (configuredLayer.sortField && configuredLayer.fields?.includes(configuredLayer.sortField)) {
+          sortField = configuredLayer.sortField;
+        }
+        //use sort order if configured
+        sortOrder = configuredLayer?.sortOrder ? configuredLayer.sortOrder : "desc";
+      }
     }
-    const sortOrder = this.sortOrder ? this.sortOrder : 'desc';
     if (this._table && this._layer) {
       await this._table.when();
       await this._layer.when(() => {

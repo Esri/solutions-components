@@ -104,4 +104,5 @@
 .pagination-count {
   color: var(--calcite-color-brand);
   border-bottom: 1px solid var(--calcite-color-brand);
+  font-weight: bold;
 }
