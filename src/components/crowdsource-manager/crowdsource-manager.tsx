@@ -763,10 +763,10 @@ export class CrowdsourceManager {
     return (
       <div class={`${headerTheme} ${popupNodeClass} ${containerClass}`}
         style={{
-          '--calcite-color-foreground-1': this.popupHeaderColor, /* background color to apply to the popup header */
-          '--calcite-color-foreground-2': this.popupHeaderHoverColor, /* color that will be displayed on hover when expanding the popup header */
-          '--calcite-color-text-3': this.popupHeaderHoverTextColor, /* font color that will be displayed on hover when expanding the popup header */
-          '--calcite-color-text-2': this.popupHeaderTextColor, /* font color to apply to the popup header */
+          '--calcite-color-foreground-1': this.popupHeaderColor, /* background color that will be displayed on the popup header */
+          '--calcite-color-foreground-2': this.popupHeaderHoverColor, /* background color that will be displayed on button when hovered */
+          '--calcite-color-text-3': this.popupHeaderTextColor, /* font color that will be displayed on button */
+          '--calcite-color-text-2': this.popupHeaderTextColor, /* font color that will be displayed on popup header text*/
         }}>
         <calcite-panel>
           {
