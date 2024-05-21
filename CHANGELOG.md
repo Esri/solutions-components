@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.8.19] - Map 21st 2024
+Delivery for Manager Instant App - UAT- AGOL-2024.R02
+
 ## [0.8.18] - Map 20th 2024
 Delivery for Reporter Instant App - Sprint3 - AGOL-2024.R02
 
@@ -588,4 +591,5 @@ Recover from test releases
 [0.8.16]: https://github.com/Esri/solution.js/compare/v0.8.15...v0.8.16 "v0.8.16"
 [0.8.17]: https://github.com/Esri/solution.js/compare/v0.8.16...v0.8.17 "v0.8.17"
 [0.8.18]: https://github.com/Esri/solution.js/compare/v0.8.17...v0.8.18 "v0.8.18"
-[Unreleased]: https://github.com/Esri/solution.js/compare/v0.8.18...HEAD "Unreleased Changes"
+[0.8.19]: https://github.com/Esri/solution.js/compare/v0.8.18...v0.8.19 "v0.8.19"
+[Unreleased]: https://github.com/Esri/solution.js/compare/v0.8.19...HEAD "Unreleased Changes"
