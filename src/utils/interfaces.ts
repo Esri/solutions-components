@@ -470,6 +470,8 @@ export interface ILayerDef {
   sublayerId?: number;
   fields?: string[];
   fieldOrder?: string[];
+  sortField?: string;
+  sortOrder?: 'asc' | 'desc';
 }
 
 export interface IMapChange {
