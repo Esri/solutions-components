@@ -1801,10 +1801,10 @@ export class LayerTable {
         configuredLayer = configuredLayer[0];
         //if sort field is defined and sortField is available in the fields then use it 
         if (configuredLayer.sortField && configuredLayer.fields?.includes(configuredLayer.sortField)) {
-          sortField = configuredLayer.sortField
+          sortField = configuredLayer.sortField;
         }
         //use sort order if configured
-        sortOrder = configuredLayer?.sortOrder ? configuredLayer.sortOrder : "desc"
+        sortOrder = configuredLayer?.sortOrder ? configuredLayer.sortOrder : "desc";
       }
     }
     if (this._table && this._layer) {
