@@ -653,18 +653,20 @@ export class CrowdsourceManager {
           {this._getMapAndCard(layoutMode, panelOpen, hideTable)}
           {this._getTable(layoutMode, panelOpen, hideTable)}
         </div>
-        <div class="floating-container" onClick={this.infoButtonClick.bind(this)}>
-          <calcite-button
-            appearance="solid"
-            class={`floating-button ${themeClass}`}
-            icon-start="information-letter"
-            kind="neutral"
-            label=""
-            round
-            scale="l"
-            split-child="primary"
-            width="auto" />
-        </div>
+        {this.coverPageEnabled &&
+          <div class="floating-container" onClick={this.infoButtonClick.bind(this)}>
+            <calcite-button
+              appearance="solid"
+              class={`floating-button ${themeClass}`}
+              icon-start="information-letter"
+              kind="neutral"
+              label=""
+              round
+              scale="l"
+              split-child="primary"
+              width="auto" />
+          </div>
+        }
       </calcite-panel>
     );
   }
