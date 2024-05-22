@@ -88,6 +88,13 @@ export class CrowdsourceManager {
   @Prop() defaultWebmap = "";
 
   /**
+   * boolean: When true a introduction page has been enabled in the consuming application.
+   * Also when true a floating button will be shown in the lower right of the window that
+   * will emit an event when clicked that the consuming application can respond to that will open the introduction page.
+   */
+  @Prop() introductionPageEnabled = false;
+
+  /**
    * boolean: when true the layer table will auto refresh the data
    */
   @Prop() enableAutoRefresh = false;
@@ -464,11 +471,13 @@ export class CrowdsourceManager {
    * Renders the component.
    */
   render() {
+    // only avoid border when we have a header color that is not white
+    const borderClass = this.popupHeaderColor && this.popupHeaderColor !== "#FFFFFF" ? "border-width-0" : "";
     return (
       <Host>
         <calcite-shell class="position-relative">
           <calcite-panel
-            class={`width-full height-full border-width-0`}
+            class={`width-full height-full ${borderClass}`}
           >
             {this._getBody(this._layoutMode, this._panelOpen, this._hideTable)}
           </calcite-panel>
