@@ -464,11 +464,13 @@ export class CrowdsourceManager {
    * Renders the component.
    */
   render() {
+    // only avoid border when we have a header color that is not white
+    const borderClass = this.popupHeaderColor && this.popupHeaderColor !== "#FFFFFF" ? "border-width-0" : "";
     return (
       <Host>
         <calcite-shell class="position-relative">
           <calcite-panel
-            class={`width-full height-full border-width-0`}
+            class={`width-full height-full ${borderClass}`}
           >
             {this._getBody(this._layoutMode, this._panelOpen, this._hideTable)}
           </calcite-panel>
