@@ -248,6 +248,10 @@ export namespace Components {
          */
         "hideMapOnLoad": boolean;
         /**
+          * boolean: When true a introduction page has been enabled in the consuming application. Also when true a floating button will be shown in the lower right of the window that will emit an event when clicked that the consuming application can respond to that will open the introduction page.
+         */
+        "introductionPageEnabled": boolean;
+        /**
           * IMapInfo[]: array of map infos (name and id)
          */
         "mapInfos": IMapInfo[];
@@ -2587,6 +2591,10 @@ declare namespace LocalJSX {
           * boolean: when true the map will be hidden on load
          */
         "hideMapOnLoad"?: boolean;
+        /**
+          * boolean: When true a introduction page has been enabled in the consuming application. Also when true a floating button will be shown in the lower right of the window that will emit an event when clicked that the consuming application can respond to that will open the introduction page.
+         */
+        "introductionPageEnabled"?: boolean;
         /**
           * IMapInfo[]: array of map infos (name and id)
          */
