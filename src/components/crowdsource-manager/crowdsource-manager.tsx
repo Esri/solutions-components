@@ -88,6 +88,13 @@ export class CrowdsourceManager {
   @Prop() defaultWebmap = "";
 
   /**
+   * boolean: When true a introduction page has been enabled in the consuming application.
+   * Also when true a floating button will be shown in the lower right of the window that
+   * will emit an event when clicked that the consuming application can respond to that will open the introduction page.
+   */
+  @Prop() introductionPageEnabled = false;
+
+  /**
    * boolean: when true the layer table will auto refresh the data
    */
   @Prop() enableAutoRefresh = false;
