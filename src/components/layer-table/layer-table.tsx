@@ -478,6 +478,7 @@ export class LayerTable {
     this._initLayerExpressions();
     this._initToolInfos();
     this._updateToolbar();
+    await this._sortTable()
   }
 
   /**
@@ -1799,7 +1800,7 @@ export class LayerTable {
       configuredLayer = this.mapInfo.layerOptions.layers.filter((layer) => layer.id === this._layer.id);
       if (configuredLayer && configuredLayer.length > 0) {
         configuredLayer = configuredLayer[0];
-        //if sort field is defined and sortField is available in the fields then use it 
+        //if sort field is defined and sortField is available in the fields then use it
         if (configuredLayer.sortField && configuredLayer.fields?.includes(configuredLayer.sortField)) {
           sortField = configuredLayer.sortField;
         }
