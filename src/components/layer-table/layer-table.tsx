@@ -1792,7 +1792,7 @@ export class LayerTable {
    */
   protected async _sortTable(): Promise<void> {
     //By default sort the table using objectIdField and in descending order
-    let sortField = this._layer.objectIdField;
+    let sortField = this._layer?.objectIdField;
     let sortOrder: "asc" | "desc" = 'desc';
     let configuredLayer;
     //get the sortField and sortOrder from the configuration
