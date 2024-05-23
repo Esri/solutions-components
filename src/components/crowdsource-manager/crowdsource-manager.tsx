@@ -349,7 +349,7 @@ export class CrowdsourceManager {
    */
   @Watch("hideMapOnLoad")
   hideMapOnLoadWatchHandler(): void {
-    this.showHideMapPopupAndTable(true);
+    this.showHideMapPopupAndTable(this.hideMapOnLoad);
     this._expandPopup = this.hideMapOnLoad;
   }
 
