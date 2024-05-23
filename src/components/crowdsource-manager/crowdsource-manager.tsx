@@ -344,6 +344,15 @@ export class CrowdsourceManager {
     this._initMapZoom();
   }
 
+  /**
+   * When true the map will be hidden on load
+   */
+  @Watch("hideMapOnLoad")
+  hideMapOnLoadWatchHandler(): void {
+    this.showHideMapPopupAndTable(true);
+    this._expandPopup = this.hideMapOnLoad;
+  }
+
   //--------------------------------------------------------------------------
   //
   //  Methods (public)
