@@ -11,7 +11,6 @@
   "back": "Geri",
   "error": "Hata",
   "invalidConfigurationErrorMsg": "Geçersiz yapılandırma",
-  "noLayerToDisplayErrorMsg": "Yapılandırılmış web haritasında herhangi bir düzenlenebilir detay katman yok.",
   "chooseCategoryMsg": "ı_Make a selection from the list below____________________İ.",
   "featureErrorMsg": "ı_No records found__________________İ.",
   "featureEditFormInfoMsg": "ı_Please provide the details____________________________İ.",

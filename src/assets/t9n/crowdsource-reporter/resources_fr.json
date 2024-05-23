@@ -11,7 +11,6 @@
   "back": "Retour",
   "error": "Erreur",
   "invalidConfigurationErrorMsg": "Configuration non valide",
-  "noLayerToDisplayErrorMsg": "La carte Web configurée ne comporte aucune couche d’entités modifiable.",
   "chooseCategoryMsg": "æ_Make a selection from the list below____________________Â.",
   "featureErrorMsg": "æ_No records found__________________Â.",
   "featureEditFormInfoMsg": "æ_Please provide the details____________________________Â.",

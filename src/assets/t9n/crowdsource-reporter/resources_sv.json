@@ -11,7 +11,6 @@
   "back": "Bakåt",
   "error": "Fel",
   "invalidConfigurationErrorMsg": "Ogiltig konfiguration",
-  "noLayerToDisplayErrorMsg": "Konfigurerad webbkarta har inga redigerbara geoobjektlager.",
   "chooseCategoryMsg": "Å_Make a selection from the list below____________________ö.",
   "featureErrorMsg": "Å_No records found__________________ö.",
   "featureEditFormInfoMsg": "Å_Please provide the details____________________________ö.",

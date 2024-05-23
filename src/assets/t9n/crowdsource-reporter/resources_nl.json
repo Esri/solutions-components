@@ -11,7 +11,6 @@
   "back": "Terug",
   "error": "Fout",
   "invalidConfigurationErrorMsg": "Ongeldige configuratie",
-  "noLayerToDisplayErrorMsg": "Geconfigureerde web map bevat geen bewerkbare objectlagen.",
   "chooseCategoryMsg": "Ĳ_Make a selection from the list below____________________ä.",
   "featureErrorMsg": "Ĳ_No records found__________________ä.",
   "featureEditFormInfoMsg": "Ĳ_Please provide the details____________________________ä.",

@@ -11,7 +11,6 @@
   "back": "Назад",
   "error": "Ошибка",
   "invalidConfigurationErrorMsg": "Недопустимая конфигурация",
-  "noLayerToDisplayErrorMsg": "Настроенная веб-карта не содержит редактируемых векторных слоев.",
   "chooseCategoryMsg": "Ж_Make a selection from the list below____________________Я.",
   "featureErrorMsg": "Ж_No records found__________________Я.",
   "featureEditFormInfoMsg": "Ж_Please provide the details____________________________Я.",

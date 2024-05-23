@@ -11,7 +11,6 @@
   "back": "Nazaj",
   "error": "Napaka",
   "invalidConfigurationErrorMsg": "Neveljavna konfiguracija",
-  "noLayerToDisplayErrorMsg": "Konfigurirana spletna karta nima nobenega sloja geoobjektov, ki bi ga bilo mogoče urejati.",
   "chooseCategoryMsg": "Š_Make a selection from the list below____________________č.",
   "featureErrorMsg": "Š_No records found__________________č.",
   "featureEditFormInfoMsg": "Š_Please provide the details____________________________č.",

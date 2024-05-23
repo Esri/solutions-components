@@ -11,7 +11,6 @@
   "back": "Voltar",
   "error": "Erro",
   "invalidConfigurationErrorMsg": "Configuração inválida",
-  "noLayerToDisplayErrorMsg": "O mapa da web configurado não possui nenhuma camada de feição editável.",
   "chooseCategoryMsg": "ã_Make a selection from the list below____________________Ç.",
   "featureErrorMsg": "ã_No records found__________________Ç.",
   "featureEditFormInfoMsg": "ã_Please provide the details____________________________Ç.",

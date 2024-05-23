@@ -11,7 +11,6 @@
   "back": "Natrag",
   "error": "Pogreška",
   "invalidConfigurationErrorMsg": "Nevaljana konfiguracija",
-  "noLayerToDisplayErrorMsg": "Konfigurirana web-karta nema nijedan sloj geoobjekta koji se može uređivati.",
   "chooseCategoryMsg": "Č_Make a selection from the list below____________________ž.",
   "featureErrorMsg": "Č_No records found__________________ž.",
   "featureEditFormInfoMsg": "Č_Please provide the details____________________________ž.",

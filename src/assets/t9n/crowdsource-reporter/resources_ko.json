@@ -11,7 +11,6 @@
   "back": "뒤로",
   "error": "오류",
   "invalidConfigurationErrorMsg": "유효하지 않은 구성",
-  "noLayerToDisplayErrorMsg": "구성된 웹 맵에 편집 가능한 피처 레이어가 없습니다.",
   "chooseCategoryMsg": "한_Make a selection from the list below____________________빠.",
   "featureErrorMsg": "한_No records found__________________빠.",
   "featureEditFormInfoMsg": "한_Please provide the details____________________________빠.",

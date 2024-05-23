@@ -11,7 +11,6 @@
   "back": "Tilbage",
   "error": "Fejl",
   "invalidConfigurationErrorMsg": "Ugyldig konfiguration",
-  "noLayerToDisplayErrorMsg": "Konfigurerede webkort har ikke noget redigerbart vektorlag.",
   "chooseCategoryMsg": "ø_Make a selection from the list below____________________å.",
   "featureErrorMsg": "ø_No records found__________________å.",
   "featureEditFormInfoMsg": "ø_Please provide the details____________________________å.",

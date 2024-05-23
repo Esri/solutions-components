@@ -11,7 +11,6 @@
   "back": "上一步",
   "error": "錯誤",
   "invalidConfigurationErrorMsg": "配置無效",
-  "noLayerToDisplayErrorMsg": "配置的 Web 地圖沒有任何可編輯的圖徵圖層。",
   "chooseCategoryMsg": "試_Make a selection from the list below____________________驗.",
   "featureErrorMsg": "試_No records found__________________驗.",
   "featureEditFormInfoMsg": "試_Please provide the details____________________________驗.",

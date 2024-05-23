@@ -11,7 +11,6 @@
   "back": "Atrás",
   "error": "Error",
   "invalidConfigurationErrorMsg": "Configuración no válida",
-  "noLayerToDisplayErrorMsg": "El mapa web configurado no tiene ninguna capa de entidades editable.",
   "chooseCategoryMsg": "á_Make a selection from the list below____________________Ó.",
   "featureErrorMsg": "á_No records found__________________Ó.",
   "featureEditFormInfoMsg": "á_Please provide the details____________________________Ó.",
