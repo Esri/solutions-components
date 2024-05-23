@@ -11,7 +11,6 @@
   "back": "Tilbake",
   "error": "Feil",
   "invalidConfigurationErrorMsg": "Ugyldig konfigurasjon",
-  "noLayerToDisplayErrorMsg": "Konfigurert webkart har ingen geoobjektlag som kan redigeres.",
   "chooseCategoryMsg": "å_Make a selection from the list below____________________ø.",
   "featureErrorMsg": "å_No records found__________________ø.",
   "featureEditFormInfoMsg": "å_Please provide the details____________________________ø.",

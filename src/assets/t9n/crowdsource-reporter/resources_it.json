@@ -11,7 +11,6 @@
   "back": "Indietro",
   "error": "Errore",
   "invalidConfigurationErrorMsg": "Configurazione non valida",
-  "noLayerToDisplayErrorMsg": "La mappa web configurata non ha un feature layer modificabile.",
   "chooseCategoryMsg": "é_Make a selection from the list below____________________È.",
   "featureErrorMsg": "é_No records found__________________È.",
   "featureEditFormInfoMsg": "é_Please provide the details____________________________È.",

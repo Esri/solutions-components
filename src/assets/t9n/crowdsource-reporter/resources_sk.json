@@ -11,7 +11,6 @@
   "back": "Späť",
   "error": "Chyba",
   "invalidConfigurationErrorMsg": "Neplatná konfigurácia",
-  "noLayerToDisplayErrorMsg": "Nakonfigurovaná webová mapa neobsahuje žiadnu editovateľnú prvkovú vrstvu.",
   "chooseCategoryMsg": "ĺ_Make a selection from the list below____________________ľ.",
   "featureErrorMsg": "ĺ_No records found__________________ľ.",
   "featureEditFormInfoMsg": "ĺ_Please provide the details____________________________ľ.",

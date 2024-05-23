@@ -11,7 +11,6 @@
   "back": "رجوع",
   "error": "خطأ",
   "invalidConfigurationErrorMsg": "تكوين غير صحيح",
-  "noLayerToDisplayErrorMsg": "لا تحتوي خريطة الويب التي تم تكوينها على أي طبقة معالم قابلة للتحرير.",
   "chooseCategoryMsg": "بيت_Make a selection from the list below____________________لاحقة.",
   "featureErrorMsg": "بيت_No records found__________________لاحقة.",
   "featureEditFormInfoMsg": "بيت_Please provide the details____________________________لاحقة.",

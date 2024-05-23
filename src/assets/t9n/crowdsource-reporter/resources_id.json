@@ -11,7 +11,6 @@
   "back": "Kembali",
   "error": "Kesalahan",
   "invalidConfigurationErrorMsg": "Konfigurasi tidak valid",
-  "noLayerToDisplayErrorMsg": "Web map yang dikonfigurasi tidak memiliki feature layer yang dapat diedit.",
   "chooseCategoryMsg": "ng_Make a selection from the list below____________________ny.",
   "featureErrorMsg": "ng_No records found__________________ny.",
   "featureEditFormInfoMsg": "ng_Please provide the details____________________________ny.",

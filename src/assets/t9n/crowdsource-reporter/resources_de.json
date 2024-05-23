@@ -11,7 +11,6 @@
   "back": "Zurück",
   "error": "Fehler",
   "invalidConfigurationErrorMsg": "Ungültige Konfiguration",
-  "noLayerToDisplayErrorMsg": "Konfigurierte Webkarte enthält keine editierbaren Feature-Layer.",
   "chooseCategoryMsg": "ä_Make a selection from the list below____________________Ü.",
   "featureErrorMsg": "ä_No records found__________________Ü.",
   "featureEditFormInfoMsg": "ä_Please provide the details____________________________Ü.",

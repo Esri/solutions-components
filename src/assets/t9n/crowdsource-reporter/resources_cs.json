@@ -11,7 +11,6 @@
   "back": "Zpět",
   "error": "Chyba",
   "invalidConfigurationErrorMsg": "Neplatná konfigurace",
-  "noLayerToDisplayErrorMsg": "Nakonfigurovaná webová mapa nemá žádnou vrstvu prvků, kterou lze editovat.",
   "chooseCategoryMsg": "Ř_Make a selection from the list below____________________ů.",
   "featureErrorMsg": "Ř_No records found__________________ů.",
   "featureEditFormInfoMsg": "Ř_Please provide the details____________________________ů.",
