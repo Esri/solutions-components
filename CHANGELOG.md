@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.8.22] - Map 23nd 2024
+hide map on load adjustment
+
 ## [0.8.21] - Map 23nd 2024
 hide map on load and sort table
 
@@ -600,4 +603,5 @@ Recover from test releases
 [0.8.19]: https://github.com/Esri/solution.js/compare/v0.8.18...v0.8.19 "v0.8.19"
 [0.8.20]: https://github.com/Esri/solution.js/compare/v0.8.19...v0.8.20 "v0.8.20"
 [0.8.21]: https://github.com/Esri/solution.js/compare/v0.8.20...v0.8.21 "v0.8.21"
-[Unreleased]: https://github.com/Esri/solution.js/compare/v0.8.21...HEAD "Unreleased Changes"
+[0.8.22]: https://github.com/Esri/solution.js/compare/v0.8.21...v0.8.22 "v0.8.22"
+[Unreleased]: https://github.com/Esri/solution.js/compare/v0.8.22...HEAD "Unreleased Changes"
