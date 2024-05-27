@@ -14,6 +14,7 @@
 * limitations under the License.
 */
 
+import { _prepareAttributeValue } from "./downloadUtils";
 import { loadModules } from "./loadModules";
 
 export class PopupUtils {
@@ -22,6 +23,11 @@ export class PopupUtils {
 	 * esri/arcade: https://developers.arcgis.com/javascript/latest/api-reference/esri-arcade.html
 	 */
 	arcade: typeof import("esri/arcade");
+
+	/**
+	 * esri/intl: https://developers.arcgis.com/javascript/latest/api-reference/esri-intl.html
+	 */
+	intl: typeof import("esri/intl");
 
 	/**
 	 * Get the popup title that honors arcade expressions
@@ -47,6 +53,7 @@ export class PopupUtils {
 		}
 		const layer = graphic.layer as __esri.FeatureLayer;
 		const popupTitle = this._removeTags(layer?.popupTemplate?.title as string);
+		//resolve arcade expression from the popup title
 		if (popupTitle.includes("{expression/expr") && layer?.popupTemplate?.expressionInfos != null) {
 			for (let i = 0; i < layer.popupTemplate?.expressionInfos.length; i++) {
 				const info = layer.popupTemplate.expressionInfos[i];
@@ -65,7 +72,18 @@ export class PopupUtils {
 				}
 			}
 		}
-
+		//Format field values
+		if (layer.popupTemplate.fieldInfos) {
+			layer.fields.forEach((field) => {
+				const attributeValue = graphic.attributes[field.name];
+				//get the field info from popupTemplate
+				const fieldInfo = layer.popupTemplate.fieldInfos.find((fInfo) => fInfo.fieldName.toLowerCase() === field.name.toLowerCase());
+				//format the attribute value
+				const formattedAttributeValue = _prepareAttributeValue(attributeValue, field.type, field.domain, fieldInfo?.format, this.intl);
+				attributes[`{${field.name.toUpperCase()}}`] = formattedAttributeValue;
+			})
+		}
+		
 		return popupTitle?.replace(/{.*?}/g, (placeholder: string) => {
 			return attributes[placeholder.toUpperCase()] != null ? (attributes[placeholder.toUpperCase()] as string) : "";
 		});
@@ -93,10 +111,12 @@ export class PopupUtils {
 	 * @protected
 	 */
 	protected async _initModules(): Promise<void> {
-		const [arcade] = await loadModules([
-			"esri/arcade"
+		const [arcade, intl] = await loadModules([
+			"esri/arcade",
+			"esri/intl"
 		]);
 		this.arcade = arcade;
+		this.intl = intl;
 	}
 
 }
