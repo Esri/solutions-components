@@ -471,6 +471,7 @@ export class FeatureList {
           {popupTitle}
         </div>
         <calcite-icon
+          flipRtl
           icon="chevron-right"
           scale="s"
           slot="content-end" />
