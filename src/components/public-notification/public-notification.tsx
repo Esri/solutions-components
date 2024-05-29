@@ -994,6 +994,7 @@ export class PublicNotification {
                     </calcite-label>
                     <calcite-icon
                       class="padding-start-1-2 icon"
+                      flipRtl
                       icon="question"
                       id="remove-duplicates-icon"
                       scale="s"
@@ -1156,6 +1157,7 @@ export class PublicNotification {
           </calcite-label>
           <calcite-icon
               class="padding-start-1-2 icon"
+              flipRtl
               icon="question"
               id="list-graphics-icon"
               scale="s"
@@ -1612,6 +1614,7 @@ export class PublicNotification {
       <calcite-action
         disabled={!enabled}
         icon={icon}
+        iconFlipRtl
         indicator={indicator}
         onClick={onClick}
         slot={slot}
