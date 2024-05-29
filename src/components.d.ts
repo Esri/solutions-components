@@ -248,9 +248,9 @@ export namespace Components {
          */
         "hideMapOnLoad": boolean;
         /**
-          * boolean: When true a introduction page has been enabled in the consuming application. Also when true a floating button will be shown in the lower right of the window that will emit an event when clicked that the consuming application can respond to that will open the introduction page.
+          * boolean: When true a introduction window has been enabled in the consuming application. Also when true a floating button will be shown in the lower right of the window that will emit an event when clicked that the consuming application can respond to that will open the introduction window.
          */
-        "introductionPageEnabled": boolean;
+        "introductionWindowEnabled": boolean;
         /**
           * IMapInfo[]: array of map infos (name and id)
          */
@@ -1702,7 +1702,8 @@ declare global {
         new (): HTMLCreateRelatedFeatureElement;
     };
     interface HTMLCrowdsourceManagerElementEventMap {
-        "infoIconButtonClick": void;
+        "showIntroductionWindow": void;
+        "showCoverPage": void;
     }
     interface HTMLCrowdsourceManagerElement extends Components.CrowdsourceManager, HTMLStencilElement {
         addEventListener<K extends keyof HTMLCrowdsourceManagerElementEventMap>(type: K, listener: (this: HTMLCrowdsourceManagerElement, ev: CrowdsourceManagerCustomEvent<HTMLCrowdsourceManagerElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2592,17 +2593,21 @@ declare namespace LocalJSX {
          */
         "hideMapOnLoad"?: boolean;
         /**
-          * boolean: When true a introduction page has been enabled in the consuming application. Also when true a floating button will be shown in the lower right of the window that will emit an event when clicked that the consuming application can respond to that will open the introduction page.
+          * boolean: When true a introduction window has been enabled in the consuming application. Also when true a floating button will be shown in the lower right of the window that will emit an event when clicked that the consuming application can respond to that will open the introduction window.
          */
-        "introductionPageEnabled"?: boolean;
+        "introductionWindowEnabled"?: boolean;
         /**
           * IMapInfo[]: array of map infos (name and id)
          */
         "mapInfos"?: IMapInfo[];
         /**
+          * Emitted on demand when a cover page button is clicked
+         */
+        "onShowCoverPage"?: (event: CrowdsourceManagerCustomEvent<void>) => void;
+        /**
           * Emitted on demand when a info button is clicked
          */
-        "onInfoIconButtonClick"?: (event: CrowdsourceManagerCustomEvent<void>) => void;
+        "onShowIntroductionWindow"?: (event: CrowdsourceManagerCustomEvent<void>) => void;
         /**
           * boolean: When true only editable layers that support the update capability will be available
          */

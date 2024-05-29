@@ -45,11 +45,17 @@
     // });
 
       function infoIconButtonClick(evt) {
-      }
+          console.log('Introduction window button clicked')
+        }
+
+        function coverPageIconButtonClick() {
+          console.log('cover page button clicked')
+        }
 
       function addValues() {
       const demo = document.getElementById("demo");
-      demo.addEventListener('infoIconButtonClick', infoIconButtonClick);
+      demo.addEventListener('showIntroductionWindow', infoIconButtonClick);
+      demo.addEventListener('showCoverPage', coverPageIconButtonClick);
       let headerSet = false;
       let custom = [];
       var vars = window.location.search.substring(1).split('&');
@@ -204,6 +210,8 @@
         }]
       ];
       demo.hideMapOnLoad = false;
+      //demo.coverPageEnabled = true;
+      demo.introductionWindowEnabled = true;
     }
   </script>
 </head>
