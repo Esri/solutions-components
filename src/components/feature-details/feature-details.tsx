@@ -261,7 +261,6 @@ export class FeatureDetails {
           paginationEnabled={false}
           position="relative"
           ref={el => this._infoCard = el}
-          zoomAndScrollToSelected={true}
         />
         {(this._likeFieldAvailable || this._dislikeFieldAvailable || this._commentsAvailable) &&
           <div class="buttons-container">

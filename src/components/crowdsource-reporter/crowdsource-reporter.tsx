@@ -1357,7 +1357,6 @@ export class CrowdsourceReporter {
             isMobile={false}
             mapView={this.mapView}
             paginationEnabled={false}
-            zoomAndScrollToSelected={false}
           />
         </calcite-panel>
       </calcite-flow-item>

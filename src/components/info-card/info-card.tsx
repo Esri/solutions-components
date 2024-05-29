@@ -62,11 +62,6 @@ export class InfoCard {
   @Prop() mapView: __esri.MapView;
 
   /**
-   * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
-   */
-  @Prop() zoomAndScrollToSelected: boolean;
-
-  /**
    * boolean: If true will show edit button
    */
   @Prop() allowEditing?: boolean = true;
@@ -541,16 +536,13 @@ export class InfoCard {
               this._showListView = isOpen;
             }
           });
-
-        if (this.zoomAndScrollToSelected) {
-          this.reactiveUtils.watch(
-            () => this._features.selectedFeatureIndex,
-            (i) => {
-              if (i > -1) {
-               this.selectionChanged.emit({selectedFeature: [this._features.selectedFeature], selectedFeatureIndex: this._features.selectedFeatureIndex});
-              }
-            });
-        }
+        this.reactiveUtils.watch(
+          () => this._features.selectedFeatureIndex,
+          (i) => {
+            if (i > -1) {
+              this.selectionChanged.emit({ selectedFeature: [this._features.selectedFeature], selectedFeatureIndex: this._features.selectedFeatureIndex });
+            }
+          });
       } else {
         this._features.view = this.mapView;
         this._features.visibleElements.actionBar = false;
