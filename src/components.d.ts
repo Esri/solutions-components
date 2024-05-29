@@ -613,10 +613,6 @@ export namespace Components {
           * update the current graphics to the features widget
          */
         "updateCurrentGraphic": (selectedGraphic: __esri.Graphic) => Promise<void>;
-        /**
-          * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
-         */
-        "zoomAndScrollToSelected": boolean;
     }
     interface JsonEditor {
         /**
@@ -2974,10 +2970,6 @@ declare namespace LocalJSX {
           * string: Set the position of the feature info
          */
         "position"?: string;
-        /**
-          * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
-         */
-        "zoomAndScrollToSelected"?: boolean;
     }
     interface JsonEditor {
         /**
