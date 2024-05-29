@@ -309,6 +309,7 @@ export class LayerList {
         <div class="layer-name" slot="content-start">{layerName}</div>
         {this.showFeatureCount && featureCount !== undefined && featureCount !== "" && <div class={!this.showNextIcon ? "feature-count" : ""} slot="content-end">{"(" + featureCount + ")"}</div>}
         {this.showNextIcon && <calcite-icon
+          flipRtl
           icon="chevron-right"
           scale="s"
           slot="content-end" />}
