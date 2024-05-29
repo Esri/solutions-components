@@ -88,11 +88,11 @@ export class CrowdsourceManager {
   @Prop() defaultWebmap = "";
 
   /**
-   * boolean: When true a introduction page has been enabled in the consuming application.
+   * boolean: When true a introduction window has been enabled in the consuming application.
    * Also when true a floating button will be shown in the lower right of the window that
-   * will emit an event when clicked that the consuming application can respond to that will open the introduction page.
+   * will emit an event when clicked that the consuming application can respond to that will open the introduction window.
    */
-  @Prop() introductionPageEnabled = false;
+  @Prop() introductionWindowEnabled = false;
 
   /**
    * boolean: when true the layer table will auto refresh the data
@@ -375,9 +375,14 @@ export class CrowdsourceManager {
   //--------------------------------------------------------------------------
 
   /**
- * Emitted on demand when a info button is clicked
- */
-  @Event() infoIconButtonClick: EventEmitter<void>;
+   * Emitted on demand when a info button is clicked
+   */
+  @Event() showIntroductionWindow: EventEmitter<void>;
+
+  /**
+   * Emitted on demand when a cover page button is clicked
+   */
+  @Event() showCoverPage: EventEmitter<void>;
 
   /**
    * Listen for changes in feature selection and show or hide the map, popup, and table
@@ -671,6 +676,20 @@ export class CrowdsourceManager {
           {this._getTable(layoutMode, panelOpen, hideTable)}
         </div>
         {this.coverPageEnabled &&
+          <div class="floating-container" onClick={this.coverPageButtonClick.bind(this)}>
+            <calcite-button
+              appearance="solid"
+              class={`floating-button ${themeClass}`}
+              icon-start="content-minimal"
+              kind="neutral"
+              label=""
+              round
+              scale="l"
+              split-child="primary"
+              width="auto" />
+          </div>
+        }
+        {this.introductionWindowEnabled &&
           <div class="floating-container" onClick={this.infoButtonClick.bind(this)}>
             <calcite-button
               appearance="solid"
@@ -692,7 +711,14 @@ export class CrowdsourceManager {
    * Emit the event when info button clicked
    */
   protected infoButtonClick(): void {
-    this.infoIconButtonClick.emit();
+    this.showIntroductionWindow.emit();
+  }
+
+  /**
+ * Emit the event when cover page button clicked
+ */
+  protected coverPageButtonClick(): void {
+    this.showCoverPage.emit();
   }
 
   /**

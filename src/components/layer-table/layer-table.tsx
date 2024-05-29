@@ -559,6 +559,12 @@ export class LayerTable {
   ): Promise<void> {
     const g: __esri.Graphic = evt.detail.selectedFeature[0];
     const oid = g.getObjectId();
+    //Highlight the current selected feature in the table using rowHighlightIds
+    const table = this._table as any;
+    if (table.rowHighlightIds.length) {
+      table.rowHighlightIds.removeAll();
+    }
+    table.rowHighlightIds.add(oid);
     if (this.zoomAndScrollToSelected) {
       const i: number = this._table.viewModel.getObjectIdIndex(oid);
       this._table.scrollToIndex(i);

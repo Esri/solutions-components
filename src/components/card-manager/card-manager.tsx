@@ -158,7 +158,6 @@ export class CardManager {
                 isLoading={this._cardLoading}
                 isMobile={this.isMobile}
                 mapView={this.mapView}
-                zoomAndScrollToSelected={this.zoomAndScrollToSelected}
               />
             </div>
           </calcite-shell>
