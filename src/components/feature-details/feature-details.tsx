@@ -18,6 +18,7 @@ import { Component, h, Element, Prop, State, Method, Event, EventEmitter, Watch}
 import { loadModules } from "../../utils/loadModules";
 import { getAllTables } from '../../utils/mapViewUtils';
 import { IReportingOptions } from '../../components';
+import { ILayerItemsHash } from "../layer-list/layer-list";
 
 @Component({
   tag: 'feature-details',
@@ -53,6 +54,11 @@ export class FeatureDetails {
    * IReportingOptions: Key options for reporting
    */
   @Prop() reportingOptions: IReportingOptions;
+
+  /**
+   * ILayerItemsHash: LayerDetailsHash for each layer in the map
+   */
+  @Prop() layerItemsHash: ILayerItemsHash;
 
   //--------------------------------------------------------------------------
   //
@@ -231,7 +237,12 @@ export class FeatureDetails {
   /**
    * Emitted on demand when comment is selected using the feature-list
    */
-  @Event() featureSelect: EventEmitter<__esri.Graphic>;
+  @Event() commentSelect: EventEmitter<__esri.Graphic>;
+
+  /**
+   * Emitted on demand when the selected index changes
+   */
+  @Event() featureSelectionChange: EventEmitter<{ selectedFeature: __esri.Graphic[], selectedFeatureIndex: number }>;
 
   /**
    * StencilJS: Called once just after the component is first connected to the DOM.
@@ -258,6 +269,7 @@ export class FeatureDetails {
           isLoading={false}
           isMobile={false}
           mapView={this.mapView}
+          onSelectionChanged={(e) => { this.featureSelectionChange.emit(e.detail) }}
           paginationEnabled={false}
           position="relative"
           ref={el => this._infoCard = el}
@@ -296,9 +308,11 @@ export class FeatureDetails {
           <feature-list
             class="height-full"
             mapView={this.mapView}
+            onFeatureSelect={(e) => { this.commentSelect.emit(e.detail) }}
             pageSize={5}
             ref={el => this._commentsList = el}
             selectedLayerId={this.relatedTableId}
+            showErrorWhenNoFeatures={false}
             showInitialLoading={false}
             textSize={"small"}
             whereClause={commentsListWhereClause}
@@ -343,7 +357,8 @@ export class FeatureDetails {
    */
   protected async processComments(): Promise<void> {
     const selectedLayer = this._selectedGraphic.layer as __esri.FeatureLayer;
-    const commentsConfigured = this.reportingOptions[selectedLayer.id].comment && selectedLayer.relationships?.length > 0;
+    const commentsConfigured = this.reportingOptions && this.reportingOptions[selectedLayer.id] &&
+      this.reportingOptions[selectedLayer.id].comment && selectedLayer.relationships?.length > 0;
     if (commentsConfigured) {
       //Get comments table id from map
       const relatedTableIdFromRelnship = selectedLayer.relationships[0].relatedTableId;
@@ -409,7 +424,7 @@ export class FeatureDetails {
       }
       //Check if selected layer have the configured like and dislike field and it is of integer types
       selectedLayer.fields.forEach((eachField: __esri.Field) => {
-        if (this._validFieldTypes.indexOf(eachField.type) > -1) {
+        if (this._validFieldTypes.indexOf(eachField.type) > -1  && this.layerItemsHash[selectedLayer.id].supportsUpdate) {
           if (eachField.name === likeField && this.reportingOptions[selectedLayer.id].like) {
             likeFieldAvailable = true;
           } else if (eachField.name === dislikeField && this.reportingOptions[selectedLayer.id].dislike) {
@@ -444,11 +459,11 @@ export class FeatureDetails {
       //Check if selected layer have the configured like and dislike fields
       //also, get the current value for like and dislike field from the attributes
       selectedLayer.fields.forEach((eachField: __esri.Field) => {
-        if (this._validFieldTypes.indexOf(eachField.type) > -1) {
-          if (eachField.name === this._likeField && this.reportingOptions[this._selectedGraphic.layer.id].like) {
-            this._likeFieldAvailable = true;
+        if (this._validFieldTypes.indexOf(eachField.type) > -1 && this.layerItemsHash[selectedLayer.id].supportsUpdate) {
+          if (eachField.name === this._likeField && this.reportingOptions[selectedLayer.id].like) {
+            this._likeFieldAvailable = true ;
             this._likeCount = this._selectedGraphic.attributes[eachField.name];
-          } else if (eachField.name === this._dislikeField && this.reportingOptions[this._selectedGraphic.layer.id].dislike) {
+          } else if (eachField.name === this._dislikeField && this.reportingOptions[selectedLayer.id].dislike) {
             this._dislikeFieldAvailable = true;
             this._disLikeCount = this._selectedGraphic.attributes[eachField.name];
           }

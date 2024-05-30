@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Prop, VNode, State, Watch, Event, EventEmitter, Listen, Fragment } from "@stencil/core";
-import { ILayerExpression, IMapChange, IMapClick, IMapInfo, IReportingOptions, ISearchConfiguration, ISortingInfo, theme } from "../../utils/interfaces";
+import { Component, Element, Host, h, Prop, VNode, State, Watch, Event, EventEmitter, Fragment } from "@stencil/core";
+import { ILayerExpression, IMapChange, IMapClick, IMapInfo, IReportingOption, IReportingOptions, ISearchConfiguration, ISortingInfo, theme } from "../../utils/interfaces";
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { loadModules } from "../../utils/loadModules";
 import CrowdsourceReporter_T9n from "../../assets/t9n/crowdsource-reporter/resources.json";
@@ -205,7 +205,7 @@ export class CrowdsourceReporter {
   @State() _flowItems: string[] = [];
 
   /**
-   * boolean: When true show the sort and filter icon
+   * boolean: Will be true when has valid reporting layers (This will be used to show the create report button on layer list)
    */
   @State() _hasValidLayers = false;
 
@@ -406,6 +406,11 @@ export class CrowdsourceReporter {
    */
   protected _selectedLayer: __esri.FeatureLayer;
 
+  /**
+   * ILayerItemsHash: LayerDetailsHash for each layer in the map
+   */
+  protected _layerItemsHash: ILayerItemsHash;
+
   //--------------------------------------------------------------------------
   //
   //  Watch handlers
@@ -428,22 +433,6 @@ export class CrowdsourceReporter {
     await this.mapView.when(async () => {
       await this.setMapView();
     });
-  }
-
-  /**
-   * On Feature details change update the Layer title and the current selected layer id
-   * @param evt Event hold the details of current feature graphic in the info-card
-   */
-  @Listen("selectionChanged", { target: "window" })
-  async selectionChanged(
-    evt: CustomEvent
-  ): Promise<void> {
-    void this.updatingFeatureDetails(true);
-    await this.setCurrentFeature(evt.detail.selectedFeature[0]);
-    void this.highlightOnMap(evt.detail.selectedFeature[0]);
-    this._selectedFeatureIndex = evt.detail.selectedFeatureIndex;
-    //update the feature details to reflect the like, dislike and comment values
-    await this._featureDetails.refresh(evt.detail.selectedFeature[0]);
   }
 
   //--------------------------------------------------------------------------
@@ -479,9 +468,9 @@ export class CrowdsourceReporter {
     await this._initModules();
     await this._getTranslations();
     await this.mapView?.when(async () => {
-      //set configured reporting layers array
+      //set configured layers array which are enabled for data collection
       this._layers = this.reportingOptions ? Object.keys(this.reportingOptions).filter((layerId: string) => {
-          return this.reportingOptions[layerId].reporting
+          return this.reportingOptions[layerId].visible
         }) : [];
       await this.setMapView();
     });
@@ -587,6 +576,15 @@ export class CrowdsourceReporter {
     this._validLayers.forEach(layer => {
       layer.set('visible', !layerId || (layer.id === layerId))
     })
+  }
+
+  /**
+   * Returns the layers configuration
+   * @param layerId string layerId of the selected layer
+   * @returns Configuration for the layerId
+   */
+  protected _getLayersConfig(layerId: string): IReportingOption | null {
+    return this.reportingOptions && this.reportingOptions[layerId] ? this.reportingOptions[layerId] : null;
   }
 
   /**
@@ -788,18 +786,6 @@ export class CrowdsourceReporter {
       <calcite-flow-item
         collapsed={this.isMobile && this._sidePanelCollapsed}
         heading={this.reportsHeader}>
-        {/* {this._hasValidLayers &&
-          <calcite-action
-            icon="sort-ascending-arrow"
-            slot={this.isMobile ? "header-menu-actions" : "header-actions-end"}
-            text={this._translations.sort}
-            text-enabled={this.isMobile} />}
-        {this._hasValidLayers &&
-          <calcite-action
-            icon="filter"
-            slot={this.isMobile ? "header-menu-actions" : "header-actions-end"}
-            text={this._translations.filter}
-            text-enabled={this.isMobile} />} */}
         {this.isMobile && this.getActionToExpandCollapsePanel()}
         {this._hasValidLayers && this.enableNewReports &&
           <calcite-button
@@ -831,6 +817,9 @@ export class CrowdsourceReporter {
    * @protected
    */
   protected getChooseCategoryFlowItem(): Node {
+    const onlyReportingLayers = this.reportingOptions ? Object.keys(this.reportingOptions).filter((layerId: string) => {
+      return this.reportingOptions[layerId].visible && this.reportingOptions[layerId].reporting && this._layerItemsHash[layerId] && this._layerItemsHash[layerId].supportsAdd
+    }) : [];
     return (
       <calcite-flow-item
         collapsed={this.isMobile && this._sidePanelCollapsed}
@@ -852,7 +841,7 @@ export class CrowdsourceReporter {
           </calcite-notice>
           <layer-list
             class="height-full"
-            layers={this._layers}
+            layers={onlyReportingLayers}
             mapView={this.mapView}
             onLayerSelect={this.navigateToCreateFeature.bind(this)}
             showFeatureCount={false}
@@ -1082,16 +1071,21 @@ export class CrowdsourceReporter {
     const layersListed = evt.detail;
     //consider only the layers listed in the layer-list component
     const allMapLayers = await getAllLayers(this.mapView);
+    const reportingEnabledLayerIds = []
     this._validLayers = [];
     allMapLayers.forEach((eachLayer: __esri.FeatureLayer) => {
       if (layersListed.includes(eachLayer.id)) {
         this._validLayers.push(eachLayer);
+        //create list of reporting enabled layers
+        if(this._getLayersConfig(eachLayer.id)?.reporting && this._layerItemsHash[eachLayer.id] && this._layerItemsHash[eachLayer.id].supportsAdd){
+          reportingEnabledLayerIds.push(eachLayer.id)
+        }
       }
     })
     //handleMap click on layer list loaded
     this.handleMapClick();
-    //update the has valid layer state
-    this._hasValidLayers = layersListed.length > 0;
+    //When we have any reporting layer then only show the create report button on layerList
+    this._hasValidLayers = reportingEnabledLayerIds.length > 0;
     //navigate to the feature details if URL params found
     if (!this._urlParamsLoaded) {
       this._urlParamsLoaded = true;
@@ -1121,8 +1115,9 @@ export class CrowdsourceReporter {
   protected backFromSelectedPanel(): void {
     this._updatedProgressBarStatus = 0.25;
     const updatedFlowItems = [...this._flowItems];
-    // when coming back from comment details page don't clear the highlighted feature of map
-    if (updatedFlowItems[updatedFlowItems.length - 1] !== 'comment-details') {
+    // when back from comment details or add comment page don't clear the highlighted feature of map
+    if (!(updatedFlowItems[updatedFlowItems.length - 1] === 'comment-details' ||
+      updatedFlowItems[updatedFlowItems.length - 1] === 'add-comment')) {
       this.clearHighlights();
     }
     updatedFlowItems.pop();
@@ -1173,6 +1168,20 @@ export class CrowdsourceReporter {
   }
 
   /**
+ * On Feature details change update the Layer title and the current selected layer id
+ * @param evt Event hold the details of current feature graphic from the feature-details
+ * @protected
+ */
+  protected async selectionChanged(evt: CustomEvent): Promise<void> {
+    void this.updatingFeatureDetails(true);
+    await this.setCurrentFeature(evt.detail.selectedFeature[0]);
+    void this.highlightOnMap(evt.detail.selectedFeature[0]);
+    this._selectedFeatureIndex = evt.detail.selectedFeatureIndex;
+    //update the feature details to reflect the like, dislike and comment values
+    await this._featureDetails.refresh(evt.detail.selectedFeature[0]);
+  }
+
+  /**
    * When comment is selected from list store that and show comment details
    * @param evt Event which has details of selected feature
    * @protected
@@ -1193,7 +1202,8 @@ export class CrowdsourceReporter {
     layerId: string,
     layerName: string
   ): Node {
-    const layerExpressions = this.layerExpressions?.filter((exp) => exp.id === this._selectedLayerId)
+    const layerExpressions = this.layerExpressions?.filter((exp) => exp.id === this._selectedLayerId);
+    const canCreateReports = this._getLayersConfig(this._selectedLayerId)?.reporting && this._layerItemsHash[this._selectedLayerId].supportsAdd;
     const showFilterIcon = layerExpressions?.length > 0;
     return (
       <calcite-flow-item
@@ -1216,7 +1226,7 @@ export class CrowdsourceReporter {
           text={this._translations.filter}
           title={this._translations.filter} />}
         {this.isMobile && this.getActionToExpandCollapsePanel()}
-        {this.enableNewReports &&
+        {this.enableNewReports && canCreateReports &&
           <calcite-button
             appearance="solid"
             onClick={this.navigateToCreateFeature.bind(this)}
@@ -1245,7 +1255,7 @@ export class CrowdsourceReporter {
    * @returns Node
    */
   protected getFeatureDetailsFlowItem(): Node {
-    const showCommentBtn = this.reportingOptions[this._currentFeature.layer.id].comment && (this._currentFeature.layer as __esri.FeatureLayer).relationships.length > 0;
+    const showCommentBtn = this._getLayersConfig(this._selectedLayerId)?.comment && this._selectedLayer.relationships.length > 0;
     return (
       <calcite-flow-item
         collapsed={this.isMobile && this._sidePanelCollapsed}
@@ -1272,8 +1282,10 @@ export class CrowdsourceReporter {
           <feature-details
             class={'full-height'}
             graphics={this._selectedFeature}
+            layerItemsHash={this._layerItemsHash}
             mapView={this.mapView}
-            onFeatureSelect={this.onCommentSelectFromList.bind(this)}
+            onCommentSelect={this.onCommentSelectFromList.bind(this)}
+            onFeatureSelectionChange={this.selectionChanged.bind(this)}
             onLoadingStatus={(evt) => void this.updatingFeatureDetails(evt.detail)}
             ref={el => this._featureDetails = el }
             reportingOptions={this.reportingOptions}
@@ -1431,7 +1443,7 @@ export class CrowdsourceReporter {
       void this.setSelectedLayer(layer.id, layer.title);
       this._currentFeatureId = selectedFeature.attributes[layer.objectIdField];
       // check if comments are configured and relationship is present then only get the related table
-      const isCommentTablePresent = this.reportingOptions[selectedFeature.layer.id].comment && (selectedFeature.layer as __esri.FeatureLayer).relationships.length > 0;
+      const isCommentTablePresent = this._getLayersConfig(layer.id)?.comment && layer.relationships.length > 0;
       if (isCommentTablePresent) {
         await this.getRelatedTable();
       }
@@ -1565,11 +1577,11 @@ export class CrowdsourceReporter {
         await this.setSelectedFeatures(reportingLayerGraphics);
         //if featureDetails not open then add it to the list else just reInit flowItems which will update details with newly selected features
         // eslint-disable-next-line unicorn/prefer-ternary
-        if (this._flowItems.length && this._flowItems[this._flowItems.length - 1] !== "feature-details") {
-          this._flowItems = [...this._flowItems, "feature-details"];
+        if (this._flowItems.length && this._flowItems.includes("feature-details")) {
+          this._flowItems = [... this._flowItems.slice(0, this._flowItems.indexOf("feature-details") + 1)]
+          await this.highlightOnMap(clickedGraphics[0]);
         } else {
-          this._flowItems = [...this._flowItems];
-          void this.highlightOnMap(clickedGraphics[0]);
+          this._flowItems = [...this._flowItems, "feature-details"];
         }
       }
 
@@ -1618,12 +1630,10 @@ export class CrowdsourceReporter {
   protected reduceToConfiguredLayers(
     hash: ILayerItemsHash
   ): string[] {
-    const configuredLayers = this._layers?.length > 0 ? this._layers : [];
     return Object.keys(hash).reduce((prev, cur) => {
-      let showLayer = hash[cur].supportsAdd;
-      if (configuredLayers?.length > 0) {
-        showLayer = configuredLayers.indexOf(cur) > -1 ? hash[cur].supportsAdd : false;
-      }
+      // check if reporting options exists consider the visible prop if else just check the supports Add
+      const showLayer = this.reportingOptions ? this._getLayersConfig(cur).visible 
+        : hash[cur].supportsAdd;
       if (showLayer) {
         prev.push(cur);
       }
@@ -1644,6 +1654,7 @@ export class CrowdsourceReporter {
       }
     })
     this._editableLayerIds = this.reduceToConfiguredLayers(layerItemsHash);
+    this._layerItemsHash = layerItemsHash;
   }
 
   /**
@@ -1651,12 +1662,12 @@ export class CrowdsourceReporter {
    * @protected
    */
   protected async renderFeaturesList(): Promise<void> {
+    this._flowItems = ['feature-list'];
     const evt = {
       detail: this._editableLayerIds
     } as CustomEvent
     await this.layerListLoaded(evt);
     void this.setSelectedLayer(this._validLayers[0].id, this._validLayers[0].title);
-    this._flowItems = ['feature-list'];
   }
 
   /**

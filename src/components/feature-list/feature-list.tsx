@@ -91,6 +91,11 @@ export class FeatureList {
    * boolean: Show initial loading indicator when creating list
    */
   @Prop() showInitialLoading?: boolean = true;
+
+  /**
+   * boolean: If true will show error msg when features are not present 
+   */
+  @Prop() showErrorWhenNoFeatures?: boolean = true;
   
   //--------------------------------------------------------------------------
   //
@@ -244,7 +249,7 @@ export class FeatureList {
         full-height
         full-width>
         {this._isLoading && <calcite-loader label="" scale="m" />}
-        {this._featureItems.length === 0 && !this._isLoading &&
+        {this.showErrorWhenNoFeatures && this._featureItems.length === 0 && !this._isLoading &&
           <calcite-notice
             class="error-msg"
             icon="feature-details"
