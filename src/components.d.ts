@@ -528,6 +528,10 @@ export namespace Components {
          */
         "selectedLayerId": string;
         /**
+          * boolean: If true will show error msg when features are not present
+         */
+        "showErrorWhenNoFeatures"?: boolean;
+        /**
           * boolean: Show initial loading indicator when creating list
          */
         "showInitialLoading"?: boolean;
@@ -2899,6 +2903,10 @@ declare namespace LocalJSX {
           * string: Layer id of the feature layer to show the list
          */
         "selectedLayerId"?: string;
+        /**
+          * boolean: If true will show error msg when features are not present
+         */
+        "showErrorWhenNoFeatures"?: boolean;
         /**
           * boolean: Show initial loading indicator when creating list
          */
