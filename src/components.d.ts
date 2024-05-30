@@ -7,9 +7,11 @@
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { ButtonType, DistanceUnit, EditType, EDrawMode, ELayoutMode, IBasemapConfig, IConsentResponse, IExportInfos, IInventoryItem, ILayerAndTableIds, ILayerExpression, IMapChange, IMapInfo, IReportingOptions, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISortingInfo, ISpatialRefRepresentation, IValueChange, theme } from "./utils/interfaces";
 import { IReportingOptions as IReportingOptions1 } from "./components";
+import { ILayerItemsHash } from "./components/layer-list/layer-list";
 import { UserSession } from "@esri/solution-common";
 export { ButtonType, DistanceUnit, EditType, EDrawMode, ELayoutMode, IBasemapConfig, IConsentResponse, IExportInfos, IInventoryItem, ILayerAndTableIds, ILayerExpression, IMapChange, IMapInfo, IReportingOptions, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISortingInfo, ISpatialRefRepresentation, IValueChange, theme } from "./utils/interfaces";
 export { IReportingOptions as IReportingOptions1 } from "./components";
+export { ILayerItemsHash } from "./components/layer-list/layer-list";
 export { UserSession } from "@esri/solution-common";
 export namespace Components {
     interface ArcgisLogin {
@@ -467,6 +469,10 @@ export namespace Components {
           * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
          */
         "graphics": __esri.Graphic[];
+        /**
+          * ILayerItemsHash: LayerDetailsHash for each layer in the map
+         */
+        "layerItemsHash": ILayerItemsHash;
         /**
           * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
@@ -1793,7 +1799,8 @@ declare global {
     };
     interface HTMLFeatureDetailsElementEventMap {
         "loadingStatus": boolean;
-        "featureSelect": __esri.Graphic;
+        "commentSelect": __esri.Graphic;
+        "featureSelectionChange": { selectedFeature: __esri.Graphic[], selectedFeatureIndex: number };
     }
     interface HTMLFeatureDetailsElement extends Components.FeatureDetails, HTMLStencilElement {
         addEventListener<K extends keyof HTMLFeatureDetailsElementEventMap>(type: K, listener: (this: HTMLFeatureDetailsElement, ev: FeatureDetailsCustomEvent<HTMLFeatureDetailsElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2837,13 +2844,21 @@ declare namespace LocalJSX {
          */
         "graphics"?: __esri.Graphic[];
         /**
+          * ILayerItemsHash: LayerDetailsHash for each layer in the map
+         */
+        "layerItemsHash"?: ILayerItemsHash;
+        /**
           * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
         /**
           * Emitted on demand when comment is selected using the feature-list
          */
-        "onFeatureSelect"?: (event: FeatureDetailsCustomEvent<__esri.Graphic>) => void;
+        "onCommentSelect"?: (event: FeatureDetailsCustomEvent<__esri.Graphic>) => void;
+        /**
+          * Emitted on demand when the selected index changes
+         */
+        "onFeatureSelectionChange"?: (event: FeatureDetailsCustomEvent<{ selectedFeature: __esri.Graphic[], selectedFeatureIndex: number }>) => void;
         /**
           * Emitted on demand when like or dislike button is clicked
          */
