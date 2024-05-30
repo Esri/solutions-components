@@ -786,18 +786,6 @@ export class CrowdsourceReporter {
       <calcite-flow-item
         collapsed={this.isMobile && this._sidePanelCollapsed}
         heading={this.reportsHeader}>
-        {/* {this._hasValidLayers &&
-          <calcite-action
-            icon="sort-ascending-arrow"
-            slot={this.isMobile ? "header-menu-actions" : "header-actions-end"}
-            text={this._translations.sort}
-            text-enabled={this.isMobile} />}
-        {this._hasValidLayers &&
-          <calcite-action
-            icon="filter"
-            slot={this.isMobile ? "header-menu-actions" : "header-actions-end"}
-            text={this._translations.filter}
-            text-enabled={this.isMobile} />} */}
         {this.isMobile && this.getActionToExpandCollapsePanel()}
         {this._hasValidLayers && this.enableNewReports &&
           <calcite-button
