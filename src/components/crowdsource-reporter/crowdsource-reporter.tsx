@@ -1127,8 +1127,9 @@ export class CrowdsourceReporter {
   protected backFromSelectedPanel(): void {
     this._updatedProgressBarStatus = 0.25;
     const updatedFlowItems = [...this._flowItems];
-    // when coming back from comment details page don't clear the highlighted feature of map
-    if (updatedFlowItems[updatedFlowItems.length - 1] !== 'comment-details') {
+    // when back from comment details or add comment page don't clear the highlighted feature of map
+    if (!(updatedFlowItems[updatedFlowItems.length - 1] === 'comment-details' ||
+      updatedFlowItems[updatedFlowItems.length - 1] === 'add-comment')) {
       this.clearHighlights();
     }
     updatedFlowItems.pop();
