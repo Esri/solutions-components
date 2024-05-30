@@ -10,16 +10,18 @@
 | Property           | Attribute | Description                                                                                               | Type                | Default     |
 | ------------------ | --------- | --------------------------------------------------------------------------------------------------------- | ------------------- | ----------- |
 | `graphics`         | --        | esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html             | `Graphic[]`         | `undefined` |
+| `layerItemsHash`   | --        | ILayerItemsHash: LayerDetailsHash for each layer in the map                                               | `ILayerItemsHash`   | `undefined` |
 | `mapView`          | --        | esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html | `MapView`           | `undefined` |
 | `reportingOptions` | --        | IReportingOptions: Key options for reporting                                                              | `IReportingOptions` | `undefined` |
 
 
 ## Events
 
-| Event           | Description                                                       | Type                   |
-| --------------- | ----------------------------------------------------------------- | ---------------------- |
-| `featureSelect` | Emitted on demand when comment is selected using the feature-list | `CustomEvent<Graphic>` |
-| `loadingStatus` | Emitted on demand when like or dislike button is clicked          | `CustomEvent<boolean>` |
+| Event                    | Description                                                       | Type                                                                         |
+| ------------------------ | ----------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| `commentSelect`          | Emitted on demand when comment is selected using the feature-list | `CustomEvent<Graphic>`                                                       |
+| `featureSelectionChange` | Emitted on demand when the selected index changes                 | `CustomEvent<{ selectedFeature: Graphic[]; selectedFeatureIndex: number; }>` |
+| `loadingStatus`          | Emitted on demand when like or dislike button is clicked          | `CustomEvent<boolean>`                                                       |
 
 
 ## Methods
