@@ -697,7 +697,7 @@ export class CrowdsourceReporter {
    * @param sortOption selected sort option (Newest/Oldest/Highest Voted/Lowest Voted)
    */
   protected async sortOptionClick(
-    sortField: string, 
+    sortField: string,
     sortOrder: "asc" | "desc",
     sortOption: string
   ): Promise<void> {
@@ -1269,7 +1269,8 @@ export class CrowdsourceReporter {
           embed={false}
           popoverButtonIconScale="s"
           ref={el => this._shareNode = el}
-          scale="m"
+          removePopoverOffset={true}
+          scale="s"
           shareButtonColor="neutral"
           shareButtonType="action"
           slot={"header-actions-end"}
