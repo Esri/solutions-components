@@ -223,9 +223,7 @@ export class LayerList {
     const allMapLayers = await getAllLayers(this.mapView);
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
     allMapLayers.forEach(async (eachLayer: __esri.FeatureLayer) => {
-      //TODO: checking editable condition could be configurable
-      if (eachLayer?.type === "feature" && eachLayer?.editingEnabled && eachLayer?.capabilities?.operations?.supportsAdd) {
-        this._layerItemsHash[eachLayer.id].supportsAdd = true;
+      if (eachLayer?.type === "feature") {
         if (this.showFeatureCount) {
           const q = eachLayer.createQuery();
           const result = eachLayer.queryFeatureCount(q);
@@ -260,7 +258,7 @@ export class LayerList {
   }
 
   /**
-   * Returns the ids of all OR configured layers that needs to be shown in the list
+   * Returns the ids of configured layers that needs to be shown in the list
    * @param hash each layer item details
    * @returns array of layer ids
    */
@@ -269,11 +267,7 @@ export class LayerList {
   ): string[] {
     const configuredLayers = this.layers?.length > 0 ? this.layers : [];
     return Object.keys(hash).reduce((prev, cur) => {
-      let showLayer = true;
-      if (configuredLayers?.length > 0) {
-        showLayer = configuredLayers.indexOf(cur) > -1;
-      }
-      if (showLayer) {
+      if (configuredLayers.indexOf(cur) > -1) {
         prev.push(cur);
       }
       return prev;

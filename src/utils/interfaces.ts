@@ -589,6 +589,7 @@ export interface IReportingOption {
   likeField?: string;
   dislike: boolean;
   dislikeField?: string;
+  visible: boolean;
 }
 
 export interface ISortingInfo {
