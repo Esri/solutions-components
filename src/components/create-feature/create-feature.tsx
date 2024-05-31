@@ -117,6 +117,11 @@ export class CreateFeature {
    */
   protected _addingAttachment: boolean
 
+  /**
+   * boolean: Flag to maintain form submission using submit button
+   */
+  protected _isSubmitBtnClicked = false;
+
   //--------------------------------------------------------------------------
   //
   //  Watch handlers
@@ -156,6 +161,7 @@ export class CreateFeature {
   @Method()
   async submit(): Promise<void> {
     if (this._editor) {
+      this._isSubmitBtnClicked = true;
       this._editor.viewModel.featureFormViewModel.submit();
     }
   }
@@ -494,11 +500,13 @@ export class CreateFeature {
   protected async submitted(evt: any): Promise<void> {
     //return if any attribute is invalid , focus will be shifted to the invalid attribute in feature form
     if (evt.invalid.length) {
+      this._isSubmitBtnClicked = false;
       return;
     }
     //Submit only when valid attributes
     //emit success or fail based on the result
-    if (evt.valid.length) {
+    if (evt.valid.length && this._isSubmitBtnClicked) {
+      this._isSubmitBtnClicked = false;
       try {
         await this._editor.activeWorkflow.commit();
         //throw errors if any failures
