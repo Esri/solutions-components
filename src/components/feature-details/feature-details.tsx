@@ -106,6 +106,11 @@ export class FeatureDetails {
    */
   @State() _relatedFeaturesOIDs: string[];
 
+  /**
+   * boolean: When performing any operations set this to true (This will be used to show loading on like/dislike buttons)
+   */
+  @State() _updating = false;
+
   //--------------------------------------------------------------------------
   //
   //  Properties (protected)
@@ -290,6 +295,7 @@ export class FeatureDetails {
                 appearance={"transparent"}
                 iconEnd="thumbs-up"
                 kind={this._isLikeBtnClicked ? "brand" : "neutral"}
+                loading={this._updating}
                 onClick={this.onLikeButtonClick.bind(this)}
                 scale='s'
               >{this._likeCount ?? this._selectedGraphic.attributes[this._likeField] ?? 0}</calcite-button>
@@ -299,6 +305,7 @@ export class FeatureDetails {
                 appearance={"transparent"}
                 iconEnd="thumbs-down"
                 kind={this._isDislikeBtnClicked ? "brand" : "neutral"}
+                loading={this._updating}
                 onClick={this.onDislikeButtonClick.bind(this)}
                 scale='s'
               >{this._disLikeCount ?? this._selectedGraphic.attributes[this._dislikeField] ?? 0}</calcite-button>
@@ -461,7 +468,7 @@ export class FeatureDetails {
       selectedLayer.fields.forEach((eachField: __esri.Field) => {
         if (this._validFieldTypes.indexOf(eachField.type) > -1 && this.layerItemsHash[selectedLayer.id].supportsUpdate) {
           if (eachField.name === this._likeField && this.reportingOptions[selectedLayer.id].like) {
-            this._likeFieldAvailable = true ;
+            this._likeFieldAvailable = true;
             this._likeCount = this._selectedGraphic.attributes[eachField.name];
           } else if (eachField.name === this._dislikeField && this.reportingOptions[selectedLayer.id].dislike) {
             this._dislikeFieldAvailable = true;
@@ -478,7 +485,6 @@ export class FeatureDetails {
    * @protected
    */
   protected onLikeButtonClick(): void {
-    this.loadingStatus.emit(true);
     if (this._isDislikeBtnClicked && this.reportingOptions[this._selectedGraphic.layer.id].dislike) {
       this.onDislikeButtonClick();
     }
@@ -496,7 +502,6 @@ export class FeatureDetails {
    * @protected
    */
   protected onDislikeButtonClick(): void {
-    this.loadingStatus.emit(true);
     if (this._isLikeBtnClicked && this.reportingOptions[this._selectedGraphic.layer.id].like) {
       this.onLikeButtonClick()
     }
@@ -521,6 +526,7 @@ export class FeatureDetails {
   ): Promise<void> {
     const attributesToUpdate = {};
     const selectedLayer = this._selectedGraphic.layer as __esri.FeatureLayer;
+    this._updating = true;
     //Increment the value if button is clicked or else decrement it
     const selectFeatureAttr = this._selectedGraphic;
     if (buttonClicked) {
@@ -543,9 +549,9 @@ export class FeatureDetails {
       }
       //store the like dislike value for the current selected graphic in local storage
       this.setInLocalStorage();
-      this.loadingStatus.emit(false);
+      this._updating = false;
     }, (err) => {
-      this.loadingStatus.emit(false);
+      this._updating = false;
       console.log(err);
     });
   }
