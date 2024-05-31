@@ -35,9 +35,11 @@
 .feature-list-popup-title {
   font-weight: 500;
   padding: 10px 12px;
+  white-space: pre-line;
 }
 
 .feature-list-popup-title-small {
   font-size: small;
   padding: 10px 12px;
+  white-space: pre-line;
 }

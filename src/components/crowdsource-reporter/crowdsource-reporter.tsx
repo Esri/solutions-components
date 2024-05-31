@@ -470,7 +470,7 @@ export class CrowdsourceReporter {
     await this.mapView?.when(async () => {
       //set configured layers array which are enabled for data collection
       this._layers = this.reportingOptions ? Object.keys(this.reportingOptions).filter((layerId: string) => {
-          return this.reportingOptions[layerId].visible
+          return this.reportingOptions[layerId].visible;
         }) : [];
       await this.setMapView();
     });
@@ -818,7 +818,7 @@ export class CrowdsourceReporter {
    */
   protected getChooseCategoryFlowItem(): Node {
     const onlyReportingLayers = this.reportingOptions ? Object.keys(this.reportingOptions).filter((layerId: string) => {
-      return this.reportingOptions[layerId].visible && this.reportingOptions[layerId].reporting && this._layerItemsHash[layerId] && this._layerItemsHash[layerId].supportsAdd
+      return this.reportingOptions[layerId].visible && this.reportingOptions[layerId].reporting && this._layerItemsHash[layerId] && this._layerItemsHash[layerId].supportsAdd;
     }) : [];
     return (
       <calcite-flow-item
@@ -1071,14 +1071,14 @@ export class CrowdsourceReporter {
     const layersListed = evt.detail;
     //consider only the layers listed in the layer-list component
     const allMapLayers = await getAllLayers(this.mapView);
-    const reportingEnabledLayerIds = []
+    const reportingEnabledLayerIds = [];
     this._validLayers = [];
     allMapLayers.forEach((eachLayer: __esri.FeatureLayer) => {
       if (layersListed.includes(eachLayer.id)) {
         this._validLayers.push(eachLayer);
         //create list of reporting enabled layers
         if(this._getLayersConfig(eachLayer.id)?.reporting && this._layerItemsHash[eachLayer.id] && this._layerItemsHash[eachLayer.id].supportsAdd){
-          reportingEnabledLayerIds.push(eachLayer.id)
+          reportingEnabledLayerIds.push(eachLayer.id);
         }
       }
     })
@@ -1632,7 +1632,7 @@ export class CrowdsourceReporter {
   ): string[] {
     return Object.keys(hash).reduce((prev, cur) => {
       // check if reporting options exists consider the visible prop if else just check the supports Add
-      const showLayer = this.reportingOptions ? this._getLayersConfig(cur).visible 
+      const showLayer = this.reportingOptions ? this._getLayersConfig(cur)?.visible 
         : hash[cur].supportsAdd;
       if (showLayer) {
         prev.push(cur);
@@ -1714,7 +1714,7 @@ export class CrowdsourceReporter {
         const featureSet = await queryFeaturesByID([Number(this.objectId)], layer, [], true, this.mapView.spatialReference);
         if (featureSet.length) {
           //update the selectedFeature
-          this._selectedFeature = featureSet;
+          await this.setSelectedFeatures(featureSet);
           //if featureDetails not open then add it to the list else just reInit flowItems which will update details with newly selected features
           // eslint-disable-next-line unicorn/prefer-ternary
           if (this._flowItems.length && this._flowItems[this._flowItems.length - 1] !== "feature-details") {
@@ -1722,7 +1722,6 @@ export class CrowdsourceReporter {
           } else {
             this._flowItems = [...this._flowItems];
           }
-          await this.highlightOnMap(featureSet[0]);
         }
       }
     }
