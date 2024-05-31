@@ -1714,7 +1714,7 @@ export class CrowdsourceReporter {
         const featureSet = await queryFeaturesByID([Number(this.objectId)], layer, [], true, this.mapView.spatialReference);
         if (featureSet.length) {
           //update the selectedFeature
-          this._selectedFeature = featureSet;
+          await this.setSelectedFeatures(featureSet);
           //if featureDetails not open then add it to the list else just reInit flowItems which will update details with newly selected features
           // eslint-disable-next-line unicorn/prefer-ternary
           if (this._flowItems.length && this._flowItems[this._flowItems.length - 1] !== "feature-details") {
@@ -1722,7 +1722,6 @@ export class CrowdsourceReporter {
           } else {
             this._flowItems = [...this._flowItems];
           }
-          await this.highlightOnMap(featureSet[0]);
         }
       }
     }
