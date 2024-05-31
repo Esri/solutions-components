@@ -297,7 +297,7 @@ export class FeatureDetails {
                 kind={this._isLikeBtnClicked ? "brand" : "neutral"}
                 loading={this._updating}
                 onClick={this.onLikeButtonClick.bind(this)}
-                scale='s'
+                scale='m'
               >{this._likeCount ?? this._selectedGraphic.attributes[this._likeField] ?? 0}</calcite-button>
             }
             {this._dislikeFieldAvailable &&
@@ -307,7 +307,7 @@ export class FeatureDetails {
                 kind={this._isDislikeBtnClicked ? "brand" : "neutral"}
                 loading={this._updating}
                 onClick={this.onDislikeButtonClick.bind(this)}
-                scale='s'
+                scale='m'
               >{this._disLikeCount ?? this._selectedGraphic.attributes[this._dislikeField] ?? 0}</calcite-button>
             }
           </div>}
