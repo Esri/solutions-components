@@ -55,9 +55,14 @@ Promise that resolves when the operation is complete
 
  - [crowdsource-reporter](../crowdsource-reporter)
 
+### Depends on
+
+- calcite-loader
+
 ### Graph
 ```mermaid
 graph TD;
+  create-feature --> calcite-loader
   crowdsource-reporter --> create-feature
   style create-feature fill:#f9f,stroke:#333,stroke-width:4px
 ```

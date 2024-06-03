@@ -67,6 +67,11 @@ export class CreateFeature {
   //--------------------------------------------------------------------------
 
   /**
+   * boolean: When true a loading indicator will be shown while the editor loads
+   */
+  @State() _editorLoading = false;
+
+  /**
    * boolean: When true the search widget will shown
    */
   @State() showSearchWidget: boolean;
@@ -118,6 +123,11 @@ export class CreateFeature {
   protected _addingAttachment: boolean
 
   /**
+   * HTMLDivElement: The node the editor will be added to
+   */
+  protected _container: HTMLDivElement;
+
+  /**
    * boolean: Flag to maintain form submission using submit button
    */
   protected _isSubmitBtnClicked = false;
@@ -127,7 +137,7 @@ export class CreateFeature {
   //  Watch handlers
   //
   //--------------------------------------------------------------------------
-   /**
+  /**
    * Called each time the mapView prop is changed.
    */
   @Watch("mapView")
@@ -135,6 +145,19 @@ export class CreateFeature {
     await this.mapView.when(async () => {
       await this.init();
     });
+  }
+
+  /**
+   * When _editorLoading is true the container node will be hidden while starting the create workflow
+   */
+  @Watch("_editorLoading")
+  async _editorLoadingWatchHandler(v: boolean): Promise<void> {
+    if (v) {
+      this._container?.classList.add("display-none");
+      await this.startCreate();
+      this._container?.classList.remove("display-none");
+      this._editorLoading = false;
+    }
   }
 
   //--------------------------------------------------------------------------
@@ -223,10 +246,17 @@ export class CreateFeature {
    */
   render() {
     const showSearchWidget = this.showSearchWidget ? '' : 'display-none';
+    const loaderClass = this._editorLoading ? "" : "display-none";
+    const featureFormClass = this._editorLoading ? "display-none" : "";
     return (
       <Fragment>
-        <div id="feature-form" />
-        <div class={`search-widget ${showSearchWidget}`} id="search-widget-ref"/>
+        <calcite-loader
+          class={loaderClass}
+          label=""
+          scale="s"
+        />
+        <div class={featureFormClass} id="feature-form"/>
+        <div class={`search-widget ${showSearchWidget} ${featureFormClass}`} id="search-widget-ref"/>
       </Fragment>
     );
   }
@@ -272,7 +302,8 @@ export class CreateFeature {
       this._editor.destroy();
     }
     const layerInfos = []
-    const container = document.createElement("div");
+    this._container = document.createElement("div");
+    this._container?.classList.add("display-none");
     const allMapLayers = await getAllLayers(this.mapView);
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
     allMapLayers.forEach(async (eachLayer: __esri.FeatureLayer) => {
@@ -292,9 +323,9 @@ export class CreateFeature {
       visibleElements: {
         snappingControls: false
       },
-      container
+      container: this._container
     });
-    this.el.appendChild(container);
+    this.el.appendChild(this._container);
 
     //Add handle to watch if attachments are added/edited
     const attachmentHandle = this.reactiveUtils.watch(
@@ -316,9 +347,9 @@ export class CreateFeature {
     const handle = this.reactiveUtils.watch(
       () =>  this._editor.viewModel.featureTemplatesViewModel.state,
       (state) => {
-        if(state === 'ready'){
+        if(state === 'ready') {
           this.progressStatus.emit(0.5);
-          void this.startCreate();
+          this._editorLoading = true;
         }
       });
     this._editor.viewModel.addHandles(handle);
@@ -328,6 +359,7 @@ export class CreateFeature {
       () =>  this._editor.viewModel.state,
       (state) => {
         if(state === 'creating-features'){
+          this._editorLoading = true;
           this.showSearchWidget = true;
         }
       });
@@ -339,35 +371,38 @@ export class CreateFeature {
    * @protected
    */
   protected async startCreate(): Promise<void> {
-    if (this._editor.viewModel.featureTemplatesViewModel.items?.length) {
-      const items: __esri.TemplateItem[] = this._editor.viewModel.featureTemplatesViewModel.items[0].get("items");
-      //once the feature template is selected handle the event for formSubmit and sketch complete
-      //also, hide the headers and footer in the editor as we will be showing our own submit and cancel button
-      this._editor.viewModel.featureTemplatesViewModel.on('select', () => {
-        this.progressStatus.emit(0.75);
-        setTimeout(() => {
-          //on form submit 
-          this._editor.viewModel.featureFormViewModel.on('submit', this.submitted.bind(this));
-          //on sketch complete emit the event
-          this._editor.viewModel.sketchViewModel.on("create", (evt) => {
-            if (evt.state === "complete") {
-              this.showSearchWidget = false;
-	      this.progressStatus.emit(1);
-              this.drawComplete.emit();
-            }
-          })
-          this.hideEditorsElements();
-        }, 700)
-        this.hideEditorsElements();
-      });
-      //if only one feature template then directly start geometry creation for that
-      //else allow feature template selection to user
-      if (items.length === 1) {
-        this._editor.viewModel.featureTemplatesViewModel.select(items[0]);
+    return new Promise<any>((resolve, reject) => {
+      if (this._editor.viewModel.featureTemplatesViewModel.items?.length) {
+        const items: __esri.TemplateItem[] = this._editor.viewModel.featureTemplatesViewModel.items[0].get("items");
+        //once the feature template is selected handle the event for formSubmit and sketch complete
+        //also, hide the headers and footer in the editor as we will be showing our own submit and cancel button
+        this._editor.viewModel.featureTemplatesViewModel.on('select', () => {
+          this.progressStatus.emit(0.75);
+          setTimeout(() => {
+            //on form submit
+            this._editor.viewModel.featureFormViewModel.on('submit', this.submitted.bind(this));
+            //on sketch complete emit the event
+            this._editor.viewModel.sketchViewModel.on("create", (evt) => {
+              if (evt.state === "complete") {
+                this.showSearchWidget = false;
+                this.progressStatus.emit(1);
+                this.drawComplete.emit();
+              }
+            })
+            this.hideEditorsElements().then(() => {
+              resolve({});
+            }, e => reject(e));
+          }, 700);
+        });
+        //if only one feature template then directly start geometry creation for that
+        //else allow feature template selection to user
+        if (items.length === 1) {
+          this._editor.viewModel.featureTemplatesViewModel.select(items[0]);
+        }
+        //hides the header and footer elements in editor widget
+        void this.hideEditorsElements();
       }
-      //hides the header and footer elements in editor widget
-      this.hideEditorsElements()
-    }
+    });
   }
 
   /**
@@ -408,7 +443,7 @@ export class CreateFeature {
             if (this._editor.viewModel.sketchViewModel.createGraphic && pointGeometry) {
               this._editor.viewModel.sketchViewModel.createGraphic.set('geometry', pointGeometry);
               this._editor.viewModel.sketchViewModel.complete();
-              this.hideEditorsElements();
+              void this.hideEditorsElements();
             }
           }, 100);
         }
@@ -476,11 +511,11 @@ export class CreateFeature {
    * Hides the elements of editor widget
    * @protected
    */
-  protected hideEditorsElements(): void {
-    if(!this.customizeSubmit){
-      return
-    }
-    setTimeout(() => {
+  protected async hideEditorsElements(): Promise<void> {
+      if (!this.customizeSubmit) {
+        return;
+      }
+      await this.timeout(700);
       //hides the header and footer on the featureForm
       this.el.querySelector('.esri-editor').querySelectorAll('calcite-flow-item')?.forEach((flowItem) => {
         const article = flowItem.shadowRoot?.querySelector('calcite-panel')?.shadowRoot?.querySelector('article');
@@ -488,8 +523,7 @@ export class CreateFeature {
         article?.querySelector('header')?.setAttribute('style', 'display: none');
         //hide the footer
         article?.querySelector('footer')?.setAttribute('style', 'display: none');
-      })
-    }, 700);
+      });
   }
 
   /**
@@ -523,5 +557,14 @@ export class CreateFeature {
       }
       this.success.emit();
     }
+  }
+
+  /**
+   * call setTimeout in Promise wrapper
+   * @param delay The time, in milliseconds that the timer should wait before the promise is resolved
+   * @protected
+   */
+  protected timeout(delay: number): Promise<void> {
+    return new Promise(resolve => setTimeout(resolve, delay));
   }
 }
