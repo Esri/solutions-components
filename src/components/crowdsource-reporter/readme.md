@@ -163,6 +163,7 @@ graph TD;
   layer-list --> calcite-list-item
   layer-list --> calcite-icon
   calcite-notice --> calcite-icon
+  create-feature --> calcite-loader
   feature-list --> calcite-panel
   feature-list --> calcite-loader
   feature-list --> calcite-notice
