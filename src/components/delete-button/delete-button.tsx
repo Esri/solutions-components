@@ -237,6 +237,7 @@ export class DeleteButton {
     return (
       <calcite-modal
         aria-labelledby="modal-title"
+        class="delete-modal"
         kind="danger"
         onCalciteModalClose={() => this._deleteClosed()}
         open={this._confirmDelete}
