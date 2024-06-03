@@ -39,6 +39,6 @@
   "refineTipNoSelections": "Neexistují žádné výběry, které by bylo možné upřesnit. Přejděte na Moje seznamy a vytvořte seznam prvků.",
   "duplicatesTip": "Duplicitní prvky jsou vždy odebrány. Pokud je aktivní, vyskakovací okna v jednotlivých vrstvách se porovnají a všechny duplicitní informace vyskakovacích oken budou odebrány.",
   "exportListsLabel": "Moje seznamy",
-  "listGraphics": "Ř_List graphics______________ů",
-  "listGraphicsTip": "Ř_Include any graphics like search buffers or graphics from the sketch tools in the map export________________________________________________ů."
+  "listGraphics": "Vytvořit seznam grafiky",
+  "listGraphicsTip": "Zahrne do exportu mapy veškerou grafiku, jako jsou obalové zóny vyhledávání nebo grafika z nástrojů skicování."
 }

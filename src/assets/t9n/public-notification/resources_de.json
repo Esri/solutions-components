@@ -39,6 +39,6 @@
   "refineTipNoSelections": "Es sind keine Auswahlen zum Verfeinern vorhanden. Wechseln Sie zu \"Eigene Listen\", um eine Feature-Liste zu erstellen.",
   "duplicatesTip": "Doppelte Features werden grundsätzlich entfernt. Wenn diese Option aktiviert ist, werden die Pop-ups der einzelnen Layer verglichen und alle doppelten Pop-up-Informationen entfernt.",
   "exportListsLabel": "Eigene Listen",
-  "listGraphics": "ä_List graphics______________Ü",
-  "listGraphicsTip": "ä_Include any graphics like search buffers or graphics from the sketch tools in the map export________________________________________________Ü."
+  "listGraphics": "Grafiken auflisten",
+  "listGraphicsTip": "Grafiken jeder Art wie Suchpuffer oder Grafiken aus den Skizzenwerkzeugen im Kartenexport einbeziehen."
 }

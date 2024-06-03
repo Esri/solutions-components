@@ -39,6 +39,6 @@
   "refineTipNoSelections": "No hay selecciones para restringir. Vaya a Mis listas para crear una lista de entidades.",
   "duplicatesTip": "Las entidades duplicadas se eliminan siempre. Cuando se habilita, los elementos emergentes de cada capa se comparan y la información de los elementos emergentes duplicados se elimina.",
   "exportListsLabel": "Mis listas",
-  "listGraphics": "á_List graphics______________Ó",
-  "listGraphicsTip": "á_Include any graphics like search buffers or graphics from the sketch tools in the map export________________________________________________Ó."
+  "listGraphics": "Enumerar gráficos",
+  "listGraphicsTip": "Incluya cualquier gráfico como zonas de influencia de búsqueda o gráficos de las herramientas de bocetos en la exportación del mapa."
 }

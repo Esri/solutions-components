@@ -39,6 +39,6 @@
   "refineTipNoSelections": "Brak selekcji do doprecyzowania. Przejdź do obszaru Moje listy, aby utworzyć listę obiektów.",
   "duplicatesTip": "Powielone obiekty są zawsze usuwane. W przypadku ich włączenia okna podręczne z poszczególnych warstw są porównywane i wszelkie powielone informacje podręczne są usuwane.",
   "exportListsLabel": "Moje listy",
-  "listGraphics": "ł_List graphics______________ą",
-  "listGraphicsTip": "ł_Include any graphics like search buffers or graphics from the sketch tools in the map export________________________________________________ą."
+  "listGraphics": "Wyświetl listę grafik",
+  "listGraphicsTip": "Uwzględnij w eksporcie mapy wszystkie grafiki takie jak bufory wyszukiwania lub grafiki z narzędzi do szkicowania."
 }

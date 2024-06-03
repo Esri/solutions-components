@@ -39,6 +39,6 @@
   "refineTipNoSelections": "Nu există selecții de rafinat. Accesați Listele mele pentru a crea o listă de obiecte spațiale.",
   "duplicatesTip": "Obiectele spațiale duplicate sunt întotdeauna eliminate. Când este activat, pop-upurile din fiecare strat tematic vor fi comparate și orice informații pop-upurile duplicate vor fi eliminate.",
   "exportListsLabel": "Listele mele",
-  "listGraphics": "Ă_List graphics______________ș",
-  "listGraphicsTip": "Ă_Include any graphics like search buffers or graphics from the sketch tools in the map export________________________________________________ș."
+  "listGraphics": "Grafică listă",
+  "listGraphicsTip": "Include orice grafică, cum ar fi buffere de căutare sau grafice din instrumentele de trasare don exportul hărții."
 }

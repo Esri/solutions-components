@@ -39,6 +39,6 @@
   "refineTipNoSelections": "Det er ingen utvalg å finjustere. Gå til Mine lister for å opprette en liste med geoobjekter.",
   "duplicatesTip": "Duplikate geoobjekter fjernes alltid. Når dette er valgt, blir popuper fra hvert lag sammenlignet og eventuell duplisert popup-informasjon blir fjernet.",
   "exportListsLabel": "Mine lister",
-  "listGraphics": "å_List graphics______________ø",
-  "listGraphicsTip": "å_Include any graphics like search buffers or graphics from the sketch tools in the map export________________________________________________ø."
+  "listGraphics": "Vis grafikk i liste",
+  "listGraphicsTip": "Inkluder all grafikk, f.eks. søkebuffere eller grafikk fra skisseverktøyene, i karteksporten."
 }

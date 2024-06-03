@@ -39,6 +39,6 @@
   "refineTipNoSelections": "Nėra pasirinkimo apimties, kurią galima būtų patikslinti. Norėdami sukurti elementų sąrašą, eikite į Mano sąrašai.",
   "duplicatesTip": "Pasikartojantys elementai visada pašalinami. Jei ši parinktis įjungta, kiekvieno sluoksnio iššokantieji langai bus palyginami ir visa pasikartojanti iššokančiųjų langų informacija bus pašalinama.",
   "exportListsLabel": "Mano sąrašai",
-  "listGraphics": "Į_List graphics______________š",
-  "listGraphicsTip": "Į_Include any graphics like search buffers or graphics from the sketch tools in the map export________________________________________________š."
+  "listGraphics": "Grafikų sąrašas",
+  "listGraphicsTip": "Į žemėlapio eksportuojamą failą įtraukite bet kokią grafiką, pvz., paieškos buferius arba grafiką iš braižymo įrankių."
 }

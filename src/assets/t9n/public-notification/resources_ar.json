@@ -39,6 +39,6 @@
   "refineTipNoSelections": "لا يوجد أي تحديدات لتحسينها. انتقل إلى القوائم الخاصة بي لإنشاء قائمة من المعالم.",
   "duplicatesTip": "تتم دائمًا إزالة المعالم المكررة. عند التمكين، ستتم مقارنة النوافذ المنبثقة من كل طبقة وستتم إزالة أي معلومات منبثقة مكررة.",
   "exportListsLabel": "القوائم الخاصة بي",
-  "listGraphics": "بيت_List graphics______________لاحقة",
-  "listGraphicsTip": "بيت_Include any graphics like search buffers or graphics from the sketch tools in the map export________________________________________________لاحقة."
+  "listGraphics": "قائمة الرسومات",
+  "listGraphicsTip": "تضمين أي رسومات مثل نطاقات البحث \"Search Buffers\" أو الرسومات من أدوات المخطط الموجودة في تصدير الخريطة."
 }

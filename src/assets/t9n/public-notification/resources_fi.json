@@ -39,6 +39,6 @@
   "refineTipNoSelections": "Tarkennettavia valintoja ei ole. Luo kohdeluettelo siirtymällä kohtaan Omat luettelot.",
   "duplicatesTip": "Kohteiden kaksoiskappaleet poistetaan aina. Kun toiminto on käytössä, jokaisen karttatason ponnahdusikkunoita verrataan ja mahdolliset ponnahdusikkunoiden tietojen kaksoiskappaleet poistetaan.",
   "exportListsLabel": "Omat luettelot",
-  "listGraphics": "Å_List graphics______________ö",
-  "listGraphicsTip": "Å_Include any graphics like search buffers or graphics from the sketch tools in the map export________________________________________________ö."
+  "listGraphics": "Luettelografiikka",
+  "listGraphicsTip": "Sisällytä kartan vientiin kaikki grafiikka, kuten hakupuskurit tai luonnostyökalujen grafiikka."
 }

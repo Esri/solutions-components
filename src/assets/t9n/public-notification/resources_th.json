@@ -39,6 +39,6 @@
   "refineTipNoSelections": "ไม่มีการเลือกที่จะปรับแต่ง ไปที่ รายการของฉัน เพื่อสร้างรายการฟีเจอร์",
   "duplicatesTip": "ฟีเจอร์ที่ซ้ำจะถูกลบออกเสมอ เมื่อเปิดใช้งาน ป็อปอัพจากแต่ละชั้นข้อมูลจะถูกเปรียบเทียบ จากนั้นข้อมูลป็อปอัพใดๆ ที่ซ้ำจะถูกลบออก",
   "exportListsLabel": "รายการของฉัน",
-  "listGraphics": "ก้_List graphics______________ษฺ",
-  "listGraphicsTip": "ก้_Include any graphics like search buffers or graphics from the sketch tools in the map export________________________________________________ษฺ."
+  "listGraphics": "แสดงรายการกราฟิก",
+  "listGraphicsTip": "รวมกราฟิกใดๆ ก็ตาม เช่น บัฟเฟอร์การค้นหา หรือกราฟิกจากเครื่องมือการวาดในการส่งออกแผนที่"
 }

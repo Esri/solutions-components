@@ -39,6 +39,6 @@
   "refineTipNoSelections": "Nav atlases, ko precizēt. Atveriet Mani saraksti, lai izveidotu elementu sarakstu.",
   "duplicatesTip": "Dubultie elementi vienmēr tiek noņemti. Ja šī opcija ir iespējota, tiek salīdzināti katra slāņa uznirstošie logi un tiek noņemts jebkurš uznirstošās informācijas dublikāts.",
   "exportListsLabel": "Mani saraksti",
-  "listGraphics": "ķ_List graphics______________ū",
-  "listGraphicsTip": "ķ_Include any graphics like search buffers or graphics from the sketch tools in the map export________________________________________________ū."
+  "listGraphics": "Uzskaitīt grafiskos attēlus",
+  "listGraphicsTip": "Kartes eksportēšanas failā iekļaujiet visus grafiskos attēlus, piemēram, meklēšanas buferzonas vai grafiskos attēlus no skiču rīkiem."
 }

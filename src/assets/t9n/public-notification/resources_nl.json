@@ -39,6 +39,6 @@
   "refineTipNoSelections": "Er zijn geen selecties die u kunt verfijnen Ga naar Mijn lijsten om een lijst met objecten te maken.",
   "duplicatesTip": "Dubbele objecten worden altijd verwijderd. Indien ingeschakeld, worden pop-ups uit elke laag vergeleken en worden alle dubbele pop-upgegevens verwijderd.",
   "exportListsLabel": "Mijn lijsten",
-  "listGraphics": "Ĳ_List graphics______________ä",
-  "listGraphicsTip": "Ĳ_Include any graphics like search buffers or graphics from the sketch tools in the map export________________________________________________ä."
+  "listGraphics": "Afbeeldingen opsommen",
+  "listGraphicsTip": "Neem alle afbeeldingen als zoekbuffers of afbeeldingen uit de schetstools op in de kaartexport."
 }

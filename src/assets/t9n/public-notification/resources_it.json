@@ -39,6 +39,6 @@
   "refineTipNoSelections": "Non ci sono selezioni da affinare. Vai su I miei elenchi per creare un elenco di feature.",
   "duplicatesTip": "Le feature duplicate vengono sempre rimosse. Quando abilitato, si confrontano i pop-up di ciascun layer e tutte le informazioni pop-up duplicate saranno rimosse.",
   "exportListsLabel": "I miei elenchi",
-  "listGraphics": "é_List graphics______________È",
-  "listGraphicsTip": "é_Include any graphics like search buffers or graphics from the sketch tools in the map export________________________________________________È."
+  "listGraphics": "Elenco elementi grafici",
+  "listGraphicsTip": "Include elementi grafici come buffer di ricerca o elementi degli strumenti di schizzo nell'esportazione mappa."
 }

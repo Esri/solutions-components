@@ -39,6 +39,6 @@
   "refineTipNoSelections": "Nema selekcija za preciziranje. Idite u Moje liste da biste kreirali listu geoobjekata.",
   "duplicatesTip": "Diplirane osobine se uvek uklanjaju. Kada su omogućeni, iskačući prozori iz svakog sloja će biti upoređeni i bilo koji duplikat iskačuće informacije će biti uklonjen.",
   "exportListsLabel": "Moje liste",
-  "listGraphics": "Č_List graphics______________ž",
-  "listGraphicsTip": "Č_Include any graphics like search buffers or graphics from the sketch tools in the map export________________________________________________ž."
+  "listGraphics": "Lista grafika",
+  "listGraphicsTip": "Uključite bilo koju grafiku kao što su baferi za pretragu ili grafike iz alatki za skiciranje u izvoz mape."
 }

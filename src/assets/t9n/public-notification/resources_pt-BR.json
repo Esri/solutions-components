@@ -39,6 +39,6 @@
   "refineTipNoSelections": "Não há seleções para refinar. Vá até Minhas listas para criar uma lista de feições.",
   "duplicatesTip": "Feições duplicadas são sempre removidas. Quando habilitado, os pop-ups de cada camada serão comparados e qualquer informação de pop-up duplicada será removida.",
   "exportListsLabel": "Minhas listas",
-  "listGraphics": "ã_List graphics______________Ç",
-  "listGraphicsTip": "ã_Include any graphics like search buffers or graphics from the sketch tools in the map export________________________________________________Ç."
+  "listGraphics": "Listar gráficos",
+  "listGraphicsTip": "Inclua quaisquer gráficos, como buffers de pesquisa ou gráficos das ferramentas de esboço, na exportação do mapa."
 }

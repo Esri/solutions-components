@@ -39,6 +39,6 @@
   "refineTipNoSelections": "Täpsustamiseks pole ühtegi valikut. Objektiloendi loomiseks avage Minu loendid.",
   "duplicatesTip": "Objektiduplikaadid eemaldatakse alati. Kui see on lubatud, võrreldakse iga kihi hüpikaknaid ja teabe hüpikakende duplikaadid eemaldatakse.",
   "exportListsLabel": "Minu loendid",
-  "listGraphics": "Š_List graphics______________ä",
-  "listGraphicsTip": "Š_Include any graphics like search buffers or graphics from the sketch tools in the map export________________________________________________ä."
+  "listGraphics": "Loo graafika loend",
+  "listGraphicsTip": "Kaardieksporti saate kaasata mistahes graafika, näiteks otsingupuhvrid või graafika visandustööriistadest."
 }

@@ -39,6 +39,6 @@
   "refineTipNoSelections": "絞り込む選択セットがありません。 マイ リストに移動して、フィーチャのリストを作成します。",
   "duplicatesTip": "重複するフィーチャは常に削除されます。 有効化されている場合、各レイヤーのポップアップが比較され、重複するポップアップ情報がすべて削除されます。",
   "exportListsLabel": "マイ リスト",
-  "listGraphics": "須_List graphics______________鷗",
-  "listGraphicsTip": "須_Include any graphics like search buffers or graphics from the sketch tools in the map export________________________________________________鷗."
+  "listGraphics": "グラフィックスの表示",
+  "listGraphicsTip": "任意のグラフィックス (検索バッファーやスケッチ ツールのグラフィックスなど) をマップのエクスポートに含めます。"
 }

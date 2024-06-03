@@ -39,6 +39,6 @@
   "refineTipNoSelections": "Neexistujú žiadne výbery na spresnenie. Prejdite do časti Moje zoznamy a vytvorte zoznam prvkov.",
   "duplicatesTip": "Duplicitné prvky sa vždy odstránia. Ak je zapnuté, pop-up okná z každej vrstvy sa porovnajú a všetky duplicitné pop-up informácie sa odstránia.",
   "exportListsLabel": "Moje zoznamy",
-  "listGraphics": "ĺ_List graphics______________ľ",
-  "listGraphicsTip": "ĺ_Include any graphics like search buffers or graphics from the sketch tools in the map export________________________________________________ľ."
+  "listGraphics": "Zoznam grafických prvkov",
+  "listGraphicsTip": "Do exportu mapy zahrňte akúkoľvek grafiku, ako sú vyhľadávacie obalové zóny alebo grafiku zo skicovacích nástrojov."
 }

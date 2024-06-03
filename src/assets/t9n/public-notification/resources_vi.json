@@ -39,6 +39,6 @@
   "refineTipNoSelections": "Không có lựa chọn nào để tinh chỉnh. Đến Danh sách của tôi để tạo danh sách đối tượng.",
   "duplicatesTip": "Đối tượng trùng nhau sẽ luôn bị xoá. Sau khi được bật, cửa sổ pop-up từ mỗi lớp sẽ được so sánh và tất cả các thông tin pop-up trùng nhau sẽ bị xóa.",
   "exportListsLabel": "Danh sách của tôi",
-  "listGraphics": "Đ_List graphics______________ớ",
-  "listGraphicsTip": "Đ_Include any graphics like search buffers or graphics from the sketch tools in the map export________________________________________________ớ."
+  "listGraphics": "Liệt kê đồ họa",
+  "listGraphicsTip": "Bao gồm bất kỳ đồ họa nào chẳng hạn như vùng đệm tìm kiếm hoặc đồ họa từ các công cụ phác họa trong phần xuất bản đồ."
 }
