@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.8.27] - June 3rd 2024
+Update t9n for Reporter and Public Notification
+
 ## [0.8.26] - June 3rd 2024
 Safari delete modal, and avoid create-features flicker
 
@@ -620,4 +623,5 @@ Recover from test releases
 [0.8.24]: https://github.com/Esri/solution.js/compare/v0.8.23...v0.8.24 "v0.8.24"
 [0.8.25]: https://github.com/Esri/solution.js/compare/v0.8.24...v0.8.25 "v0.8.25"
 [0.8.26]: https://github.com/Esri/solution.js/compare/v0.8.25...v0.8.26 "v0.8.26"
-[Unreleased]: https://github.com/Esri/solution.js/compare/v0.8.26...HEAD "Unreleased Changes"
+[0.8.27]: https://github.com/Esri/solution.js/compare/v0.8.26...v0.8.27 "v0.8.27"
+[Unreleased]: https://github.com/Esri/solution.js/compare/v0.8.27...HEAD "Unreleased Changes"
