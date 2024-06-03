@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.8.26] - June 3rd 2024
+Safari delete modal, and avoid create-features flicker
+
 ## [0.8.25] - Map 31st 2024
 Reporter Instant App - UAT+ Enhancements - AGOL-2024.R02
 
@@ -616,4 +619,5 @@ Recover from test releases
 [0.8.23]: https://github.com/Esri/solution.js/compare/v0.8.22...v0.8.23 "v0.8.23"
 [0.8.24]: https://github.com/Esri/solution.js/compare/v0.8.23...v0.8.24 "v0.8.24"
 [0.8.25]: https://github.com/Esri/solution.js/compare/v0.8.24...v0.8.25 "v0.8.25"
-[Unreleased]: https://github.com/Esri/solution.js/compare/v0.8.25...HEAD "Unreleased Changes"
+[0.8.26]: https://github.com/Esri/solution.js/compare/v0.8.25...v0.8.26 "v0.8.26"
+[Unreleased]: https://github.com/Esri/solution.js/compare/v0.8.26...HEAD "Unreleased Changes"
