@@ -246,16 +246,17 @@ export class CreateFeature {
    */
   render() {
     const showSearchWidget = this.showSearchWidget ? '' : 'display-none';
+    const loaderClass = this._editorLoading ? "" : "display-none";
     const featureFormClass = this._editorLoading ? "display-none" : "";
-    return this._editorLoading ? (
-      <calcite-loader
-        label=""
-        scale="s"
-      />
-    ) : (
+    return (
       <Fragment>
+        <calcite-loader
+          class={loaderClass}
+          label=""
+          scale="s"
+        />
         <div class={featureFormClass} id="feature-form"/>
-        <div class={`search-widget ${showSearchWidget}`} id="search-widget-ref"/>
+        <div class={`search-widget ${showSearchWidget} ${featureFormClass}`} id="search-widget-ref"/>
       </Fragment>
     );
   }
