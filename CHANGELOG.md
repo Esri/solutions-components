@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.8.28] - June 4th 2024
+? icon flip and debug logs for sort issue
+
 ## [0.8.27] - June 3rd 2024
 Update t9n for Reporter and Public Notification
 
@@ -624,4 +627,5 @@ Recover from test releases
 [0.8.25]: https://github.com/Esri/solution.js/compare/v0.8.24...v0.8.25 "v0.8.25"
 [0.8.26]: https://github.com/Esri/solution.js/compare/v0.8.25...v0.8.26 "v0.8.26"
 [0.8.27]: https://github.com/Esri/solution.js/compare/v0.8.26...v0.8.27 "v0.8.27"
-[Unreleased]: https://github.com/Esri/solution.js/compare/v0.8.27...HEAD "Unreleased Changes"
+[0.8.28]: https://github.com/Esri/solution.js/compare/v0.8.27...v0.8.28 "v0.8.28"
+[Unreleased]: https://github.com/Esri/solution.js/compare/v0.8.28...HEAD "Unreleased Changes"
