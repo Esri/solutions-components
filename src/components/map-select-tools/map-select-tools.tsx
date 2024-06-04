@@ -507,6 +507,7 @@ export class MapSelectTools {
               {this._translations.searchDistance}
               <calcite-icon
                 class="padding-start-1-2 icon"
+                flipRtl
                 icon="question"
                 id="search-distance-icon"
                 scale="s"
@@ -555,6 +556,7 @@ export class MapSelectTools {
               {this._translations.useLayerFeatures}
               <calcite-icon
                 class="padding-start-1-2 icon"
+                flipRtl
                 icon="question"
                 id="use-layer-features-icon"
                 scale="s"

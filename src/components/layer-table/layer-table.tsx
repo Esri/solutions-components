@@ -478,6 +478,7 @@ export class LayerTable {
     this._initLayerExpressions();
     this._initToolInfos();
     this._updateToolbar();
+    console.log("mapInfoWatchHandler")
     await this._sortTable()
   }
 
@@ -1682,6 +1683,7 @@ export class LayerTable {
     await this.reactiveUtils.once(
       () => this._table.state === "loaded")
       .then(async () => {
+        console.log("this._table.state === 'loaded'")
         this._table.highlightIds.removeAll();
         this._table.clearSelectionFilter();
         this._resetColumnTemplates();
@@ -1802,7 +1804,7 @@ export class LayerTable {
     let sortOrder: "asc" | "desc" = 'desc';
     let configuredLayer;
     //get the sortField and sortOrder from the configuration
-    if (this.mapInfo?.layerOptions?.layers?.length > 0) {
+    if (this.mapInfo?.layerOptions?.layers?.length > 0 && this._layer?.id) {
       configuredLayer = this.mapInfo.layerOptions.layers.filter((layer) => layer.id === this._layer.id);
       if (configuredLayer && configuredLayer.length > 0) {
         configuredLayer = configuredLayer[0];
@@ -1817,6 +1819,7 @@ export class LayerTable {
     if (this._table && this._layer) {
       await this._table.when();
       await this._layer.when(() => {
+        console.log("sort on this._layer.when")
         this._table.sortColumn(sortField, sortOrder);
       });
     }
