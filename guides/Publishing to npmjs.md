@@ -13,6 +13,7 @@
   * \[ \] Define the version's symbol (e.g., "0.1.6") mapping from the previous version to the new version, e.g., `[0.1.6]: https://github.com/Esri/solution.js/compare/v0.1.5...v0.1.6 "v0.1.6"`
   * \[ \] Update the "Unreleased" symbol to map from the new version to the "HEAD", e.g., `[Unreleased]: https://github.com/Esri/solution.js/compare/v0.1.6...HEAD "Unreleased Changes"`
 * \[ \] Commit everything and push `master` to GitHub
+* \[ \] Tag `master` with the release number, and push the tag to GitHub
 * \[ \] Run `npm run release:publish`, supplying the npm OTP (one-time passcode from Okta Verify or similar) when prompted
 
 ---
