@@ -19,7 +19,7 @@ import LayerTable_T9n from "../../assets/t9n/layer-table/resources.json";
 import { loadModules } from "../../utils/loadModules";
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { getFeatureLayerView, getLayerOrTable, goToSelection } from "../../utils/mapViewUtils";
-import { queryAllIds, queryFeatureIds, queryFeaturesByGlobalID } from "../../utils/queryUtils";
+import { queryAllIds, queryAllOidsWithQueryFeatures, queryFeaturesByGlobalID } from "../../utils/queryUtils";
 import * as downloadUtils from "../../utils/downloadUtils";
 import { EditType, IColumnsInfo, IExportInfos, ILayerDef, IMapClick, IMapInfo, IToolInfo, IToolSizeInfo, TooltipPlacement } from "../../utils/interfaces";
 import "@esri/instant-apps-components/dist/components/instant-apps-social-share";
@@ -529,6 +529,10 @@ export class LayerTable {
     this._validateEnabledActions();
     if (this._selectAllActive && this.selectedIds.length !== this._allIds.length) {
       this._selectAllActive = false;
+    }
+    if (this.selectedIds.length > 0) {
+      (this._table as any).rowHighlightIds.removeAll();
+      (this._table as any).rowHighlightIds.add(this.selectedIds[0]);
     }
   }
 
@@ -1574,15 +1578,17 @@ export class LayerTable {
       } else if (this._shiftIsPressed) {
         this._skipOnChange = true;
         this._previousCurrentId = this._currentId;
-        this._currentId = [...this._table.highlightIds.toArray()].reverse()[0];
-        if (this._previousCurrentId !== this._currentId) {
+        this._currentId = [...ids].reverse()[0];
+        if (ids.length === 1) {
+          this._skipOnChange = false;
+        } else if (this._previousCurrentId !== this._currentId) {
           // query the layer based on current sort and filters then grab between the current id and previous id
           const orderBy = this._table.activeSortOrders.reduce((prev, cur) => {
             prev.push(`${cur.fieldName} ${cur.direction}`)
             return prev;
           }, []);
 
-          const oids = await queryFeatureIds(this._layer, this._layer.definitionExpression, orderBy);
+          const oids = await queryAllOidsWithQueryFeatures(0, this._layer, [], orderBy);
 
           let isBetween = false;
           const _start = this._table.viewModel.getObjectIdIndex(this._previousCurrentId);
@@ -1593,32 +1599,21 @@ export class LayerTable {
 
           this._skipOnChange = startIndex + 1 !== endIndex;
 
-          const selectedIds = oids.reduce((prev, cur) => {
+          const idsInRange = oids.reduce((prev, cur) => {
             const id = cur;
-            const index = this._table.viewModel.getObjectIdIndex(id);
             if ((id === this._currentId || id === this._previousCurrentId)) {
               isBetween = !isBetween;
               if (prev.indexOf(id) < 0) {
                 prev.push(id);
               }
-            }
-
-            // The oids are sorted so after we have reached the start or end oid add all ids even if the index is -1.
-            // Index of -1 will occur for features between the start and and oid if
-            // you select a row then scroll faster than the FeatureTable loads the data to select the next id
-            if (isBetween && prev.indexOf(id) < 0) {
-              prev.push(id);
-            }
-
-            // Also add index based check.
-            // In some cases the FeatureTable and Layer query will have differences in how null/undefined field values are sorted
-            if ((this.selectedIds.indexOf(id) > -1 || (index >= startIndex && index <= endIndex)) && prev.indexOf(id) < 0 && index > -1) {
+            } else if (isBetween && prev.indexOf(id) < 0) {
               prev.push(id);
             }
             return prev;
           }, []);
 
-          this.selectedIds = _start < _end ? selectedIds.reverse() : selectedIds;
+          const selectedIds = _start < _end ? idsInRange.reverse() : idsInRange;
+          this.selectedIds = [...new Set([...selectedIds ,...this.selectedIds])]
 
           this._table.highlightIds.addMany(this.selectedIds.filter(i => ids.indexOf(i) < 0));
         }
@@ -2026,6 +2021,7 @@ export class LayerTable {
   protected _clearSelection(): void {
     this.selectedIds = [];
     this._table?.highlightIds.removeAll();
+    (this._table as any)?.rowHighlightIds.removeAll();
     this._finishOnChange();
   }
 

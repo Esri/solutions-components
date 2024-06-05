@@ -106,15 +106,22 @@ export class FloorFilter {
 
   @Watch("mapView")
   async mapViewWatchHandler(): Promise<void> {
+    console.log("mapViewWatchHandler FF");
     const webMap = this.mapView.map as __esri.WebMap;
     await webMap.when(() => {
+      console.log("webMap.when FF");
+
       if (this.floorFilterWidget) {
         this.floorFilterWidget.destroy();
         this.floorFilterWidget = undefined;
+        console.log("floorFilterWidget destroyed");
+
       }
       if (this._floorFilterElement) {
         this._floorFilterElement.remove();
         this._floorFilterElement = document.createElement("div");
+        console.log("this._floorFilterElement created");
+
       }
       this._initFloorFilter(this.mapView, webMap);
     });
@@ -197,6 +204,11 @@ export class FloorFilter {
     view: __esri.MapView,
     webMap: __esri.WebMap
   ): void {
+    console.log("_initFloorFilter")
+    console.log(`view: ${view}`)
+    console.log(`this.enabled: ${this.enabled}`)
+    console.log(`this.FloorFilter: ${this.FloorFilter}`)
+    console.log(`webMap?.floorInfo: ${webMap?.floorInfo}`)
     if (view && this.enabled && this.FloorFilter && webMap?.floorInfo) {
       this.floorFilterWidget = new this.FloorFilter({
         container: this._floorFilterElement,
