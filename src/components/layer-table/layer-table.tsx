@@ -1580,7 +1580,6 @@ export class LayerTable {
         this._previousCurrentId = this._currentId;
         this._currentId = [...ids].reverse()[0];
         if (ids.length === 1) {
-          this.selectedIds = ids.reverse();
           this._skipOnChange = false;
         } else if (this._previousCurrentId !== this._currentId) {
           // query the layer based on current sort and filters then grab between the current id and previous id
