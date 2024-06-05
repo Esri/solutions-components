@@ -1602,7 +1602,7 @@ export class LayerTable {
 
           this._skipOnChange = startIndex + 1 !== endIndex;
 
-          const selectedIds = oids.reduce((prev, cur) => {
+          const idsInRange = oids.reduce((prev, cur) => {
             const id = cur;
             if ((id === this._currentId || id === this._previousCurrentId)) {
               isBetween = !isBetween;
@@ -1615,7 +1615,8 @@ export class LayerTable {
             return prev;
           }, []);
 
-          this.selectedIds = _start < _end ? selectedIds.reverse() : selectedIds;
+          const selectedIds = _start < _end ? idsInRange.reverse() : idsInRange;
+          this.selectedIds = [...new Set([...selectedIds ,...this.selectedIds])]
 
           this._table.highlightIds.addMany(this.selectedIds.filter(i => ids.indexOf(i) < 0));
         }
