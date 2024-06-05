@@ -530,6 +530,10 @@ export class LayerTable {
     if (this._selectAllActive && this.selectedIds.length !== this._allIds.length) {
       this._selectAllActive = false;
     }
+    if (this.selectedIds.length > 0) {
+      (this._table as any).rowHighlightIds.removeAll();
+      (this._table as any).rowHighlightIds.add(this.selectedIds[0]);
+    }
   }
 
   //--------------------------------------------------------------------------
@@ -2019,6 +2023,7 @@ export class LayerTable {
   protected _clearSelection(): void {
     this.selectedIds = [];
     this._table?.highlightIds.removeAll();
+    (this._table as any)?.rowHighlightIds.removeAll();
     this._finishOnChange();
   }
 
