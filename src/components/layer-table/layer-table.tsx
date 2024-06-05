@@ -1577,11 +1577,9 @@ export class LayerTable {
         this.selectedIds = ids.reverse();
       } else if (this._shiftIsPressed) {
         this._skipOnChange = true;
-        const singleSelect = ids.length === 1;
-
         this._previousCurrentId = this._currentId;
         this._currentId = [...ids].reverse()[0];
-        if (singleSelect) {
+        if (ids.length === 1) {
           this.selectedIds = ids.reverse();
           this._skipOnChange = false;
         } else if (this._previousCurrentId !== this._currentId) {
