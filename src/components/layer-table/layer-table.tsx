@@ -19,7 +19,7 @@ import LayerTable_T9n from "../../assets/t9n/layer-table/resources.json";
 import { loadModules } from "../../utils/loadModules";
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { getFeatureLayerView, getLayerOrTable, goToSelection } from "../../utils/mapViewUtils";
-import { queryAllIds, queryFeatureIds, queryFeaturesByGlobalID } from "../../utils/queryUtils";
+import { queryAllIds, queryAllOidsWithQueryFeatures, queryFeaturesByGlobalID } from "../../utils/queryUtils";
 import * as downloadUtils from "../../utils/downloadUtils";
 import { EditType, IColumnsInfo, IExportInfos, ILayerDef, IMapClick, IMapInfo, IToolInfo, IToolSizeInfo, TooltipPlacement } from "../../utils/interfaces";
 import "@esri/instant-apps-components/dist/components/instant-apps-social-share";
@@ -1573,16 +1573,21 @@ export class LayerTable {
         this.selectedIds = ids.reverse();
       } else if (this._shiftIsPressed) {
         this._skipOnChange = true;
+        const singleSelect = ids.length === 1;
+
         this._previousCurrentId = this._currentId;
-        this._currentId = [...this._table.highlightIds.toArray()].reverse()[0];
-        if (this._previousCurrentId !== this._currentId) {
+        this._currentId = [...ids].reverse()[0];
+        if (singleSelect) {
+          this.selectedIds = ids.reverse();
+          this._skipOnChange = false;
+        } else if (this._previousCurrentId !== this._currentId) {
           // query the layer based on current sort and filters then grab between the current id and previous id
           const orderBy = this._table.activeSortOrders.reduce((prev, cur) => {
             prev.push(`${cur.fieldName} ${cur.direction}`)
             return prev;
           }, []);
 
-          const oids = await queryFeatureIds(this._layer, this._layer.definitionExpression, orderBy);
+          const oids = await queryAllOidsWithQueryFeatures(0, this._layer, [], orderBy);
 
           let isBetween = false;
           const _start = this._table.viewModel.getObjectIdIndex(this._previousCurrentId);
@@ -1595,24 +1600,12 @@ export class LayerTable {
 
           const selectedIds = oids.reduce((prev, cur) => {
             const id = cur;
-            const index = this._table.viewModel.getObjectIdIndex(id);
             if ((id === this._currentId || id === this._previousCurrentId)) {
               isBetween = !isBetween;
               if (prev.indexOf(id) < 0) {
                 prev.push(id);
               }
-            }
-
-            // The oids are sorted so after we have reached the start or end oid add all ids even if the index is -1.
-            // Index of -1 will occur for features between the start and and oid if
-            // you select a row then scroll faster than the FeatureTable loads the data to select the next id
-            if (isBetween && prev.indexOf(id) < 0) {
-              prev.push(id);
-            }
-
-            // Also add index based check.
-            // In some cases the FeatureTable and Layer query will have differences in how null/undefined field values are sorted
-            if ((this.selectedIds.indexOf(id) > -1 || (index >= startIndex && index <= endIndex)) && prev.indexOf(id) < 0 && index > -1) {
+            } else if (isBetween && prev.indexOf(id) < 0) {
               prev.push(id);
             }
             return prev;
