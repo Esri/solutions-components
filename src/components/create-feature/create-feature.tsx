@@ -74,7 +74,7 @@ export class CreateFeature {
   /**
    * boolean: When true the search widget will shown
    */
-  @State() showSearchWidget: boolean;
+  @State() _showSearchWidget: boolean;
 
   //--------------------------------------------------------------------------
   //
@@ -245,7 +245,7 @@ export class CreateFeature {
    * Renders the component.
    */
   render() {
-    const showSearchWidget = this.showSearchWidget ? '' : 'display-none';
+    const showSearchWidget = this._showSearchWidget ? '' : 'display-none';
     const loaderClass = this._editorLoading ? "" : "display-none";
     const featureFormClass = this._editorLoading ? "display-none" : "";
     return (
@@ -360,7 +360,7 @@ export class CreateFeature {
       (state) => {
         if(state === 'creating-features'){
           this._editorLoading = true;
-          this.showSearchWidget = true;
+          this._showSearchWidget = true;
         }
       });
     this._editor.viewModel.addHandles(formHandle);
@@ -384,11 +384,12 @@ export class CreateFeature {
             //on sketch complete emit the event
             this._editor.viewModel.sketchViewModel.on("create", (evt) => {
               if (evt.state === "complete") {
-                this.showSearchWidget = false;
+                this._showSearchWidget = false;
                 this.progressStatus.emit(1);
                 this.drawComplete.emit();
               }
             })
+            //hides the header and footer elements in editor widget
             this.hideEditorsElements().then(() => {
               resolve({});
             }, e => reject(e));
@@ -399,8 +400,12 @@ export class CreateFeature {
         if (items.length === 1) {
           this._editor.viewModel.featureTemplatesViewModel.select(items[0]);
         }
-        //hides the header and footer elements in editor widget
-        void this.hideEditorsElements();
+        const resolvePromise = items.length > 1;
+        this.hideEditorsElements().then(() => {
+          if (resolvePromise) {
+            resolve({});
+          }
+        }, e => resolvePromise && reject(e));
       }
     });
   }

@@ -6,3 +6,7 @@
 .esri-editor__panel-toolbar {
   display: none !important;
 }
+
+.display-none {
+  display: none !important;
+}

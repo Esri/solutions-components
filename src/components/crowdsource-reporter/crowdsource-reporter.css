@@ -79,3 +79,7 @@
   position: absolute;
   z-index: 1000;
 }
+
+.share-node {
+  display: flex;
+}

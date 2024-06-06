@@ -80,7 +80,7 @@ export class PopupUtils {
 				const fieldInfo = layer.popupTemplate.fieldInfos.find((fInfo) => fInfo.fieldName.toLowerCase() === field.name.toLowerCase());
 				//format the attribute value
 				const formattedAttributeValue = _prepareAttributeValue(attributeValue, field.type, field.domain, fieldInfo?.format, this.intl);
-				attributes[`{${field.name.toUpperCase()}}`] = formattedAttributeValue;
+				attributes[`{${field.name.toUpperCase()}}`] = formattedAttributeValue ?? attributeValue;
 			})
 		}
 		
