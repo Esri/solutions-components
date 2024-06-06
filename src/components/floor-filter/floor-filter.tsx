@@ -109,7 +109,7 @@ export class FloorFilter {
    */
   @Watch("mapView")
   async mapViewWatchHandler(): Promise<void> {
-    this._initFloorFilter(this.mapView);
+    await this._initFloorFilter(this.mapView);
   }
 
   /**
@@ -118,7 +118,7 @@ export class FloorFilter {
   @Watch("enabled")
   async enabledWatchHandler(): Promise<void> {
     if (this.enabled) {
-      this._initFloorFilter(this.mapView);
+      await this._initFloorFilter(this.mapView);
     } else if (!this.enabled) {
       this._destroyWidget();
     }
