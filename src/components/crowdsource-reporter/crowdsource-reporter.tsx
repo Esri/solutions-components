@@ -1266,11 +1266,12 @@ export class CrowdsourceReporter {
         {/* Create share button */}
         <instant-apps-social-share
           autoUpdateShareUrl={false}
+          class={"share-node"}
           embed={false}
           popoverButtonIconScale="s"
           ref={el => this._shareNode = el}
           removePopoverOffset={true}
-          scale="s"
+          scale="m"
           shareButtonColor="neutral"
           shareButtonType="action"
           slot={"header-actions-end"}
