@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.8.32] - June 6th 2024
+Hide zoom in Manager when map is hidden
+
 ## [0.8.31] - June 6th 2024
 Delivery for Reporter Instant App - UAT- AGOL-2024.R02 #680
 
@@ -640,4 +643,5 @@ Recover from test releases
 [0.8.29]: https://github.com/Esri/solution.js/compare/v0.8.28...v0.8.29 "v0.8.29"
 [0.8.30]: https://github.com/Esri/solution.js/compare/v0.8.29...v0.8.30 "v0.8.30"
 [0.8.31]: https://github.com/Esri/solution.js/compare/v0.8.30...v0.8.31 "v0.8.31"
-[Unreleased]: https://github.com/Esri/solution.js/compare/v0.8.31...HEAD "Unreleased Changes"
+[0.8.32]: https://github.com/Esri/solution.js/compare/v0.8.31...v0.8.32 "v0.8.32"
+[Unreleased]: https://github.com/Esri/solution.js/compare/v0.8.32...HEAD "Unreleased Changes"
