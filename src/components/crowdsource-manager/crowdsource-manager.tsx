@@ -942,6 +942,7 @@ export class CrowdsourceManager {
             enableInlineEdit={this.enableInlineEdit}
             enableShare={this.enableShare}
             isMobile={this._isMobile}
+            mapHidden={this._expandPopup}
             mapInfo={this._mapInfo}
             mapView={this?._mapView}
             onlyShowUpdatableLayers={this.onlyShowUpdatableLayers}
