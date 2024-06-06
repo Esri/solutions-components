@@ -109,10 +109,7 @@ export class FloorFilter {
    */
   @Watch("mapView")
   async mapViewWatchHandler(): Promise<void> {
-    const webMap = this.mapView.map as __esri.WebMap;
-    await webMap.when(() => {
-      this._initFloorFilter(this.mapView, webMap);
-    });
+    this._initFloorFilter(this.mapView);
   }
 
   /**
@@ -120,11 +117,8 @@ export class FloorFilter {
    */
   @Watch("enabled")
   async enabledWatchHandler(): Promise<void> {
-    if (this.enabled && this.mapView) {
-      const webMap = this.mapView.map as __esri.WebMap;
-      await webMap.when(() => {
-        this._initFloorFilter(this.mapView, webMap);
-      });
+    if (this.enabled) {
+      this._initFloorFilter(this.mapView);
     } else if (!this.enabled) {
       this._destroyWidget();
     }
@@ -231,33 +225,35 @@ export class FloorFilter {
   /**
    * Initialize the floor filter or reset the current view if it already exists
    */
-  protected _initFloorFilter(
-    view: __esri.MapView,
-    webMap: __esri.WebMap
-  ): void {
+  protected async _initFloorFilter(
+    view: __esri.MapView
+  ): Promise<void> {
+    const webMap = view?.map as __esri.WebMap;
     if (view && this.enabled && this.FloorFilter && webMap?.floorInfo) {
       this._initContainer();
-      this.floorFilterWidget = new this.FloorFilter({
-        container: this._floorFilterElement,
-        view
+      await webMap.when(() => {
+        this.floorFilterWidget = new this.FloorFilter({
+          container: this._floorFilterElement,
+          view
+        });
+        this._facilityHandle?.remove();
+        this._facilityHandle = this.reactiveUtils.watch(() => this.floorFilterWidget.facility,
+          (facility) => {
+            this.facilityChanged.emit(facility);
+          });
+
+        this._levelHandle?.remove();
+        this._levelHandle = this.reactiveUtils.watch(() => this.floorFilterWidget.level,
+          (level) => {
+            this.levelChanged.emit(level);
+          });
+
+        this._siteHandle?.remove();
+        this._siteHandle = this.reactiveUtils.watch(() => this.floorFilterWidget.site,
+          (site) => {
+            this.siteChanged.emit(site);
+          });
       });
-      this._facilityHandle?.remove();
-      this._facilityHandle = this.reactiveUtils.watch(() => this.floorFilterWidget.facility,
-        (facility) => {
-          this.facilityChanged.emit(facility);
-        });
-
-      this._levelHandle?.remove();
-      this._levelHandle = this.reactiveUtils.watch(() => this.floorFilterWidget.level,
-        (level) => {
-          this.levelChanged.emit(level);
-        });
-
-      this._siteHandle?.remove();
-      this._siteHandle = this.reactiveUtils.watch(() => this.floorFilterWidget.site,
-        (site) => {
-          this.siteChanged.emit(site);
-        });
     }
   }
 }
