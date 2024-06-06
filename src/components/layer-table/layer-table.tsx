@@ -90,6 +90,11 @@ export class LayerTable {
   @Prop() isMobile: boolean;
 
   /**
+   * boolean: when true the map is hidden and map specific controls should be hidden
+   */
+  @Prop() mapHidden: boolean;
+
+  /**
    * IMapInfo: key configuration details about the current map
    */
   @Prop() mapInfo: IMapInfo;
@@ -457,6 +462,16 @@ export class LayerTable {
         return ti;
       }
     })
+  }
+
+  /**
+   * Reset the toolInfos when mapHidden prop changes so we can show/hide any map dependant tool(s)
+   */
+  @Watch("mapHidden")
+  mapHiddenWatchHandler(): void {
+    if (this._toolInfos?.length > 0) {
+      this._initToolInfos();
+    }
   }
 
   /**
@@ -953,7 +968,8 @@ export class LayerTable {
     const featuresEmpty = this._featuresEmpty();
     const hasFilterExpressions = this._hasFilterExpressions();
     if (this._translations) {
-      this._toolInfos = [{
+      this._toolInfos = [
+      !this.mapHidden ? {
         active: false,
         icon: "zoom-to-object",
         indicator: false,
@@ -961,7 +977,7 @@ export class LayerTable {
         func: () => this._zoom(),
         disabled: !featuresSelected,
         isOverflow: false
-      },
+      } : undefined,
       hasFilterExpressions ? {
         active: false,
         icon: "filter",

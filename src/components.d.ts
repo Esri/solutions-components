@@ -723,6 +723,10 @@ export namespace Components {
          */
         "isMobile": boolean;
         /**
+          * boolean: when true the map is hidden and map specific controls should be hidden
+         */
+        "mapHidden": boolean;
+        /**
           * IMapInfo: key configuration details about the current map
          */
         "mapInfo": IMapInfo;
@@ -3075,6 +3079,10 @@ declare namespace LocalJSX {
           * When true the component will render an optimized view for mobile devices
          */
         "isMobile"?: boolean;
+        /**
+          * boolean: when true the map is hidden and map specific controls should be hidden
+         */
+        "mapHidden"?: boolean;
         /**
           * IMapInfo: key configuration details about the current map
          */

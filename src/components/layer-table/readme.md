@@ -18,6 +18,7 @@
 | `enableInlineEdit`        | `enable-inline-edit`          | boolean: when true edits can be applied directly within the table                                                  | `boolean`  | `undefined` |
 | `enableShare`             | `enable-share`                | boolean: when true the share widget will be available                                                              | `boolean`  | `undefined` |
 | `isMobile`                | `is-mobile`                   | When true the component will render an optimized view for mobile devices                                           | `boolean`  | `undefined` |
+| `mapHidden`               | `map-hidden`                  | boolean: when true the map is hidden and map specific controls should be hidden                                    | `boolean`  | `undefined` |
 | `mapInfo`                 | --                            | IMapInfo: key configuration details about the current map                                                          | `IMapInfo` | `undefined` |
 | `mapView`                 | --                            | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html             | `MapView`  | `undefined` |
 | `onlyShowUpdatableLayers` | `only-show-updatable-layers`  | boolean: When true only editable layers that support the update capability will be available                       | `boolean`  | `undefined` |
