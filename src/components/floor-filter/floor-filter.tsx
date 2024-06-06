@@ -104,27 +104,24 @@ export class FloorFilter {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * Watch for changes to the mapView and re-init the floor filter
+   */
   @Watch("mapView")
   async mapViewWatchHandler(): Promise<void> {
-    console.log("mapViewWatchHandler FF");
-    const webMap = this.mapView.map as __esri.WebMap;
-    await webMap.when(() => {
-      console.log("webMap.when FF");
+    await this._initFloorFilter(this.mapView);
+  }
 
-      if (this.floorFilterWidget) {
-        this.floorFilterWidget.destroy();
-        this.floorFilterWidget = undefined;
-        console.log("floorFilterWidget destroyed");
-
-      }
-      if (this._floorFilterElement) {
-        this._floorFilterElement.remove();
-        this._floorFilterElement = document.createElement("div");
-        console.log("this._floorFilterElement created");
-
-      }
-      this._initFloorFilter(this.mapView, webMap);
-    });
+  /**
+   * Watch for changes to the enabled property and re-init or destroy the floor filter
+   */
+  @Watch("enabled")
+  async enabledWatchHandler(): Promise<void> {
+    if (this.enabled) {
+      await this._initFloorFilter(this.mapView);
+    } else if (!this.enabled) {
+      this._destroyWidget();
+    }
   }
 
   //--------------------------------------------------------------------------
@@ -167,6 +164,9 @@ export class FloorFilter {
     return this._initModules();
   }
 
+  /**
+   * Renders the component.
+   */
   render() {
     return (
       <Host>
@@ -198,39 +198,62 @@ export class FloorFilter {
   }
 
   /**
+   * Destroy the widget and remove the containing element if it exists
+   *
+   * @protected
+   */
+  protected _destroyWidget(): void {
+    if (this.floorFilterWidget) {
+      this.floorFilterWidget.destroy();
+      this.floorFilterWidget = undefined;
+    }
+    if (this._floorFilterElement) {
+      this._floorFilterElement.remove();
+    }
+  }
+
+  /**
+   * Destroy the widget and remove the containing element then re-create the container element
+   *
+   * @protected
+   */
+  protected _initContainer(): void {
+    this._destroyWidget();
+    this._floorFilterElement = document.createElement("div");
+  }
+
+  /**
    * Initialize the floor filter or reset the current view if it already exists
    */
-  protected _initFloorFilter(
-    view: __esri.MapView,
-    webMap: __esri.WebMap
-  ): void {
-    console.log("_initFloorFilter")
-    console.log(`view: ${view}`)
-    console.log(`this.enabled: ${this.enabled}`)
-    console.log(`this.FloorFilter: ${this.FloorFilter}`)
-    console.log(`webMap?.floorInfo: ${webMap?.floorInfo}`)
+  protected async _initFloorFilter(
+    view: __esri.MapView
+  ): Promise<void> {
+    const webMap = view?.map as __esri.WebMap;
     if (view && this.enabled && this.FloorFilter && webMap?.floorInfo) {
-      this.floorFilterWidget = new this.FloorFilter({
-        container: this._floorFilterElement,
-        view
+      this._initContainer();
+      await webMap.when(() => {
+        this.floorFilterWidget = new this.FloorFilter({
+          container: this._floorFilterElement,
+          view
+        });
+        this._facilityHandle?.remove();
+        this._facilityHandle = this.reactiveUtils.watch(() => this.floorFilterWidget.facility,
+          (facility) => {
+            this.facilityChanged.emit(facility);
+          });
+
+        this._levelHandle?.remove();
+        this._levelHandle = this.reactiveUtils.watch(() => this.floorFilterWidget.level,
+          (level) => {
+            this.levelChanged.emit(level);
+          });
+
+        this._siteHandle?.remove();
+        this._siteHandle = this.reactiveUtils.watch(() => this.floorFilterWidget.site,
+          (site) => {
+            this.siteChanged.emit(site);
+          });
       });
-      this._facilityHandle?.remove();
-      this._facilityHandle = this.reactiveUtils.watch(() => this.floorFilterWidget.facility,
-        (facility) => {
-          this.facilityChanged.emit(facility);
-        });
-
-      this._levelHandle?.remove();
-      this._levelHandle = this.reactiveUtils.watch(() => this.floorFilterWidget.level,
-        (level) => {
-          this.levelChanged.emit(level);
-        });
-
-      this._siteHandle?.remove();
-      this._siteHandle = this.reactiveUtils.watch(() => this.floorFilterWidget.site,
-        (site) => {
-          this.siteChanged.emit(site);
-        });
     }
   }
 }
