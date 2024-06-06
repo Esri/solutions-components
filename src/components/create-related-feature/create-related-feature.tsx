@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Host, h, Prop, Element, Event, EventEmitter, Method, Watch} from '@stencil/core';
+import { Component, h, Prop, Element, Event, EventEmitter, Method, Watch, State} from '@stencil/core';
 import { loadModules } from "../../utils/loadModules";
 
 @Component({
@@ -61,6 +61,17 @@ export class CreateRelatedFeature {
 
   //--------------------------------------------------------------------------
   //
+  //  State (internal)
+  //
+  //--------------------------------------------------------------------------
+
+  /**
+   * boolean: When true a loading indicator will be shown while the editor loads
+   */
+  @State() _editorLoading = false;
+
+  //--------------------------------------------------------------------------
+  //
   //  Properties (protected)
   //
   //--------------------------------------------------------------------------
@@ -81,6 +92,11 @@ export class CreateRelatedFeature {
    * esri/core/reactiveUtils: https://developers.arcgis.com/javascript/latest/api-reference/esri-core-reactiveUtils.html
    */
   protected reactiveUtils: typeof import("esri/core/reactiveUtils");
+
+  /**
+   * HTMLDivElement: The node the editor will be added to
+   */
+  protected _container: HTMLDivElement;
 
   /**
    * boolean: Flag to maintain the add attachment
@@ -107,6 +123,18 @@ export class CreateRelatedFeature {
     });
   }
 
+  /**
+   * When _editorLoading is true the container node will be hidden while starting the create workflow
+   */
+    @Watch("_editorLoading")
+    async _editorLoadingWatchHandler(v: boolean): Promise<void> {
+      if (v) {
+        this._container?.classList.add("display-none");
+        await this.startCreate();
+        this._container?.classList.remove("display-none");
+        this._editorLoading = false;
+      }
+    }
   //--------------------------------------------------------------------------
   //
   //  Methods (public)
@@ -193,8 +221,13 @@ export class CreateRelatedFeature {
   }
 
   render() {
+    const loaderClass = this._editorLoading ? "" : "display-none";
     return (
-      <Host />
+       <calcite-loader
+          class={loaderClass}
+          label=""
+          scale="s"
+        />
     );
   }
 
@@ -213,32 +246,24 @@ export class CreateRelatedFeature {
     if (this._editor) {
       this._editor.destroy();
     }
-    const container = document.createElement("div");
+    this._container = document.createElement("div");
+    this._container?.classList.add("display-none");
+
     this._editor = new this.Editor({
       view: this.mapView,
       visibleElements: {
         snappingControls: false
       },
-      container
+      container: this._container
     });
-    this.el.appendChild(container);
-
-    //Add handle to watch featureFormViewModel ready state and hide the editor elements
-    const hideElementHandle = this.reactiveUtils.watch(
-      () => this._editor.viewModel.featureFormViewModel?.state,
-      (state) => {
-        if (state === 'ready') {
-          this.hideEditorsElements();
-        }
-      });
-    this._editor.viewModel.addHandles(hideElementHandle);
+    this.el.appendChild(this._container);
 
     //Add handle to watch featureTemplatesViewModel ready state and then start the creation
     const handle = this.reactiveUtils.watch(
       () => this._editor.viewModel.featureTemplatesViewModel.state,
       (state) => {
         if (state === 'ready') {
-          void this.startCreate();
+          this._editorLoading = true;
         }
       });
     this._editor.viewModel.addHandles(handle);
@@ -268,7 +293,7 @@ export class CreateRelatedFeature {
     const parentLayer = this.selectedFeature.layer as __esri.FeatureLayer;
     const childTable = this.table;
     const parentRelationship = parentLayer.relationships[0];
-    const childRelationship = childTable.relationships.find((rel)=>parentLayer.layerId === rel.relatedTableId)
+    const childRelationship = childTable.relationships.find((rel) => parentLayer.layerId === rel.relatedTableId)
     const queryResult = await parentLayer.queryFeatures({
       objectIds: [this.selectedFeature.getObjectId()],
       outFields: [parentLayer.objectIdField, parentRelationship.keyField],
@@ -282,6 +307,8 @@ export class CreateRelatedFeature {
       template,
     };
     await this._editor.startCreateFeaturesWorkflowAtFeatureCreation(creationInfo);
+    //hides the header and footer elements in editor widget
+    await this.hideEditorsElements();
     // Emit an event to show submit cancel buttons
     this.isActionPending.emit(false);
     this._editor.viewModel.featureFormViewModel.on('submit', this.submitted.bind(this));
@@ -291,20 +318,19 @@ export class CreateRelatedFeature {
    * Hides the elements of editor widget
    * @protected
    */
-  protected hideEditorsElements(): void {
+  protected async hideEditorsElements(): Promise<void> {
     if (!this.customizeSubmit) {
-      return
+      return;
     }
-    setTimeout(() => {
-      //hides the header and footer on the featureForm
-      this.el.querySelector('.esri-editor').querySelectorAll('calcite-flow-item')?.forEach((flowItem) => {
-        const article = flowItem.shadowRoot?.querySelector('calcite-panel')?.shadowRoot?.querySelector('article');
-        //hide the header
-        article?.querySelector('header')?.setAttribute('style', 'display: none');
-        //hide the footer
-        article?.querySelector('footer')?.setAttribute('style', 'display: none');
-      })
-    }, 700);
+    await this.timeout(700);
+    //hides the header and footer on the featureForm
+    this.el.querySelector('.esri-editor')?.querySelectorAll('calcite-flow-item')?.forEach((flowItem) => {
+      const article = flowItem.shadowRoot?.querySelector('calcite-panel')?.shadowRoot?.querySelector('article');
+      //hide the header
+      article?.querySelector('header')?.setAttribute('style', 'display: none');
+      //hide the footer
+      article?.querySelector('footer')?.setAttribute('style', 'display: none');
+    });
   }
 
   /**
@@ -363,5 +389,14 @@ export class CreateRelatedFeature {
       }
       this.success.emit();
     }
+  }
+
+  /**
+   * call setTimeout in Promise wrapper
+   * @param delay The time, in milliseconds that the timer should wait before the promise is resolved
+   * @protected
+   */
+  protected timeout(delay: number): Promise<void> {
+    return new Promise(resolve => setTimeout(resolve, delay));
   }
 }
