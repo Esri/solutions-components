@@ -53,9 +53,14 @@ Type: `Promise<void>`
 
  - [crowdsource-reporter](../crowdsource-reporter)
 
+### Depends on
+
+- calcite-loader
+
 ### Graph
 ```mermaid
 graph TD;
+  create-related-feature --> calcite-loader
   crowdsource-reporter --> create-related-feature
   style create-related-feature fill:#f9f,stroke:#333,stroke-width:4px
 ```

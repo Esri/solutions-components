@@ -195,6 +195,7 @@ graph TD;
   delete-button --> calcite-modal
   edit-card --> calcite-notice
   edit-card --> calcite-loader
+  create-related-feature --> calcite-loader
   style crowdsource-reporter fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
