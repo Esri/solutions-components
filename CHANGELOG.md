@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.8.30] - June 6th 2024
+floor filter enabled fix
+
 ## [0.8.29] - June 5th 2024
 shift select issue, rowHighlightIds update, and debug logs for floor filter issue
 
@@ -632,4 +635,5 @@ Recover from test releases
 [0.8.27]: https://github.com/Esri/solution.js/compare/v0.8.26...v0.8.27 "v0.8.27"
 [0.8.28]: https://github.com/Esri/solution.js/compare/v0.8.27...v0.8.28 "v0.8.28"
 [0.8.29]: https://github.com/Esri/solution.js/compare/v0.8.28...v0.8.29 "v0.8.29"
-[Unreleased]: https://github.com/Esri/solution.js/compare/v0.8.29...HEAD "Unreleased Changes"
+[0.8.30]: https://github.com/Esri/solution.js/compare/v0.8.29...v0.8.30 "v0.8.30"
+[Unreleased]: https://github.com/Esri/solution.js/compare/v0.8.30...HEAD "Unreleased Changes"
