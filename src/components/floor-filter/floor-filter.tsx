@@ -109,6 +109,8 @@ export class FloorFilter {
    */
   @Watch("mapView")
   async mapViewWatchHandler(): Promise<void> {
+    console.log("mapViewWatchHandler")
+    console.log(`this.mapView: ${this.mapView}`)
     await this._initFloorFilter(this.mapView);
   }
 
@@ -117,6 +119,9 @@ export class FloorFilter {
    */
   @Watch("enabled")
   async enabledWatchHandler(): Promise<void> {
+    console.log("enabledWatchHandler")
+    console.log(`this.enabled: ${this.enabled}`)
+    console.log(`this.mapView: ${this.mapView}`)
     if (this.enabled) {
       await this._initFloorFilter(this.mapView);
     } else if (!this.enabled) {
@@ -168,6 +173,8 @@ export class FloorFilter {
    * Renders the component.
    */
   render() {
+    console.log("render")
+    console.log(`this._floorFilterElement: ${this._floorFilterElement}`)
     return (
       <Host>
         <div ref={(el) => { this._floorFilterElement = el }} />
@@ -203,6 +210,7 @@ export class FloorFilter {
    * @protected
    */
   protected _destroyWidget(): void {
+    console.log("_destroyWidget")
     if (this.floorFilterWidget) {
       this.floorFilterWidget.destroy();
       this.floorFilterWidget = undefined;
@@ -218,6 +226,7 @@ export class FloorFilter {
    * @protected
    */
   protected _initContainer(): void {
+    console.log("_initContainer")
     this._destroyWidget();
     this._floorFilterElement = document.createElement("div");
   }
@@ -228,10 +237,17 @@ export class FloorFilter {
   protected async _initFloorFilter(
     view: __esri.MapView
   ): Promise<void> {
+    console.log("_initFloorFilter");
     const webMap = view?.map as __esri.WebMap;
-    if (view && this.enabled && this.FloorFilter && webMap?.floorInfo) {
-      this._initContainer();
-      await webMap.when(() => {
+    await webMap.when(() => {
+      console.log("webMap.when")
+      console.log("_initFloorFilter")
+      console.log(`view: ${view}`)
+      console.log(`this.enabled: ${this.enabled}`)
+      console.log(`this.FloorFilter: ${this.FloorFilter}`)
+      console.log(`webMap?.floorInfo: ${webMap?.floorInfo}`)
+      if (view && this.enabled && this.FloorFilter && webMap?.floorInfo) {
+        this._initContainer();
         this.floorFilterWidget = new this.FloorFilter({
           container: this._floorFilterElement,
           view
@@ -253,7 +269,8 @@ export class FloorFilter {
           (site) => {
             this.siteChanged.emit(site);
           });
-      });
-    }
+
+      }
+    });
   }
 }

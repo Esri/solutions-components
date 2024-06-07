@@ -517,7 +517,9 @@ export class CrowdsourceManager {
   async componentDidRender() {
     if (this._shouldSetMapView) {
       this._shouldSetMapView = false;
-      await this._setMapView();
+      if (this._mapChange) {
+        await this._setMapView();
+      }
     }
   }
 
