@@ -569,12 +569,12 @@ export class CrowdsourceReporter {
     layerName: string
   ): Promise<void> {
     this._selectedLayerId = layerId;
-    this._selectedLayer = await getLayerOrTable(this.mapView, layerId)
+    this._selectedLayer = await getLayerOrTable(this.mapView, layerId);
     this._selectedLayerName = layerName;
     //show only current layer on map and hide other valid editable layers
     //if layerId is empty then show all the layers on map
     this._validLayers.forEach(layer => {
-      layer.set('visible', !layerId || (layer.id === layerId))
+      layer.set('visible', !layerId || (layer.id === layerId));
     })
   }
 
@@ -592,7 +592,7 @@ export class CrowdsourceReporter {
    * @protected
    */
   protected _getReporter(): VNode {
-    const renderLists = []
+    const renderLists = [];
     this._flowItems.forEach((item) => {
       switch (item) {
         case "layer-list":
@@ -750,7 +750,7 @@ export class CrowdsourceReporter {
           }
         </calcite-list>
       </calcite-popover>
-    )
+    );
   }
 
   /**
@@ -761,7 +761,7 @@ export class CrowdsourceReporter {
     //on reset filter list reset the filter active state
     this._filterActive = false;
     //reset the features list to reflect the applied filters
-    void this._featureList.refresh()
+    void this._featureList.refresh();
   }
 
   /**
@@ -804,7 +804,7 @@ export class CrowdsourceReporter {
             mapView={this.mapView}
             onLayerSelect={this.displayFeaturesList.bind(this)}
             onLayersListLoaded={this.layerListLoaded.bind(this)}
-            ref={el => this._layerList = el }
+            ref={el => this._layerList = el}
             showFeatureCount
             showNextIcon />
         </calcite-panel>
@@ -992,7 +992,7 @@ export class CrowdsourceReporter {
    */
   protected onReportSubmitted(): void {
     this._reportSubmitted = true;
-    void this.navigateToHomePage()
+    void this.navigateToHomePage();
   }
 
   /**
@@ -1348,7 +1348,7 @@ export class CrowdsourceReporter {
           </calcite-tooltip>
         </div>
       </div>
-    )
+    );
   }
 
   /**
@@ -1374,7 +1374,7 @@ export class CrowdsourceReporter {
           />
         </calcite-panel>
       </calcite-flow-item>
-    )
+    );
   }
 
   /**
@@ -1421,7 +1421,7 @@ export class CrowdsourceReporter {
           />
         </calcite-panel>
       </calcite-flow-item>
-    )
+    );
   }
 
   /**
@@ -1475,7 +1475,7 @@ export class CrowdsourceReporter {
         this.mapView,
         true,
         this.zoomToScale
-      )
+      );
     }
     void this.updatingFeatureDetails(false);
   }
@@ -1579,7 +1579,7 @@ export class CrowdsourceReporter {
         //if featureDetails not open then add it to the list else just reInit flowItems which will update details with newly selected features
         // eslint-disable-next-line unicorn/prefer-ternary
         if (this._flowItems.length && this._flowItems.includes("feature-details")) {
-          this._flowItems = [... this._flowItems.slice(0, this._flowItems.indexOf("feature-details") + 1)]
+          this._flowItems = [... this._flowItems.slice(0, this._flowItems.indexOf("feature-details") + 1)];
           await this.highlightOnMap(clickedGraphics[0]);
         } else {
           this._flowItems = [...this._flowItems, "feature-details"];
