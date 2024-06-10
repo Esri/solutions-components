@@ -543,10 +543,6 @@ export class FeatureDetails {
     const param = { updateFeatures: [newGraphicInstance] };
     await selectedLayer.applyEdits(param).then(() => {
       this._selectedGraphic = selectFeatureAttr;
-      //update the current graphics in info card so that, the updated values are reflected in popup content
-      if (this._infoCard) {
-        void this._infoCard.updateCurrentGraphic(this._selectedGraphic);
-      }
       //store the like dislike value for the current selected graphic in local storage
       this.setInLocalStorage();
       this._updating = false;
