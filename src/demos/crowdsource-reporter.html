@@ -40,6 +40,7 @@
       }
       .over-map[dir="rtl"] {
         right: 0px;
+        left: auto;
       }
       .column {
         width: 360px;
@@ -71,6 +72,13 @@
         .column-collapsed {
           top: calc(100% - 100px);
           height: 100px;
+        }
+      
+        .map-collapsed {
+          height: 100%;
+          top: 0;
+          width: 100%;
+          z-index: 1000;
         }
       }
     </style>
@@ -295,22 +303,38 @@
         //on change update the prop for is mobile
         mediaQueryList.onchange = (e) => {
           demo.isMobile = e.matches;
-          togglePanel({ detail: false })
+          togglePanel({ detail: { panelState: false, isFormOpen: false } })
         }
         //listen to togglePanel event
         demo.addEventListener('togglePanel', togglePanel);
       });
 
-      function togglePanel(evt) {
-        const state = evt.detail;
+    function togglePanel(evt) {
+        const panelState = evt.detail.panelState;
+        const hideMap = evt.detail.isFormOpen;
         const viewDiv = document.getElementById("viewDiv");
         const demo = document.getElementById("demo");
-        if (state) {
-          demo.classList.add("column-collapsed");
-          viewDiv.classList.add("map-with-panel-collapsed");
+        // in case of form is open then collapse the map
+        if (hideMap) {
+          if (panelState) {
+            demo.classList.remove("map-collapsed");
+            demo.classList.add("column-collapsed");
+            viewDiv.classList.add("map-with-panel-collapsed");
+          } else {
+            demo.classList.add("map-collapsed");
+            demo.classList.remove("column-collapsed");
+            viewDiv.classList.remove("map-with-panel-collapsed");
+          }
         } else {
-          demo.classList.remove("column-collapsed");
-          viewDiv.classList.remove("map-with-panel-collapsed");
+          if (panelState) {
+            demo.classList.add("column-collapsed");
+            viewDiv.classList.add("map-with-panel-collapsed");
+            demo.classList.remove("map-collapsed");
+          } else {
+            demo.classList.remove("column-collapsed");
+            viewDiv.classList.remove("map-with-panel-collapsed");
+            demo.classList.remove("map-collapsed");
+          }
         }
       }
     </script>

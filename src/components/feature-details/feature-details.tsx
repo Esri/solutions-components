@@ -371,7 +371,7 @@ export class FeatureDetails {
       const relatedTableIdFromRelnship = selectedLayer.relationships[0].relatedTableId;
       const allTables = await getAllTables(this.mapView);
       const relatedTable = allTables.filter((table) => relatedTableIdFromRelnship === (table as __esri.FeatureLayer).layerId);
-      this.relatedTableId = relatedTable?.length > 0 ? relatedTable[0].id : ''
+      this.relatedTableId = relatedTable?.length > 0 ? relatedTable[0].id : '';
 
       //**Get the related records for the current selected feature**
       if (this.relatedTableId) {
@@ -382,7 +382,7 @@ export class FeatureDetails {
           objectIds: [objectId],
           outFields: ['*'],
           relationshipId: selectedLayer.relationships[0].id
-        })
+        });
         const result = await selectedLayer.queryRelatedFeatures(relationshipQuery).catch((e) => {
           console.error(e);
         });
@@ -404,7 +404,7 @@ export class FeatureDetails {
     } else {
       this._relatedFeaturesOIDs = [];
       this._commentsAvailable = false;
-      this.relatedTableId = ''
+      this.relatedTableId = '';
     }
   }
 
@@ -503,7 +503,7 @@ export class FeatureDetails {
    */
   protected onDislikeButtonClick(): void {
     if (this._isLikeBtnClicked && this.reportingOptions[this._selectedGraphic.layer.id].like) {
-      this.onLikeButtonClick()
+      this.onLikeButtonClick();
     }
     this._isDislikeBtnClicked = !this._isDislikeBtnClicked;
     if (this._isDislikeBtnClicked) {
@@ -543,10 +543,6 @@ export class FeatureDetails {
     const param = { updateFeatures: [newGraphicInstance] };
     await selectedLayer.applyEdits(param).then(() => {
       this._selectedGraphic = selectFeatureAttr;
-      //update the current graphics in info card so that, the updated values are reflected in popup content
-      if (this._infoCard) {
-        void this._infoCard.updateCurrentGraphic(this._selectedGraphic);
-      }
       //store the like dislike value for the current selected graphic in local storage
       this.setInLocalStorage();
       this._updating = false;
