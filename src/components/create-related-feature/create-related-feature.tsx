@@ -183,6 +183,11 @@ export class CreateRelatedFeature {
    */
   @Event() isActionPending: EventEmitter<boolean>;
 
+  /**
+   * Emitted on demand when form is ready
+   */
+    @Event() formReady: EventEmitter<void>;
+
   //--------------------------------------------------------------------------
   //
   //  Functions (lifecycle)
@@ -283,6 +288,16 @@ export class CreateRelatedFeature {
         }
       });
     this._editor.viewModel.addHandles(attachmentHandle);
+
+    //Add handle to watch featureFormViewModel ready state
+    const formHandle = this.reactiveUtils.watch(
+      () => this._editor.viewModel.featureFormViewModel?.state,
+      (state) => {
+        if (state === 'ready') {
+          this.formReady.emit();
+        }
+      });
+    this._editor.viewModel.addHandles(formHandle);
   }
 
   /**
@@ -293,7 +308,7 @@ export class CreateRelatedFeature {
     const parentLayer = this.selectedFeature.layer as __esri.FeatureLayer;
     const childTable = this.table;
     const parentRelationship = parentLayer.relationships[0];
-    const childRelationship = childTable.relationships.find((rel) => parentLayer.layerId === rel.relatedTableId)
+    const childRelationship = childTable.relationships.find((rel) => parentLayer.layerId === rel.relatedTableId);
     const queryResult = await parentLayer.queryFeatures({
       objectIds: [this.selectedFeature.getObjectId()],
       outFields: [parentLayer.objectIdField, parentRelationship.keyField],
@@ -309,8 +324,6 @@ export class CreateRelatedFeature {
     await this._editor.startCreateFeaturesWorkflowAtFeatureCreation(creationInfo);
     //hides the header and footer elements in editor widget
     await this.hideEditorsElements();
-    // Emit an event to show submit cancel buttons
-    this.isActionPending.emit(false);
     this._editor.viewModel.featureFormViewModel.on('submit', this.submitted.bind(this));
   }
 

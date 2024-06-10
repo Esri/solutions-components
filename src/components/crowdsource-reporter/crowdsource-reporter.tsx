@@ -411,6 +411,11 @@ export class CrowdsourceReporter {
    */
   protected _layerItemsHash: ILayerItemsHash;
 
+  /**
+   * boolean: when true allow map to be collapsed
+   */
+  protected isFormOpen: boolean;
+
   //--------------------------------------------------------------------------
   //
   //  Watch handlers
@@ -450,7 +455,7 @@ export class CrowdsourceReporter {
    /**
    * Emitted when toggle panel button is clicked in reporter
    */
-   @Event() togglePanel: EventEmitter<boolean>;
+   @Event() togglePanel: EventEmitter<{panelState: boolean, isFormOpen: boolean}>;
 
   //--------------------------------------------------------------------------
   //
@@ -895,7 +900,7 @@ export class CrowdsourceReporter {
           <create-feature
             customizeSubmit
             mapView={this.mapView}
-            onDrawComplete={this.onDrawComplete.bind(this)}
+            onDrawComplete={this.onFormReady.bind(this)}
             onEditingAttachment={this.showSubmitCancelButton.bind(this)}
             onFail={this.createFeatureFailed.bind(this)}
             onProgressStatus={this.updatedProgressStatus.bind(this)}
@@ -918,10 +923,12 @@ export class CrowdsourceReporter {
   }
 
   /**
-   * When drawing of incident location completed on map show the submit and cancel button
+   * When form is ready then show submit and cancel button
    * @protected
    */
-  protected onDrawComplete(): void {
+  protected onFormReady(): void {
+    // update the form state when form is ready
+    this.updateFormState(true);
     this._showSubmitCancelButton = true;
   }
 
@@ -951,6 +958,10 @@ export class CrowdsourceReporter {
     if (this._createFeature) {
       void this._createFeature.close();
     }
+    //on back form will be closed, so update the form state
+    if (this.isFormOpen) {
+      this.updateFormState(false);
+    }
     this.backFromSelectedPanel();
   }
 
@@ -973,6 +984,10 @@ export class CrowdsourceReporter {
       void this._createRelatedFeature.close();
       this._showSubmitCancelButton = false;
     }
+    //on back form will be closed, so update the form state
+    if (this.isFormOpen) {
+      this.updateFormState(false);
+    }
     this.backFromSelectedPanel();
   }
 
@@ -991,6 +1006,10 @@ export class CrowdsourceReporter {
    * @protected
    */
   protected onReportSubmitted(): void {
+    //on report submit form will be closed, so update the form state
+    if (this.isFormOpen) {
+      this.updateFormState(false);
+    }
     this._reportSubmitted = true;
     void this.navigateToHomePage();
   }
@@ -1135,7 +1154,17 @@ export class CrowdsourceReporter {
    */
   protected toggleSidePanel(): void {
     this._sidePanelCollapsed = !this._sidePanelCollapsed;
-    this.togglePanel.emit(this._sidePanelCollapsed);
+    this.togglePanel.emit({ panelState: this._sidePanelCollapsed, isFormOpen: this.isFormOpen });
+  }
+
+  /**
+   * Hide map when form open in case of mobile
+   * @param isFormOpen updated form state
+   * @protected
+   */
+  protected updateFormState(isFormOpen: boolean): void {
+    this.isFormOpen = isFormOpen;
+    this.togglePanel.emit({ panelState: this._sidePanelCollapsed, isFormOpen: this.isFormOpen });
   }
 
   /**
@@ -1413,6 +1442,7 @@ export class CrowdsourceReporter {
             customizeSubmit
             mapView={this.mapView}
             onFail={this.addCommentFailed.bind(this)}
+            onFormReady={this.onFormReady.bind(this)}
             onIsActionPending={this.showSubmitCancelButton.bind(this)}
             onSuccess={this.onCommentSubmitted.bind(this)}
             ref={el => this._createRelatedFeature = el}

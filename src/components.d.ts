@@ -1696,6 +1696,7 @@ declare global {
         "success": void;
         "fail": Error;
         "isActionPending": boolean;
+        "formReady": void;
     }
     interface HTMLCreateRelatedFeatureElement extends Components.CreateRelatedFeature, HTMLStencilElement {
         addEventListener<K extends keyof HTMLCreateRelatedFeatureElementEventMap>(type: K, listener: (this: HTMLCreateRelatedFeatureElement, ev: CreateRelatedFeatureCustomEvent<HTMLCreateRelatedFeatureElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -1730,7 +1731,7 @@ declare global {
         new (): HTMLCrowdsourceManagerElement;
     };
     interface HTMLCrowdsourceReporterElementEventMap {
-        "togglePanel": boolean;
+        "togglePanel": {panelState: boolean, isFormOpen: boolean};
     }
     interface HTMLCrowdsourceReporterElement extends Components.CrowdsourceReporter, HTMLStencilElement {
         addEventListener<K extends keyof HTMLCrowdsourceReporterElementEventMap>(type: K, listener: (this: HTMLCrowdsourceReporterElement, ev: CrowdsourceReporterCustomEvent<HTMLCrowdsourceReporterElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2498,6 +2499,10 @@ declare namespace LocalJSX {
          */
         "onFail"?: (event: CreateRelatedFeatureCustomEvent<Error>) => void;
         /**
+          * Emitted on demand when form is ready
+         */
+        "onFormReady"?: (event: CreateRelatedFeatureCustomEvent<void>) => void;
+        /**
           * Emitted on demand when any action is pending or completed
          */
         "onIsActionPending"?: (event: CreateRelatedFeatureCustomEvent<boolean>) => void;
@@ -2748,7 +2753,7 @@ declare namespace LocalJSX {
         /**
           * Emitted when toggle panel button is clicked in reporter
          */
-        "onTogglePanel"?: (event: CrowdsourceReporterCustomEvent<boolean>) => void;
+        "onTogglePanel"?: (event: CrowdsourceReporterCustomEvent<{panelState: boolean, isFormOpen: boolean}>) => void;
         /**
           * string: The word(s) to display in the reports submit button
          */

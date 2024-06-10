@@ -354,16 +354,28 @@ export class CreateFeature {
       });
     this._editor.viewModel.addHandles(handle);
 
-    //Add handle to watch editor viewmodel state and then show the search widget
+    //Add handle to watch featureFormViewModel ready state
     const formHandle = this.reactiveUtils.watch(
-      () =>  this._editor.viewModel.state,
+      () => this._editor.viewModel.featureFormViewModel?.state,
       (state) => {
-        if(state === 'creating-features'){
+        if (state === 'ready') {
+          this._showSearchWidget = false;
+          this.progressStatus.emit(1);
+          this.drawComplete.emit();
+        }
+      });
+    this._editor.viewModel.addHandles(formHandle);
+
+    //Add handle to watch editor viewmodel state and then show the search widget
+    const createFeatureHandle = this.reactiveUtils.watch(
+      () => this._editor.viewModel.state,
+      (state) => {
+        if (state === 'creating-features') {
           this._editorLoading = true;
           this._showSearchWidget = true;
         }
       });
-    this._editor.viewModel.addHandles(formHandle);
+    this._editor.viewModel.addHandles(createFeatureHandle);
   }
 
   /**
@@ -381,14 +393,6 @@ export class CreateFeature {
           setTimeout(() => {
             //on form submit
             this._editor.viewModel.featureFormViewModel.on('submit', this.submitted.bind(this));
-            //on sketch complete emit the event
-            this._editor.viewModel.sketchViewModel.on("create", (evt) => {
-              if (evt.state === "complete") {
-                this._showSearchWidget = false;
-                this.progressStatus.emit(1);
-                this.drawComplete.emit();
-              }
-            })
             //hides the header and footer elements in editor widget
             this.hideEditorsElements().then(() => {
               resolve({});
@@ -522,7 +526,7 @@ export class CreateFeature {
       }
       await this.timeout(700);
       //hides the header and footer on the featureForm
-      this.el.querySelector('.esri-editor').querySelectorAll('calcite-flow-item')?.forEach((flowItem) => {
+      this.el.querySelector('.esri-editor')?.querySelectorAll('calcite-flow-item')?.forEach((flowItem) => {
         const article = flowItem.shadowRoot?.querySelector('calcite-panel')?.shadowRoot?.querySelector('article');
         //hide the header
         article?.querySelector('header')?.setAttribute('style', 'display: none');
