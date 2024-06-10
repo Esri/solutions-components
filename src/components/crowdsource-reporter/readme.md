@@ -40,9 +40,9 @@
 
 ## Events
 
-| Event         | Description                                             | Type                   |
-| ------------- | ------------------------------------------------------- | ---------------------- |
-| `togglePanel` | Emitted when toggle panel button is clicked in reporter | `CustomEvent<boolean>` |
+| Event         | Description                                             | Type                                                         |
+| ------------- | ------------------------------------------------------- | ------------------------------------------------------------ |
+| `togglePanel` | Emitted when toggle panel button is clicked in reporter | `CustomEvent<{ panelState: boolean; isFormOpen: boolean; }>` |
 
 
 ## Dependencies

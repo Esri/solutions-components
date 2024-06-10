@@ -6,6 +6,12 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.8.35] - June 10th 2024
+Remove FloorFilter debug logs
+
+## [0.8.34] - June 10th 2024
+Delivery for Reporter Instant App - UAT - Enhahcements- AGOL-2024.R02 #683
+
 ## [0.8.33] - June 7th 2024
 Floor filter
 
@@ -648,4 +654,6 @@ Recover from test releases
 [0.8.31]: https://github.com/Esri/solution.js/compare/v0.8.30...v0.8.31 "v0.8.31"
 [0.8.32]: https://github.com/Esri/solution.js/compare/v0.8.31...v0.8.32 "v0.8.32"
 [0.8.33]: https://github.com/Esri/solution.js/compare/v0.8.32...v0.8.33 "v0.8.33"
-[Unreleased]: https://github.com/Esri/solution.js/compare/v0.8.33...HEAD "Unreleased Changes"
+[0.8.34]: https://github.com/Esri/solution.js/compare/v0.8.33...v0.8.34 "v0.8.34"
+[0.8.35]: https://github.com/Esri/solution.js/compare/v0.8.34...v0.8.35 "v0.8.35"
+[Unreleased]: https://github.com/Esri/solution.js/compare/v0.8.35...HEAD "Unreleased Changes"

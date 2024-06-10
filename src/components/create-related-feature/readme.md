@@ -20,6 +20,7 @@
 | Event             | Description                                                  | Type                   |
 | ----------------- | ------------------------------------------------------------ | ---------------------- |
 | `fail`            | Emitted on demand when the comment submission is failed      | `CustomEvent<Error>`   |
+| `formReady`       | Emitted on demand when form is ready                         | `CustomEvent<void>`    |
 | `isActionPending` | Emitted on demand when any action is pending or completed    | `CustomEvent<boolean>` |
 | `success`         | Emitted on demand when the comment is submitted successfully | `CustomEvent<void>`    |
 
