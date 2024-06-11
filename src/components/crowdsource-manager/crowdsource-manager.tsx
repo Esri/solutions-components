@@ -233,7 +233,7 @@ export class CrowdsourceManager {
   /**
    * When true the info panel with the popup details will take the full height and prevent the map from displaying
    */
-  @State() _expandPopup = this.hideMapOnLoad;
+  @State() _expandPopup = false;
 
   /**
    * When true the mobile footer will be hidden
@@ -248,7 +248,7 @@ export class CrowdsourceManager {
   /**
    * When true the component will render an optimized view for mobile devices
    */
-  @State() _isMobile: boolean;
+  @State() _isMobile = false;
 
   /**
    * Contains the translations for this component.
@@ -310,6 +310,11 @@ export class CrowdsourceManager {
   protected _defaultLevelHonored = false;
 
   /**
+   * boolean: When true hideMapOnLoad was honored for the current map
+   */
+  protected _hideMapOnLoadHonored = false;
+
+  /**
    * HTMLLayerTableElement: The layer table element
    */
   protected _layerTable: HTMLLayerTableElement;
@@ -349,8 +354,8 @@ export class CrowdsourceManager {
    */
   @Watch("hideMapOnLoad")
   hideMapOnLoadWatchHandler(): void {
-    this.showHideMapPopupAndTable(this.hideMapOnLoad);
-    this._expandPopup = this.hideMapOnLoad;
+    this.showHideMapPopupAndTable(this.hideMapOnLoad && !this._isMobile);
+    this._expandPopup = this.hideMapOnLoad && !this._isMobile;
   }
 
   /**
@@ -471,7 +476,8 @@ export class CrowdsourceManager {
   @Listen("mapInfoChange", { target: "window" })
   async mapInfoChange(
   ): Promise<void> {
-    this._expandPopup = this.hideMapOnLoad;
+    this._expandPopup = this.hideMapOnLoad && !this._isMobile;
+    this._hideMapOnLoadHonored = false;
   }
 
   //--------------------------------------------------------------------------
@@ -857,6 +863,7 @@ export class CrowdsourceManager {
    */
   protected _togglePopup(): void {
     this._expandPopup = !this._expandPopup;
+    this._hideMapOnLoadHonored = true;
   }
 
   /**
@@ -970,6 +977,9 @@ export class CrowdsourceManager {
     this._layoutMode = this._isMobile ? ELayoutMode.HORIZONTAL : ELayoutMode.GRID;
     if (forceOpen) {
       this._panelOpen = true;
+    }
+    if ((this.hideMapOnLoad && !this._hideMapOnLoadHonored) || this._isMobile) {
+      this.hideMapOnLoadWatchHandler();
     }
   }
 
