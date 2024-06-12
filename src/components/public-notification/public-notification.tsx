@@ -97,6 +97,11 @@ export class PublicNotification {
   @Prop() featureHighlightEnabled: boolean;
 
   /**
+   * string: The current user locale.
+   */
+  @Prop() locale: string;
+
+  /**
    * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
    */
   @Prop() mapView: __esri.MapView;
@@ -931,6 +936,7 @@ export class PublicNotification {
             defaultBufferUnit={this.defaultBufferUnit}
             enabledLayerIds={this.addresseeLayerIds}
             isUpdate={!!this._activeSelection}
+            locale={this.locale}
             mapView={this.mapView}
             noResultText={this.noResultText}
             onSelectionSetChange={(evt) => this._updateForSelection(evt)}
@@ -994,7 +1000,7 @@ export class PublicNotification {
                     </calcite-label>
                     <calcite-icon
                       class="padding-start-1-2 icon"
-                      flipRtl
+                      flipRtl={!(this.locale.toLowerCase() === "he")}
                       icon="question"
                       id="remove-duplicates-icon"
                       scale="s"
@@ -1157,7 +1163,7 @@ export class PublicNotification {
           </calcite-label>
           <calcite-icon
               class="padding-start-1-2 icon"
-              flipRtl
+              flipRtl={!(this.locale.toLowerCase() === "he")}
               icon="question"
               id="list-graphics-icon"
               scale="s"
@@ -1299,6 +1305,7 @@ export class PublicNotification {
               {this._getNotice(this._translations.refineTip, "padding-sides-1")}
               <refine-selection
                 enabledLayerIds={this.selectionLayerIds}
+                locale={this.locale}
                 mapView={this.mapView}
                 selectionSets={this._selectionSets}
                 sketchLineSymbol={this.sketchLineSymbol}

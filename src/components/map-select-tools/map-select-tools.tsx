@@ -89,6 +89,11 @@ export class MapSelectTools {
   @Prop() layerViews: __esri.FeatureLayerView[] = [];
 
   /**
+   * string: The current user locale.
+   */
+  @Prop() locale: string;
+
+  /**
    * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
    */
   @Prop() mapView: __esri.MapView;
@@ -507,7 +512,7 @@ export class MapSelectTools {
               {this._translations.searchDistance}
               <calcite-icon
                 class="padding-start-1-2 icon"
-                flipRtl
+                flipRtl={!(this.locale.toLowerCase() === "he")}
                 icon="question"
                 id="search-distance-icon"
                 scale="s"
@@ -556,7 +561,7 @@ export class MapSelectTools {
               {this._translations.useLayerFeatures}
               <calcite-icon
                 class="padding-start-1-2 icon"
-                flipRtl
+                flipRtl={!(this.locale.toLowerCase() === "he")}
                 icon="question"
                 id="use-layer-features-icon"
                 scale="s"
