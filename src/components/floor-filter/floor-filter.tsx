@@ -175,6 +175,15 @@ export class FloorFilter {
     );
   }
 
+  /**
+   * StencilJS: Called once just after the component is first loaded.
+   */
+  async componentDidLoad(): Promise<void> {
+    if (this.mapView && !this.floorFilterWidget) {
+      await this._initFloorFilter(this.mapView);
+    }
+  }
+
   //--------------------------------------------------------------------------
   //
   //  Functions (protected)
