@@ -1074,6 +1074,10 @@ export namespace Components {
          */
         "layerViews": __esri.FeatureLayerView[];
         /**
+          * string: The current user locale.
+         */
+        "locale": string;
+        /**
           * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
@@ -1249,6 +1253,10 @@ export namespace Components {
          */
         "featureHighlightEnabled": boolean;
         /**
+          * string: The current user locale.
+         */
+        "locale": string;
+        /**
           * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
@@ -1296,6 +1304,10 @@ export namespace Components {
           * string[]: Optional list of enabled layer ids  If empty all layers will be available
          */
         "enabledLayerIds": string[];
+        /**
+          * string: The current user locale.
+         */
+        "locale": string;
         /**
           * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
@@ -3467,6 +3479,10 @@ declare namespace LocalJSX {
          */
         "layerViews"?: __esri.FeatureLayerView[];
         /**
+          * string: The current user locale.
+         */
+        "locale"?: string;
+        /**
           * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
@@ -3627,6 +3643,10 @@ declare namespace LocalJSX {
          */
         "featureHighlightEnabled"?: boolean;
         /**
+          * string: The current user locale.
+         */
+        "locale"?: string;
+        /**
           * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
@@ -3678,6 +3698,10 @@ declare namespace LocalJSX {
           * string[]: Optional list of enabled layer ids  If empty all layers will be available
          */
         "enabledLayerIds"?: string[];
+        /**
+          * string: The current user locale.
+         */
+        "locale"?: string;
         /**
           * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
