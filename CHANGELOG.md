@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.8.37] - June 12th 2024
+Floor Filter update, don't flip question marks in HE, add locale prop to PN
+
 ## [0.8.36] - June 10th 2024
 skip hide map on load for mobile and fix popup issue
 
@@ -660,4 +663,5 @@ Recover from test releases
 [0.8.34]: https://github.com/Esri/solution.js/compare/v0.8.33...v0.8.34 "v0.8.34"
 [0.8.35]: https://github.com/Esri/solution.js/compare/v0.8.34...v0.8.35 "v0.8.35"
 [0.8.36]: https://github.com/Esri/solution.js/compare/v0.8.35...v0.8.36 "v0.8.36"
-[Unreleased]: https://github.com/Esri/solution.js/compare/v0.8.36...HEAD "Unreleased Changes"
+[0.8.37]: https://github.com/Esri/solution.js/compare/v0.8.36...v0.8.37 "v0.8.37"
+[Unreleased]: https://github.com/Esri/solution.js/compare/v0.8.37...HEAD "Unreleased Changes"
