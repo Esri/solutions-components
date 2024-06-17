@@ -154,7 +154,7 @@ export class FeatureDetails {
   protected RelationshipQuery: typeof import("esri/rest/support/RelationshipQuery");
 
   /**
-   * string[]: Valid field types for like and dislike 
+   * string[]: Valid field types for like and dislike
    */
   protected _validFieldTypes = ["small-integer", "integer", "big-integer", "single", "long"];
 
@@ -194,7 +194,7 @@ export class FeatureDetails {
     await this.getCompleteGraphic(graphic);
     await this.processComments();
     if (this.isLikeDislikeConfigured(graphic.layer as __esri.FeatureLayer)) {
-      // in case of multiple features selected fetch complete feature and update like dislike for current feature 
+      // in case of multiple features selected fetch complete feature and update like dislike for current feature
       if (graphic && this.graphics.length > 1) {
         this.checkLikeDislikeFields();
       }
@@ -410,8 +410,8 @@ export class FeatureDetails {
 
   /**
    * Checks if the layers is configured for like dislike or not
-   * @param selectedLayer Feature layer  
-   * @returns boolean 
+   * @param selectedLayer Feature layer
+   * @returns boolean
    * @protected
    */
   protected isLikeDislikeConfigured(selectedLayer: __esri.FeatureLayer): boolean {
@@ -477,7 +477,7 @@ export class FeatureDetails {
         }
       });
       this.getFromLocalStorage();
-    } 
+    }
   }
 
   /**
@@ -517,7 +517,7 @@ export class FeatureDetails {
   /**
    * Update the feature if user click on like or dislike button
    * @param fieldName field name of the feature for like or dislike attribute
-   * @param buttonClicked is like or dislike button clicked  
+   * @param buttonClicked is like or dislike button clicked
    * @protected
    */
   protected async updateFeaturesLikeDislikeField(
@@ -529,12 +529,8 @@ export class FeatureDetails {
     this._updating = true;
     //Increment the value if button is clicked or else decrement it
     const selectFeatureAttr = this._selectedGraphic;
-    if (buttonClicked) {
-      selectFeatureAttr.attributes[fieldName] = Number(selectFeatureAttr.attributes[fieldName]) + 1;
-    } else {
-      selectFeatureAttr.attributes[fieldName] = Number(selectFeatureAttr.attributes[fieldName]) - 1;
-    }
-    //use the oid and like/dislike field value to update 
+    selectFeatureAttr.attributes[fieldName] = Number(selectFeatureAttr.attributes[fieldName]) + (buttonClicked ? 1 : -1);
+    //use the oid and like/dislike field value to update
     attributesToUpdate[selectedLayer.objectIdField] = selectFeatureAttr.attributes[selectedLayer.objectIdField];
     attributesToUpdate[fieldName] = selectFeatureAttr.attributes[fieldName];
     const newGraphicInstance = new this.Graphic();
@@ -558,7 +554,7 @@ export class FeatureDetails {
    */
   protected getFromLocalStorage(): void {
     const uniqueLayerId = this._selectedGraphic.layer.id;
-    //get the data from local storage and check current feature is liked or disliked 
+    //get the data from local storage and check current feature is liked or disliked
     const localStorageUser = localStorage[uniqueLayerId];
     if (localStorageUser) {
       const parseArr = JSON.parse(localStorageUser);
@@ -587,7 +583,7 @@ export class FeatureDetails {
       if (index >= 0) {
         information.splice(index, 1);
       }
-    } 
+    }
     //add the information for current selected graphic
     information.push({
       id: this._selectedGraphic.getObjectId(),

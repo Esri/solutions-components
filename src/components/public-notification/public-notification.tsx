@@ -140,6 +140,7 @@ export class PublicNotification {
    * See the ArcGIS REST API documentation for examples of the structure of various input JSON objects.
    * https://developers.arcgis.com/documentation/common-data-types/symbol-objects.htm
    */
+  // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
   @Prop() sketchLineSymbol: __esri.SimpleLineSymbol | any;
 
   /**
@@ -149,6 +150,7 @@ export class PublicNotification {
    * See the ArcGIS REST API documentation for examples of the structure of various input JSON objects.
    * https://developers.arcgis.com/documentation/common-data-types/symbol-objects.htm
    */
+  // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
   @Prop() sketchPointSymbol: __esri.SimpleMarkerSymbol | any;
 
   /**
@@ -158,6 +160,7 @@ export class PublicNotification {
    * See the ArcGIS REST API documentation for examples of the structure of various input JSON objects.
    * https://developers.arcgis.com/documentation/common-data-types/symbol-objects.htm
    */
+  // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
   @Prop() sketchPolygonSymbol: __esri.SimpleFillSymbol | any;
 
   //--------------------------------------------------------------------------
@@ -353,6 +356,7 @@ export class PublicNotification {
    */
   @Watch("sketchLineSymbol")
   async sketchLineSymbolWatchHandler(
+    // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
     v: __esri.SimpleLineSymbol | any,
     oldV: __esri.SimpleLineSymbol
   ): Promise<void> {
@@ -366,6 +370,7 @@ export class PublicNotification {
    */
   @Watch("sketchPointSymbol")
   async sketchPointSymbolWatchHandler(
+    // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
     v: __esri.SimpleMarkerSymbol | any,
     oldV: __esri.SimpleMarkerSymbol
   ): Promise<void> {
@@ -379,6 +384,7 @@ export class PublicNotification {
    */
   @Watch("sketchPolygonSymbol")
   async sketchPolygonSymbolWatchHandler(
+    // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
     v: __esri.SimpleFillSymbol | any,
     oldV: __esri.SimpleFillSymbol
   ): Promise<void> {
@@ -568,6 +574,7 @@ export class PublicNotification {
    * @protected
    */
   protected _setLineSymbol(
+    // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
     v: __esri.SimpleLineSymbol | any
   ): void {
     const isSymbol = v?.type === 'simple-line';
@@ -587,6 +594,7 @@ export class PublicNotification {
    * @protected
    */
   protected _setPointSymbol(
+    // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
     v: __esri.SimpleMarkerSymbol | any
   ): void {
     const isSymbol = v?.type === 'simple-marker';
@@ -615,6 +623,7 @@ export class PublicNotification {
    * @protected
    */
   protected _setPolygonSymbol(
+    // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
     v: __esri.SimpleFillSymbol | any
   ): void {
     const isSymbol = v?.type === 'simple-fill';
@@ -756,7 +765,7 @@ export class PublicNotification {
   protected _getOnboardingImage(): VNode {
     return (
       <div class="display-flex padding-sides-1">
-        <img class="img-container" src={this._onboardingImageUrl} />
+        <img class="img-container" role="presentation" src={this._onboardingImageUrl} />
       </div>
     );
   }

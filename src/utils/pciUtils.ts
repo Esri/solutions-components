@@ -106,7 +106,7 @@ export function calculateDeductValue(
   const _showDebugging = showDebugging === true || showDebugging.toString().toLowerCase() === "true";
 
   let calc;
-  switch (_type) {
+  switch (_type as any) {
     case EDistressType.ALLIGATOR_CRACKING:
       calc = _calcAlligator;
       break;
@@ -728,7 +728,7 @@ function _calcPolishedAggregate(
   severity: ESeverity,
   density: number
 ): number {
-  const vals = severity === "H" || severity === "M" || severity === "L" ?
+  const vals = severity === ESeverity.H || severity === ESeverity.M || severity === ESeverity.L ?
     [3.417, -26.82, 71.15, -76.22, 38.52, -6.904] : [];
   return _calc(density, vals);
 }
