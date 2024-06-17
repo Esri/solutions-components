@@ -19,6 +19,7 @@
    | See the License for the specific language governing permissions and
    | limitations under the License.
   -->
+
   <link rel="stylesheet" type="text/css" href="https://js.arcgis.com/calcite-components/2.0.0/calcite.css" />
   <link rel="stylesheet" href="https://webapps-cdn.esri.com/CDN/fonts/v1.4.1/fonts.css" />
   <link rel="stylesheet" href="../solutions-components.css" type="text/css">
@@ -30,14 +31,16 @@
       height: calc(100% - 40px);
     }
   </style>
+
   <script type="module" src="https://js.arcgis.com/calcite-components/2.0.0/calcite.esm.js"></script>
   <script type="module" src="../solutions-components.esm.js"></script>
 </head>
+
 <body>
   <h1>Demo Solution Spatial Reference</h1>
   <main id="appContainer">
     <div class="content full-height">
-      <store-manager id="helper"></store-manager>
+      <store-manager id="helper"/>
       <solution-spatial-ref id="demo"/>
     </div>
   </main>
@@ -45,12 +48,15 @@
   <script src="./libs/require.js"></script>
   <script src="./libs/setLocale.js"></script>
   <script>
-    require([],  // for loading i18n in setLocale
+    require([],
     function () {
+      const demo = document.getElementById("demo");
+      const helper = document.getElementById("helper");
+
+      // set the data
       fetch("./data/election-outreach.json").then(result => {
         result.json().then(data => {
           document.getElementById("appContainer").style.opacity = "1";
-          const helper = document.getElementById("helper");
           helper.value = JSON.stringify(data);
         });
       });
