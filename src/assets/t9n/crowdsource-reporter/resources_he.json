@@ -1,5 +1,5 @@
 {
-  "createReportHeader": "צור דוח",
+  "createReportButtonText": "צור דוח",
   "share": "שתף",
   "sort": "מיין",
   "filter": "מסנן",
@@ -11,12 +11,19 @@
   "back": "חזור",
   "error": "שגיאה",
   "invalidConfigurationErrorMsg": "תצורה לא חוקית",
-  "noLayerToDisplayErrorMsg": "מפת הווב שהוגדרה לא מכילה שכבת ישות ניתנת לעריכה.",
-  "chooseCategoryMsg": "Choose a category for your report.",
-  "featureErrorMsg": "הישויות לא נמצאו.",
-  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "chooseCategoryMsg": "בצע בחירה מהרשימה להלן.",
+  "featureErrorMsg": "לא נמצאו רשומות",
+  "featureEditFormInfoMsg": "ספק את הפרטים.",
   "currentLocationMsg": "השתמש במיקום הנוכחי שלי",
-  "addLocationMsg": "Add the location for your report.",
-  "reportSubmit": "הדוח נשלח.",
-  "submitMsg": "תודה! הדוח שלך נשלח בהצלחה."
+  "addLocationMsg": "הוסף מיקום.",
+  "submitMsg": "תודה! הדוח שלך נשלח בהצלחה.",
+  "filterLayerTitle": "מסנן: {{title}}",
+  "indexOfTotal": "{{index}} מתוך {{total}}",
+  "comment": "הערה",
+  "commentSubmittedMsg": "ההערה נשלחה",
+  "addingCommentFailedMsg": "ההערה לא נשלחה",
+  "sortNewest": "החדש ביותר",
+  "sortOldest": "הישן ביותר",
+  "sortHighestVoted": "ההצבעה הגבוהה ביותר",
+  "sortLowestVoted": "ההצבעה הנמוכה ביותר"
 }

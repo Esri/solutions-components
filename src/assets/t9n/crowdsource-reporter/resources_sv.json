@@ -1,5 +1,5 @@
 {
-  "createReportHeader": "Skapa en rapport",
+  "createReportButtonText": "Skapa en rapport",
   "share": "Dela",
   "sort": "Sortera",
   "filter": "Filter",
@@ -11,12 +11,19 @@
   "back": "Bakåt",
   "error": "Fel",
   "invalidConfigurationErrorMsg": "Ogiltig konfiguration",
-  "noLayerToDisplayErrorMsg": "Konfigurerad webbkarta har inga redigerbara geoobjektlager.",
-  "chooseCategoryMsg": "Choose a category for your report.",
-  "featureErrorMsg": "Geoobjekten hittades inte.",
-  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "chooseCategoryMsg": "Gör ett val från listan nedan.",
+  "featureErrorMsg": "Inga poster hittades.",
+  "featureEditFormInfoMsg": "Ange detaljer.",
   "currentLocationMsg": "Använd min aktuella plats",
-  "addLocationMsg": "Add the location for your report.",
-  "reportSubmit": "Rapporten har skickats.",
-  "submitMsg": "Tack! Din rapport har skickats in."
+  "addLocationMsg": "Lägg till en plats.",
+  "submitMsg": "Tack! Din rapport har skickats in.",
+  "filterLayerTitle": "Filter: {{title}}",
+  "indexOfTotal": "{{index}} av {{total}}",
+  "comment": "Kommentar",
+  "commentSubmittedMsg": "Kommentar har skickats",
+  "addingCommentFailedMsg": "Kommentar har inte skickats",
+  "sortNewest": "Senaste",
+  "sortOldest": "Äldsta",
+  "sortHighestVoted": "Med flest röster",
+  "sortLowestVoted": "Med lägst röster"
 }

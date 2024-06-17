@@ -1,5 +1,5 @@
 {
-  "createReportHeader": "Utwórz raport",
+  "createReportButtonText": "Utwórz raport",
   "share": "Udostępnij",
   "sort": "Sortuj",
   "filter": "Filtruj",
@@ -11,12 +11,19 @@
   "back": "Wstecz",
   "error": "Błąd",
   "invalidConfigurationErrorMsg": "Nieprawidłowa konfiguracja",
-  "noLayerToDisplayErrorMsg": "Skonfigurowana mapa internetowa nie ma żadnej edytowalnej warstwy obiektowej.",
-  "chooseCategoryMsg": "Choose a category for your report.",
-  "featureErrorMsg": "Nie znaleziono obiektów.",
-  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "chooseCategoryMsg": "Dokonaj wyboru z poniższej listy.",
+  "featureErrorMsg": "Nie znaleziono rekordów.",
+  "featureEditFormInfoMsg": "Podaj szczegóły.",
   "currentLocationMsg": "Użyj mojej bieżącej lokalizacji",
-  "addLocationMsg": "Add the location for your report.",
-  "reportSubmit": "Przesłano raport.",
-  "submitMsg": "Dziękujemy! Twój raport został pomyślnie przesłany."
+  "addLocationMsg": "Dodaj lokalizację.",
+  "submitMsg": "Dziękujemy! Twój raport został pomyślnie przesłany.",
+  "filterLayerTitle": "Filtr: {{title}}",
+  "indexOfTotal": "{{index}} z {{total}}",
+  "comment": "Komentarz",
+  "commentSubmittedMsg": "Przesłano komentarz",
+  "addingCommentFailedMsg": "Nie przesłano komentarza",
+  "sortNewest": "Najnowsze",
+  "sortOldest": "Najstarsze",
+  "sortHighestVoted": "Największa liczba głosów",
+  "sortLowestVoted": "Najmniejsza liczba głosów"
 }

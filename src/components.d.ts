@@ -5,9 +5,13 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { ButtonType, DistanceUnit, EditType, EDrawMode, ELayoutMode, IBasemapConfig, IExportInfos, IInventoryItem, ILayerAndTableIds, IMapChange, IMapInfo, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange, theme } from "./utils/interfaces";
+import { ButtonType, DistanceUnit, EditType, EDrawMode, ELayoutMode, IBasemapConfig, IConsentResponse, IExportInfos, IInventoryItem, ILayerAndTableIds, ILayerExpression, IMapChange, IMapInfo, IReportingOptions, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISortingInfo, ISpatialRefRepresentation, IValueChange, theme } from "./utils/interfaces";
+import { IReportingOptions as IReportingOptions1 } from "./components";
+import { ILayerItemsHash } from "./components/layer-list/layer-list";
 import { UserSession } from "@esri/solution-common";
-export { ButtonType, DistanceUnit, EditType, EDrawMode, ELayoutMode, IBasemapConfig, IExportInfos, IInventoryItem, ILayerAndTableIds, IMapChange, IMapInfo, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange, theme } from "./utils/interfaces";
+export { ButtonType, DistanceUnit, EditType, EDrawMode, ELayoutMode, IBasemapConfig, IConsentResponse, IExportInfos, IInventoryItem, ILayerAndTableIds, ILayerExpression, IMapChange, IMapInfo, IReportingOptions, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISortingInfo, ISpatialRefRepresentation, IValueChange, theme } from "./utils/interfaces";
+export { IReportingOptions as IReportingOptions1 } from "./components";
+export { ILayerItemsHash } from "./components/layer-list/layer-list";
 export { UserSession } from "@esri/solution-common";
 export namespace Components {
     interface ArcgisLogin {
@@ -84,6 +88,24 @@ export namespace Components {
          */
         "zoomAndScrollToSelected": boolean;
     }
+    interface ConsentManager {
+        /**
+          * string: The name to use for the variable stored in the browsers local storge that will keep track of the users choice for consent
+         */
+        "firstUseVar": string;
+        /**
+          * Initialize and return the telemetry instance if consent has been granted
+         */
+        "getInstance": () => Promise<Telemetry | undefined>;
+        /**
+          * string[]: Any ids for the analytics configured to receive events from the telemety instance
+         */
+        "measurementIds": string[];
+        /**
+          * esri/portal/Portal: https://developers.arcgis.com/javascript/latest/api-reference/esri-portal-Portal.html Required prop for this component to function
+         */
+        "portal": __esri.Portal;
+    }
     interface CreateFeature {
         /**
           * Destroy the Editor widget instance
@@ -99,6 +121,10 @@ export namespace Components {
          */
         "mapView": __esri.MapView;
         /**
+          * ISearchConfiguration: Configuration details for the Search widget
+         */
+        "searchConfiguration": ISearchConfiguration;
+        /**
           * string: Layer id of the feature layer in which the new feature is to be created
          */
         "selectedLayerId": string;
@@ -108,11 +134,45 @@ export namespace Components {
          */
         "submit": () => Promise<void>;
     }
+    interface CreateRelatedFeature {
+        /**
+          * Destroy the Editor widget instance
+         */
+        "close": () => Promise<void>;
+        /**
+          * boolean: Set this to true when have a custom submit button in the app. This will hide the header and footer elements of the editor and user needs to execute the submit method manually.
+         */
+        "customizeSubmit"?: boolean;
+        /**
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.MapView;
+        /**
+          * __esri.Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
+         */
+        "selectedFeature": __esri.Graphic;
+        /**
+          * Submit the comment
+         */
+        "submit": () => Promise<void>;
+        /**
+          * __esri.FeatureLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html
+         */
+        "table": __esri.FeatureLayer;
+    }
     interface CrowdsourceManager {
+        /**
+          * Array of objects containing proxy information for premium platform services.
+         */
+        "appProxies": any;
         /**
           * IBasemapConfig: List of any basemaps to filter out from the basemap widget
          */
         "basemapConfig": IBasemapConfig;
+        /**
+          * boolean: When true a cover page has been enabled in the consuming application. Also when true a floating button will be shown in the lower right of the window that will emit an event when clicked that the consuming application can respond to that will open the cover page.
+         */
+        "coverPageEnabled": boolean;
         /**
           * string: default center point values for the map ; delimited x;y pair
          */
@@ -186,6 +246,14 @@ export namespace Components {
          */
         "enableZoom": boolean;
         /**
+          * boolean: when true the map will be hidden on load
+         */
+        "hideMapOnLoad": boolean;
+        /**
+          * boolean: When true a introduction window has been enabled in the consuming application. Also when true a floating button will be shown in the lower right of the window that will emit an event when clicked that the consuming application can respond to that will open the introduction window.
+         */
+        "introductionWindowEnabled": boolean;
+        /**
           * IMapInfo[]: array of map infos (name and id)
          */
         "mapInfos": IMapInfo[];
@@ -193,6 +261,22 @@ export namespace Components {
           * boolean: When true only editable layers that support the update capability will be available
          */
         "onlyShowUpdatableLayers": boolean;
+        /**
+          * string: The background color to apply to the popup header
+         */
+        "popupHeaderColor": string;
+        /**
+          * string: The color that will be displayed on hover when expanding the popup header
+         */
+        "popupHeaderHoverColor": string;
+        /**
+          * string: The font color that will be displayed on hover when expanding the popup header
+         */
+        "popupHeaderHoverTextColor": string;
+        /**
+          * string: The font color to apply to the popup header
+         */
+        "popupHeaderTextColor": string;
         /**
           * ISearchConfiguration: Configuration details for the Search widget
          */
@@ -217,6 +301,10 @@ export namespace Components {
           * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
          */
         "zoomAndScrollToSelected": boolean;
+        /**
+          * number: default scale to zoom to when zooming to a single point feature
+         */
+        "zoomToScale": number;
     }
     interface CrowdsourceReporter {
         /**
@@ -268,13 +356,13 @@ export namespace Components {
          */
         "isMobile": boolean;
         /**
+          * ILayerExpression[]: Array of layer expressions for layers (filter configuration)
+         */
+        "layerExpressions": ILayerExpression[];
+        /**
           * string: Layer id of the feature from URL params
          */
         "layerId": string;
-        /**
-          * string[]: list of layer ids
-         */
-        "layers": string[];
         /**
           * string: Id of the zoom level from URL params
          */
@@ -304,6 +392,10 @@ export namespace Components {
          */
         "reportSubmittedMessage": string;
         /**
+          * IReportingOptions: Key options for reporting
+         */
+        "reportingOptions": IReportingOptions;
+        /**
           * string: The word(s) to display in the reports header
          */
         "reportsHeader": string;
@@ -319,6 +411,10 @@ export namespace Components {
           * theme: "light" | "dark" theme to be used
          */
         "theme": theme;
+        /**
+          * number: default scale to zoom to when zooming to a single point feature
+         */
+        "zoomToScale": number;
     }
     interface DeductCalculator {
     }
@@ -364,9 +460,48 @@ export namespace Components {
     }
     interface FeatureComments {
     }
+    interface FeatureDetails {
+        /**
+          * Go to the previous feature in the features widget
+         */
+        "back": () => Promise<void>;
+        /**
+          * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
+         */
+        "graphics": __esri.Graphic[];
+        /**
+          * ILayerItemsHash: LayerDetailsHash for each layer in the map
+         */
+        "layerItemsHash": ILayerItemsHash;
+        /**
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.MapView;
+        /**
+          * Go to the next feature in the features widget
+         */
+        "next": () => Promise<void>;
+        /**
+          * Refresh the features comments which will fetch like, dislike and update the component
+          * @returns Promise that resolves when the operation is complete
+         */
+        "refresh": (graphic?: __esri.Graphic) => Promise<void>;
+        /**
+          * IReportingOptions: Key options for reporting
+         */
+        "reportingOptions": IReportingOptions1;
+        /**
+          * Toggle the visibility of the features list view
+         */
+        "toggleListView": () => Promise<void>;
+    }
     interface FeatureFormFlowItem {
     }
     interface FeatureList {
+        /**
+          * boolean: Highlight feature on map optional (default false) boolean to indicate if we should highlight when hover on Feature in list
+         */
+        "highlightOnHover"?: boolean;
         /**
           * boolean: Highlight feature on map optional (default false) boolean to indicate if we should highlight and zoom to the extent of the feature geometry
          */
@@ -384,9 +519,34 @@ export namespace Components {
          */
         "pageSize"?: number;
         /**
+          * Refresh the feature list which will fetch the latest features and update the features list
+          * @returns Promise that resolves when the operation is complete
+         */
+        "refresh": () => Promise<void>;
+        /**
           * string: Layer id of the feature layer to show the list
          */
         "selectedLayerId": string;
+        /**
+          * boolean: If true will show error msg when features are not present
+         */
+        "showErrorWhenNoFeatures"?: boolean;
+        /**
+          * boolean: Show initial loading indicator when creating list
+         */
+        "showInitialLoading"?: boolean;
+        /**
+          * ISortingInfo: Sorting field and order using which features list will be sorted
+         */
+        "sortingInfo"?: ISortingInfo;
+        /**
+          * string(small/large): Controls the font size of the title
+         */
+        "textSize"?: "small" | "large";
+        /**
+          * string: where clause to filter the features list
+         */
+        "whereClause"?: string;
     }
     interface FeaturesFlowItem {
     }
@@ -409,6 +569,10 @@ export namespace Components {
           * boolean: If true will show edit button
          */
         "allowEditing"?: boolean;
+        /**
+          * Go to the previous feature in the features widget
+         */
+        "back": () => Promise<void>;
         /**
           * Get the current selected feature from the Features widget
           * @returns Promise resolving with the current feature
@@ -435,9 +599,30 @@ export namespace Components {
          */
         "mapView": __esri.MapView;
         /**
-          * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
+          * Go to the next feature in the features widget
          */
-        "zoomAndScrollToSelected": boolean;
+        "next": () => Promise<void>;
+        /**
+          * boolean: If true will show the pagination for multiple features
+         */
+        "paginationEnabled"?: boolean;
+        /**
+          * string: Set the position of the feature info
+         */
+        "position"?: string;
+        /**
+          * Refresh the feature info
+          * @returns Promise when complete
+         */
+        "refresh": () => Promise<any>;
+        /**
+          * Toggle the visibility of the features list view
+         */
+        "toggleListView": () => Promise<void>;
+        /**
+          * update the current graphics to the features widget
+         */
+        "updateCurrentGraphic": (selectedGraphic: __esri.Graphic) => Promise<void>;
     }
     interface JsonEditor {
         /**
@@ -486,10 +671,6 @@ export namespace Components {
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
-        /**
-          * string: Error message to be displayed when no layers found
-         */
-        "noLayerErrorMsg"?: string;
         /**
           * Refresh the layer list which will fetch the latest layer count and update the list
           * @returns Promise that resolves when the operation is complete
@@ -542,6 +723,10 @@ export namespace Components {
          */
         "isMobile": boolean;
         /**
+          * boolean: when true the map is hidden and map specific controls should be hidden
+         */
+        "mapHidden": boolean;
+        /**
           * IMapInfo: key configuration details about the current map
          */
         "mapInfo": IMapInfo;
@@ -573,6 +758,10 @@ export namespace Components {
           * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
          */
         "zoomAndScrollToSelected": boolean;
+        /**
+          * number: default scale to zoom to when zooming to a single point feature
+         */
+        "zoomToScale": number;
     }
     interface LayoutManager {
     }
@@ -581,6 +770,10 @@ export namespace Components {
     interface LocationFlowItem {
     }
     interface MapCard {
+        /**
+          * Array of objects containing proxy information for premium platform services.
+         */
+        "appProxies": any;
         /**
           * IBasemapConfig: List of any basemaps to filter out from the basemap widget
          */
@@ -881,6 +1074,10 @@ export namespace Components {
          */
         "layerViews": __esri.FeatureLayerView[];
         /**
+          * string: The current user locale.
+         */
+        "locale": string;
+        /**
           * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
@@ -1056,6 +1253,10 @@ export namespace Components {
          */
         "featureHighlightEnabled": boolean;
         /**
+          * string: The current user locale.
+         */
+        "locale": string;
+        /**
           * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
@@ -1103,6 +1304,10 @@ export namespace Components {
           * string[]: Optional list of enabled layer ids  If empty all layers will be available
          */
         "enabledLayerIds": string[];
+        /**
+          * string: The current user locale.
+         */
+        "locale": string;
         /**
           * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
@@ -1311,9 +1516,21 @@ export interface BufferToolsCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLBufferToolsElement;
 }
+export interface ConsentManagerCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLConsentManagerElement;
+}
 export interface CreateFeatureCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLCreateFeatureElement;
+}
+export interface CreateRelatedFeatureCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLCreateRelatedFeatureElement;
+}
+export interface CrowdsourceManagerCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLCrowdsourceManagerElement;
 }
 export interface CrowdsourceReporterCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -1330,6 +1547,10 @@ export interface DeleteButtonCustomEvent<T> extends CustomEvent<T> {
 export interface EditCardCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLEditCardElement;
+}
+export interface FeatureDetailsCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLFeatureDetailsElement;
 }
 export interface FeatureListCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -1449,11 +1670,29 @@ declare global {
         prototype: HTMLCardManagerElement;
         new (): HTMLCardManagerElement;
     };
+    interface HTMLConsentManagerElementEventMap {
+        "consentGranted": IConsentResponse;
+    }
+    interface HTMLConsentManagerElement extends Components.ConsentManager, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLConsentManagerElementEventMap>(type: K, listener: (this: HTMLConsentManagerElement, ev: ConsentManagerCustomEvent<HTMLConsentManagerElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLConsentManagerElementEventMap>(type: K, listener: (this: HTMLConsentManagerElement, ev: ConsentManagerCustomEvent<HTMLConsentManagerElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLConsentManagerElement: {
+        prototype: HTMLConsentManagerElement;
+        new (): HTMLConsentManagerElement;
+    };
     interface HTMLCreateFeatureElementEventMap {
         "success": void;
         "fail": Error;
         "drawComplete": void;
         "editingAttachment": boolean;
+        "progressStatus": number;
     }
     interface HTMLCreateFeatureElement extends Components.CreateFeature, HTMLStencilElement {
         addEventListener<K extends keyof HTMLCreateFeatureElementEventMap>(type: K, listener: (this: HTMLCreateFeatureElement, ev: CreateFeatureCustomEvent<HTMLCreateFeatureElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -1469,14 +1708,46 @@ declare global {
         prototype: HTMLCreateFeatureElement;
         new (): HTMLCreateFeatureElement;
     };
+    interface HTMLCreateRelatedFeatureElementEventMap {
+        "success": void;
+        "fail": Error;
+        "isActionPending": boolean;
+        "formReady": void;
+    }
+    interface HTMLCreateRelatedFeatureElement extends Components.CreateRelatedFeature, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLCreateRelatedFeatureElementEventMap>(type: K, listener: (this: HTMLCreateRelatedFeatureElement, ev: CreateRelatedFeatureCustomEvent<HTMLCreateRelatedFeatureElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLCreateRelatedFeatureElementEventMap>(type: K, listener: (this: HTMLCreateRelatedFeatureElement, ev: CreateRelatedFeatureCustomEvent<HTMLCreateRelatedFeatureElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLCreateRelatedFeatureElement: {
+        prototype: HTMLCreateRelatedFeatureElement;
+        new (): HTMLCreateRelatedFeatureElement;
+    };
+    interface HTMLCrowdsourceManagerElementEventMap {
+        "showIntroductionWindow": void;
+        "showCoverPage": void;
+    }
     interface HTMLCrowdsourceManagerElement extends Components.CrowdsourceManager, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLCrowdsourceManagerElementEventMap>(type: K, listener: (this: HTMLCrowdsourceManagerElement, ev: CrowdsourceManagerCustomEvent<HTMLCrowdsourceManagerElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLCrowdsourceManagerElementEventMap>(type: K, listener: (this: HTMLCrowdsourceManagerElement, ev: CrowdsourceManagerCustomEvent<HTMLCrowdsourceManagerElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLCrowdsourceManagerElement: {
         prototype: HTMLCrowdsourceManagerElement;
         new (): HTMLCrowdsourceManagerElement;
     };
     interface HTMLCrowdsourceReporterElementEventMap {
-        "togglePanel": boolean;
+        "togglePanel": {panelState: boolean, isFormOpen: boolean};
     }
     interface HTMLCrowdsourceReporterElement extends Components.CrowdsourceReporter, HTMLStencilElement {
         addEventListener<K extends keyof HTMLCrowdsourceReporterElementEventMap>(type: K, listener: (this: HTMLCrowdsourceReporterElement, ev: CrowdsourceReporterCustomEvent<HTMLCrowdsourceReporterElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -1551,6 +1822,25 @@ declare global {
         prototype: HTMLFeatureCommentsElement;
         new (): HTMLFeatureCommentsElement;
     };
+    interface HTMLFeatureDetailsElementEventMap {
+        "loadingStatus": boolean;
+        "commentSelect": __esri.Graphic;
+        "featureSelectionChange": { selectedFeature: __esri.Graphic[], selectedFeatureIndex: number };
+    }
+    interface HTMLFeatureDetailsElement extends Components.FeatureDetails, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLFeatureDetailsElementEventMap>(type: K, listener: (this: HTMLFeatureDetailsElement, ev: FeatureDetailsCustomEvent<HTMLFeatureDetailsElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLFeatureDetailsElementEventMap>(type: K, listener: (this: HTMLFeatureDetailsElement, ev: FeatureDetailsCustomEvent<HTMLFeatureDetailsElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLFeatureDetailsElement: {
+        prototype: HTMLFeatureDetailsElement;
+        new (): HTMLFeatureDetailsElement;
+    };
     interface HTMLFeatureFormFlowItemElement extends Components.FeatureFormFlowItem, HTMLStencilElement {
     }
     var HTMLFeatureFormFlowItemElement: {
@@ -1601,7 +1891,7 @@ declare global {
     };
     interface HTMLInfoCardElementEventMap {
         "popupClosed": void;
-        "selectionChanged": __esri.Graphic[];
+        "selectionChanged": { selectedFeature: __esri.Graphic[], selectedFeatureIndex: number };
     }
     interface HTMLInfoCardElement extends Components.InfoCard, HTMLStencilElement {
         addEventListener<K extends keyof HTMLInfoCardElementEventMap>(type: K, listener: (this: HTMLInfoCardElement, ev: InfoCardCustomEvent<HTMLInfoCardElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2022,13 +2312,16 @@ declare global {
         "basemap-gallery": HTMLBasemapGalleryElement;
         "buffer-tools": HTMLBufferToolsElement;
         "card-manager": HTMLCardManagerElement;
+        "consent-manager": HTMLConsentManagerElement;
         "create-feature": HTMLCreateFeatureElement;
+        "create-related-feature": HTMLCreateRelatedFeatureElement;
         "crowdsource-manager": HTMLCrowdsourceManagerElement;
         "crowdsource-reporter": HTMLCrowdsourceReporterElement;
         "deduct-calculator": HTMLDeductCalculatorElement;
         "delete-button": HTMLDeleteButtonElement;
         "edit-card": HTMLEditCardElement;
         "feature-comments": HTMLFeatureCommentsElement;
+        "feature-details": HTMLFeatureDetailsElement;
         "feature-form-flow-item": HTMLFeatureFormFlowItemElement;
         "feature-list": HTMLFeatureListElement;
         "features-flow-item": HTMLFeaturesFlowItemElement;
@@ -2152,6 +2445,24 @@ declare namespace LocalJSX {
          */
         "zoomAndScrollToSelected"?: boolean;
     }
+    interface ConsentManager {
+        /**
+          * string: The name to use for the variable stored in the browsers local storge that will keep track of the users choice for consent
+         */
+        "firstUseVar": string;
+        /**
+          * string[]: Any ids for the analytics configured to receive events from the telemety instance
+         */
+        "measurementIds": string[];
+        /**
+          * Emitted on demand when the user accepts or denies consent
+         */
+        "onConsentGranted"?: (event: ConsentManagerCustomEvent<IConsentResponse>) => void;
+        /**
+          * esri/portal/Portal: https://developers.arcgis.com/javascript/latest/api-reference/esri-portal-Portal.html Required prop for this component to function
+         */
+        "portal": __esri.Portal;
+    }
     interface CreateFeature {
         /**
           * boolean: Set this to true when have a custom submit button in the app. This will hide the header and footer elements of the editor and user needs to execute the submit method manually.
@@ -2174,19 +2485,69 @@ declare namespace LocalJSX {
          */
         "onFail"?: (event: CreateFeatureCustomEvent<Error>) => void;
         /**
+          * Emitted on demand when editor panel changes
+         */
+        "onProgressStatus"?: (event: CreateFeatureCustomEvent<number>) => void;
+        /**
           * Emitted on demand when the feature is created successfully
          */
         "onSuccess"?: (event: CreateFeatureCustomEvent<void>) => void;
+        /**
+          * ISearchConfiguration: Configuration details for the Search widget
+         */
+        "searchConfiguration"?: ISearchConfiguration;
         /**
           * string: Layer id of the feature layer in which the new feature is to be created
          */
         "selectedLayerId"?: string;
     }
+    interface CreateRelatedFeature {
+        /**
+          * boolean: Set this to true when have a custom submit button in the app. This will hide the header and footer elements of the editor and user needs to execute the submit method manually.
+         */
+        "customizeSubmit"?: boolean;
+        /**
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView"?: __esri.MapView;
+        /**
+          * Emitted on demand when the comment submission is failed
+         */
+        "onFail"?: (event: CreateRelatedFeatureCustomEvent<Error>) => void;
+        /**
+          * Emitted on demand when form is ready
+         */
+        "onFormReady"?: (event: CreateRelatedFeatureCustomEvent<void>) => void;
+        /**
+          * Emitted on demand when any action is pending or completed
+         */
+        "onIsActionPending"?: (event: CreateRelatedFeatureCustomEvent<boolean>) => void;
+        /**
+          * Emitted on demand when the comment is submitted successfully
+         */
+        "onSuccess"?: (event: CreateRelatedFeatureCustomEvent<void>) => void;
+        /**
+          * __esri.Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
+         */
+        "selectedFeature"?: __esri.Graphic;
+        /**
+          * __esri.FeatureLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html
+         */
+        "table"?: __esri.FeatureLayer;
+    }
     interface CrowdsourceManager {
+        /**
+          * Array of objects containing proxy information for premium platform services.
+         */
+        "appProxies"?: any;
         /**
           * IBasemapConfig: List of any basemaps to filter out from the basemap widget
          */
         "basemapConfig"?: IBasemapConfig;
+        /**
+          * boolean: When true a cover page has been enabled in the consuming application. Also when true a floating button will be shown in the lower right of the window that will emit an event when clicked that the consuming application can respond to that will open the cover page.
+         */
+        "coverPageEnabled"?: boolean;
         /**
           * string: default center point values for the map ; delimited x;y pair
          */
@@ -2260,13 +2621,45 @@ declare namespace LocalJSX {
          */
         "enableZoom"?: boolean;
         /**
+          * boolean: when true the map will be hidden on load
+         */
+        "hideMapOnLoad"?: boolean;
+        /**
+          * boolean: When true a introduction window has been enabled in the consuming application. Also when true a floating button will be shown in the lower right of the window that will emit an event when clicked that the consuming application can respond to that will open the introduction window.
+         */
+        "introductionWindowEnabled"?: boolean;
+        /**
           * IMapInfo[]: array of map infos (name and id)
          */
         "mapInfos"?: IMapInfo[];
         /**
+          * Emitted on demand when a cover page button is clicked
+         */
+        "onShowCoverPage"?: (event: CrowdsourceManagerCustomEvent<void>) => void;
+        /**
+          * Emitted on demand when a info button is clicked
+         */
+        "onShowIntroductionWindow"?: (event: CrowdsourceManagerCustomEvent<void>) => void;
+        /**
           * boolean: When true only editable layers that support the update capability will be available
          */
         "onlyShowUpdatableLayers"?: boolean;
+        /**
+          * string: The background color to apply to the popup header
+         */
+        "popupHeaderColor"?: string;
+        /**
+          * string: The color that will be displayed on hover when expanding the popup header
+         */
+        "popupHeaderHoverColor"?: string;
+        /**
+          * string: The font color that will be displayed on hover when expanding the popup header
+         */
+        "popupHeaderHoverTextColor"?: string;
+        /**
+          * string: The font color to apply to the popup header
+         */
+        "popupHeaderTextColor"?: string;
         /**
           * ISearchConfiguration: Configuration details for the Search widget
          */
@@ -2291,6 +2684,10 @@ declare namespace LocalJSX {
           * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
          */
         "zoomAndScrollToSelected"?: boolean;
+        /**
+          * number: default scale to zoom to when zooming to a single point feature
+         */
+        "zoomToScale"?: number;
     }
     interface CrowdsourceReporter {
         /**
@@ -2342,13 +2739,13 @@ declare namespace LocalJSX {
          */
         "isMobile"?: boolean;
         /**
+          * ILayerExpression[]: Array of layer expressions for layers (filter configuration)
+         */
+        "layerExpressions"?: ILayerExpression[];
+        /**
           * string: Layer id of the feature from URL params
          */
         "layerId"?: string;
-        /**
-          * string[]: list of layer ids
-         */
-        "layers"?: string[];
         /**
           * string: Id of the zoom level from URL params
          */
@@ -2372,7 +2769,7 @@ declare namespace LocalJSX {
         /**
           * Emitted when toggle panel button is clicked in reporter
          */
-        "onTogglePanel"?: (event: CrowdsourceReporterCustomEvent<boolean>) => void;
+        "onTogglePanel"?: (event: CrowdsourceReporterCustomEvent<{panelState: boolean, isFormOpen: boolean}>) => void;
         /**
           * string: The word(s) to display in the reports submit button
          */
@@ -2381,6 +2778,10 @@ declare namespace LocalJSX {
           * string: The message to display when the report has been submitted
          */
         "reportSubmittedMessage"?: string;
+        /**
+          * IReportingOptions: Key options for reporting
+         */
+        "reportingOptions"?: IReportingOptions;
         /**
           * string: The word(s) to display in the reports header
          */
@@ -2397,6 +2798,10 @@ declare namespace LocalJSX {
           * theme: "light" | "dark" theme to be used
          */
         "theme"?: theme;
+        /**
+          * number: default scale to zoom to when zooming to a single point feature
+         */
+        "zoomToScale"?: number;
     }
     interface DeductCalculator {
         /**
@@ -2462,9 +2867,43 @@ declare namespace LocalJSX {
     }
     interface FeatureComments {
     }
+    interface FeatureDetails {
+        /**
+          * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
+         */
+        "graphics"?: __esri.Graphic[];
+        /**
+          * ILayerItemsHash: LayerDetailsHash for each layer in the map
+         */
+        "layerItemsHash"?: ILayerItemsHash;
+        /**
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView"?: __esri.MapView;
+        /**
+          * Emitted on demand when comment is selected using the feature-list
+         */
+        "onCommentSelect"?: (event: FeatureDetailsCustomEvent<__esri.Graphic>) => void;
+        /**
+          * Emitted on demand when the selected index changes
+         */
+        "onFeatureSelectionChange"?: (event: FeatureDetailsCustomEvent<{ selectedFeature: __esri.Graphic[], selectedFeatureIndex: number }>) => void;
+        /**
+          * Emitted on demand when like or dislike button is clicked
+         */
+        "onLoadingStatus"?: (event: FeatureDetailsCustomEvent<boolean>) => void;
+        /**
+          * IReportingOptions: Key options for reporting
+         */
+        "reportingOptions"?: IReportingOptions1;
+    }
     interface FeatureFormFlowItem {
     }
     interface FeatureList {
+        /**
+          * boolean: Highlight feature on map optional (default false) boolean to indicate if we should highlight when hover on Feature in list
+         */
+        "highlightOnHover"?: boolean;
         /**
           * boolean: Highlight feature on map optional (default false) boolean to indicate if we should highlight and zoom to the extent of the feature geometry
          */
@@ -2489,6 +2928,26 @@ declare namespace LocalJSX {
           * string: Layer id of the feature layer to show the list
          */
         "selectedLayerId"?: string;
+        /**
+          * boolean: If true will show error msg when features are not present
+         */
+        "showErrorWhenNoFeatures"?: boolean;
+        /**
+          * boolean: Show initial loading indicator when creating list
+         */
+        "showInitialLoading"?: boolean;
+        /**
+          * ISortingInfo: Sorting field and order using which features list will be sorted
+         */
+        "sortingInfo"?: ISortingInfo;
+        /**
+          * string(small/large): Controls the font size of the title
+         */
+        "textSize"?: "small" | "large";
+        /**
+          * string: where clause to filter the features list
+         */
+        "whereClause"?: string;
     }
     interface FeaturesFlowItem {
     }
@@ -2550,11 +3009,15 @@ declare namespace LocalJSX {
         /**
           * Emitted on demand when the selected index changes
          */
-        "onSelectionChanged"?: (event: InfoCardCustomEvent<__esri.Graphic[]>) => void;
+        "onSelectionChanged"?: (event: InfoCardCustomEvent<{ selectedFeature: __esri.Graphic[], selectedFeatureIndex: number }>) => void;
         /**
-          * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
+          * boolean: If true will show the pagination for multiple features
          */
-        "zoomAndScrollToSelected"?: boolean;
+        "paginationEnabled"?: boolean;
+        /**
+          * string: Set the position of the feature info
+         */
+        "position"?: string;
     }
     interface JsonEditor {
         /**
@@ -2583,10 +3046,6 @@ declare namespace LocalJSX {
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
-        /**
-          * string: Error message to be displayed when no layers found
-         */
-        "noLayerErrorMsg"?: string;
         /**
           * Emitted on demand when feature layer clicked with details layerId and layerName
          */
@@ -2642,6 +3101,10 @@ declare namespace LocalJSX {
          */
         "isMobile"?: boolean;
         /**
+          * boolean: when true the map is hidden and map specific controls should be hidden
+         */
+        "mapHidden"?: boolean;
+        /**
           * IMapInfo: key configuration details about the current map
          */
         "mapInfo"?: IMapInfo;
@@ -2677,6 +3140,10 @@ declare namespace LocalJSX {
           * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
          */
         "zoomAndScrollToSelected"?: boolean;
+        /**
+          * number: default scale to zoom to when zooming to a single point feature
+         */
+        "zoomToScale"?: number;
     }
     interface LayoutManager {
         /**
@@ -2689,6 +3156,10 @@ declare namespace LocalJSX {
     interface LocationFlowItem {
     }
     interface MapCard {
+        /**
+          * Array of objects containing proxy information for premium platform services.
+         */
+        "appProxies"?: any;
         /**
           * IBasemapConfig: List of any basemaps to filter out from the basemap widget
          */
@@ -3012,6 +3483,10 @@ declare namespace LocalJSX {
          */
         "layerViews"?: __esri.FeatureLayerView[];
         /**
+          * string: The current user locale.
+         */
+        "locale"?: string;
+        /**
           * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
@@ -3172,6 +3647,10 @@ declare namespace LocalJSX {
          */
         "featureHighlightEnabled"?: boolean;
         /**
+          * string: The current user locale.
+         */
+        "locale"?: string;
+        /**
           * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
@@ -3223,6 +3702,10 @@ declare namespace LocalJSX {
           * string[]: Optional list of enabled layer ids  If empty all layers will be available
          */
         "enabledLayerIds"?: string[];
+        /**
+          * string: The current user locale.
+         */
+        "locale"?: string;
         /**
           * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
@@ -3426,13 +3909,16 @@ declare namespace LocalJSX {
         "basemap-gallery": BasemapGallery;
         "buffer-tools": BufferTools;
         "card-manager": CardManager;
+        "consent-manager": ConsentManager;
         "create-feature": CreateFeature;
+        "create-related-feature": CreateRelatedFeature;
         "crowdsource-manager": CrowdsourceManager;
         "crowdsource-reporter": CrowdsourceReporter;
         "deduct-calculator": DeductCalculator;
         "delete-button": DeleteButton;
         "edit-card": EditCard;
         "feature-comments": FeatureComments;
+        "feature-details": FeatureDetails;
         "feature-form-flow-item": FeatureFormFlowItem;
         "feature-list": FeatureList;
         "features-flow-item": FeaturesFlowItem;
@@ -3482,13 +3968,16 @@ declare module "@stencil/core" {
             "basemap-gallery": LocalJSX.BasemapGallery & JSXBase.HTMLAttributes<HTMLBasemapGalleryElement>;
             "buffer-tools": LocalJSX.BufferTools & JSXBase.HTMLAttributes<HTMLBufferToolsElement>;
             "card-manager": LocalJSX.CardManager & JSXBase.HTMLAttributes<HTMLCardManagerElement>;
+            "consent-manager": LocalJSX.ConsentManager & JSXBase.HTMLAttributes<HTMLConsentManagerElement>;
             "create-feature": LocalJSX.CreateFeature & JSXBase.HTMLAttributes<HTMLCreateFeatureElement>;
+            "create-related-feature": LocalJSX.CreateRelatedFeature & JSXBase.HTMLAttributes<HTMLCreateRelatedFeatureElement>;
             "crowdsource-manager": LocalJSX.CrowdsourceManager & JSXBase.HTMLAttributes<HTMLCrowdsourceManagerElement>;
             "crowdsource-reporter": LocalJSX.CrowdsourceReporter & JSXBase.HTMLAttributes<HTMLCrowdsourceReporterElement>;
             "deduct-calculator": LocalJSX.DeductCalculator & JSXBase.HTMLAttributes<HTMLDeductCalculatorElement>;
             "delete-button": LocalJSX.DeleteButton & JSXBase.HTMLAttributes<HTMLDeleteButtonElement>;
             "edit-card": LocalJSX.EditCard & JSXBase.HTMLAttributes<HTMLEditCardElement>;
             "feature-comments": LocalJSX.FeatureComments & JSXBase.HTMLAttributes<HTMLFeatureCommentsElement>;
+            "feature-details": LocalJSX.FeatureDetails & JSXBase.HTMLAttributes<HTMLFeatureDetailsElement>;
             "feature-form-flow-item": LocalJSX.FeatureFormFlowItem & JSXBase.HTMLAttributes<HTMLFeatureFormFlowItemElement>;
             "feature-list": LocalJSX.FeatureList & JSXBase.HTMLAttributes<HTMLFeatureListElement>;
             "features-flow-item": LocalJSX.FeaturesFlowItem & JSXBase.HTMLAttributes<HTMLFeaturesFlowItemElement>;

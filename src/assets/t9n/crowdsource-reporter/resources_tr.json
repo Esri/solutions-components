@@ -1,5 +1,5 @@
 {
-  "createReportHeader": "Rapor Oluştur",
+  "createReportButtonText": "Rapor Oluştur",
   "share": "Paylaş",
   "sort": "Sırala",
   "filter": "Filtrele",
@@ -11,12 +11,19 @@
   "back": "Geri",
   "error": "Hata",
   "invalidConfigurationErrorMsg": "Geçersiz yapılandırma",
-  "noLayerToDisplayErrorMsg": "Yapılandırılmış web haritasında herhangi bir düzenlenebilir detay katman yok.",
-  "chooseCategoryMsg": "Choose a category for your report.",
-  "featureErrorMsg": "Detaylar bulunamadı.",
-  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "chooseCategoryMsg": "Aşağıdaki listeden bir seçim yapın.",
+  "featureErrorMsg": "Kayıt bulunamadı.",
+  "featureEditFormInfoMsg": "Lütfen ayrıntıları sağlayın.",
   "currentLocationMsg": "Geçerli konumumu kullan",
-  "addLocationMsg": "Add the location for your report.",
-  "reportSubmit": "Rapor Gönderildi.",
-  "submitMsg": "Teşekkürler! Raporunuz başarıyla gönderildi."
+  "addLocationMsg": "Lütfen bir konum ekleyin.",
+  "submitMsg": "Teşekkürler! Raporunuz başarıyla gönderildi.",
+  "filterLayerTitle": "Filtre: {{title}}",
+  "indexOfTotal": "{{index}} / {{total}}",
+  "comment": "Yorum",
+  "commentSubmittedMsg": "Yorum gönderildi",
+  "addingCommentFailedMsg": "Yorum gönderilmedi",
+  "sortNewest": "En Yeni",
+  "sortOldest": "En Eski",
+  "sortHighestVoted": "En yüksek oy alan",
+  "sortLowestVoted": "En düşük oy alan"
 }

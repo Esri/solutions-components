@@ -470,6 +470,8 @@ export interface ILayerDef {
   sublayerId?: number;
   fields?: string[];
   fieldOrder?: string[];
+  sortField?: string;
+  sortOrder?: 'asc' | 'desc';
 }
 
 export interface IMapChange {
@@ -560,4 +562,37 @@ export interface ILayerAndTableIds {
 export interface IPopupUtils {
   arcade: typeof import("esri/arcade");
   getPopupTitle(graphic: __esri.Graphic, map: __esri.Map): Promise<string>;
+}
+
+export interface IConsentResponse {
+  granted: boolean;
+}
+
+/**
+ * Key is the layer name and the value is the type of layer
+ */
+export interface IManagedLayers {
+  [key: string]: "buffer" | "sketch";
+}
+
+/**
+ * Key is the layers guid
+ */
+export interface IReportingOptions {
+  [key: string]: IReportingOption;
+}
+
+export interface IReportingOption {
+  reporting: boolean;
+  comment: boolean;
+  like: boolean;
+  likeField?: string;
+  dislike: boolean;
+  dislikeField?: string;
+  visible: boolean;
+}
+
+export interface ISortingInfo {
+  field: string;
+  order: 'asc' | 'desc';
 }

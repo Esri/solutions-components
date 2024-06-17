@@ -1,5 +1,5 @@
 {
-  "createReportHeader": "Vytvoriť report",
+  "createReportButtonText": "Vytvoriť report",
   "share": "Zdieľať",
   "sort": "Zoradiť",
   "filter": "Filter",
@@ -11,12 +11,19 @@
   "back": "Späť",
   "error": "Chyba",
   "invalidConfigurationErrorMsg": "Neplatná konfigurácia",
-  "noLayerToDisplayErrorMsg": "Nakonfigurovaná webová mapa neobsahuje žiadnu editovateľnú prvkovú vrstvu.",
-  "chooseCategoryMsg": "Choose a category for your report.",
-  "featureErrorMsg": "Prvky sa nenašli.",
-  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "chooseCategoryMsg": "Vyberte si z nižšie uvedeného zoznamu.",
+  "featureErrorMsg": "Neboli nájdené žiadne záznamy.",
+  "featureEditFormInfoMsg": "Uveďte podrobnosti.",
   "currentLocationMsg": "Použiť moju aktuálnu polohu",
-  "addLocationMsg": "Add the location for your report.",
-  "reportSubmit": "Report odoslaný.",
-  "submitMsg": "Ďakujeme! Váš report bol úspešne odoslaný."
+  "addLocationMsg": "Pridajte lokalitu.",
+  "submitMsg": "Ďakujeme! Váš report bol úspešne odoslaný.",
+  "filterLayerTitle": "Filter: {{title}}",
+  "indexOfTotal": "{{index}} z {{total}}",
+  "comment": "Komentovať",
+  "commentSubmittedMsg": "Komentár bol odoslaný",
+  "addingCommentFailedMsg": "Komentár nebol odoslaný",
+  "sortNewest": "Najnovšie",
+  "sortOldest": "Najstaršie",
+  "sortHighestVoted": "Najvyššie hodnotené",
+  "sortLowestVoted": "Najnižšie hodnotené"
 }

@@ -49,10 +49,37 @@
   width: calc(100% - 20px);
 }
 
+.progress-bar {
+  padding: 12px;
+}
+
 .footer-top-button {
   padding-bottom: 7px;
 }
 
 .footer-button {
   height: 35px;
+}
+
+.feature-pagination {
+  background-color: var(--calcite-color-foreground-1) !important;
+  border-block-end: 1px solid var(--calcite-color-border-3);
+  display: flex;
+  justify-content: center;
+  padding: 5px 0;
+}
+
+.pagination-count {
+  color: var(--calcite-color-brand);
+  border-bottom: 1px solid var(--calcite-color-brand);
+  font-weight: bold;
+}
+
+.report-submitted-msg {
+  position: absolute;
+  z-index: 1000;
+}
+
+.share-node {
+  display: flex;
 }

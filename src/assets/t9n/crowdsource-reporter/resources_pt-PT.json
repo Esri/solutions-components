@@ -1,5 +1,5 @@
 {
-  "createReportHeader": "Criar um relatório",
+  "createReportButtonText": "Criar um relatório",
   "share": "Partilhar",
   "sort": "Ordenar",
   "filter": "Filtrar",
@@ -11,12 +11,19 @@
   "back": "Retroceder",
   "error": "Erro",
   "invalidConfigurationErrorMsg": "Configuração inválida",
-  "noLayerToDisplayErrorMsg": "O mapa web configurado não tem nenhuma camada de elementos editável.",
-  "chooseCategoryMsg": "Choose a category for your report.",
-  "featureErrorMsg": "Elementos não encontrados.",
-  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "chooseCategoryMsg": "Faça uma seleção a partir da lista abaixo.",
+  "featureErrorMsg": "Nenhum registo encontrado.",
+  "featureEditFormInfoMsg": "Forneça os detalhes.",
   "currentLocationMsg": "Usar a minha localização atual",
-  "addLocationMsg": "Add the location for your report.",
-  "reportSubmit": "Relatório Enviado.",
-  "submitMsg": "Obrigado! O seu relatório foi enviado com êxito."
+  "addLocationMsg": "Adicione uma localização.",
+  "submitMsg": "Obrigado! O seu relatório foi enviado com êxito.",
+  "filterLayerTitle": "Filtro: {{title}}",
+  "indexOfTotal": "{{index}} de {{total}}",
+  "comment": "Comentar",
+  "commentSubmittedMsg": "Comentário enviado",
+  "addingCommentFailedMsg": "Comentário não enviado",
+  "sortNewest": "Mais Recente",
+  "sortOldest": "Mais Antigo",
+  "sortHighestVoted": "Mais votado",
+  "sortLowestVoted": "Menos votado"
 }

@@ -89,6 +89,11 @@ export class MapSelectTools {
   @Prop() layerViews: __esri.FeatureLayerView[] = [];
 
   /**
+   * string: The current user locale.
+   */
+  @Prop() locale: string;
+
+  /**
    * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
    */
   @Prop() mapView: __esri.MapView;
@@ -326,6 +331,16 @@ export class MapSelectTools {
   }
 
   /**
+   * Called each time the mapView prop is changed.
+   */
+  @Watch("mapView")
+  async mapViewWatchHandler(v: any, oldV: any): Promise<void> {
+    if (v && v !== oldV) {
+      await this._init();
+    }
+  }
+
+  /**
    * Called each time the searchConfiguration prop is changed.
    *
    * @returns Promise when complete
@@ -336,7 +351,7 @@ export class MapSelectTools {
     oldValue: ISearchConfiguration
   ): Promise<void> {
     if (JSON.stringify(newValue) !== JSON.stringify(oldValue)) {
-      this._initSearchWidget();
+      await this._initSearchWidget();
     }
   }
 
@@ -445,11 +460,6 @@ export class MapSelectTools {
    */
   async componentDidLoad(): Promise<void> {
     await this._init();
-    await this._searchWidget.when(() => {
-      this._searchWidget.allPlaceholder = this.searchConfiguration?.allPlaceholder &&
-        this.searchConfiguration.allPlaceholder.toLowerCase() !== "find address or place" ?
-        this.searchConfiguration.allPlaceholder : this._translations.placeholder;
-    })
   }
 
   /**
@@ -468,7 +478,7 @@ export class MapSelectTools {
               editGraphicsEnabled={!this._useLayerFeaturesEnabled}
               graphics={this._graphics}
               mapView={this.mapView}
-              onSketchGraphicsChange={(evt) => this._sketchGraphicsChanged(evt)}
+              onSketchGraphicsChange={(evt) => void this._sketchGraphicsChanged(evt)}
               pointSymbol={this.sketchPointSymbol}
               polygonSymbol={this.sketchPolygonSymbol}
               polylineSymbol={this.sketchLineSymbol}
@@ -502,6 +512,7 @@ export class MapSelectTools {
               {this._translations.searchDistance}
               <calcite-icon
                 class="padding-start-1-2 icon"
+                flipRtl={!(this.locale.toLowerCase() === "he")}
                 icon="question"
                 id="search-distance-icon"
                 scale="s"
@@ -525,7 +536,7 @@ export class MapSelectTools {
             disabled={!this._searchDistanceEnabled}
             distance={bufferDistance}
             geometries={this.geometries}
-            onBufferComplete={(evt) => this._bufferComplete(evt)}
+            onBufferComplete={(evt) => void this._bufferComplete(evt)}
             ref={(el) => this._bufferTools = el}
             unit={this.selectionSet?.unit || this.defaultBufferUnit}
           />
@@ -550,6 +561,7 @@ export class MapSelectTools {
               {this._translations.useLayerFeatures}
               <calcite-icon
                 class="padding-start-1-2 icon"
+                flipRtl={!(this.locale.toLowerCase() === "he")}
                 icon="question"
                 id="use-layer-features-icon"
                 scale="s"
@@ -648,7 +660,7 @@ export class MapSelectTools {
           <map-layer-picker
             enabledLayerIds={this.enabledLayerIds}
             mapView={this.mapView}
-            onLayerSelectionChange={(evt) => this._inputLayerSelectionChange(evt)}
+            onLayerSelectionChange={(evt) => void this._inputLayerSelectionChange(evt)}
             selectedIds={this.selectLayerView ? [this.selectLayerView.layer.id] : this.selectionSet ? [this.selectionSet.layerView.layer.id] : []}
             showTables={false}
           />
@@ -693,7 +705,7 @@ export class MapSelectTools {
   protected async _init(): Promise<void> {
     this._initGraphicsLayer();
     await this._initSelectionSet();
-    this._initSearchWidget();
+    await this._initSearchWidget();
   }
 
   /**
@@ -733,7 +745,7 @@ export class MapSelectTools {
       this._selectionLabel = this.selectionSet?.label;
 
       if (!this._useLayerFeaturesEnabled) {
-        this._drawTools?.updateGraphics();
+        await this._drawTools?.updateGraphics();
       }
 
       await goToSelection(this.selectionSet.selectedIds, this.selectionSet.layerView, this.mapView, false);
@@ -745,7 +757,7 @@ export class MapSelectTools {
    *
    * @protected
    */
-  protected _initSearchWidget(): void {
+  protected async _initSearchWidget(): Promise<void> {
     if (this.mapView && this._searchElement) {
       const searchConfiguration = this._getSearchConfig(this.searchConfiguration, this.mapView);
 
@@ -786,6 +798,12 @@ export class MapSelectTools {
           void this._clearResults(false, clearLabel);
         }
       });
+
+      await this._searchWidget.when(() => {
+        this._searchWidget.allPlaceholder = this.searchConfiguration?.allPlaceholder &&
+          this.searchConfiguration.allPlaceholder.toLowerCase() !== "find address or place" ?
+          this.searchConfiguration.allPlaceholder : this._translations.placeholder;
+      })
     }
   }
 
@@ -863,17 +881,19 @@ export class MapSelectTools {
   protected _initGraphicsLayer(): void {
     const title = this._translations.bufferLayer;
 
-    const bufferIndex = this.mapView.map.layers.findIndex((l) => l.title === title);
-    if (bufferIndex > -1) {
-      this._bufferGraphicsLayer = this.mapView.map.layers.getItemAt(bufferIndex) as __esri.GraphicsLayer;
-    } else {
-      this._bufferGraphicsLayer = new this.GraphicsLayer({ title, listMode: "hide" });
-      state.managedLayers.push(title);
-      const sketchIndex = this.mapView.map.layers.findIndex((l) => l.title === this._translations.sketchLayer);
-      if (sketchIndex > -1) {
-        this.mapView.map.layers.add(this._bufferGraphicsLayer, sketchIndex);
+    if (this.mapView) {
+      const bufferIndex = this.mapView.map.layers.findIndex((l) => l.title === title);
+      if (bufferIndex > -1) {
+        this._bufferGraphicsLayer = this.mapView.map.layers.getItemAt(bufferIndex) as __esri.GraphicsLayer;
       } else {
-        this.mapView.map.layers.add(this._bufferGraphicsLayer);
+        this._bufferGraphicsLayer = new this.GraphicsLayer({ title, listMode: "hide" });
+        state.managedLayers[title] = "buffer";
+        const sketchIndex = this.mapView.map.layers.findIndex((l) => l.title === this._translations.sketchLayer);
+        if (sketchIndex > -1) {
+          this.mapView.map.layers.add(this._bufferGraphicsLayer, sketchIndex);
+        } else {
+          this.mapView.map.layers.add(this._bufferGraphicsLayer);
+        }
       }
     }
   }
@@ -899,7 +919,7 @@ export class MapSelectTools {
       this._workflowType = this._useLayerFeaturesEnabled ? EWorkflowType.SELECT : EWorkflowType.SKETCH;
 
       if (this._workflowType === EWorkflowType.SKETCH) {
-        this._drawTools.updateGraphics();
+        await this._drawTools.updateGraphics();
       }
 
       await this._updateLabel();

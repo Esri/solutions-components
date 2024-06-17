@@ -38,5 +38,7 @@
   "refineTip": "Täpsustage ja vormistage lõplikult oma loendid, kasutades visandustööriistu valitud objektide lisamiseks või eemaldamiseks.",
   "refineTipNoSelections": "Täpsustamiseks pole ühtegi valikut. Objektiloendi loomiseks avage Minu loendid.",
   "duplicatesTip": "Objektiduplikaadid eemaldatakse alati. Kui see on lubatud, võrreldakse iga kihi hüpikaknaid ja teabe hüpikakende duplikaadid eemaldatakse.",
-  "exportListsLabel": "Minu loendid"
+  "exportListsLabel": "Minu loendid",
+  "listGraphics": "Loo graafika loend",
+  "listGraphicsTip": "Kaardieksporti saate kaasata mistahes graafika, näiteks otsingupuhvrid või graafika visandustööriistadest."
 }

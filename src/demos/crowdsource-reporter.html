@@ -40,6 +40,7 @@
       }
       .over-map[dir="rtl"] {
         right: 0px;
+        left: auto;
       }
       .column {
         width: 360px;
@@ -72,13 +73,20 @@
           top: calc(100% - 100px);
           height: 100px;
         }
+      
+        .map-collapsed {
+          height: 100%;
+          top: 0;
+          width: 100%;
+          z-index: 1000;
+        }
       }
     </style>
 
     <link rel="stylesheet" href="https://jsdev.arcgis.com/4.29/esri/themes/light/main.css"/>
     <link rel="stylesheet" href="https://webapps-cdn.esri.com/CDN/fonts/v1.4.1/fonts.css" />
     <link rel="stylesheet" href="../solutions-components.css" type="text/css">
-    <link rel="stylesheet" type="text/css" href="https://js.arcgis.com/calcite-components/2.0.0/calcite.css" />
+    <link rel="stylesheet" type="text/css" href="https://js.arcgis.com/calcite-components/2.8.2/calcite.css" />
 
     <script src="https://jsdev.arcgis.com/4.29/"></script>
     <script type="module" src="../solutions-components.esm.js"></script>
@@ -140,9 +148,11 @@
           //id: "c720e337ff814fe4a83bc244c46f8e43" //15 Layers
           //id: "f5186c798b9e40dab1078658ddbc28cf" // 30K features
           //id: "dda88d905a6748a5ab46bea5be795f33" // screening layers
-          id: "b5bdcb1e5d684dd3b21a2d44b8e4f928" //Popup content
+          //id: "b5bdcb1e5d684dd3b21a2d44b8e4f928" //Popup content + like dislike
           //id: "d399ec39959a4aac8617ae4f05dd6785" //Arcade
           //id: "024e8a5e73a34c5aade9632d651c5750" //Attachments
+          id: "ae6d5d1936e84ce7adde44c7a7908846" //like dislike
+          // id: "ce3dec81bf714d3bb71da9691ab686d1" //Filter
         }
         const webMap = new WebMap({
           portalItem: custom ?? portalItem
@@ -163,7 +173,126 @@
         demo.reportButtonText = "Report an incident";
         demo.enableNewReports = true;
         demo.theme = "light";
-        demo.reportSubmittedMessage = "Thank you";
+        demo.reportSubmittedMessage = "Thank you! Your request was successfully submitted";
+        
+        //Set the zoomScale to be used when zooming to single point feature
+        //demo.zoomToScale = 139596221; //World
+        //demo.zoomToScale = 33800278;//Country
+        //demo.zoomToScale = 4291772;//States
+        demo.zoomToScale = 96610;//City
+        //demo.zoomToScale = 3495; //Building
+        
+        //Set filter config
+        demo.layerExpressions = [
+          {
+            id: "Requests_681",
+            title: "Requests",
+            operator: " AND ",
+            expressions: [
+              {
+                definitionExpression: "OBJECTID > 690",
+                id: 1701793260225,
+                index: 0,
+                name: "greater than 690",
+                active: false
+              },
+              {
+                id: 1654881457794,
+                name: 'status',
+                type: 'string',
+                field: 'status'
+              }
+            ]
+          },{
+            id: "18f056682a4-layer-12",
+            title: "PopUp with date in title",
+            operator: " AND ",
+            expressions: [
+              {
+                definitionExpression: "shrt > 0",
+                id: 1901793260225,
+                index: 0,
+                name: "Like greater than 0",
+                active: false
+              }
+            ]
+          }
+        ];
+        //Set the reporting layer options, layers from this object with reporting set to true will only be shown in layer list
+        //if all the layers from map should be considered for reporting then pass true for each layer 
+        demo.reportingOptions = {
+          "Requests_681":{
+            reporting: true,
+            comment: false,
+            like: false,
+            likeField: "Like_field",
+            dislike: false,
+            dislikeField: "Dislike_field",
+            visible: false
+          },
+          "18cdb191817-layer-5": {
+            reporting: true,
+            comment: false,
+            like: true,
+            likeField: "Like_field",
+            dislike: true,
+            dislikeField: "Dislike_field",
+            visible: false
+          },
+          "18f056682a4-layer-12":{
+            reporting: true,
+            comment: false,
+            like: true,
+            likeField: "shrt",
+            dislike: false,
+            dislikeField: "dislike_field",
+            visible: true
+          },
+          "18f2a1562a5-layer-3": {
+            reporting: true,
+            comment: true,
+            like: true,
+            likeField: "like_field",
+            dislike: true,
+            dislikeField: "dislike_field",
+            visible: true
+          },
+          "18f2a1562a7-layer-4": {
+            reporting: true,
+            comment: true,
+            like: true,
+            likeField: "like_field",
+            dislike: true,
+            dislikeField: "dislike_field",
+            visible: true
+          },
+          "18f2a1562a7-layer-5": {
+            reporting: false,
+            comment: true,
+            like: true,
+            likeField: "like_field",
+            dislike: true,
+            dislikeField: "dislike_field",
+            visible: true
+          },
+          "18f2a1562a8-layer-6": {
+            reporting: true,
+            comment: true,
+            like: true,
+            likeField: "like_field",
+            dislike: true,
+            dislikeField: "dislike_field",
+            visible: true
+          },
+          "18f2a1562a8-layer-7": {
+            reporting: true,
+            comment: true,
+            like: true,
+            likeField: "like_field",
+            dislike: true,
+            dislikeField: "dislike_field"
+          }
+        }
         //Select reporting layers -
         //demo.layers = ['SE_field_mapping_9688', 'SE_field_mapping_5784', 'SE_field_mapping_1853']; //Se mapping
         //demo.layers = ['Three_Layers_nested_4042', 'SE_sort_2889', 'SE_sort_756']; //screening layers
@@ -174,22 +303,38 @@
         //on change update the prop for is mobile
         mediaQueryList.onchange = (e) => {
           demo.isMobile = e.matches;
-          togglePanel({ detail: false })
+          togglePanel({ detail: { panelState: false, isFormOpen: false } })
         }
         //listen to togglePanel event
         demo.addEventListener('togglePanel', togglePanel);
       });
 
-      function togglePanel(evt) {
-        const state = evt.detail;
+    function togglePanel(evt) {
+        const panelState = evt.detail.panelState;
+        const hideMap = evt.detail.isFormOpen;
         const viewDiv = document.getElementById("viewDiv");
         const demo = document.getElementById("demo");
-        if (state) {
-          demo.classList.add("column-collapsed");
-          viewDiv.classList.add("map-with-panel-collapsed");
+        // in case of form is open then collapse the map
+        if (hideMap) {
+          if (panelState) {
+            demo.classList.remove("map-collapsed");
+            demo.classList.add("column-collapsed");
+            viewDiv.classList.add("map-with-panel-collapsed");
+          } else {
+            demo.classList.add("map-collapsed");
+            demo.classList.remove("column-collapsed");
+            viewDiv.classList.remove("map-with-panel-collapsed");
+          }
         } else {
-          demo.classList.remove("column-collapsed");
-          viewDiv.classList.remove("map-with-panel-collapsed");
+          if (panelState) {
+            demo.classList.add("column-collapsed");
+            viewDiv.classList.add("map-with-panel-collapsed");
+            demo.classList.remove("map-collapsed");
+          } else {
+            demo.classList.remove("column-collapsed");
+            viewDiv.classList.remove("map-with-panel-collapsed");
+            demo.classList.remove("map-collapsed");
+          }
         }
       }
     </script>

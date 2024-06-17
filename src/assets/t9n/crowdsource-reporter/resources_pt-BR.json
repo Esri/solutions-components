@@ -1,5 +1,5 @@
 {
-  "createReportHeader": "Criar um relatório",
+  "createReportButtonText": "Criar um relatório",
   "share": "Compartilhar",
   "sort": "Classificar",
   "filter": "Filtrar",
@@ -11,12 +11,19 @@
   "back": "Voltar",
   "error": "Erro",
   "invalidConfigurationErrorMsg": "Configuração inválida",
-  "noLayerToDisplayErrorMsg": "O mapa da web configurado não possui nenhuma camada de feição editável.",
-  "chooseCategoryMsg": "Choose a category for your report.",
-  "featureErrorMsg": "Feições não localizadas.",
-  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "chooseCategoryMsg": "Faça uma seleção na lista abaixo.",
+  "featureErrorMsg": "Nenhum registro encontrado.",
+  "featureEditFormInfoMsg": "Forneça os detalhes.",
   "currentLocationMsg": "Usar minha localização atual",
-  "addLocationMsg": "Add the location for your report.",
-  "reportSubmit": "Relatório Enviado.",
-  "submitMsg": "Obrigado! Seu relatório foi enviado com sucesso."
+  "addLocationMsg": "Adicione um local.",
+  "submitMsg": "Obrigado! Seu relatório foi enviado com sucesso.",
+  "filterLayerTitle": "Filtro: {{title}}",
+  "indexOfTotal": "{{index}} de {{total}}",
+  "comment": "Comentário",
+  "commentSubmittedMsg": "Comentário enviado",
+  "addingCommentFailedMsg": "Comentário não enviado",
+  "sortNewest": "Mais Novo",
+  "sortOldest": "Mais Velho",
+  "sortHighestVoted": "Mais votado",
+  "sortLowestVoted": "Menos votado"
 }

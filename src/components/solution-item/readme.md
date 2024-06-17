@@ -43,6 +43,9 @@ graph TD;
   solution-item --> solution-item-sharing
   solution-item --> solution-template-data
   solution-item --> solution-resource-item
+  calcite-tab-nav --> calcite-button
+  calcite-button --> calcite-loader
+  calcite-button --> calcite-icon
   calcite-tab-title --> calcite-icon
   solution-item-details --> calcite-input
   solution-item-details --> calcite-label
@@ -70,8 +73,6 @@ graph TD;
   calcite-scrim --> calcite-loader
   json-editor --> calcite-icon
   json-editor --> calcite-button
-  calcite-button --> calcite-loader
-  calcite-button --> calcite-icon
   solution-organization-variables --> calcite-tree
   solution-organization-variables --> calcite-tree-item
   calcite-tree-item --> calcite-icon

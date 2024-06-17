@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Listen, Prop, State, VNode, Watch } from "@stencil/core";
+import { Component, Element, Host, h, Listen, Prop, State, VNode, Watch, Event, EventEmitter } from "@stencil/core";
 import CrowdsourceManager_T9n from "../../assets/t9n/crowdsource-manager/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { ELayoutMode, IBasemapConfig, ILayerAndTableIds, IMapChange, IMapInfo, ISearchConfiguration, theme } from "../../utils/interfaces";
@@ -38,6 +38,23 @@ export class CrowdsourceManager {
   //  Properties (public)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Array of objects containing proxy information for premium platform services.
+   */
+  @Prop() appProxies: any;
+
+  /**
+   * IBasemapConfig: List of any basemaps to filter out from the basemap widget
+   */
+  @Prop() basemapConfig: IBasemapConfig;
+
+  /**
+   * boolean: When true a cover page has been enabled in the consuming application.
+   * Also when true a floating button will be shown in the lower right of the window that
+   * will emit an event when clicked that the consuming application can respond to that will open the cover page.
+   */
+  @Prop() coverPageEnabled: boolean;
 
   /**
    * string: default center point values for the map
@@ -71,9 +88,21 @@ export class CrowdsourceManager {
   @Prop() defaultWebmap = "";
 
   /**
+   * boolean: When true a introduction window has been enabled in the consuming application.
+   * Also when true a floating button will be shown in the lower right of the window that
+   * will emit an event when clicked that the consuming application can respond to that will open the introduction window.
+   */
+  @Prop() introductionWindowEnabled = false;
+
+  /**
    * boolean: when true the layer table will auto refresh the data
    */
   @Prop() enableAutoRefresh = false;
+
+  /**
+   * boolean: when true the basemap widget will be available
+   */
+  @Prop() enableBasemap = true;
 
   /**
    * boolean: when true the layer table will support drag/drop of columns to adjust order
@@ -96,6 +125,11 @@ export class CrowdsourceManager {
   @Prop() enableFullscreen = true;
 
   /**
+   * boolean: when true the home widget will be available
+   */
+  @Prop() enableHome = true;
+
+  /**
    * boolean: when true edits can be applied directly within the table
    */
   @Prop() enableInlineEdit = false;
@@ -116,29 +150,14 @@ export class CrowdsourceManager {
   @Prop() enableShare = false;
 
   /**
-   * boolean: when true the home widget will be available
-   */
-  @Prop() enableHome = true;
-
-  /**
    * boolean: when true the zoom widget will be available
    */
   @Prop() enableZoom = true;
 
   /**
-   * boolean: when true the basemap widget will be available
+   * boolean: when true the map will be hidden on load
    */
-  @Prop() enableBasemap = true;
-
-  /**
-   * IBasemapConfig: List of any basemaps to filter out from the basemap widget
-   */
-  @Prop() basemapConfig: IBasemapConfig;
-
-  /**
-   * boolean: when true the table will be sorted by objectid in descending order by default
-   */
-  @Prop() showNewestFirst = true;
+  @Prop() hideMapOnLoad = false;
 
   /**
    * IMapInfo[]: array of map infos (name and id)
@@ -149,6 +168,26 @@ export class CrowdsourceManager {
    * boolean: When true only editable layers that support the update capability will be available
    */
   @Prop() onlyShowUpdatableLayers = true;
+
+  /**
+   * string: The background color to apply to the popup header
+   */
+  @Prop() popupHeaderColor: string;
+
+  /**
+   * string: The color that will be displayed on hover when expanding the popup header
+   */
+  @Prop() popupHeaderHoverColor: string;
+
+  /**
+   * string: The font color that will be displayed on hover when expanding the popup header
+   */
+  @Prop() popupHeaderHoverTextColor: string;
+
+  /**
+   * string: The font color to apply to the popup header
+   */
+  @Prop() popupHeaderTextColor: string;
 
   /**
    * ISearchConfiguration: Configuration details for the Search widget
@@ -166,6 +205,11 @@ export class CrowdsourceManager {
   @Prop() shareIncludeSocial: boolean;
 
   /**
+   * boolean: when true the table will be sorted by objectid in descending order by default
+   */
+  @Prop() showNewestFirst = true;
+
+  /**
    * theme: "light" | "dark" theme to be used
    */
   @Prop() theme: theme = "light";
@@ -174,6 +218,11 @@ export class CrowdsourceManager {
    * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
    */
   @Prop() zoomAndScrollToSelected = false;
+
+  /**
+   * number: default scale to zoom to when zooming to a single point feature
+   */
+  @Prop() zoomToScale: number;
 
   //--------------------------------------------------------------------------
   //
@@ -199,7 +248,7 @@ export class CrowdsourceManager {
   /**
    * When true the component will render an optimized view for mobile devices
    */
-  @State() _isMobile: boolean;
+  @State() _isMobile = false;
 
   /**
    * Contains the translations for this component.
@@ -261,6 +310,11 @@ export class CrowdsourceManager {
   protected _defaultLevelHonored = false;
 
   /**
+   * boolean: When true hideMapOnLoad was honored for the current map
+   */
+  protected _hideMapOnLoadHonored = false;
+
+  /**
    * HTMLLayerTableElement: The layer table element
    */
   protected _layerTable: HTMLLayerTableElement;
@@ -295,6 +349,24 @@ export class CrowdsourceManager {
     this._initMapZoom();
   }
 
+  /**
+   * When true the map will be hidden on load
+   */
+  @Watch("hideMapOnLoad")
+  hideMapOnLoadWatchHandler(): void {
+    this.showHideMapPopupAndTable(this.hideMapOnLoad && !this._isMobile);
+    this._expandPopup = this.hideMapOnLoad && !this._isMobile;
+  }
+
+  /**
+   * When true the map will be hidden on load
+   */
+  @Watch("mapInfos")
+  mapInfosWatchHandler(): void {
+    console.log("mapInfosWatchHandler")
+    console.log(this.mapInfos)
+  }
+
   //--------------------------------------------------------------------------
   //
   //  Methods (public)
@@ -306,6 +378,16 @@ export class CrowdsourceManager {
   //  Events (public)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Emitted on demand when a info button is clicked
+   */
+  @Event() showIntroductionWindow: EventEmitter<void>;
+
+  /**
+   * Emitted on demand when a cover page button is clicked
+   */
+  @Event() showCoverPage: EventEmitter<void>;
 
   /**
    * Listen for changes in feature selection and show or hide the map, popup, and table
@@ -371,7 +453,6 @@ export class CrowdsourceManager {
   async beforeMapChanged(): Promise<void> {
     if (this._expandPopup) {
       this._shouldSetMapView = true;
-      this._expandPopup = false;
     }
   }
 
@@ -387,6 +468,16 @@ export class CrowdsourceManager {
     await layer.when(() => {
       this._layer = layer;
     });
+  }
+
+  /**
+   * Update the state expandPopup when mapInfoChange event occurs
+   */
+  @Listen("mapInfoChange", { target: "window" })
+  async mapInfoChange(
+  ): Promise<void> {
+    this._expandPopup = this.hideMapOnLoad && !this._isMobile;
+    this._hideMapOnLoadHonored = false;
   }
 
   //--------------------------------------------------------------------------
@@ -409,8 +500,8 @@ export class CrowdsourceManager {
    * Renders the component.
    */
   render() {
-    const borderClass = this._isMobile && this._hideTable ? "border-width-0" :
-      this._isMobile ? "border-bottom-width-0" : "";
+    // only avoid border when we have a header color that is not white
+    const borderClass = this.popupHeaderColor && this.popupHeaderColor !== "#FFFFFF" ? "border-width-0" : "";
     return (
       <Host>
         <calcite-shell class="position-relative">
@@ -432,7 +523,9 @@ export class CrowdsourceManager {
   async componentDidRender() {
     if (this._shouldSetMapView) {
       this._shouldSetMapView = false;
-      await this._setMapView();
+      if (this._mapChange) {
+        await this._setMapView();
+      }
     }
   }
 
@@ -583,14 +676,57 @@ export class CrowdsourceManager {
     hideTable: boolean
   ): VNode {
     const contentClass = layoutMode === ELayoutMode.HORIZONTAL ? "" : "display-flex";
+    const themeClass = this.theme === "dark" ? "calcite-mode-dark" : "calcite-mode-light";
     return (
       <calcite-panel class={"width-full height-full"}>
         <div class={`width-full height-full overflow-hidden ${contentClass}`}>
           {this._getMapAndCard(layoutMode, panelOpen, hideTable)}
           {this._getTable(layoutMode, panelOpen, hideTable)}
         </div>
+        {this.coverPageEnabled &&
+          <div class="floating-container" onClick={this.coverPageButtonClick.bind(this)}>
+            <calcite-button
+              appearance="solid"
+              class={`floating-button ${themeClass}`}
+              icon-start="content-minimal"
+              kind="neutral"
+              label=""
+              round
+              scale="l"
+              split-child="primary"
+              width="auto" />
+          </div>
+        }
+        {this.introductionWindowEnabled &&
+          <div class="floating-container" onClick={this.infoButtonClick.bind(this)}>
+            <calcite-button
+              appearance="solid"
+              class={`floating-button ${themeClass}`}
+              icon-start="information-letter"
+              kind="neutral"
+              label=""
+              round
+              scale="l"
+              split-child="primary"
+              width="auto" />
+          </div>
+        }
       </calcite-panel>
     );
+  }
+
+  /**
+   * Emit the event when info button clicked
+   */
+  protected infoButtonClick(): void {
+    this.showIntroductionWindow.emit();
+  }
+
+  /**
+ * Emit the event when cover page button clicked
+ */
+  protected coverPageButtonClick(): void {
+    this.showCoverPage.emit();
   }
 
   /**
@@ -633,6 +769,7 @@ export class CrowdsourceManager {
     return (
       <div class={`${mapContainerClass} overflow-hidden`} >
         <map-card
+          appProxies={this.appProxies}
           basemapConfig={this.basemapConfig}
           class="width-full"
           defaultWebmapId={this.defaultWebmap}
@@ -672,10 +809,16 @@ export class CrowdsourceManager {
     const themeClass = this.theme === "dark" ? "calcite-mode-dark" : "calcite-mode-light";
     const popupNodeClass = !this._expandPopup ? "height-full" : this.mapInfos?.length === 1 || this._isMobile ? "position-absolute-0" : "position-absolute-50";
     const headerClass = this._isMobile ? "display-none height-0" : "";
-    const headerTheme = !this._isMobile ? "calcite-mode-dark" : "calcite-mode-light";
+    const headerTheme = this.popupHeaderColor ? "" : !this._isMobile ? "calcite-mode-dark" : "calcite-mode-light";
     const containerClass = this._isMobile && this._hideTable ? "position-absolute-0 width-full height-full" : this._isMobile ? "display-none height-0" : "";
     return (
-      <div class={`${headerTheme} ${popupNodeClass} ${containerClass}`}>
+      <div class={`${headerTheme} ${popupNodeClass} ${containerClass}`}
+        style={{
+          '--calcite-color-foreground-1': this.popupHeaderColor, /* background color that will be displayed on the popup header */
+          '--calcite-color-foreground-2': this.popupHeaderHoverColor, /* background color that will be displayed on button when hovered */
+          '--calcite-color-text-3': this.popupHeaderTextColor, /* font color that will be displayed on button */
+          '--calcite-color-text-2': this.popupHeaderTextColor, /* font color that will be displayed on popup header text*/
+        }}>
         <calcite-panel>
           {
             !this._isMobile ? (
@@ -720,6 +863,7 @@ export class CrowdsourceManager {
    */
   protected _togglePopup(): void {
     this._expandPopup = !this._expandPopup;
+    this._hideMapOnLoadHonored = true;
   }
 
   /**
@@ -807,6 +951,7 @@ export class CrowdsourceManager {
             enableInlineEdit={this.enableInlineEdit}
             enableShare={this.enableShare}
             isMobile={this._isMobile}
+            mapHidden={this._expandPopup}
             mapInfo={this._mapInfo}
             mapView={this?._mapView}
             onlyShowUpdatableLayers={this.onlyShowUpdatableLayers}
@@ -815,6 +960,7 @@ export class CrowdsourceManager {
             shareIncludeSocial={this.shareIncludeSocial}
             showNewestFirst={this.showNewestFirst}
             zoomAndScrollToSelected={this.zoomAndScrollToSelected}
+            zoomToScale={this.zoomToScale}
           />
         </div>
       </calcite-shell>
@@ -831,6 +977,9 @@ export class CrowdsourceManager {
     this._layoutMode = this._isMobile ? ELayoutMode.HORIZONTAL : ELayoutMode.GRID;
     if (forceOpen) {
       this._panelOpen = true;
+    }
+    if ((this.hideMapOnLoad && !this._hideMapOnLoadHonored) || this._isMobile) {
+      this.hideMapOnLoadWatchHandler();
     }
   }
 

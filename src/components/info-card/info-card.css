@@ -40,21 +40,21 @@
   overflow: auto;
 }
 
-.esri-features__footer {
+.feature-node {
+  position: relative !important;
+}
+
+.feature-node .esri-features__footer {
   display: none !important;
 }
 
 .button-container {
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
 }
 
 .top-border {
   border-top: 1px solid var(--calcite-color-border-1);
-}
-
-.min-width-100 {
-  min-width: 100px;
 }
 
 .width-100 {
@@ -94,4 +94,15 @@
 
 .border-width-0 {
   border-width: 0px;
+}
+
+.pagination-action {
+  position: relative;
+  left: 3px;
+}
+
+.pagination-count {
+  color: var(--calcite-color-brand);
+  border-bottom: 1px solid var(--calcite-color-brand);
+  font-weight: bold;
 }

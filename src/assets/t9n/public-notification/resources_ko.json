@@ -38,5 +38,7 @@
   "refineTip": "스케치 도구를 사용해 선택한 피처를 추가하거나 제거하여 목록을 세부 조정하고 마무리합니다.",
   "refineTipNoSelections": "세부 조정할 선택 항목이 없습니다. 내 목록으로 이동하여 피처 목록을 생성합니다.",
   "duplicatesTip": "중복 피처는 항상 제거됩니다. 활성화된 경우 각 레이어의 팝업을 비교하여 중복 팝업 정보가 모두 제거됩니다.",
-  "exportListsLabel": "내 목록"
+  "exportListsLabel": "내 목록",
+  "listGraphics": "그래픽 나열",
+  "listGraphicsTip": "검색 버퍼 등의 그래픽이나 스케치 도구의 그래픽을 맵 내보내기에 포함합니다."
 }

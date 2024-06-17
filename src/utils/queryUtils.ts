@@ -49,6 +49,47 @@ export async function queryAllFeatures(
 }
 
 /**
+ * Query the layer for all OIDs valid for any definition expressions applied to the layer.
+ *
+ * This query allows OIDs to be returned in the same order as shown in the FeatureTable.
+ * FeatureLayer.queryObjectIds can return OIDs in a different order.
+ *
+ * @param start zero-based index indicating where to begin retrieving features
+ * @param layer the layer to retrieve features from
+ * @param graphics stores the features
+ * @param orderBy One or more field names used to order the query results.
+ *                Specify ASC (ascending) or DESC (descending) after the field name to control the order.
+ *                The default order is ASC.
+ *
+ * @returns Promise with the OIDs sorted based on any orderBy definitions
+ */
+export async function queryAllOidsWithQueryFeatures(
+  start: number,
+  layer: __esri.FeatureLayer,
+  graphics: __esri.Graphic[],
+  orderBy?: string[]
+): Promise<number[]> {
+  const num = layer.capabilities.query.maxRecordCount;
+  const query = layer.createQuery();
+  query.start = start;
+  query.num = num;
+  query.returnGeometry = false;
+  query.orderByFields = orderBy;
+  query.outFields = [layer.objectIdField];
+  query.where = layer.definitionExpression || "1=1";
+
+  const result = await layer.queryFeatures(query);
+
+  graphics = graphics.concat(
+    result.features
+  );
+
+  return result.exceededTransferLimit ?
+    queryAllOidsWithQueryFeatures(start += num, layer, graphics, orderBy) :
+    Promise.resolve(graphics.map(g => g.attributes[layer.objectIdField]));
+}
+
+/**
  * Query the layer for all IDs
  *
  * @param layer the layer to retrieve features from

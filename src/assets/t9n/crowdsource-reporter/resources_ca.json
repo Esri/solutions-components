@@ -1,5 +1,5 @@
 {
-  "createReportHeader": "Crea un informe",
+  "createReportButtonText": "Crea un informe",
   "share": "Comparteix",
   "sort": "Ordena",
   "filter": "Filtre",
@@ -11,12 +11,19 @@
   "back": "Enrere",
   "error": "Error",
   "invalidConfigurationErrorMsg": "Configuració no vàlida",
-  "noLayerToDisplayErrorMsg": "El mapa web configurat no té cap capa d'entitats editable.",
-  "chooseCategoryMsg": "Choose a category for your report.",
-  "featureErrorMsg": "No s'han trobat les entitats.",
-  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "chooseCategoryMsg": "Feu una selecció a la llista següent.",
+  "featureErrorMsg": "No s'ha trobat cap registre.",
+  "featureEditFormInfoMsg": "Proporcioneu els detalls.",
   "currentLocationMsg": "Utilitza la meva ubicació actual",
-  "addLocationMsg": "Add the location for your report.",
-  "reportSubmit": "S'ha enviat l'informe.",
-  "submitMsg": "Gràcies. El vostre informe s'ha enviat correctament."
+  "addLocationMsg": "Afegiu una ubicació.",
+  "submitMsg": "Gràcies. El vostre informe s'ha enviat correctament.",
+  "filterLayerTitle": "Filtre: {{title}}",
+  "indexOfTotal": "{{index}} de {{total}}",
+  "comment": "Comentaris",
+  "commentSubmittedMsg": "S'ha enviat el comentari",
+  "addingCommentFailedMsg": "No s'ha enviat el comentari",
+  "sortNewest": "Més recent",
+  "sortOldest": "Més antic",
+  "sortHighestVoted": "Més votat",
+  "sortLowestVoted": "Menys votat"
 }

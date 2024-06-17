@@ -1,5 +1,5 @@
 {
-  "createReportHeader": "Tạo Báo cáo",
+  "createReportButtonText": "Tạo Báo cáo",
   "share": "Chia sẻ",
   "sort": "Sắp xếp",
   "filter": "Bộ lọc",
@@ -11,12 +11,19 @@
   "back": "Quay lại",
   "error": "Lỗi",
   "invalidConfigurationErrorMsg": "Cấu hình không hợp lệ",
-  "noLayerToDisplayErrorMsg": "Bản đồ web đã cấu hình không có lớp đối tượng nào có thể chỉnh sửa.",
-  "chooseCategoryMsg": "Choose a category for your report.",
-  "featureErrorMsg": "Không tìm thấy đối tượng.",
-  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "chooseCategoryMsg": "Đưa ra lựa chọn từ danh sách phía dưới.",
+  "featureErrorMsg": "Không tìm thấy bản ghi.",
+  "featureEditFormInfoMsg": "Vui lòng cung cấp thông tin chi tiết.",
   "currentLocationMsg": "Sử dụng vị trí hiện tại của tôi",
-  "addLocationMsg": "Add the location for your report.",
-  "reportSubmit": "Đã gửi Báo cáo.",
-  "submitMsg": "Xin cảm ơn! Báo cáo của bạn đã được gửi thành công."
+  "addLocationMsg": "Vui lòng thêm vị trí.",
+  "submitMsg": "Xin cảm ơn! Báo cáo của bạn đã được gửi thành công.",
+  "filterLayerTitle": "Bộ lọc: {{title}}",
+  "indexOfTotal": "{{index}} / {{total}}",
+  "comment": "Bình luận",
+  "commentSubmittedMsg": "Đã gửi bình luận",
+  "addingCommentFailedMsg": "Không thể gửi bình luận",
+  "sortNewest": "Mới nhất",
+  "sortOldest": "Cũ nhất",
+  "sortHighestVoted": "Bình chọn cao nhất",
+  "sortLowestVoted": "Bình chọn thấp nhất"
 }

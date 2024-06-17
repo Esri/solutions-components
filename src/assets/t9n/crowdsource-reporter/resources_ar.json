@@ -1,5 +1,5 @@
 {
-  "createReportHeader": "إنشاء تقرير",
+  "createReportButtonText": "إنشاء تقرير",
   "share": "مشاركة",
   "sort": "فرز",
   "filter": "تصفية",
@@ -11,12 +11,19 @@
   "back": "رجوع",
   "error": "خطأ",
   "invalidConfigurationErrorMsg": "تكوين غير صحيح",
-  "noLayerToDisplayErrorMsg": "لا تحتوي خريطة الويب التي تم تكوينها على أي طبقة معالم قابلة للتحرير.",
-  "chooseCategoryMsg": "Choose a category for your report.",
-  "featureErrorMsg": "لم يتم العثور على المعالم.",
-  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "chooseCategoryMsg": "اختر من القائمة أدناه.",
+  "featureErrorMsg": "لم يتم العثور على سجلات.",
+  "featureEditFormInfoMsg": "الرجاء إدخال التفاصيل.",
   "currentLocationMsg": "استخدم موقعي الحالي",
-  "addLocationMsg": "Add the location for your report.",
-  "reportSubmit": "تم إرسال التقرير.",
-  "submitMsg": "شكرًا لك! تم إرسال تقريرك بنجاح."
+  "addLocationMsg": "الرجاء إضافة موقع.",
+  "submitMsg": "شكرًا لك! تم إرسال تقريرك بنجاح.",
+  "filterLayerTitle": "تصفية: {{title}}",
+  "indexOfTotal": "{{index}} من {{total}}",
+  "comment": "تعليق",
+  "commentSubmittedMsg": "تم إرسال تعليق",
+  "addingCommentFailedMsg": "لم يتم إرسال تعليق",
+  "sortNewest": "الأحدث",
+  "sortOldest": "الأقدم",
+  "sortHighestVoted": "الأعلى تصويتًا",
+  "sortLowestVoted": "الأقل تصويتًا"
 }

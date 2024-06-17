@@ -38,5 +38,7 @@
   "refineTip": "Tarkenna ja viimeistele luetteloita käyttämällä luonnostyökaluja, jotta voit lisätä tai poistaa valittuja kohteita.",
   "refineTipNoSelections": "Tarkennettavia valintoja ei ole. Luo kohdeluettelo siirtymällä kohtaan Omat luettelot.",
   "duplicatesTip": "Kohteiden kaksoiskappaleet poistetaan aina. Kun toiminto on käytössä, jokaisen karttatason ponnahdusikkunoita verrataan ja mahdolliset ponnahdusikkunoiden tietojen kaksoiskappaleet poistetaan.",
-  "exportListsLabel": "Omat luettelot"
+  "exportListsLabel": "Omat luettelot",
+  "listGraphics": "Luettelografiikka",
+  "listGraphicsTip": "Sisällytä kartan vientiin kaikki grafiikka, kuten hakupuskurit tai luonnostyökalujen grafiikka."
 }

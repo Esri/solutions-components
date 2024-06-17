@@ -1,5 +1,5 @@
 {
-  "createReportHeader": "Crear un informe",
+  "createReportButtonText": "Crear un informe",
   "share": "Compartir",
   "sort": "Ordenar",
   "filter": "Filtrar",
@@ -11,12 +11,19 @@
   "back": "Atrás",
   "error": "Error",
   "invalidConfigurationErrorMsg": "Configuración no válida",
-  "noLayerToDisplayErrorMsg": "El mapa web configurado no tiene ninguna capa de entidades editable.",
-  "chooseCategoryMsg": "Choose a category for your report.",
-  "featureErrorMsg": "Entidades no encontradas.",
-  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "chooseCategoryMsg": "Realice una selección de la siguiente lista.",
+  "featureErrorMsg": "No se han encontrado registros.",
+  "featureEditFormInfoMsg": "Facilite los datos.",
   "currentLocationMsg": "Utilizar mi ubicación actual",
-  "addLocationMsg": "Add the location for your report.",
-  "reportSubmit": "Informe enviado.",
-  "submitMsg": "Gracias. Su informe se ha enviado correctamente."
+  "addLocationMsg": "Agregue una ubicación.",
+  "submitMsg": "Gracias. Su informe se ha enviado correctamente.",
+  "filterLayerTitle": "Filtro: {{title}}",
+  "indexOfTotal": "{{index}} de {{total}}",
+  "comment": "Comentario",
+  "commentSubmittedMsg": "Comentario enviado",
+  "addingCommentFailedMsg": "Comentario no enviado",
+  "sortNewest": "Más recientes",
+  "sortOldest": "Más antiguos",
+  "sortHighestVoted": "Más votado",
+  "sortLowestVoted": "Menos votado"
 }

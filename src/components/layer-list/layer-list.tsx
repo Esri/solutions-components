@@ -20,7 +20,7 @@ import LayerList_T9n from "../../assets/t9n/layer-list/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { formatNumber } from "../../utils/languageUtil"
 
-interface ILayerItemsHash {
+export interface ILayerItemsHash {
   [key: string]: ILayerDetailsHash;
 }
 interface ILayerDetailsHash {
@@ -60,11 +60,6 @@ export class LayerList {
    * string[]: If passed will show only these layers in the list if they are present in map and are editable
    */
   @Prop() layers: string[];
-
-  /**
-   * string: Error message to be displayed when no layers found
-   */
-  @Prop() noLayerErrorMsg?: string;
 
   /**
    * boolean: if true display's feature count for each layer
@@ -112,9 +107,6 @@ export class LayerList {
    * ILayerItemHash: id/name lookup
    */
   protected _layerItemsHash: ILayerItemsHash;
-
-  //HARDCODED IN EN
-  protected _noLayerToDisplayErrorMsg = "Web map does not contain any editable layers.";
 
   //--------------------------------------------------------------------------
   //
@@ -191,12 +183,12 @@ export class LayerList {
             kind="danger"
             open>
             <div slot="title">{this._translations.error}</div>
-            <div slot="message">{this.noLayerErrorMsg ? this.noLayerErrorMsg : this._noLayerToDisplayErrorMsg}</div>
+            <div slot="message">{this._translations.noLayerToDisplayErrorMsg}</div>
           </calcite-notice>}
         {!this._isLoading && this.mapView &&
           <calcite-list
             selection-appearance="border"
-            selection-mode={this.showNextIcon ? "none" : "single-persist"}>
+            selection-mode="none">
             {this.renderLayerList()}
           </calcite-list>}
       </Fragment>
@@ -231,9 +223,7 @@ export class LayerList {
     const allMapLayers = await getAllLayers(this.mapView);
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
     allMapLayers.forEach(async (eachLayer: __esri.FeatureLayer) => {
-      //TODO: checking editable condition could be configurable
-      if (eachLayer?.type === "feature" && eachLayer?.editingEnabled && eachLayer?.capabilities?.operations?.supportsAdd) {
-        this._layerItemsHash[eachLayer.id].supportsAdd = true;
+      if (eachLayer?.type === "feature") {
         if (this.showFeatureCount) {
           const q = eachLayer.createQuery();
           const result = eachLayer.queryFeatureCount(q);
@@ -250,7 +240,7 @@ export class LayerList {
       }
     });
     await Promise.all(def).then(() => {
-      const editableLayerIds = this.getEditableIds(this._layerItemsHash);
+      const editableLayerIds = this.getLayersToBeShownInList(this._layerItemsHash);
       this._mapLayerIds = editableLayerIds.reverse();
       this.handleNoLayersToDisplay();
     }, () => {
@@ -268,20 +258,16 @@ export class LayerList {
   }
 
   /**
-   * Returns the ids of all OR configured layers that support edits with the update capability
+   * Returns the ids of configured layers that needs to be shown in the list
    * @param hash each layer item details
    * @returns array of layer ids
    */
-  protected getEditableIds(
+  protected getLayersToBeShownInList(
     hash: ILayerItemsHash
   ): string[] {
     const configuredLayers = this.layers?.length > 0 ? this.layers : [];
     return Object.keys(hash).reduce((prev, cur) => {
-      let showLayer = hash[cur].supportsAdd;
-      if (configuredLayers?.length > 0) {
-        showLayer = configuredLayers.indexOf(cur) > -1 ? hash[cur].supportsAdd : false;
-      }
-      if (showLayer) {
+      if (configuredLayers.indexOf(cur) > -1) {
         prev.push(cur);
       }
       return prev;
@@ -317,6 +303,7 @@ export class LayerList {
         <div class="layer-name" slot="content-start">{layerName}</div>
         {this.showFeatureCount && featureCount !== undefined && featureCount !== "" && <div class={!this.showNextIcon ? "feature-count" : ""} slot="content-end">{"(" + featureCount + ")"}</div>}
         {this.showNextIcon && <calcite-icon
+          flipRtl
           icon="chevron-right"
           scale="s"
           slot="content-end" />}

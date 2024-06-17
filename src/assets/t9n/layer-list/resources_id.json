@@ -1,4 +1,4 @@
 {
   "error": "Kesalahan",
-  "noLayerToDisplayErrorMsg": "Peta web yang dikonfigurasikan tidak memiliki feature layer yang bisa diedit."
+  "noLayerToDisplayErrorMsg": "ng_Web map does not contain any editable layers________________________ny."
 }

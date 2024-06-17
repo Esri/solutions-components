@@ -38,5 +38,7 @@
   "refineTip": "Doprecyzuj i dokończ listy za pomocą narzędzi do szkicowania, dodając lub usuwając wybrane obiekty.",
   "refineTipNoSelections": "Brak selekcji do doprecyzowania. Przejdź do obszaru Moje listy, aby utworzyć listę obiektów.",
   "duplicatesTip": "Powielone obiekty są zawsze usuwane. W przypadku ich włączenia okna podręczne z poszczególnych warstw są porównywane i wszelkie powielone informacje podręczne są usuwane.",
-  "exportListsLabel": "Moje listy"
+  "exportListsLabel": "Moje listy",
+  "listGraphics": "Wyświetl listę grafik",
+  "listGraphicsTip": "Uwzględnij w eksporcie mapy wszystkie grafiki takie jak bufory wyszukiwania lub grafiki z narzędzi do szkicowania."
 }

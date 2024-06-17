@@ -1,5 +1,5 @@
 {
-  "createReportHeader": "Створити звіт",
+  "createReportButtonText": "Створити звіт",
   "share": "Поділитися",
   "sort": "Сортувати",
   "filter": "Фільтр",
@@ -11,12 +11,19 @@
   "back": "Назад",
   "error": "Помилка",
   "invalidConfigurationErrorMsg": "Недійсна конфігурація",
-  "noLayerToDisplayErrorMsg": "Налаштована веб-карта не містить векторного шару, який можна редагувати.",
-  "chooseCategoryMsg": "Choose a category for your report.",
-  "featureErrorMsg": "Об'єкти не знайдено.",
-  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "chooseCategoryMsg": "Зробіть вибір з наведеного нижче списку.",
+  "featureErrorMsg": "Записів не знайдено.",
+  "featureEditFormInfoMsg": "Надайте відомості.",
   "currentLocationMsg": "Використовувати моє поточне місце розташування",
-  "addLocationMsg": "Add the location for your report.",
-  "reportSubmit": "Звіт відправлено.",
-  "submitMsg": "Дякуємо! Ваш звіт було успішно надіслано."
+  "addLocationMsg": "Додайте місце розташування.",
+  "submitMsg": "Дякуємо! Ваш звіт було успішно надіслано.",
+  "filterLayerTitle": "Фільтр: {{title}}",
+  "indexOfTotal": "{{index}} з {{total}}",
+  "comment": "Коментар",
+  "commentSubmittedMsg": "Коментар надіслано",
+  "addingCommentFailedMsg": "Коментар не надіслано",
+  "sortNewest": "Найновіший",
+  "sortOldest": "Найстаріший",
+  "sortHighestVoted": "Найбільше голосів",
+  "sortLowestVoted": "Найменше голосів"
 }

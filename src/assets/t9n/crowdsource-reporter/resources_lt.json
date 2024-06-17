@@ -1,5 +1,5 @@
 {
-  "createReportHeader": "Kurti ataskaitą",
+  "createReportButtonText": "Kurti ataskaitą",
   "share": "Bendrinti",
   "sort": "Rūšiuoti",
   "filter": "Filtruoti",
@@ -11,12 +11,19 @@
   "back": "Atgal",
   "error": "Klaida",
   "invalidConfigurationErrorMsg": "Netinkama konfigūracija",
-  "noLayerToDisplayErrorMsg": "Sukonfigūruotas internetinis žemėlapis neturi redaguojamo elementų sluoksnio.",
-  "chooseCategoryMsg": "Choose a category for your report.",
-  "featureErrorMsg": "Elementų nerasta.",
-  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "chooseCategoryMsg": "Pasirinkite iš toliau pateikto sąrašo.",
+  "featureErrorMsg": "Įrašų nerasta.",
+  "featureEditFormInfoMsg": "Pateikite informacijos.",
   "currentLocationMsg": "Naudoti mano dabartinę vietą",
-  "addLocationMsg": "Add the location for your report.",
-  "reportSubmit": "Ataskaita pateikta.",
-  "submitMsg": "Ačiū! Jūsų ataskaita sėkmingai pateikta."
+  "addLocationMsg": "Pridėkite vietą.",
+  "submitMsg": "Ačiū! Jūsų ataskaita sėkmingai pateikta.",
+  "filterLayerTitle": "Filtras: {{title}}",
+  "indexOfTotal": "{{index}} iš {{total}}",
+  "comment": "Komentuoti",
+  "commentSubmittedMsg": "Komentaras pateiktas",
+  "addingCommentFailedMsg": "Komentaras nepateiktas",
+  "sortNewest": "Naujausius",
+  "sortOldest": "Seniausius",
+  "sortHighestVoted": "Daugiausiai balsų",
+  "sortLowestVoted": "Mažiausiai balsų"
 }

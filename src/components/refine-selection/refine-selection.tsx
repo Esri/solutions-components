@@ -54,6 +54,11 @@ export class RefineSelection {
   @Prop() enabledLayerIds: string[] = [];
 
   /**
+   * string: The current user locale.
+   */
+  @Prop() locale: string;
+
+  /**
    * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
    */
   @Prop() mapView: __esri.MapView;
@@ -202,6 +207,7 @@ export class RefineSelection {
                 {this._translations.inputLayer}
                 <calcite-icon
                   class="padding-start-1-2 icon"
+                  flipRtl={!(this.locale.toLowerCase() === "he")}
                   icon="question"
                   id="refine-input-layer"
                   scale="s"
@@ -551,7 +557,7 @@ export class RefineSelection {
     const oids = Array.isArray(graphics) ? graphics.map(g => g.attributes[g?.layer?.objectIdField]) : [];
     await this._updateIds(oids, this._selectionMode, this._refineSelectionSet.undoStack, this._refineLayer);
 
-    this._drawTools.clear();
+    void this._drawTools.clear();
   }
 
   /**

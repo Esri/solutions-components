@@ -1,5 +1,5 @@
 {
-  "createReportHeader": "สร้างรายงาน",
+  "createReportButtonText": "สร้างรายงาน",
   "share": "แชร์",
   "sort": "เรียงลำดับ",
   "filter": "ตัวกรอง",
@@ -11,12 +11,19 @@
   "back": "กลับ",
   "error": "ข้อผิดพลาด",
   "invalidConfigurationErrorMsg": "การกำหนดค่าไม่ถูกต้อง",
-  "noLayerToDisplayErrorMsg": "เว็บแมปที่กำหนดค่าไว้ไม่มีชั้นข้อมูลฟีเจอร์ที่สามารถแก้ไขได้",
-  "chooseCategoryMsg": "Choose a category for your report.",
-  "featureErrorMsg": "ไม่พบฟีเจอร์",
-  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "chooseCategoryMsg": "ทำการเลือกจากรายการด้านล่าง",
+  "featureErrorMsg": "ไม่พบบันทึกข้อมูล",
+  "featureEditFormInfoMsg": "โปรดระบุรายละเอียด",
   "currentLocationMsg": "ใช้ตำแหน่งปัจจุบันของฉัน",
-  "addLocationMsg": "Add the location for your report.",
-  "reportSubmit": "ส่งรายงานแล้ว",
-  "submitMsg": "ขอบคุณ ส่งรายงานของคุณเรียบร้อยแล้ว"
+  "addLocationMsg": "โปรดเพิ่มตำแหน่ง",
+  "submitMsg": "ขอบคุณ ส่งรายงานของคุณเรียบร้อยแล้ว",
+  "filterLayerTitle": "ตัวกรอง: {{title}}",
+  "indexOfTotal": "{{index}} จาก {{total}}",
+  "comment": "ความคิดเห็น",
+  "commentSubmittedMsg": "ส่งความคิดเห็นแล้ว",
+  "addingCommentFailedMsg": "ไม่ได้ส่งความคิดเห็น",
+  "sortNewest": "ใหม่ที่สุด",
+  "sortOldest": "เก่าที่สุด",
+  "sortHighestVoted": "คะแนนโหวตสูงสุด",
+  "sortLowestVoted": "คะแนนโหวตต่ำสุด"
 }

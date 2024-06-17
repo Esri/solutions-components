@@ -1,5 +1,5 @@
 {
-  "createReportHeader": "Een rapport maken",
+  "createReportButtonText": "Een rapport maken",
   "share": "Delen",
   "sort": "Sorteren",
   "filter": "Filteren",
@@ -11,12 +11,19 @@
   "back": "Terug",
   "error": "Fout",
   "invalidConfigurationErrorMsg": "Ongeldige configuratie",
-  "noLayerToDisplayErrorMsg": "Geconfigureerde web map bevat geen bewerkbare objectlagen.",
-  "chooseCategoryMsg": "Choose a category for your report.",
-  "featureErrorMsg": "Kan objecten niet vinden.",
-  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "chooseCategoryMsg": "Maak een selectie in de onderstaande lijst.",
+  "featureErrorMsg": "Kan geen records vinden",
+  "featureEditFormInfoMsg": "Geef de details op.",
   "currentLocationMsg": "Gebruik mijn huidige locatie",
-  "addLocationMsg": "Add the location for your report.",
-  "reportSubmit": "Rapport ingediend",
-  "submitMsg": "Bedankt! Uw rapport is ingediend."
+  "addLocationMsg": "Voeg een locatie toe.",
+  "submitMsg": "Bedankt! Uw rapport is ingediend.",
+  "filterLayerTitle": "Filter: {{title}}",
+  "indexOfTotal": "{{index}} van {{total}}",
+  "comment": "Opmerkingen maken",
+  "commentSubmittedMsg": "Opmerking is verzonden",
+  "addingCommentFailedMsg": "Opmerking is niet verzonden",
+  "sortNewest": "Nieuwste",
+  "sortOldest": "Oudste",
+  "sortHighestVoted": "Hoogste aantal stemmen",
+  "sortLowestVoted": "Laagste aantal stemmen"
 }

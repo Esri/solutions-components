@@ -38,5 +38,7 @@
   "refineTip": "Finomítsa és véglegesítse listáit a vázlateszközökkel a vektoros elemek hozzáadásához vagy eltávolításához.",
   "refineTipNoSelections": "Nincsenek finomítandó választások. Menjen a Saját listák menüpontba, hogy létrehozza a vektoros elemek listáját.",
   "duplicatesTip": "A vektoros elemek ismétlődései mindig el lesznek távolítva. Ha engedélyezve van, az egyes rétegek előugró ablakai össze lesznek hasonlítva, és az előugró ablakok ismétlődő információi el lesznek távolítva.",
-  "exportListsLabel": "Saját listák"
+  "exportListsLabel": "Saját listák",
+  "listGraphics": "Grafikák listázása",
+  "listGraphicsTip": "A térképexport tartalmaz mindenféle grafikát, például keresési buffereket vagy a vázlateszközből származó grafikákat."
 }

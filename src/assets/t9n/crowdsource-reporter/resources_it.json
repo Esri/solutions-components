@@ -1,5 +1,5 @@
 {
-  "createReportHeader": "Crea una segnalazione",
+  "createReportButtonText": "Crea una segnalazione",
   "share": "Condividi",
   "sort": "Ordina",
   "filter": "Filtro",
@@ -11,12 +11,19 @@
   "back": "Indietro",
   "error": "Errore",
   "invalidConfigurationErrorMsg": "Configurazione non valida",
-  "noLayerToDisplayErrorMsg": "La mappa web configurata non ha un feature layer modificabile.",
-  "chooseCategoryMsg": "Choose a category for your report.",
-  "featureErrorMsg": "Feature trovate.",
-  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "chooseCategoryMsg": "Selezionare dall'elenco sottostante.",
+  "featureErrorMsg": "Nessun record trovato.",
+  "featureEditFormInfoMsg": "Fornire i dettagli.",
   "currentLocationMsg": "Usa la mia posizione corrente",
-  "addLocationMsg": "Add the location for your report.",
-  "reportSubmit": "Segnalazione inviata.",
-  "submitMsg": "Grazie! Il report è stato inviato con successo."
+  "addLocationMsg": "Aggiungere una posizione.",
+  "submitMsg": "Grazie! Il report è stato inviato con successo.",
+  "filterLayerTitle": "Filtro: {{title}}",
+  "indexOfTotal": "{{index}} di {{total}}",
+  "comment": "Commento",
+  "commentSubmittedMsg": "Commento inviato",
+  "addingCommentFailedMsg": "Commento non inviato",
+  "sortNewest": "Più recente",
+  "sortOldest": "Meno recente",
+  "sortHighestVoted": "Più votato",
+  "sortLowestVoted": "Meno votato"
 }

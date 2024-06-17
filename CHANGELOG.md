@@ -6,6 +6,124 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.8.37] - June 12th 2024
+Floor Filter update, don't flip question marks in HE, add locale prop to PN
+
+## [0.8.36] - June 10th 2024
+skip hide map on load for mobile and fix popup issue
+
+## [0.8.35] - June 10th 2024
+Remove FloorFilter debug logs
+
+## [0.8.34] - June 10th 2024
+Delivery for Reporter Instant App - UAT - Enhahcements- AGOL-2024.R02 #683
+
+## [0.8.33] - June 7th 2024
+Floor filter
+
+## [0.8.32] - June 6th 2024
+Hide zoom in Manager when map is hidden
+
+## [0.8.31] - June 6th 2024
+Delivery for Reporter Instant App - UAT- AGOL-2024.R02 #680
+
+## [0.8.30] - June 6th 2024
+floor filter enabled fix
+
+## [0.8.29] - June 5th 2024
+shift select issue, rowHighlightIds update, and debug logs for floor filter issue
+
+## [0.8.28] - June 4th 2024
+? icon flip and debug logs for sort issue
+
+## [0.8.27] - June 3rd 2024
+Update t9n for Reporter and Public Notification
+
+## [0.8.26] - June 3rd 2024
+Safari delete modal, and avoid create-features flicker
+
+## [0.8.25] - Map 31st 2024
+Reporter Instant App - UAT+ Enhancements - AGOL-2024.R02
+
+## [0.8.24] - Map 30th 2024
+Reporter Instant App - UAT+ Enhancements - AGOL-2024.R02
+
+## [0.8.23] - Map 29th 2024
+Manager and Reporter Reporter Instant App - UAT- AGOL-2024.R02
+
+## [0.8.22] - Map 23nd 2024
+hide map on load adjustment
+
+## [0.8.21] - Map 23nd 2024
+hide map on load and sort table
+
+## [0.8.20] - Map 22nd 2024
+Optional border and adds new prop introductionPageEnabled
+
+## [0.8.19] - Map 21st 2024
+Delivery for Manager Instant App - UAT- AGOL-2024.R02
+
+## [0.8.18] - Map 20th 2024
+Delivery for Reporter Instant App - Sprint3 - AGOL-2024.R02
+
+## [0.8.17] - Map 19th 2024
+Move 'coverPageEnabled' to manager
+
+## [0.8.16] - Map 16th 2024
+Fix type error for 'coverPageEnabled'
+
+## [0.8.15] - Map 16th 2024
+Interim Delivery for Reporter Instant App - Sprint3 - AGOL-2024.R02
+String updates
+
+## [0.8.14] - Map 16th 2024
+Reverts icon name change
+
+## [0.8.13] - Map 16th 2024
+Update calcite components
+
+## [0.8.12] - Map 15th 2024
+Manager updates: border, sort field/order, point zoom
+
+## [0.8.11] - Map 14th 2024
+Add default layerExpressions reporter
+
+## [0.8.10] - Map 13th 2024
+Delivery for Manager Instant App - Sprint1 - AGOL-2024.R02
+
+## [0.8.9] - Apr 30th 2024
+Delivery for Reporter Instant App - Sprint2 - AGOL-2024.R02
+
+## [0.8.8] - Apr 30th 2024
+Adds new props for manager (popupHeaderHoverColor, popupHeaderColor, popupHeaderHoverTextColor, popupHeaderTextColor)
+
+## [0.8.7] - Apr 30th 2024
+Adds new props for manager (hideMapOnLoad and zoomToScale)
+Adds new props for reporter (reportingOptions, and zoomToScale)
+
+## [0.8.6] - Apr 26th 2024
+Delivery for Reporter Instant App - Sprint1 - AGOL-2024.R02
+Add optional export of graphics with map for PN
+
+## [0.8.5] - Apr 24th 2024
+Add appProxies
+
+## [0.8.4] - Apr 19th 2024
+Convert relationshipId to string
+
+## [0.8.3] - Apr 19th 2024
+Fix PN CSV column headings
+
+## [0.8.2] - Apr 3rd 2024
+Hot fix for PN search config
+
+## [0.8.1] - Apr 1st 2024
+Update consent manager
+
+## [0.8.0] - Mar 27th 2024
+* Start work for R02 2024 release
+Add consent manager
+
 ## [0.7.52] - Mar 7th 2024
 Fix column info issue
 
@@ -508,4 +626,42 @@ Recover from test releases
 [0.7.50]: https://github.com/Esri/solution.js/compare/v0.7.49...v0.7.50 "v0.7.50"
 [0.7.51]: https://github.com/Esri/solution.js/compare/v0.7.50...v0.7.51 "v0.7.51"
 [0.7.52]: https://github.com/Esri/solution.js/compare/v0.7.51...v0.7.52 "v0.7.52"
-[Unreleased]: https://github.com/Esri/solution.js/compare/v0.7.52...HEAD "Unreleased Changes"
+[0.8.0]: https://github.com/Esri/solution.js/compare/v0.7.52...v0.8.0 "v0.8.0"
+[0.8.1]: https://github.com/Esri/solution.js/compare/v0.8.0...v0.8.1 "v0.8.1"
+[0.8.2]: https://github.com/Esri/solution.js/compare/v0.8.1...v0.8.2 "v0.8.2"
+[0.8.3]: https://github.com/Esri/solution.js/compare/v0.8.2...v0.8.3 "v0.8.3"
+[0.8.4]: https://github.com/Esri/solution.js/compare/v0.8.3...v0.8.4 "v0.8.4"
+[0.8.5]: https://github.com/Esri/solution.js/compare/v0.8.4...v0.8.5 "v0.8.5"
+[0.8.6]: https://github.com/Esri/solution.js/compare/v0.8.5...v0.8.6 "v0.8.6"
+[0.8.7]: https://github.com/Esri/solution.js/compare/v0.8.6...v0.8.7 "v0.8.7"
+[0.8.8]: https://github.com/Esri/solution.js/compare/v0.8.7...v0.8.8 "v0.8.8"
+[0.8.9]: https://github.com/Esri/solution.js/compare/v0.8.8...v0.8.9 "v0.8.9"
+[0.8.10]: https://github.com/Esri/solution.js/compare/v0.8.9...v0.8.10 "v0.8.10"
+[0.8.11]: https://github.com/Esri/solution.js/compare/v0.8.10...v0.8.11 "v0.8.11"
+[0.8.12]: https://github.com/Esri/solution.js/compare/v0.8.11...v0.8.12 "v0.8.12"
+[0.8.13]: https://github.com/Esri/solution.js/compare/v0.8.12...v0.8.13 "v0.8.13"
+[0.8.14]: https://github.com/Esri/solution.js/compare/v0.8.13...v0.8.14 "v0.8.14"
+[0.8.15]: https://github.com/Esri/solution.js/compare/v0.8.14...v0.8.15 "v0.8.15"
+[0.8.16]: https://github.com/Esri/solution.js/compare/v0.8.15...v0.8.16 "v0.8.16"
+[0.8.17]: https://github.com/Esri/solution.js/compare/v0.8.16...v0.8.17 "v0.8.17"
+[0.8.18]: https://github.com/Esri/solution.js/compare/v0.8.17...v0.8.18 "v0.8.18"
+[0.8.19]: https://github.com/Esri/solution.js/compare/v0.8.18...v0.8.19 "v0.8.19"
+[0.8.20]: https://github.com/Esri/solution.js/compare/v0.8.19...v0.8.20 "v0.8.20"
+[0.8.21]: https://github.com/Esri/solution.js/compare/v0.8.20...v0.8.21 "v0.8.21"
+[0.8.22]: https://github.com/Esri/solution.js/compare/v0.8.21...v0.8.22 "v0.8.22"
+[0.8.23]: https://github.com/Esri/solution.js/compare/v0.8.22...v0.8.23 "v0.8.23"
+[0.8.24]: https://github.com/Esri/solution.js/compare/v0.8.23...v0.8.24 "v0.8.24"
+[0.8.25]: https://github.com/Esri/solution.js/compare/v0.8.24...v0.8.25 "v0.8.25"
+[0.8.26]: https://github.com/Esri/solution.js/compare/v0.8.25...v0.8.26 "v0.8.26"
+[0.8.27]: https://github.com/Esri/solution.js/compare/v0.8.26...v0.8.27 "v0.8.27"
+[0.8.28]: https://github.com/Esri/solution.js/compare/v0.8.27...v0.8.28 "v0.8.28"
+[0.8.29]: https://github.com/Esri/solution.js/compare/v0.8.28...v0.8.29 "v0.8.29"
+[0.8.30]: https://github.com/Esri/solution.js/compare/v0.8.29...v0.8.30 "v0.8.30"
+[0.8.31]: https://github.com/Esri/solution.js/compare/v0.8.30...v0.8.31 "v0.8.31"
+[0.8.32]: https://github.com/Esri/solution.js/compare/v0.8.31...v0.8.32 "v0.8.32"
+[0.8.33]: https://github.com/Esri/solution.js/compare/v0.8.32...v0.8.33 "v0.8.33"
+[0.8.34]: https://github.com/Esri/solution.js/compare/v0.8.33...v0.8.34 "v0.8.34"
+[0.8.35]: https://github.com/Esri/solution.js/compare/v0.8.34...v0.8.35 "v0.8.35"
+[0.8.36]: https://github.com/Esri/solution.js/compare/v0.8.35...v0.8.36 "v0.8.36"
+[0.8.37]: https://github.com/Esri/solution.js/compare/v0.8.36...v0.8.37 "v0.8.37"
+[Unreleased]: https://github.com/Esri/solution.js/compare/v0.8.37...HEAD "Unreleased Changes"

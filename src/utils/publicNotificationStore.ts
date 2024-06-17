@@ -15,10 +15,11 @@
  */
 
 import { createStore } from "@stencil/store";
+import { IManagedLayers } from "./interfaces";
 
 const { state, onChange } = createStore({
-	// List of layers added and managed by the component
-	managedLayers: [],
+	// Key Value pair whose Key is the layer name and the Value is the type of layer ("buffer" | "sketch")
+	managedLayers: {} as IManagedLayers,
 	// List of tables added and managed by the component
 	managedTables: [],
 	// Handle[]: https://developers.arcgis.com/javascript/latest/api-reference/esri-core-Handles.html#Handle

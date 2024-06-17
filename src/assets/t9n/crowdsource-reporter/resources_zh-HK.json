@@ -1,5 +1,5 @@
 {
-  "createReportHeader": "建立報告",
+  "createReportButtonText": "建立報告",
   "share": "分享",
   "sort": "排序",
   "filter": "篩選器",
@@ -11,12 +11,19 @@
   "back": "上一步",
   "error": "錯誤",
   "invalidConfigurationErrorMsg": "配置無效",
-  "noLayerToDisplayErrorMsg": "配置的 Web 地圖沒有任何可編輯的圖徵圖層。",
-  "chooseCategoryMsg": "Choose a category for your report.",
-  "featureErrorMsg": "找不到圖徵。",
-  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "chooseCategoryMsg": "從下面的清單中進行選擇。",
+  "featureErrorMsg": "找不到任何記錄。",
+  "featureEditFormInfoMsg": "請提供詳細資訊。",
   "currentLocationMsg": "使用我的目前位置",
-  "addLocationMsg": "Add the location for your report.",
-  "reportSubmit": "已提交報告。",
-  "submitMsg": "謝謝! 已成功提交您的報告。"
+  "addLocationMsg": "請新增位置。",
+  "submitMsg": "謝謝! 已成功提交您的報告。",
+  "filterLayerTitle": "篩選器: {{title}}",
+  "indexOfTotal": "{{index}}/{{total}}",
+  "comment": "評論",
+  "commentSubmittedMsg": "已提交評論",
+  "addingCommentFailedMsg": "未提交評論",
+  "sortNewest": "最新",
+  "sortOldest": "最早",
+  "sortHighestVoted": "得票最高的",
+  "sortLowestVoted": "得票最低的"
 }

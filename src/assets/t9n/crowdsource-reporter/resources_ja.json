@@ -1,5 +1,5 @@
 {
-  "createReportHeader": "レポートの作成",
+  "createReportButtonText": "レポートの作成",
   "share": "共有",
   "sort": "並べ替え",
   "filter": "フィルター",
@@ -11,12 +11,19 @@
   "back": "戻る",
   "error": "エラー",
   "invalidConfigurationErrorMsg": "無効な構成",
-  "noLayerToDisplayErrorMsg": "構成済み Web マップに編集可能なフィーチャ レイヤーがありません。",
-  "chooseCategoryMsg": "Choose a category for your report.",
-  "featureErrorMsg": "フィーチャが見つかりません。",
-  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "chooseCategoryMsg": "以下のリストから選択してください。",
+  "featureErrorMsg": "レコードが見つかりませんでした。",
+  "featureEditFormInfoMsg": "詳細を入力してください。",
   "currentLocationMsg": "現在地を使用",
-  "addLocationMsg": "Add the location for your report.",
-  "reportSubmit": "レポートが送信されました。",
-  "submitMsg": "ありがとうございます。 レポートが正常に送信されました。"
+  "addLocationMsg": "位置を追加してください。",
+  "submitMsg": "ありがとうございます。 レポートが正常に送信されました。",
+  "filterLayerTitle": "フィルター: {{title}}",
+  "indexOfTotal": "{{index}} / {{total}}",
+  "comment": "コメント",
+  "commentSubmittedMsg": "コメントが送信されました",
+  "addingCommentFailedMsg": "コメントは送信されていません",
+  "sortNewest": "新しい順",
+  "sortOldest": "古い順",
+  "sortHighestVoted": "投票数の多い順",
+  "sortLowestVoted": "投票数の少ない順"
 }

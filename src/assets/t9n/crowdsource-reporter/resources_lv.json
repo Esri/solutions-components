@@ -1,5 +1,5 @@
 {
-  "createReportHeader": "Izveidot pārskatu",
+  "createReportButtonText": "Izveidot pārskatu",
   "share": "Koplietot",
   "sort": "Kārtot",
   "filter": "Filtrs",
@@ -11,12 +11,19 @@
   "back": "Atpakaļ",
   "error": "Kļūda",
   "invalidConfigurationErrorMsg": "Nederīga konfigurācija",
-  "noLayerToDisplayErrorMsg": "Konfigurētajai tīmekļa kartei nav rediģējamu elementu slāņu.",
-  "chooseCategoryMsg": "Choose a category for your report.",
-  "featureErrorMsg": "Elementi nav atrasti.",
-  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "chooseCategoryMsg": "Veiciet atlasi no saraksta zemāk.",
+  "featureErrorMsg": "Nav atrasts neviens ieraksts.",
+  "featureEditFormInfoMsg": "Lūdzu, sniedziet sīkāku informāciju.",
   "currentLocationMsg": "Izmantot manu pašreizējo novietojumu",
-  "addLocationMsg": "Add the location for your report.",
-  "reportSubmit": "Pārskats iesniegts.",
-  "submitMsg": "Paldies! Jūsu pārskats ir veiksmīgi iesniegts."
+  "addLocationMsg": "Lūdzu, pievienojiet atrašanās vietu.",
+  "submitMsg": "Paldies! Jūsu pārskats ir veiksmīgi iesniegts.",
+  "filterLayerTitle": "Filtrēt: {{title}}",
+  "indexOfTotal": "{{index}} no {{total}}",
+  "comment": "Komentārs",
+  "commentSubmittedMsg": "Komentārs iesniegts",
+  "addingCommentFailedMsg": "Komentārs nav iesniegts",
+  "sortNewest": "Jaunākais",
+  "sortOldest": "Vecākais",
+  "sortHighestVoted": "Ar vislielāko balsojumu",
+  "sortLowestVoted": "Ar vismazāko balsojumu"
 }

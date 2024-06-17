@@ -27,14 +27,14 @@
     }
   </style>
 
-  <link rel="stylesheet" href="https://jsdev.arcgis.com/4.29/esri/themes/light/main.css" />
+  <link rel="stylesheet" href="https://jsdev.arcgis.com/4.30/esri/themes/light/main.css" />
   <!-- <link rel="stylesheet" href="https://jsdev.arcgis.com/4.29/esri/themes/dark/main.css" /> -->
-  <link rel="stylesheet" type="text/css" href="https://js.arcgis.com/calcite-components/2.0.0/calcite.css" />
+  <link rel="stylesheet" type="text/css" href="https://js.arcgis.com/calcite-components/2.8.2/calcite.css" />
 
   <link rel="stylesheet" href="https://webapps-cdn.esri.com/CDN/fonts/v1.4.1/fonts.css" />
   <link rel="stylesheet" href="../solutions-components.css" type="text/css">
 
-  <script src="https://jsdev.arcgis.com/4.29/"></script>
+  <script src="https://jsdev.arcgis.com/4.30/"></script>
   <script type="module" src="../solutions-components.esm.js"></script>
 
   <script>
@@ -44,9 +44,18 @@
     //   esriConfig.portalUrl = "https://holistic.mapsdevext.arcgis.com";
     // });
 
-    function addValues() {
-      const demo = document.getElementById("demo");
+      function infoIconButtonClick(evt) {
+          console.log('Introduction window button clicked')
+        }
 
+        function coverPageIconButtonClick() {
+          console.log('cover page button clicked')
+        }
+
+      function addValues() {
+      const demo = document.getElementById("demo");
+      demo.addEventListener('showIntroductionWindow', infoIconButtonClick);
+      demo.addEventListener('showCoverPage', coverPageIconButtonClick);
       let headerSet = false;
       let custom = [];
       var vars = window.location.search.substring(1).split('&');
@@ -172,7 +181,9 @@
               ],
               fieldOrder: [
                 "Your_Stars", "Route", "Location", "URL", "Avg_Stars", "Route_Type", "Rating", "Pitches", "Length", "Area_Latitude", "Area_Longitude", "ObjectId"
-              ]
+              ],
+              sortField: "Avg_Stars",
+              sortOrder: "asc"
             }],
             mapId: "91e220910a994da4abfb0d1763d64ecb"
           }
@@ -198,6 +209,9 @@
           }
         }]
       ];
+      demo.hideMapOnLoad = true;
+      //demo.coverPageEnabled = true;
+      demo.introductionWindowEnabled = true;
     }
   </script>
 </head>

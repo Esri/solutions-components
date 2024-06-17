@@ -38,5 +38,7 @@
   "refineTip": "Rafinați și finalizați listele dvs. folosind instrumentele de schițare pentru a adăuga sau elimina obiecte spațiale selectate.",
   "refineTipNoSelections": "Nu există selecții de rafinat. Accesați Listele mele pentru a crea o listă de obiecte spațiale.",
   "duplicatesTip": "Obiectele spațiale duplicate sunt întotdeauna eliminate. Când este activat, pop-upurile din fiecare strat tematic vor fi comparate și orice informații pop-upurile duplicate vor fi eliminate.",
-  "exportListsLabel": "Listele mele"
+  "exportListsLabel": "Listele mele",
+  "listGraphics": "Grafică listă",
+  "listGraphicsTip": "Include orice grafică, cum ar fi buffere de căutare sau grafice din instrumentele de trasare don exportul hărții."
 }

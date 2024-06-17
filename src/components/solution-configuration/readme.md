@@ -74,14 +74,15 @@ graph TD;
   solution-configuration --> calcite-button
   solution-configuration --> solution-item
   solution-configuration --> solution-spatial-ref
+  calcite-tab-nav --> calcite-button
+  calcite-button --> calcite-loader
+  calcite-button --> calcite-icon
   calcite-tab-title --> calcite-icon
   solution-contents --> calcite-tree
   solution-contents --> calcite-tree-item
   solution-contents --> solution-item-icon
   calcite-tree-item --> calcite-icon
   calcite-tree-item --> calcite-checkbox
-  calcite-button --> calcite-loader
-  calcite-button --> calcite-icon
   solution-item --> calcite-tabs
   solution-item --> calcite-tab-nav
   solution-item --> calcite-tab-title

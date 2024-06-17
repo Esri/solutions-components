@@ -1,5 +1,5 @@
 {
-  "createReportHeader": "Ustvari poročilo",
+  "createReportButtonText": "Ustvari poročilo",
   "share": "Deli",
   "sort": "Razvrsti",
   "filter": "Filter",
@@ -11,12 +11,19 @@
   "back": "Nazaj",
   "error": "Napaka",
   "invalidConfigurationErrorMsg": "Neveljavna konfiguracija",
-  "noLayerToDisplayErrorMsg": "Konfigurirana spletna karta nima nobenega sloja geoobjektov, ki bi ga bilo mogoče urejati.",
-  "chooseCategoryMsg": "Choose a category for your report.",
-  "featureErrorMsg": "Geoobjektov ni mogoče najti.",
-  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "chooseCategoryMsg": "Naredite izbor iz spodnjega seznama.",
+  "featureErrorMsg": "Ni najdenih zapisov.",
+  "featureEditFormInfoMsg": "Navedite podrobnosti.",
   "currentLocationMsg": "Uporabi mojo trenutno lokacijo",
-  "addLocationMsg": "Add the location for your report.",
-  "reportSubmit": "Poročilo poslano.",
-  "submitMsg": "Hvala! Vaše poročilo je bilo uspešno poslano."
+  "addLocationMsg": "Dodajte lokacijo.",
+  "submitMsg": "Hvala! Vaše poročilo je bilo uspešno poslano.",
+  "filterLayerTitle": "Filter: {{title}}",
+  "indexOfTotal": "{{index}} od {{total}}",
+  "comment": "Komentar",
+  "commentSubmittedMsg": "Komentar poslan",
+  "addingCommentFailedMsg": "Komentar ni poslan",
+  "sortNewest": "Najnovejše",
+  "sortOldest": "Najstarejše",
+  "sortHighestVoted": "Največ glasov",
+  "sortLowestVoted": "Najmanj glasov"
 }

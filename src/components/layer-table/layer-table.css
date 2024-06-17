@@ -133,3 +133,7 @@ html[dir="rtl"] .share-action {
 .modal {
   --calcite-modal-content-padding: 0;
 }
+
+.esri-feature-table__table-container {
+  height: 100%;
+}

@@ -62,11 +62,6 @@ export class InfoCard {
   @Prop() mapView: __esri.MapView;
 
   /**
-   * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
-   */
-  @Prop() zoomAndScrollToSelected: boolean;
-
-  /**
    * boolean: If true will show edit button
    */
   @Prop() allowEditing?: boolean = true;
@@ -75,6 +70,16 @@ export class InfoCard {
    * boolean: If true will highlights the features on map using Features Widget
    */
   @Prop() highlightEnabled?: boolean = true;
+
+  /**
+   * boolean: If true will show the pagination for multiple features
+   */
+  @Prop() paginationEnabled?: boolean = true;
+
+  /**
+   * string: Set the position of the feature info
+   */
+  @Prop() position? = 'absolute';
 
   //--------------------------------------------------------------------------
   //
@@ -149,6 +154,11 @@ export class InfoCard {
   protected _popupUtils: IPopupUtils;
 
   /**
+   * string: unique id for the features node
+   */
+  protected _featuresNodeId: string = 'features-node'+ new Date().getMilliseconds().toString();
+
+  /**
    * esri/core/reactiveUtils: https://developers.arcgis.com/javascript/latest/api-reference/esri-core-reactiveUtils.html
    */
   protected reactiveUtils: typeof import("esri/core/reactiveUtils");
@@ -201,6 +211,55 @@ export class InfoCard {
     return this._features.selectedFeature;
   }
 
+  /**
+   * Refresh the feature info
+   * @returns Promise when complete
+   */
+  @Method()
+  async refresh(): Promise<any> {
+    await this.setGraphics();
+  }
+
+  /**
+   * Go to the previous feature in the features widget
+   */
+  @Method()
+  async back(): Promise<void> {
+    this._features.previous();
+    this._count = this._getCount();
+  }
+
+  /**
+   * Go to the next feature in the features widget
+   */
+  @Method()
+  async next(): Promise<void> {
+    this._features.next();
+    this._count = this._getCount();
+  }
+
+  /**
+   * Toggle the visibility of the features list view
+   */
+  @Method()
+  async toggleListView(): Promise<void> {
+    this._showListView = !this._showListView;
+    const i = this._features.selectedFeatureIndex;
+    this._features.open({
+      features: this.graphics,
+      featureMenuOpen: this._showListView
+    });
+    this._features.selectedFeatureIndex = i;
+  }
+
+  /**
+   * update the current graphics to the features widget 
+   */
+  @Method()
+  async updateCurrentGraphic(selectedGraphic: __esri.Graphic): Promise<void> {
+    this._features.selectedFeatureWidget.graphic = selectedGraphic;
+  }
+
   //--------------------------------------------------------------------------
   //
   //  Events (public)
@@ -215,7 +274,7 @@ export class InfoCard {
   /**
    * Emitted on demand when the selected index changes
    */
-  @Event() selectionChanged: EventEmitter<__esri.Graphic[]>;
+  @Event() selectionChanged: EventEmitter<{ selectedFeature: __esri.Graphic[], selectedFeatureIndex: number }>;
 
   /**
    * Respond to and close the edit record display
@@ -291,15 +350,15 @@ export class InfoCard {
     const deleteEnabled = this._layer?.editingEnabled && this._layer?.capabilities?.operations?.supportsDelete;
     return (
       <Host>
-        <calcite-shell>
+        <calcite-shell style={{position: this.position}}>
           {this._getHeader()}
           <calcite-loader
             class={loadingClass}
             label={this._translations.fetchingData}
           />
           <div
-            class={"esri-widget " + featureNodeClass}
-            id="features-node"
+            class={"esri-widget feature-node " + featureNodeClass}
+            id={this._featuresNodeId}
           />
           <div class={`${editButtonClass} width-100`} slot="footer">
             {this.allowEditing &&
@@ -323,52 +382,55 @@ export class InfoCard {
                     />
                   ) : undefined
                 }
-                <calcite-tooltip label="" placement="bottom" reference-element="solutions-edit">
+                <calcite-tooltip placement="bottom" reference-element="solutions-edit">
                   <span>{this._translations.edit}</span>
                 </calcite-tooltip>
                 {
                   this.isMobile ? (
-                    <calcite-tooltip label="" placement="bottom" reference-element="solutions-delete">
+                    <calcite-tooltip placement="bottom" reference-element="solutions-delete">
                       <span>{this._translations.delete}</span>
                     </calcite-tooltip>
                   ) : undefined
                 }
               </div>}
-            {!nextBackDisabled && <div class={`display-flex padding-1-2 button-container top-border ${nextBackClass}`}>
-              <div class="min-width-100">
+            {this.paginationEnabled && !nextBackDisabled && <div class={`display-flex padding-1-2 button-container top-border ${nextBackClass}`}>
+              <div>
                 <calcite-button
-                  appearance="outline"
+                  appearance='transparent'
                   disabled={nextBackDisabled}
+                  iconStart="chevron-left"
                   id="solutions-back"
                   onClick={() => this._back()}
                   width="full"
+                 />
+                <calcite-tooltip
+                  placement="top"
+                  reference-element="solutions-back"
                 >
-                  {this._translations.back}
-                </calcite-button>
-                <calcite-tooltip label="" placement="top" reference-element="solutions-back">
                   <span>{this._translations.back}</span>
                 </calcite-tooltip>
               </div>
+              <calcite-action
+                class='pagination-action'
+                onClick={() => this._toggleListView()}
+                scale="s"
+                text=""
+                textEnabled={true}>
+                <span class="pagination-count">{this._count}</span>
+              </calcite-action>
               <div>
-                <calcite-action
-                  icon="list"
-                  onClick={() => this._toggleListView()}
-                  scale="s"
-                  text={this._count}
-                  textEnabled={true}
-                />
-              </div>
-              <div class="min-width-100">
                 <calcite-button
-                  appearance="outline"
+                  appearance="transparent"
                   disabled={nextBackDisabled}
+                  iconStart="chevron-right"
                   id="solutions-next"
                   onClick={() => this._next()}
                   width="full"
+                 />
+                <calcite-tooltip
+                  placement="top"
+                  reference-element="solutions-next"
                 >
-                  {this._translations.next}
-                </calcite-button>
-                <calcite-tooltip label="" placement="top" reference-element="solutions-next">
                   <span>{this._translations.next}</span>
                 </calcite-tooltip>
               </div>
@@ -458,7 +520,7 @@ export class InfoCard {
       if (!this._features) {
         this._features = new this.Features({
           view: this.mapView,
-          container: "features-node",
+          container: this._featuresNodeId,
           visibleElements: {
             actionBar: false,
             closeButton: false,
@@ -469,20 +531,18 @@ export class InfoCard {
         this.reactiveUtils.watch(
           () => (this._features.viewModel as any).featureMenuOpen,
           (isOpen) => {
+            this._count = this._getCount();
             if (!isOpen) {
               this._showListView = isOpen;
             }
           });
-
-        if (this.zoomAndScrollToSelected) {
-          this.reactiveUtils.watch(
-            () => this._features.selectedFeatureIndex,
-            (i) => {
-              if (i > -1) {
-                this.selectionChanged.emit([this._features.selectedFeature]);
-              }
-            });
-        }
+        this.reactiveUtils.watch(
+          () => this._features.selectedFeatureIndex,
+          (i) => {
+            if (i > -1) {
+              this.selectionChanged.emit({ selectedFeature: [this._features.selectedFeature], selectedFeatureIndex: this._features.selectedFeatureIndex });
+            }
+          });
       } else {
         this._features.view = this.mapView;
         this._features.visibleElements.actionBar = false;

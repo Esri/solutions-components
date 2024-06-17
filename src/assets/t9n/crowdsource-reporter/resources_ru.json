@@ -1,5 +1,5 @@
 {
-  "createReportHeader": "Создать отчет",
+  "createReportButtonText": "Создать отчет",
   "share": "Общий доступ",
   "sort": "Сортировать",
   "filter": "Фильтр",
@@ -11,12 +11,19 @@
   "back": "Назад",
   "error": "Ошибка",
   "invalidConfigurationErrorMsg": "Недопустимая конфигурация",
-  "noLayerToDisplayErrorMsg": "Настроенная веб-карта не содержит редактируемых векторных слоев.",
-  "chooseCategoryMsg": "Choose a category for your report.",
-  "featureErrorMsg": "Пространственные объекты не найдены.",
-  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "chooseCategoryMsg": "Сделать выборку из списка ниже.",
+  "featureErrorMsg": "Записей не найдено.",
+  "featureEditFormInfoMsg": "Предоставьте подробную информацию.",
   "currentLocationMsg": "Использовать мое текущее местоположение",
-  "addLocationMsg": "Add the location for your report.",
-  "reportSubmit": "Отчет отправлен.",
-  "submitMsg": "Спасибо! Ваш отчет успешно отправлен."
+  "addLocationMsg": "Добавьте местоположение.",
+  "submitMsg": "Спасибо! Ваш отчет успешно отправлен.",
+  "filterLayerTitle": "Фильтр: {{title}}",
+  "indexOfTotal": "{{index}} из {{total}}",
+  "comment": "Комментарий",
+  "commentSubmittedMsg": "Комментарий добавлен",
+  "addingCommentFailedMsg": "Комментарий не добавлен",
+  "sortNewest": "Новейшее",
+  "sortOldest": "Самое старое",
+  "sortHighestVoted": "Наибольшее количество голосов",
+  "sortLowestVoted": "Наименьшее количество голосов"
 }

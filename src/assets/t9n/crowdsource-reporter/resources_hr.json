@@ -1,5 +1,5 @@
 {
-  "createReportHeader": "Stvori izvješće",
+  "createReportButtonText": "Stvori izvješće",
   "share": "Podijeli",
   "sort": "Sortiraj",
   "filter": "Filtriraj",
@@ -11,12 +11,19 @@
   "back": "Natrag",
   "error": "Pogreška",
   "invalidConfigurationErrorMsg": "Nevaljana konfiguracija",
-  "noLayerToDisplayErrorMsg": "Konfigurirana web-karta nema nijedan sloj geoobjekta koji se može uređivati.",
-  "chooseCategoryMsg": "Choose a category for your report.",
-  "featureErrorMsg": "Geoobjekti nisu pronađeni.",
-  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "chooseCategoryMsg": "Odaberite s donjeg popisa.",
+  "featureErrorMsg": "Nema pronađenih zapisa.",
+  "featureEditFormInfoMsg": "Navedite pojedinosti.",
   "currentLocationMsg": "Iskoristi moju trenutačnu lokaciju",
-  "addLocationMsg": "Add the location for your report.",
-  "reportSubmit": "Izvješće je podneseno.",
-  "submitMsg": "Hvala vam! Vaše je izvješće uspješno poslano."
+  "addLocationMsg": "Dodajte lokaciju.",
+  "submitMsg": "Hvala vam! Vaše je izvješće uspješno poslano.",
+  "filterLayerTitle": "Filtar: {{title}}",
+  "indexOfTotal": "{{index}} od {{total}}",
+  "comment": "Komentiraj",
+  "commentSubmittedMsg": "Komentar poslan",
+  "addingCommentFailedMsg": "Komentar nije poslan",
+  "sortNewest": "Najnovije",
+  "sortOldest": "Najstarije",
+  "sortHighestVoted": "Najviše glasova",
+  "sortLowestVoted": "Najmanje glasova"
 }

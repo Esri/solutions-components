@@ -38,5 +38,7 @@
   "refineTip": "Refine e finalize suas listas usando ferramentas de esboço para adicionar ou remover feições selecionadas.",
   "refineTipNoSelections": "Não há seleções para refinar. Vá até Minhas listas para criar uma lista de feições.",
   "duplicatesTip": "Feições duplicadas são sempre removidas. Quando habilitado, os pop-ups de cada camada serão comparados e qualquer informação de pop-up duplicada será removida.",
-  "exportListsLabel": "Minhas listas"
+  "exportListsLabel": "Minhas listas",
+  "listGraphics": "Listar gráficos",
+  "listGraphicsTip": "Inclua quaisquer gráficos, como buffers de pesquisa ou gráficos das ferramentas de esboço, na exportação do mapa."
 }

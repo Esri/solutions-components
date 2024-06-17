@@ -1,5 +1,5 @@
 {
-  "createReportHeader": "Luo raportti",
+  "createReportButtonText": "Luo raportti",
   "share": "Jaa",
   "sort": "Lajittele",
   "filter": "Suodata",
@@ -11,12 +11,19 @@
   "back": "Takaisin",
   "error": "Virhe",
   "invalidConfigurationErrorMsg": "Virheellinen määritys",
-  "noLayerToDisplayErrorMsg": "Määritetty web-kartta ei sisällä muokattavaa kohdekarttatasoa.",
-  "chooseCategoryMsg": "Choose a category for your report.",
-  "featureErrorMsg": "Kohteita ei löytynyt.",
-  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "chooseCategoryMsg": "Tee valinta alla olevasta luettelosta.",
+  "featureErrorMsg": "Tietueita ei löytynyt.",
+  "featureEditFormInfoMsg": "Anna tiedot.",
   "currentLocationMsg": "Käytä nykyistä sijaintiani",
-  "addLocationMsg": "Add the location for your report.",
-  "reportSubmit": "Raportti on lähetetty.",
-  "submitMsg": "Kiitos! Raporttisi lähettäminen onnistui."
+  "addLocationMsg": "Lisää sijainti.",
+  "submitMsg": "Kiitos! Raporttisi lähettäminen onnistui.",
+  "filterLayerTitle": "Suodatin: {{title}}",
+  "indexOfTotal": "{{index}}/{{total}}",
+  "comment": "Kommentti",
+  "commentSubmittedMsg": "Kommentti lähetetty",
+  "addingCommentFailedMsg": "Kommenttia ei lähetetty",
+  "sortNewest": "Uusin",
+  "sortOldest": "Vanhin",
+  "sortHighestVoted": "Eniten äänestetty",
+  "sortLowestVoted": "Vähiten äänestetty"
 }

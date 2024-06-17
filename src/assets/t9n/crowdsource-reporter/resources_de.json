@@ -1,5 +1,5 @@
 {
-  "createReportHeader": "Einen Bericht erstellen",
+  "createReportButtonText": "Einen Bericht erstellen",
   "share": "Freigeben",
   "sort": "Sortieren",
   "filter": "Filtern",
@@ -11,12 +11,19 @@
   "back": "Zurück",
   "error": "Fehler",
   "invalidConfigurationErrorMsg": "Ungültige Konfiguration",
-  "noLayerToDisplayErrorMsg": "Konfigurierte Webkarte enthält keine editierbaren Feature-Layer.",
-  "chooseCategoryMsg": "Choose a category for your report.",
-  "featureErrorMsg": "Features nicht gefunden.",
-  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "chooseCategoryMsg": "Treffen Sie in der Liste unten eine Auswahl.",
+  "featureErrorMsg": "Keine Datensätze gefunden.",
+  "featureEditFormInfoMsg": "Geben Sie die Details an.",
   "currentLocationMsg": "Aktuelle eigene Position verwenden",
-  "addLocationMsg": "Add the location for your report.",
-  "reportSubmit": "Bericht wurde gesendet.",
-  "submitMsg": "Vielen Dank. Ihr Bericht wurde erfolgreich gesendet."
+  "addLocationMsg": "Fügen Sie einen Speicherort hinzu.",
+  "submitMsg": "Vielen Dank. Ihr Bericht wurde erfolgreich gesendet.",
+  "filterLayerTitle": "Filter: {{title}}",
+  "indexOfTotal": "{{index}} von {{total}}",
+  "comment": "Kommentar",
+  "commentSubmittedMsg": "Kommentar gesendet",
+  "addingCommentFailedMsg": "Kommentar nicht gesendet",
+  "sortNewest": "Neueste",
+  "sortOldest": "Älteste",
+  "sortHighestVoted": "Höchste Stimmenzahl",
+  "sortLowestVoted": "Niedrigste Stimmenzahl"
 }

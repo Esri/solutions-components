@@ -38,5 +38,7 @@
   "refineTip": "Forfin og færdiggør dine lister ved at bruge skitseværktøjer til at tilføje eller fjerne objekter.",
   "refineTipNoSelections": "Der er ingen markeringer at forfine. Gå til Mine lister for at oprette en liste med objekter.",
   "duplicatesTip": "Dublet-objekter fjernes altid. Når den er aktiveret, sammenlignes pop-up-vinduer fra hvert lag, og eventuelle dublet-oplysninger fjernes.",
-  "exportListsLabel": "Mine lister"
+  "exportListsLabel": "Mine lister",
+  "listGraphics": "Vis grafik",
+  "listGraphicsTip": "Inkluder grafik såsom søgebuffere eller grafik fra skitseværktøjerne i korteksporten."
 }

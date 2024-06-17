@@ -18,6 +18,7 @@
 | `enableInlineEdit`        | `enable-inline-edit`          | boolean: when true edits can be applied directly within the table                                                  | `boolean`  | `undefined` |
 | `enableShare`             | `enable-share`                | boolean: when true the share widget will be available                                                              | `boolean`  | `undefined` |
 | `isMobile`                | `is-mobile`                   | When true the component will render an optimized view for mobile devices                                           | `boolean`  | `undefined` |
+| `mapHidden`               | `map-hidden`                  | boolean: when true the map is hidden and map specific controls should be hidden                                    | `boolean`  | `undefined` |
 | `mapInfo`                 | --                            | IMapInfo: key configuration details about the current map                                                          | `IMapInfo` | `undefined` |
 | `mapView`                 | --                            | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html             | `MapView`  | `undefined` |
 | `onlyShowUpdatableLayers` | `only-show-updatable-layers`  | boolean: When true only editable layers that support the update capability will be available                       | `boolean`  | `undefined` |
@@ -26,6 +27,7 @@
 | `shareIncludeSocial`      | `share-include-social`        | boolean: When true the share options will include social media sharing                                             | `boolean`  | `undefined` |
 | `showNewestFirst`         | `show-newest-first`           | boolean: when true the table will be sorted by objectid in descending order by default                             | `boolean`  | `undefined` |
 | `zoomAndScrollToSelected` | `zoom-and-scroll-to-selected` | boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table | `boolean`  | `undefined` |
+| `zoomToScale`             | `zoom-to-scale`               | number: default scale to zoom to when zooming to a single point feature                                            | `number`   | `undefined` |
 
 
 ## Events

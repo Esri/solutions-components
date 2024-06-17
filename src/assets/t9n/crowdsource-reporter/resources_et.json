@@ -1,5 +1,5 @@
 {
-  "createReportHeader": "Aruande koostamine",
+  "createReportButtonText": "Aruande koostamine",
   "share": "Jagamine",
   "sort": "Sordi",
   "filter": "Filtreeri",
@@ -11,12 +11,19 @@
   "back": "Tagasi",
   "error": "Tõrge",
   "invalidConfigurationErrorMsg": "Vigane konfiguratsioon",
-  "noLayerToDisplayErrorMsg": "Konfigureeritud veebikaardil pole muudetavaid objektikihte.",
-  "chooseCategoryMsg": "Choose a category for your report.",
-  "featureErrorMsg": "Objekte ei leitud.",
-  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "chooseCategoryMsg": "Tehke valik allpool olevast loendist.",
+  "featureErrorMsg": "Kirjeid ei leitud.",
+  "featureEditFormInfoMsg": "Esitage üksikasjad.",
   "currentLocationMsg": "Kasuta minu praegust asukohta",
-  "addLocationMsg": "Add the location for your report.",
-  "reportSubmit": "Aruanne esitatud.",
-  "submitMsg": "Täname teid. Teie aruanne edastati."
+  "addLocationMsg": "Lisage asukoht.",
+  "submitMsg": "Täname teid. Teie aruanne edastati.",
+  "filterLayerTitle": "Filter: {{title}}",
+  "indexOfTotal": "{{index}}/{{total}}",
+  "comment": "Kommentaar",
+  "commentSubmittedMsg": "Kommentaari esitatud",
+  "addingCommentFailedMsg": "Kommentaari ei esitatud",
+  "sortNewest": "Uusim",
+  "sortOldest": "Vanim",
+  "sortHighestVoted": "Suurima häälte arvuga",
+  "sortLowestVoted": "Väikseima häälte arvuga"
 }

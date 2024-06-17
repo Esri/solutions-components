@@ -38,5 +38,7 @@
   "refineTip": "Förfina och slutför dina listor med hjälp av skissverktyg för att lägga till eller ta bort valda geoobjekt.",
   "refineTipNoSelections": "Det finns inga val att förfina. Gå till Mina listor för att skapa en lista över geoobjekt.",
   "duplicatesTip": "Dubblerade geoobjekt tas alltid bort. När alternativet är aktiverat jämförs popupfönster från varje lager och eventuell dubblerad popupinformation tas bort.",
-  "exportListsLabel": "Mina listor"
+  "exportListsLabel": "Mina listor",
+  "listGraphics": "Listgrafik",
+  "listGraphicsTip": "Inkludera eventuell grafik som sökbuffertar eller grafik från skissverktyg i kartexporten."
 }

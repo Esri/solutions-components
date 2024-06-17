@@ -38,5 +38,7 @@
   "refineTip": "Seçili detayları eklemek veya kaldırmak için taslak çizim araçlarını kullanarak listelerinizi iyileştirin ve sonlandırın.",
   "refineTipNoSelections": "İyileştirilecek bir seçim yok. Bir detaylar listesi oluşturmak için Listelerime gidin.",
   "duplicatesTip": "Çoklu detaylar mutlaka kaldırılır. Etkinleştirildiğinde, her katmandan gelen açılır pencereler karşılaştırılacak ve çoklu tüm açılır pencere bilgileri kaldırılacaktır.",
-  "exportListsLabel": "Listelerim"
+  "exportListsLabel": "Listelerim",
+  "listGraphics": "Grafikleri listele",
+  "listGraphicsTip": "Arama tamponları veya çizim araçlarından gelen grafikler dahil tüm grafikleri harita dışa aktarımına dahil edin."
 }

@@ -1,5 +1,5 @@
 {
-  "createReportHeader": "Create a Report",
+  "createReportButtonText": "Create a Report",
   "share": "Share",
   "sort": "Sort",
   "filter": "Filter",
@@ -11,12 +11,19 @@
   "back": "Back",
   "error": "Error",
   "invalidConfigurationErrorMsg": "Invalid configuration",
-  "noLayerToDisplayErrorMsg": "Configured web map don't have any editable feature layer.",
-  "chooseCategoryMsg": "Choose a category for your report.",
-  "featureErrorMsg": "Features not found.",
-  "featureEditFormInfoMsg": "Please provide the details for your report.",
+  "chooseCategoryMsg": "Make a selection from the list below.",
+  "featureErrorMsg": "No records found.",
+  "featureEditFormInfoMsg": "Please provide the details.",
   "currentLocationMsg": "Use my current location",
-  "addLocationMsg": "Add the location for your report.",
-  "reportSubmit": "Report Submitted.",
-  "submitMsg": "Thank you! Your report was successfully submitted."
+  "addLocationMsg": "Please add a location.",
+  "submitMsg": "Thank you! Your report was successfully submitted.",
+  "filterLayerTitle": "Filter: {{title}}",
+  "indexOfTotal": "{{index}} of {{total}}",
+  "comment": "Comment",
+  "commentSubmittedMsg": "Comment submitted",
+  "addingCommentFailedMsg": "Comment not submitted",
+  "sortNewest": "Newest",
+  "sortOldest": "Oldest",
+  "sortHighestVoted": "Highest voted",
+  "sortLowestVoted": "Lowest voted"
 }

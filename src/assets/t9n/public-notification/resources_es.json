@@ -38,5 +38,7 @@
   "refineTip": "Limpie y termine las listas con las herramientas de bosquejo para agregar o eliminar entidades seleccionadas.",
   "refineTipNoSelections": "No hay selecciones para restringir. Vaya a Mis listas para crear una lista de entidades.",
   "duplicatesTip": "Las entidades duplicadas se eliminan siempre. Cuando se habilita, los elementos emergentes de cada capa se comparan y la información de los elementos emergentes duplicados se elimina.",
-  "exportListsLabel": "Mis listas"
+  "exportListsLabel": "Mis listas",
+  "listGraphics": "Enumerar gráficos",
+  "listGraphicsTip": "Incluya cualquier gráfico como zonas de influencia de búsqueda o gráficos de las herramientas de bocetos en la exportación del mapa."
 }

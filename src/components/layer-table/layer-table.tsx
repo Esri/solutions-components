@@ -18,8 +18,8 @@ import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, State, 
 import LayerTable_T9n from "../../assets/t9n/layer-table/resources.json";
 import { loadModules } from "../../utils/loadModules";
 import { getLocaleComponentStrings } from "../../utils/locale";
-import { getLayerOrTable, goToSelection } from "../../utils/mapViewUtils";
-import { queryAllIds, queryFeatureIds, queryFeaturesByGlobalID } from "../../utils/queryUtils";
+import { getFeatureLayerView, getLayerOrTable, goToSelection } from "../../utils/mapViewUtils";
+import { queryAllIds, queryAllOidsWithQueryFeatures, queryFeaturesByGlobalID } from "../../utils/queryUtils";
 import * as downloadUtils from "../../utils/downloadUtils";
 import { EditType, IColumnsInfo, IExportInfos, ILayerDef, IMapClick, IMapInfo, IToolInfo, IToolSizeInfo, TooltipPlacement } from "../../utils/interfaces";
 import "@esri/instant-apps-components/dist/components/instant-apps-social-share";
@@ -90,6 +90,11 @@ export class LayerTable {
   @Prop() isMobile: boolean;
 
   /**
+   * boolean: when true the map is hidden and map specific controls should be hidden
+   */
+  @Prop() mapHidden: boolean;
+
+  /**
    * IMapInfo: key configuration details about the current map
    */
   @Prop() mapInfo: IMapInfo;
@@ -128,6 +133,11 @@ export class LayerTable {
    * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
    */
   @Prop() zoomAndScrollToSelected: boolean;
+
+  /**
+   * number: default scale to zoom to when zooming to a single point feature
+   */
+  @Prop() zoomToScale: number;
 
   //--------------------------------------------------------------------------
   //
@@ -455,6 +465,16 @@ export class LayerTable {
   }
 
   /**
+   * Reset the toolInfos when mapHidden prop changes so we can show/hide any map dependant tool(s)
+   */
+  @Watch("mapHidden")
+  mapHiddenWatchHandler(): void {
+    if (this._toolInfos?.length > 0) {
+      this._initToolInfos();
+    }
+  }
+
+  /**
    * When isMobile is false we need to init the tool infos for the dynamic toolbar
    */
   @Watch("isMobile")
@@ -473,6 +493,8 @@ export class LayerTable {
     this._initLayerExpressions();
     this._initToolInfos();
     this._updateToolbar();
+    console.log("mapInfoWatchHandler")
+    await this._sortTable()
   }
 
   /**
@@ -523,6 +545,10 @@ export class LayerTable {
     if (this._selectAllActive && this.selectedIds.length !== this._allIds.length) {
       this._selectAllActive = false;
     }
+    if (this.selectedIds.length > 0) {
+      (this._table as any).rowHighlightIds.removeAll();
+      (this._table as any).rowHighlightIds.add(this.selectedIds[0]);
+    }
   }
 
   //--------------------------------------------------------------------------
@@ -551,8 +577,14 @@ export class LayerTable {
   async selectionChanged(
     evt: CustomEvent
   ): Promise<void> {
-    const g: __esri.Graphic = evt.detail[0];
+    const g: __esri.Graphic = evt.detail.selectedFeature[0];
     const oid = g.getObjectId();
+    //Highlight the current selected feature in the table using rowHighlightIds
+    const table = this._table as any;
+    if (table.rowHighlightIds.length) {
+      table.rowHighlightIds.removeAll();
+    }
+    table.rowHighlightIds.add(oid);
     if (this.zoomAndScrollToSelected) {
       const i: number = this._table.viewModel.getObjectIdIndex(oid);
       this._table.scrollToIndex(i);
@@ -567,7 +599,7 @@ export class LayerTable {
       });
 
       if (layerView) {
-        await goToSelection([oid], layerView, this.mapView, true);
+        await goToSelection([oid], layerView, this.mapView, true, undefined, this.zoomToScale);
       }
     }
   }
@@ -794,7 +826,7 @@ export class LayerTable {
             height={50}
             isMobile={this.isMobile}
             mapView={this.mapView}
-            onLayerSelectionChange={(evt) => this._layerSelectionChanged(evt)}
+            onLayerSelectionChange={(evt) => void this._layerSelectionChanged(evt)}
             onlyShowUpdatableLayers={this.onlyShowUpdatableLayers}
             placeholderIcon="layers"
             scale="l"
@@ -936,7 +968,8 @@ export class LayerTable {
     const featuresEmpty = this._featuresEmpty();
     const hasFilterExpressions = this._hasFilterExpressions();
     if (this._translations) {
-      this._toolInfos = [{
+      this._toolInfos = [
+      !this.mapHidden ? {
         active: false,
         icon: "zoom-to-object",
         indicator: false,
@@ -944,7 +977,7 @@ export class LayerTable {
         func: () => this._zoom(),
         disabled: !featuresSelected,
         isOverflow: false
-      },
+      } : undefined,
       hasFilterExpressions ? {
         active: false,
         icon: "filter",
@@ -1561,15 +1594,17 @@ export class LayerTable {
       } else if (this._shiftIsPressed) {
         this._skipOnChange = true;
         this._previousCurrentId = this._currentId;
-        this._currentId = [...this._table.highlightIds.toArray()].reverse()[0];
-        if (this._previousCurrentId !== this._currentId) {
+        this._currentId = [...ids].reverse()[0];
+        if (ids.length === 1) {
+          this._skipOnChange = false;
+        } else if (this._previousCurrentId !== this._currentId) {
           // query the layer based on current sort and filters then grab between the current id and previous id
           const orderBy = this._table.activeSortOrders.reduce((prev, cur) => {
             prev.push(`${cur.fieldName} ${cur.direction}`)
             return prev;
           }, []);
 
-          const oids = await queryFeatureIds(this._layer, this._layer.definitionExpression, orderBy);
+          const oids = await queryAllOidsWithQueryFeatures(0, this._layer, [], orderBy);
 
           let isBetween = false;
           const _start = this._table.viewModel.getObjectIdIndex(this._previousCurrentId);
@@ -1580,32 +1615,21 @@ export class LayerTable {
 
           this._skipOnChange = startIndex + 1 !== endIndex;
 
-          const selectedIds = oids.reduce((prev, cur) => {
+          const idsInRange = oids.reduce((prev, cur) => {
             const id = cur;
-            const index = this._table.viewModel.getObjectIdIndex(id);
             if ((id === this._currentId || id === this._previousCurrentId)) {
               isBetween = !isBetween;
               if (prev.indexOf(id) < 0) {
                 prev.push(id);
               }
-            }
-
-            // The oids are sorted so after we have reached the start or end oid add all ids even if the index is -1.
-            // Index of -1 will occur for features between the start and and oid if
-            // you select a row then scroll faster than the FeatureTable loads the data to select the next id
-            if (isBetween && prev.indexOf(id) < 0) {
-              prev.push(id);
-            }
-
-            // Also add index based check.
-            // In some cases the FeatureTable and Layer query will have differences in how null/undefined field values are sorted
-            if ((this.selectedIds.indexOf(id) > -1 || (index >= startIndex && index <= endIndex)) && prev.indexOf(id) < 0 && index > -1) {
+            } else if (isBetween && prev.indexOf(id) < 0) {
               prev.push(id);
             }
             return prev;
           }, []);
 
-          this.selectedIds = _start < _end ? selectedIds.reverse() : selectedIds;
+          const selectedIds = _start < _end ? idsInRange.reverse() : idsInRange;
+          this.selectedIds = [...new Set([...selectedIds ,...this.selectedIds])]
 
           this._table.highlightIds.addMany(this.selectedIds.filter(i => ids.indexOf(i) < 0));
         }
@@ -1670,6 +1694,7 @@ export class LayerTable {
     await this.reactiveUtils.once(
       () => this._table.state === "loaded")
       .then(async () => {
+        console.log("this._table.state === 'loaded'")
         this._table.highlightIds.removeAll();
         this._table.clearSelectionFilter();
         this._resetColumnTemplates();
@@ -1782,13 +1807,31 @@ export class LayerTable {
   }
 
   /**
-   * Sort the objectid field in descending order
+   * Sort the table with the configured field and the sort order
    */
   protected async _sortTable(): Promise<void> {
-    if (this._table && this._layer && this.showNewestFirst) {
+    //By default sort the table using objectIdField and in descending order
+    let sortField = this._layer?.objectIdField;
+    let sortOrder: "asc" | "desc" = 'desc';
+    let configuredLayer;
+    //get the sortField and sortOrder from the configuration
+    if (this.mapInfo?.layerOptions?.layers?.length > 0 && this._layer?.id) {
+      configuredLayer = this.mapInfo.layerOptions.layers.filter((layer) => layer.id === this._layer.id);
+      if (configuredLayer && configuredLayer.length > 0) {
+        configuredLayer = configuredLayer[0];
+        //if sort field is defined and sortField is available in the fields then use it
+        if (configuredLayer.sortField && configuredLayer.fields?.includes(configuredLayer.sortField)) {
+          sortField = configuredLayer.sortField;
+        }
+        //use sort order if configured
+        sortOrder = configuredLayer?.sortOrder ? configuredLayer.sortOrder : "desc";
+      }
+    }
+    if (this._table && this._layer) {
       await this._table.when();
       await this._layer.when(() => {
-        this._table.sortColumn(this._layer.objectIdField, "desc");
+        console.log("sort on this._layer.when")
+        this._table.sortColumn(sortField, sortOrder);
       });
     }
   }
@@ -1994,6 +2037,7 @@ export class LayerTable {
   protected _clearSelection(): void {
     this.selectedIds = [];
     this._table?.highlightIds.removeAll();
+    (this._table as any)?.rowHighlightIds.removeAll();
     this._finishOnChange();
   }
 
@@ -2102,8 +2146,11 @@ export class LayerTable {
    *
    * @returns a promise that will resolve when the operation is complete
    */
-  protected _zoom(): void {
-    this._table.zoomToSelection();
+  protected async _zoom(): Promise<void> {
+    if (this._layer) {
+      const selectedLayerView = await getFeatureLayerView(this.mapView, this._layer.id);
+      await goToSelection(this.selectedIds, selectedLayerView, this.mapView, true, undefined, this.zoomToScale);
+    }
   }
 
   /**
@@ -2197,7 +2244,7 @@ export class LayerTable {
       items: [
         {
           label: this._translations.hideField,
-          iconClass: "esri-icon-non-visible",
+          icon: "view-hide",
           autoCloseMenu: true,
           clickFunction: () => {
             this._handleHideClick(name);

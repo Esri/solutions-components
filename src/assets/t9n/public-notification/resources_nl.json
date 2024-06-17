@@ -38,5 +38,7 @@
   "refineTip": "Verfijn en finaliseer uw lijsten door schetstools te gebruiken om geselecteerde objecten toe te voegen of te verwijderen.",
   "refineTipNoSelections": "Er zijn geen selecties die u kunt verfijnen Ga naar Mijn lijsten om een lijst met objecten te maken.",
   "duplicatesTip": "Dubbele objecten worden altijd verwijderd. Indien ingeschakeld, worden pop-ups uit elke laag vergeleken en worden alle dubbele pop-upgegevens verwijderd.",
-  "exportListsLabel": "Mijn lijsten"
+  "exportListsLabel": "Mijn lijsten",
+  "listGraphics": "Afbeeldingen opsommen",
+  "listGraphicsTip": "Neem alle afbeeldingen als zoekbuffers of afbeeldingen uit de schetstools op in de kaartexport."
 }

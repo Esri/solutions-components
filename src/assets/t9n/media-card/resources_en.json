@@ -1,5 +1,3 @@
 {
-  "next": "Next",
-  "previous": "Previous",
-  "fetchingData": "Fetching data"
+  "mapName": "Map Name"
 }

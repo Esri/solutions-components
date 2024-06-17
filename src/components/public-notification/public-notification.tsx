@@ -97,6 +97,11 @@ export class PublicNotification {
   @Prop() featureHighlightEnabled: boolean;
 
   /**
+   * string: The current user locale.
+   */
+  @Prop() locale: string;
+
+  /**
    * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
    */
   @Prop() mapView: __esri.MapView;
@@ -160,6 +165,11 @@ export class PublicNotification {
   //  State (internal)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * boolean: When true a graphics will be added to the map on export
+   */
+  @State() _exportGraphics = false;
 
   /**
    * boolean: When true a map will be added on export
@@ -245,6 +255,11 @@ export class PublicNotification {
   protected _geometryEngine: __esri.geometryEngine;
 
   /**
+   * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
+   */
+  protected Graphic: typeof import("esri/Graphic");
+
+  /**
    * esri/symbols/support/jsonUtils: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-support-jsonUtils.html
    */
   protected _jsonUtils: __esri.symbolsSupportJsonUtils;
@@ -310,6 +325,7 @@ export class PublicNotification {
     if (v?.popup) {
       this._popupsEnabled = v?.popup.autoOpenEnabled;
     }
+    this._initSearchConfiguration(this.searchConfiguration)
   }
 
   /**
@@ -323,7 +339,7 @@ export class PublicNotification {
     oldValue: ISearchConfiguration
   ): Promise<void> {
     const s_newValue = JSON.stringify(newValue);
-    if (s_newValue !== JSON.stringify(oldValue)) {
+    if (this.mapView && (s_newValue !== JSON.stringify(oldValue) || (s_newValue && !this._searchConfiguration))) {
       this._searchConfiguration = JSON.parse(s_newValue);
       this.searchConfigurationChange.emit(this._searchConfiguration);
       // force back to list page before we create Search
@@ -388,6 +404,7 @@ export class PublicNotification {
     if (pageType === EPageType.EXPORT) {
       this._fetchingData = true;
       this._numDuplicates = await this._getNumDuplicates();
+      this._updateExportGraphics();
       this._fetchingData = false;
     }
 
@@ -396,6 +413,10 @@ export class PublicNotification {
     if (oldPageType === EPageType.SELECT || oldPageType === EPageType.REFINE) {
       // clear any draw shapes or buffers
       await this._clearSelection()
+    }
+
+    if (oldPageType === EPageType.EXPORT) {
+      this._removeExportGraphics();
     }
 
     if (pageType !== EPageType.SELECT) {
@@ -472,6 +493,13 @@ export class PublicNotification {
   }
 
   /**
+   * StencilJS: Called once just after the component is first loaded.
+   */
+  async componentDidLoad(): Promise<void> {
+    this._initSearchConfiguration(this.searchConfiguration)
+  }
+
+  /**
    * StencilJS: Called every time the component is disconnected from the DOM
    */
   disconnectedCallback(): void {
@@ -492,15 +520,33 @@ export class PublicNotification {
    * @protected
    */
   protected async _initModules(): Promise<void> {
-    const [geometryEngine, jsonUtils]: [
-      __esri.geometryEngine,
-      __esri.symbolsSupportJsonUtils
-    ] = await loadModules([
+    const [geometryEngine, jsonUtils, graphic] = await loadModules([
       "esri/geometry/geometryEngine",
-      "esri/symbols/support/jsonUtils"
+      "esri/symbols/support/jsonUtils",
+      "esri/Graphic"
     ]);
     this._geometryEngine = geometryEngine;
     this._jsonUtils = jsonUtils;
+    this.Graphic = graphic;
+  }
+
+  /**
+   * Load the search configuration
+   *
+   * @returns Promise resolving when function is done
+   *
+   * @protected
+   */
+  protected _initSearchConfiguration(
+    v: ISearchConfiguration
+  ): void {
+    if (this.searchConfiguration && !this._searchConfiguration  && this.mapView) {
+      this._searchConfiguration = v;
+      this.searchConfigurationChange.emit(this._searchConfiguration);
+      // force back to list page before we create Search
+      // https://devtopia.esri.com/WebGIS/arcgis-template-configuration/issues/3402
+      void this._home();
+    }
   }
 
   /**
@@ -890,6 +936,7 @@ export class PublicNotification {
             defaultBufferUnit={this.defaultBufferUnit}
             enabledLayerIds={this.addresseeLayerIds}
             isUpdate={!!this._activeSelection}
+            locale={this.locale}
             mapView={this.mapView}
             noResultText={this.noResultText}
             onSelectionSetChange={(evt) => this._updateForSelection(evt)}
@@ -953,6 +1000,7 @@ export class PublicNotification {
                     </calcite-label>
                     <calcite-icon
                       class="padding-start-1-2 icon"
+                      flipRtl={!(this.locale.toLowerCase() === "he")}
                       icon="question"
                       id="remove-duplicates-icon"
                       scale="s"
@@ -1038,6 +1086,7 @@ export class PublicNotification {
   protected _getExportOptions(): VNode {
     const displayClass = this._exportType === EExportType.PDF ? "display-block" : "display-none";
     const titleOptionsClass = this._addTitle ? "display-block" : "display-none";
+    const graphicsOptionsClass = this._addMap ? "display-flex" : "display-none";
     const title = this._titleValue ? this._titleValue : this.defaultExportTitle ? this.defaultExportTitle : "";
     const formatOptionsClass = this._addResults ? "" : "display-none";
     return (
@@ -1098,13 +1147,146 @@ export class PublicNotification {
           <calcite-label class="label-margin-0" layout="inline">
             <calcite-checkbox
               checked={this._addMap}
-              onCalciteCheckboxChange={() => this._addMap = !this._addMap}
+              onCalciteCheckboxChange={() => this._handleAddMapChange()}
             />
             {this._translations.includeMap}
           </calcite-label>
         </div>
+
+        <div class={`padding-top-sides-1 ${graphicsOptionsClass}`}>
+          <calcite-label class="label-margin-0" layout="inline">
+            <calcite-checkbox
+              checked={this._exportGraphics}
+              onCalciteCheckboxChange={() => this._handleExportGraphicsChange()}
+            />
+            {this._translations.listGraphics}
+          </calcite-label>
+          <calcite-icon
+              class="padding-start-1-2 icon"
+              flipRtl={!(this.locale.toLowerCase() === "he")}
+              icon="question"
+              id="list-graphics-icon"
+              scale="s"
+            />
+            <calcite-popover
+              closable={true}
+              label=""
+              referenceElement="list-graphics-icon"
+            >
+              <span class="tooltip-message">{this._translations.listGraphicsTip}</span>
+            </calcite-popover>
+        </div>
       </div>
     );
+  }
+
+  /**
+   * Toggle the _addMap state variable and update the graphics on the map
+   *
+   * @protected
+   */
+  protected _handleAddMapChange(): void {
+    this._addMap = !this._addMap;
+    this._updateExportGraphics();
+  }
+
+  /**
+   * Toggle the _exportGraphics state variable and update the graphics on the map
+   *
+   * @protected
+   */
+  protected _handleExportGraphicsChange(): void {
+    this._exportGraphics = !this._exportGraphics;
+    this._updateExportGraphics();
+  }
+
+  /**
+   * Get the "sketch" or "buffer" graphics layer
+   *
+   * @param type The type of managed layer to fetch "sketch" | "buffer"
+   *
+   * @protected
+   */
+  protected _getManagedLayer(
+    type: "sketch" | "buffer"
+  ): __esri.GraphicsLayer {
+    let layer: __esri.GraphicsLayer;
+    Object.keys(state.managedLayers).some((k) => {
+      const i = this.mapView.map.layers.findIndex((l) => l.title === k);
+      if (state.managedLayers[k] === type) {
+        layer = this.mapView.map.layers.getItemAt(i) as __esri.GraphicsLayer;
+        return true;
+      }
+    });
+    return layer;
+  }
+
+  /**
+   * Update the export graphics by adding or removeing them
+   *
+   * @param clear When true the graphics layers will be cleared prior to adding any new graphics, defaults to false
+   *
+   * @protected
+   */
+  protected _updateExportGraphics(
+    clear = false
+  ): void {
+    if (clear || !this._exportGraphics || !this._addMap) {
+      this._removeExportGraphics();
+    }
+
+    if (this._exportGraphics && this._addMap) {
+      this._addExportGraphics();
+    }
+  }
+
+  /**
+   * Remove all buffer and sketch graphics
+   *
+   * @protected
+   */
+  _removeExportGraphics(): void {
+    const sketchLayer: __esri.GraphicsLayer = this._getManagedLayer("sketch");
+    const bufferLayer: __esri.GraphicsLayer = this._getManagedLayer("buffer");
+    if (sketchLayer) {
+      sketchLayer.graphics.removeAll();
+    }
+    if (bufferLayer) {
+      bufferLayer.graphics.removeAll();
+    }
+  }
+
+  /**
+   * Add all buffer and sketch graphics that are flagged for download
+   *
+   * @protected
+   */
+  protected _addExportGraphics(): void {
+    const sketchLayer: __esri.GraphicsLayer = this._getManagedLayer("sketch");
+    const bufferLayer: __esri.GraphicsLayer = this._getManagedLayer("buffer");
+      this._selectionSets.forEach(ss => {
+        if (ss.download) {
+          if (sketchLayer) {
+            sketchLayer.graphics.add(ss.sketchGraphic);
+          }
+          if (bufferLayer) {
+            const symbol = {
+              type: "simple-fill",
+              color: this.bufferColor,
+              outline: {
+                color: this.bufferOutlineColor,
+                width: 1
+              }
+            };
+            const bufferGraphic = new this.Graphic({
+              geometry: ss.buffer,
+              symbol
+            });
+
+            bufferLayer.graphics.add(bufferGraphic);
+          }
+        }
+      });
   }
 
   /**
@@ -1123,6 +1305,7 @@ export class PublicNotification {
               {this._getNotice(this._translations.refineTip, "padding-sides-1")}
               <refine-selection
                 enabledLayerIds={this.selectionLayerIds}
+                locale={this.locale}
                 mapView={this.mapView}
                 selectionSets={this._selectionSets}
                 sketchLineSymbol={this.sketchLineSymbol}
@@ -1299,6 +1482,7 @@ export class PublicNotification {
       isActive = ss.download ? true : isActive;
       return ss;
     });
+    this._updateExportGraphics(true);
     this._downloadActive = isActive;
     this._fetchingData = true;
     this._numDuplicates = await this._getNumDuplicates();
@@ -1437,6 +1621,7 @@ export class PublicNotification {
       <calcite-action
         disabled={!enabled}
         icon={icon}
+        iconFlipRtl
         indicator={indicator}
         onClick={onClick}
         slot={slot}
