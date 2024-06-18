@@ -166,10 +166,11 @@ class SolutionStore
   public getStoreInfo(
     propName: string
   ): any {
-    const valueSnippet = this._store.get(propName);//???).substring(0, Math.min(50, JSON.stringify(this._store.get(propName)).length);//???
-    if (propName === "spatialReferenceInfo" || propName === "featureServices") { console.log("GET StoreInfo " + propName + ": " + JSON.stringify(valueSnippet, null, 2)) } //???
-    else { console.log("GET StoreInfo " + propName + ": " + JSON.stringify(valueSnippet.templates.map(template => { return {  //???
-                name: template.item.name, title: template.item.title, type: template.item.type }; } ), null, 2 ) ); } //???
+    const value = this._store.get(propName);//???).substring(0, Math.min(50, JSON.stringify(this._store.get(propName)).length);//???
+    if (propName === "spatialReferenceInfo" || propName === "featureServices") { console.log("GET StoreInfo " + propName + ": " + JSON.stringify(value, null, 2)) } //???
+    else if (propName === "defaultWkid") { console.log("SET StoreInfo " + propName + ": ", value) } //???
+    else { console.log("GET StoreInfo " + propName + ": " + JSON.stringify(value.templates.map(template => { return {  //???
+      name: template.item.name, title: template.item.title, type: template.item.type }; } ), null, 2 ) ); } //???
     return this._store.get(propName);
   }
 
@@ -308,8 +309,9 @@ class SolutionStore
     value: any
   ): void {
     if (propName === "spatialReferenceInfo" || propName === "featureServices") { console.log("SET StoreInfo " + propName + ": " + JSON.stringify(value, null, 2)) } //???
-      else { console.log("SET StoreInfo " + propName + ": " + JSON.stringify(value.templates.map(template => { return {  //???
-                  name: template.item.name, title: template.item.title, type: template.item.type }; } ), null, 2 ) ); } //???
+    else if (propName === "defaultWkid") { console.log("SET StoreInfo " + propName + ": ", value) } //???
+    else { console.log("GET StoreInfo " + propName + ": " + JSON.stringify(value.templates.map(template => { return {  //???
+      name: template.item.name, title: template.item.title, type: template.item.type }; } ), null, 2 ) ); } //???
     this._store.set(propName, value);
     this._flagStoreHasChanges(true);
 }

@@ -164,6 +164,8 @@ export class SolutionSpatialRef {
   spatialReferenceChange(event: CustomEvent): void {
     console.log("SolutionSpatialRef: spatialReferenceChange event received");//???
     this.value = event.detail.newValue;
+    state.setStoreInfo("defaultWkid", event.detail.newValue);
+
     const spatialReferenceInfo = state.getStoreInfo("spatialReferenceInfo");
     spatialReferenceInfo.spatialReference = event.detail.newValue;
     state.setStoreInfo("spatialReferenceInfo", spatialReferenceInfo);
