@@ -169,6 +169,7 @@ export async function getAllLayers(
   const layers = mapView.map.allLayers.toArray();
   let layerViewPromises;
   await mapView.when(() => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     layerViewPromises = layers.map(l => mapView.whenLayerView(l));
   });
   await Promise.allSettled(layerViewPromises);
@@ -187,6 +188,7 @@ export async function getAllTables(
   const tables = mapView.map.allTables.toArray();
   let layerViewPromises;
   await mapView.when(() => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     layerViewPromises = tables.map(t => t.load());
   });
   await Promise.allSettled(layerViewPromises);
