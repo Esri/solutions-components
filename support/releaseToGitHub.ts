@@ -1,9 +1,9 @@
 /* eslint-disable import/first */
 require('dotenv').config();
-import * as childProcess from "child_process";
-import * as githubRelease from "gh-release";
-import * as pify from "pify";
-import * as rimraf from "rimraf";
+const childProcess = require("child_process");
+const githubRelease = require("gh-release");
+const pify = require("pify");
+const rimraf = require("rimraf");
 
 const packageFileName = childProcess.execSync("npm pack", { encoding: "utf-8" }).trim();
 const packageScope = "esri-";
@@ -22,7 +22,7 @@ const options = {
   yes: true // skips prompt
 };
 
-pify.default(githubRelease)(options)
+pify(githubRelease)(options)
   .then(() => console.info("Released on GitHub!"))
   .catch((error) => console.error("Could not create GitHub release", error))
   .then(() => rimraf.sync(packageFileName));
