@@ -71,13 +71,14 @@
     "ncp": "^2.0.0",
     "pify": "^6.1.0",
     "prettier": "3.3.2",
-    "puppeteer": "^22.10.1",
+    "puppeteer": "^22.11.2",
     "react": "^18.3.1",
     "rimraf": "^5.0.7",
     "tailwindcss": "3.4.4",
     "ts-node": "^10.9.2",
     "tslib": "^2.6.3",
-    "typescript": "^5.4.5"
+    "typescript": "^5.4.5",
+    "ws": "^8.17.1"
   },
   "dependencies": {
     "@esri/arcgis-rest-auth": "^3.4.2",
