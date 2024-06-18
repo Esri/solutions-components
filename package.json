@@ -36,6 +36,7 @@
     "@babel/preset-env": "^7.24.7",
     "@babel/preset-typescript": "^7.24.7",
     "@babel/types": "^7.24.7",
+    "@esri/eslint-plugin-calcite-components": "^1.2.0",
     "@esri/solution-common": "5.3.7",
     "@esri/telemetry": "8.0.0",
     "@esri/telemetry-amazon": "3.0.1",
