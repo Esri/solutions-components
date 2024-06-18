@@ -53,11 +53,12 @@ import {
 //   * solutionItemId: [string] id of the current solution
 //   * defaultWkid: [any] value of the solution's `params.wkid.default` data property, which may be undefined
 //   * solutionData: [ISolutionItemData] the solution's data, which is modified in-place
-//   * featureServices: [array] a list of Feature service enablement status for SR configuration
+//   * featureServices: [array] a list of Feature services that use a spatial reference var
 //   * spatialReferenceInfo: [object] the current spatial reference (if enabled) and the services that use it
 //       * enabled: [boolean] use the spatial reference
-//       * services: [object] services using this spatial reference organized by the service name
-//       * spatialReference: [object] the spatial reference display
+//       * services: [object] for each service in featureServices by service name, a switch indicating if the
+//           custom spatial reference parameter is enabled/disabled
+//       * spatialReference: [object] the custom spatial reference wkid
 //
 // Store singleton method:
 //   * Store: Creates singleton instance when accessed; default export from module.
@@ -79,7 +80,7 @@ import {
 //
 //--------------------------------------------------------------------------------------------------------------------//
 
-interface SolutionStoreData {
+interface ISolutionStoreData {
   solutionItemId: string,
   defaultWkid: string,
   solutionData: ISolutionItemData,
@@ -88,7 +89,7 @@ interface SolutionStoreData {
   spatialReferenceInfo: ISolutionSpatialReferenceInfo
 }
 
-const EmptySolutionStore: SolutionStoreData = {
+const EmptySolutionStore: ISolutionStoreData = {
   solutionItemId: "",
   defaultWkid: undefined,
   solutionData: { metadata: {}, templates: [] },
@@ -374,14 +375,12 @@ class SolutionStore
    */
   protected _flagStoreHasChanges(flagHasChanges: boolean): void {
     // Event for notifying if the store has changes or not
-    if (this._hasChanges !== flagHasChanges) {
-      window.dispatchEvent(new CustomEvent("solutionStoreHasChanges", {
-        detail: flagHasChanges,
-        bubbles: true,
-        cancelable: false,
-        composed: true
-      }));
-    }
+    window.dispatchEvent(new CustomEvent("solutionStoreHasChanges", {
+      detail: flagHasChanges,
+      bubbles: true,
+      cancelable: false,
+      composed: true
+    }));
 
     this._hasChanges = flagHasChanges;
   }

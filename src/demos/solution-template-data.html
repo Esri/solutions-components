@@ -24,6 +24,9 @@
   <link rel="stylesheet" href="https://webapps-cdn.esri.com/CDN/fonts/v1.4.1/fonts.css" />
   <link rel="stylesheet" href="../solutions-components.css" type="text/css">
   <style>
+  .content {
+    padding: 20px;
+  }
   .full-height {
     height: 100%;
   }
@@ -37,7 +40,7 @@
   <h1>Demo Solution Template Data</h1>
   <main id="appContainer">
     <div id="template-data" class="content full-height">
-      <store-manager id="helper"></store-manager>
+      <store-manager id="helper"/>
       <solution-template-data id="demo" instanceId="data" itemid="2d2d176f5f3e43a985a31649e213aaf4"></solution-template-data>
     </div>
   </main>
@@ -53,9 +56,7 @@
     });
     require(["vs/editor/editor.main"],
     function () {
-      // Initialize the content
       const demo = document.getElementById("demo");
-
       const helper = document.getElementById("helper");
 
       // set the data
@@ -67,8 +68,7 @@
       ])
         .then(results => Promise.all(results.map(r => r.json())))
         .then(jsonResults => {
-          const template = JSON.stringify(jsonResults[3].templates[0]);
-          helper.value = template;
+          helper.value = JSON.stringify(jsonResults[3]);
 
           demo.value = { value: jsonResults[0].value };
           demo.itemid = "2d2d176f5f3e43a985a31649e213aaf4";

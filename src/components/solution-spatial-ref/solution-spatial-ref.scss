@@ -42,8 +42,7 @@
 }
 
 .switch-label {
-  @apply m-1
-    text-sm;
+  @apply text-sm;
 }
 
 .disabled-div {
@@ -54,4 +53,15 @@
 .spatial-ref-desc {
   padding-bottom: .5rem;
   @apply p-inline-start-1;
+}
+
+.spatial-ref-services-list {
+  margin-block-start: 0.5em;
+  margin-block-end: 0.5em;
+  list-style-type: none;
+  padding-inline-start: 0;
+}
+
+.spatial-ref-services-list-item {
+  margin-top: 0.25rem;
 }

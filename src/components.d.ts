@@ -1426,6 +1426,10 @@ export namespace Components {
          */
         "defaultWkid": number;
         /**
+          * Indicates if the control has been enabled. The first time Spatial Reference has been enabled it should enable all feature services.
+         */
+        "loaded": boolean;
+        /**
           * When true, all but the main switch are disabled to prevent interaction.
          */
         "locked": boolean;
@@ -2229,7 +2233,7 @@ declare global {
         new (): HTMLSolutionResourceItemElement;
     };
     interface HTMLSolutionSpatialRefElementEventMap {
-        "featureServiceSpatialReferenceChange": { name: string, enabled: boolean };
+        "featureServiceSpatialReferenceChange": IFeatureServiceSpatialReferenceChange;
         "lockedSpatialReferenceChange": { locked: boolean };
     }
     interface HTMLSolutionSpatialRefElement extends Components.SolutionSpatialRef, HTMLStencilElement {
@@ -3826,10 +3830,14 @@ declare namespace LocalJSX {
          */
         "defaultWkid"?: number;
         /**
+          * Indicates if the control has been enabled. The first time Spatial Reference has been enabled it should enable all feature services.
+         */
+        "loaded"?: boolean;
+        /**
           * When true, all but the main switch are disabled to prevent interaction.
          */
         "locked"?: boolean;
-        "onFeatureServiceSpatialReferenceChange"?: (event: SolutionSpatialRefCustomEvent<{ name: string, enabled: boolean }>) => void;
+        "onFeatureServiceSpatialReferenceChange"?: (event: SolutionSpatialRefCustomEvent<IFeatureServiceSpatialReferenceChange>) => void;
         "onLockedSpatialReferenceChange"?: (event: SolutionSpatialRefCustomEvent<{ locked: boolean }>) => void;
         /**
           * List of service names the spatial reference should apply to

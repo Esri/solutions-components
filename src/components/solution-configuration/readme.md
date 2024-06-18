@@ -133,8 +133,8 @@ graph TD;
   calcite-pick-list-item --> calcite-action
   calcite-action-group --> calcite-action-menu
   calcite-action-group --> calcite-action
-  solution-spatial-ref --> calcite-label
   solution-spatial-ref --> calcite-switch
+  solution-spatial-ref --> calcite-label
   solution-spatial-ref --> spatial-ref
   spatial-ref --> calcite-input
   spatial-ref --> calcite-tree

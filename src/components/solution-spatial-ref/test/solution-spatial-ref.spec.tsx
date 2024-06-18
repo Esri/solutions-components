@@ -52,30 +52,31 @@ describe('solution-spatial-ref', () => {
     });
     expect(page.root).toEqualHtml(`
       <solution-spatial-ref default-wkid="102100" locked="" value="102100">
-        <div class="spatial-ref">
-          <div class="spatial-ref-desc">
-            <calcite-label></calcite-label>
-          </div>
-          <label class="switch-label">
-            <calcite-switch class="spatial-ref-switch" scale="m"></calcite-switch>
-          </label>
-          <div class="spatial-ref-component" id="spatialRefDefn">
-            <calcite-label>
-              <label class="spatial-ref-default">
-                <spatial-ref defaultwkid="102100" disabled="" value="102100"></spatial-ref>
-              </label>
-            </calcite-label>
-            <div>
-              <label class="spatial-ref-item-title"></label>
-              <label class="switch-label">
-                <calcite-switch checked="" class="spatial-ref-item-switch" disabled="" scale="m"></calcite-switch>
-                Feature Service 1
-              </label>
-              <label class="switch-label">
-                <calcite-switch class="spatial-ref-item-switch" disabled="" scale="m"></calcite-switch>
-                Feature Service 2
-              </label>
-            </div>
+        <label class="switch-label">
+          <calcite-switch class="spatial-ref-switch" scale="m"></calcite-switch>
+        </label>
+        <div class="spatial-ref-component" id="spatialRefDefn">
+          <calcite-label>
+            <label class="spatial-ref-default">
+              <spatial-ref defaultwkid="102100" disabled="" value="102100"></spatial-ref>
+            </label>
+          </calcite-label>
+          <div>
+            <label class="spatial-ref-item-title"></label>
+            <ul class="spatial-ref-services-list">
+              <li class="spatial-ref-services-list-item">
+                <label class="switch-label">
+                  <calcite-switch checked="" class="spatial-ref-item-switch" disabled="" scale="m"></calcite-switch>
+                  Feature Service 1
+                </label>
+              </li>
+              <li class="spatial-ref-services-list-item">
+                <label class="switch-label">
+                  <calcite-switch class="spatial-ref-item-switch" disabled="" scale="m"></calcite-switch>
+                  Feature Service 2
+                </label>
+              </li>
+            </ul>
           </div>
         </div>
       </solution-spatial-ref>

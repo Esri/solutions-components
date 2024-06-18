@@ -24,6 +24,9 @@
   <link rel="stylesheet" href="https://webapps-cdn.esri.com/CDN/fonts/v1.4.1/fonts.css" />
   <link rel="stylesheet" href="../solutions-components.css" type="text/css">
   <style>
+  .content {
+    padding: 20px;
+  }
   .full-height {
     height: 100%;
   }
@@ -37,12 +40,12 @@
   <h1>Demo Solution Item</h1>
   <main id="appContainer">
     <div id="sol-item" class="content full-height">
-      <store-manager id="helper"></store-manager>
-      <solution-item id="demo"></solution-item>
+      <store-manager id="helper"/>
+      <solution-item id="demo"/>
     </div>
   </main>
 
-  <script src="./libs/require.js"></script>
+  <script src="./libs/require.js">/script>
   <script src="./libs/setLocale.js"></script>
   <script src="./monacoConfig.js"></script>
   <script>
@@ -53,9 +56,7 @@
     });
     require(['vs/editor/editor.main'],
     function () {
-      // Initialize the configuration content
       const demo = document.getElementById("demo");
-
       const helper = document.getElementById("helper");
 
       // set the data
@@ -68,7 +69,7 @@
       ])
         .then(results => Promise.all(results.map(r => r.json())))
         .then(jsonResults => {
-          helper.value = JSON.stringify(jsonResults[4].templates[0]);
+          helper.value = JSON.stringify(jsonResults[4]);
 
           const itemDetails = jsonResults[0].value;
           const value = jsonResults[1].value;

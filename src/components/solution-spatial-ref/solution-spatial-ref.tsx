@@ -1,5 +1,5 @@
 /** @license
- * Copyright 2022 Esri
+ * Copyright 2021 Esri
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,17 @@
  * limitations under the License.
  */
 
+import { Component, Element, Event, EventEmitter, h, Host, Listen, Prop, State, Watch, VNode } from '@stencil/core';
 import '@esri/calcite-components';
 import SolutionSpatialRef_T9n from '../../assets/t9n/solution-spatial-ref/resources.json';
 import state from "../../utils/solution-store";
-import { Component, Element, Event, EventEmitter, h, Host, Listen, Prop, State, VNode, Watch } from '@stencil/core';
 import { getLocaleComponentStrings } from '../../utils/locale';
 import { nodeListToArray } from '../../utils/common';
+
+interface IFeatureServiceSpatialReferenceChange {
+  name: string;
+  enabled: boolean;
+}
 
 @Component({
   tag: 'solution-spatial-ref',
@@ -51,7 +56,7 @@ export class SolutionSpatialRef {
   * Indicates if the control has been enabled.
   * The first time Spatial Reference has been enabled it should enable all feature services.
   */
-  @State() loaded = false;
+   @Prop({ mutable: true, reflect: true }) loaded = false;
 
   /**
   * When true, all but the main switch are disabled to prevent interaction.
@@ -93,34 +98,26 @@ export class SolutionSpatialRef {
     return this._getTranslations();
   }
 
-  /**
-   * Renders the component.
-   */
   render(): VNode {
     return (
       <Host>
-        <div class="spatial-ref">
-          <div class="spatial-ref-desc">
-            <calcite-label>{this._translations.paramDescription}</calcite-label>
-          </div>
-          <label class="switch-label">
-            <calcite-switch
-              checked={!this.locked}
-              class="spatial-ref-switch"
-              onCalciteSwitchChange={(event) => this._updateLocked(event)}
-              scale="m"
-            />
-            {this._translations.specifyParam}
-          </label>
-          <div class="spatial-ref-component" id="spatialRefDefn">
-            <calcite-label>
-              {this._translations.spatialReferenceInfo}
-              <label class="spatial-ref-default">
-                <spatial-ref defaultWkid={this.defaultWkid} disabled={this.locked} value={this.value}/>
-              </label>
-            </calcite-label>
-            {this._getFeatureServices(this.services)}
-          </div>
+        <label class="switch-label">
+          <calcite-switch
+            checked={!this.locked}
+            class="spatial-ref-switch"
+            onCalciteSwitchChange={(event) => this._updateLocked(event)}
+            scale="m"
+           />
+          {this._translations.specifyParam}
+        </label>
+        <div class="spatial-ref-component" id="spatialRefDefn">
+          <calcite-label>
+            {this._translations.spatialReferenceInfo}
+            <label class="spatial-ref-default">
+              <spatial-ref defaultWkid={this.defaultWkid} disabled={this.locked} value={this.value}/>
+            </label>
+          </calcite-label>
+          {this._getFeatureServices(this.services)}
         </div>
       </Host>
     );
@@ -131,11 +128,6 @@ export class SolutionSpatialRef {
   //  Properties (protected)
   //
   //--------------------------------------------------------------------------
-
-  /**
-   * Current text that is being used to filter the list of spatial references.
-   */
-  @State() protected _srSearchText: string;
 
   /**
    * Contains the translations for this component.
@@ -155,9 +147,14 @@ export class SolutionSpatialRef {
   //
   //--------------------------------------------------------------------------
 
-  @Event() featureServiceSpatialReferenceChange: EventEmitter<{ name: string, enabled: boolean }>;
+  @Event() featureServiceSpatialReferenceChange: EventEmitter<IFeatureServiceSpatialReferenceChange>;
 
   @Event() lockedSpatialReferenceChange: EventEmitter<{ locked: boolean }>;
+
+  @Listen("solutionStoreHasChanges", { target: "window" })
+  solutionStoreHasChanges(): void {
+    this.services = state.getStoreInfo("featureServices").map(service => service.name);
+  }
 
   /**
    * Saves changes to the embedded spatial reference value
@@ -165,6 +162,11 @@ export class SolutionSpatialRef {
   @Listen("spatialReferenceChange", { target: "window" })
   spatialReferenceChange(event: CustomEvent): void {
     this.value = event.detail.newValue;
+    state.setStoreInfo("defaultWkid", event.detail.newValue);
+
+    const spatialReferenceInfo = state.getStoreInfo("spatialReferenceInfo");
+    spatialReferenceInfo.spatialReference = event.detail.newValue;
+    state.setStoreInfo("spatialReferenceInfo", spatialReferenceInfo);
   }
 
   //--------------------------------------------------------------------------
@@ -180,9 +182,76 @@ export class SolutionSpatialRef {
   //--------------------------------------------------------------------------
 
   /**
+   * Create a switch control for each of the services
+   *
+   * @param services List of feature services
+   * @returns a node to control each feature service
+   */
+  private _getFeatureServices(services: string[]): VNode {
+    // verify they are in state
+    const spatialReferenceInfo = state.getStoreInfo("spatialReferenceInfo");
+    const _services = services.filter(serviceName => {
+      return Object.keys(spatialReferenceInfo.services).some(srefServiceName => srefServiceName === serviceName)
+    });
+    return _services.length > 0 ? (
+      <div>
+        <label class="spatial-ref-item-title">{this._translations.featureServicesHeading}</label>
+          <ul class="spatial-ref-services-list">
+            {_services.map(name => (
+              <li class="spatial-ref-services-list-item">
+                <label class="switch-label">
+                  <calcite-switch
+                    checked={spatialReferenceInfo.services[name]}
+                    class="spatial-ref-item-switch"
+                    disabled={this.locked}
+                    onCalciteSwitchChange={(event) => this._updateEnabledServices(event, name)}
+                    scale="m"
+                  />{name}
+                </label>
+              </li>
+            ))}
+        </ul>
+      </div>
+    ) : (null);
+  }
+
+  /**
+   * Enable spatial reference variable for all feature services.
+   *
+   * @param services list of service names
+   */
+  private _setFeatureServiceDefaults(
+    services: string[]
+  ): void {
+    // switch all spatial-ref-item-switch
+    const fsNodes = nodeListToArray(this.el.getElementsByClassName("spatial-ref-item-switch"));
+    fsNodes.forEach((node: any) => node.checked = true);
+    services.forEach(name => this._updateEnabledServices({detail: { switched: true }}, name));
+  }
+
+  /**
+   * Updates the enabled/disabled state of the service in spatialReferenceInfo.
+   */
+  private _updateEnabledServices(event, name): void {
+    const spatialReferenceInfo = state.getStoreInfo("spatialReferenceInfo");
+    const enabled = event.detail?.switched !== undefined // internal event
+      ? event.detail.switched
+      : event.target?.checked !== undefined // calcite event
+        ? event.target.checked
+        : true;
+    spatialReferenceInfo.services[name] = enabled;
+    state.setStoreInfo("spatialReferenceInfo", spatialReferenceInfo);
+
+    this.featureServiceSpatialReferenceChange.emit({
+      name,
+      enabled
+    });
+  }
+
+  /**
    * Toggles the ability to set the default spatial reference.
    */
-  protected _updateLocked(event: any): void {
+  private _updateLocked(event): void {
     this.locked = !event.target.checked;
     this._updateStore();
     if (!this.loaded) {
@@ -197,71 +266,13 @@ export class SolutionSpatialRef {
   };
 
   /**
-   * Enable spatial reference variable for all feature services.
-   *
-   * @param services list of service names
-   */
-  protected _setFeatureServiceDefaults(
-    services: string[]
-  ): void {
-    // switch all spatial-ref-item-switch
-    const fsNodes = nodeListToArray(this.el.getElementsByClassName("spatial-ref-item-switch"));
-    fsNodes.forEach((node: any) => node.checked = true);
-    services.forEach(name => this._updateEnabledServices({ detail: { switched: true } }, name));
-  }
-
-  /**
-   * Create a switch control for each of the services
-   *
-   * @param services List of feature services
-   * @returns a node to control each feature service
-   */
-  protected _getFeatureServices(services: string[]): VNode {
-    // verify they are in state
-    const spatialReferenceInfo = state.getStoreInfo("spatialReferenceInfo");
-    const _services = services.filter(s => {
-      return Object.keys(spatialReferenceInfo.services).some(stateService => stateService === s)
-    });
-    return _services && _services.length > 0 ? (
-      <div>
-        <label class="spatial-ref-item-title">{this._translations.featureServicesHeading}</label>
-        {_services.map(name => (
-          <label class="switch-label">
-            <calcite-switch
-              checked={spatialReferenceInfo.services[name]}
-              class="spatial-ref-item-switch"
-              disabled={this.locked}
-              onCalciteSwitchChange={(event) => this._updateEnabledServices(event, name)}
-              scale="m"
-            />{name}
-          </label>
-        ))}
-      </div>
-    ) : (null);
-  }
-
-  /**
    * Updates the enabled and spatialReference prop in spatialReferenceInfo.
    */
-  protected _updateStore(): void {
+  private _updateStore(): void {
     const spatialReferenceInfo = state.getStoreInfo("spatialReferenceInfo");
     spatialReferenceInfo.enabled = !this.locked;
     spatialReferenceInfo.spatialReference = this.value;
     state.setStoreInfo("spatialReferenceInfo", spatialReferenceInfo);
-  }
-
-  /**
-   * Updates the enabled/disabled state of the service in spatialReferenceInfo.
-   */
-  protected _updateEnabledServices(event: any, name: string): void {
-    const spatialReferenceInfo = state.getStoreInfo("spatialReferenceInfo");
-    spatialReferenceInfo.services[name] = event.target.checked;
-    state.setStoreInfo("spatialReferenceInfo", spatialReferenceInfo);
-
-    this.featureServiceSpatialReferenceChange.emit({
-      name,
-      enabled: event.target.checked
-    });
   }
 
   /**
