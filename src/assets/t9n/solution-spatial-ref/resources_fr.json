@@ -1,6 +1,6 @@
 {
     "paramDescription": "Exposez le paramètre Spatial Reference et autorisez les utilisateurs à modifier la référence spatiale des couches lors du déploiement de la solution.",
     "specifyParam": "Paramètre de référence spatiale",
-    "spatialReferencePlaceholder": "Référence spatiale par défaut",
-    "spatialReferenceInfo": "Services de fonctionnalités"
+    "spatialReferenceInfo": "Référence spatiale par défaut",
+    "featureServicesHeading": "Services de fonctionnalités"
 }
