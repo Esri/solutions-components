@@ -1,6 +1,5 @@
 /* eslint-disable import/first */
 require('dotenv').config();
-
 const childProcess = require("child_process");
 const githubRelease = require("gh-release");
 const pify = require("pify");
