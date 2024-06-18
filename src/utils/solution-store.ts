@@ -53,11 +53,12 @@ import {
 //   * solutionItemId: [string] id of the current solution
 //   * defaultWkid: [any] value of the solution's `params.wkid.default` data property, which may be undefined
 //   * solutionData: [ISolutionItemData] the solution's data, which is modified in-place
-//   * featureServices: [array] a list of Feature service enablement status for SR configuration
+//   * featureServices: [array] a list of Feature services that use a spatial reference var
 //   * spatialReferenceInfo: [object] the current spatial reference (if enabled) and the services that use it
 //       * enabled: [boolean] use the spatial reference
-//       * services: [object] services using this spatial reference organized by the service name
-//       * spatialReference: [object] the spatial reference display
+//       * services: [object] for each service in featureServices by service name, a switch indicating if the
+//           custom spatial reference parameter is enabled/disabled
+//       * spatialReference: [object] the custom spatial reference wkid
 //
 // Store singleton method:
 //   * Store: Creates singleton instance when accessed; default export from module.
@@ -165,8 +166,10 @@ class SolutionStore
   public getStoreInfo(
     propName: string
   ): any {
-    const valueSnippet = JSON.stringify(this._store.get(propName)).substring(0, Math.min(50, JSON.stringify(this._store.get(propName)).length));//???
-    console.log("GET StoreInfo " + propName + ": " + valueSnippet);//???
+    const valueSnippet = this._store.get(propName);//???).substring(0, Math.min(50, JSON.stringify(this._store.get(propName)).length);//???
+    if (propName === "spatialReferenceInfo" || propName === "featureServices") { console.log("GET StoreInfo " + propName + ": " + JSON.stringify(valueSnippet, null, 2)) } //???
+    else { console.log("GET StoreInfo " + propName + ": " + JSON.stringify(valueSnippet.templates.map(template => { return {  //???
+                name: template.item.name, title: template.item.title, type: template.item.type }; } ), null, 2 ) ); } //???
     return this._store.get(propName);
   }
 
@@ -182,7 +185,6 @@ class SolutionStore
     solutionItemId: string,
     authentication: UserSession
   ): Promise<void> {
-    console.log("loadSolution " + solutionItemId);//???
     this._authentication = authentication;
 
     const solutionData = await getItemDataAsJson(solutionItemId, authentication);
@@ -305,8 +307,9 @@ class SolutionStore
     propName: string,
     value: any
   ): void {
-    const valueSnippet = JSON.stringify(value).substring(0, Math.min(50, JSON.stringify(value).length));//???
-    console.log("SET StoreInfo " + propName + ": " + valueSnippet);//???
+    if (propName === "spatialReferenceInfo" || propName === "featureServices") { console.log("SET StoreInfo " + propName + ": " + JSON.stringify(value, null, 2)) } //???
+      else { console.log("SET StoreInfo " + propName + ": " + JSON.stringify(value.templates.map(template => { return {  //???
+                  name: template.item.name, title: template.item.title, type: template.item.type }; } ), null, 2 ) ); } //???
     this._store.set(propName, value);
     this._flagStoreHasChanges(true);
 }
@@ -386,7 +389,7 @@ class SolutionStore
         cancelable: false,
         composed: true
       }));
-    //}
+    //???}
 
     this._hasChanges = flagHasChanges;
   }
@@ -405,7 +408,9 @@ class SolutionStore
   ): IItemTemplate[] {
     return templates.reduce((prev, cur) => {
       if (cur.type === "Feature Service" && cur.item.typeKeywords.indexOf("View Service") < 0) {
+        console.log("customizable fs:", cur.title);//???
         prev.push(cur);
+      } else { console.log("non-customizable fs:", cur.title, cur.type, cur.item.typeKeywords);//???
       }
       return prev;
     }, []);

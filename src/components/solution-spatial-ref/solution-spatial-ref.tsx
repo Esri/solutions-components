@@ -155,7 +155,6 @@ export class SolutionSpatialRef {
   solutionStoreHasChanges(): void {
     console.log("SolutionSpatialRef: solutionStoreHasChanges event received");//???
     this.services = state.getStoreInfo("featureServices").map(service => service.name);
-    console.log("SolutionSpatialRef: services:", this.services);//???
   }
 
   /**
@@ -165,7 +164,9 @@ export class SolutionSpatialRef {
   spatialReferenceChange(event: CustomEvent): void {
     console.log("SolutionSpatialRef: spatialReferenceChange event received");//???
     this.value = event.detail.newValue;
-    console.log("SolutionSpatialRef: value:", this.value);//???
+    const spatialReferenceInfo = state.getStoreInfo("spatialReferenceInfo");
+    spatialReferenceInfo.spatialReference = event.detail.newValue;
+    state.setStoreInfo("spatialReferenceInfo", spatialReferenceInfo);
   }
 
   //--------------------------------------------------------------------------
@@ -188,12 +189,10 @@ export class SolutionSpatialRef {
    */
   private _getFeatureServices(services: string[]): VNode {
     // verify they are in state
-    console.log("All Services:", services);//???
     const spatialReferenceInfo = state.getStoreInfo("spatialReferenceInfo");
     const _services = services.filter(serviceName => {
       return Object.keys(spatialReferenceInfo.services).some(srefServiceName => srefServiceName === serviceName)
     });
-    console.log("Filtered services:", _services);//???
     return _services.length > 0 ? (
       <div>
         <label class="spatial-ref-item-title">{this._translations.featureServicesHeading}</label>
@@ -225,7 +224,6 @@ export class SolutionSpatialRef {
     services: string[]
   ): void {
     // switch all spatial-ref-item-switch
-    console.log("Setting defaults for feature services:", services);//???
     const fsNodes = nodeListToArray(this.el.getElementsByClassName("spatial-ref-item-switch"));
     fsNodes.forEach((node: any) => node.checked = true);
     services.forEach(name => this._updateEnabledServices({detail: { switched: true }}, name));
