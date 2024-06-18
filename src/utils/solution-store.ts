@@ -166,11 +166,6 @@ class SolutionStore
   public getStoreInfo(
     propName: string
   ): any {
-    const value = this._store.get(propName);//???).substring(0, Math.min(50, JSON.stringify(this._store.get(propName)).length);//???
-    if (propName === "spatialReferenceInfo" || propName === "featureServices") { console.log("GET StoreInfo " + propName + ": " + JSON.stringify(value, null, 2)) } //???
-    else if (propName === "defaultWkid") { console.log("SET StoreInfo " + propName + ": ", value) } //???
-    else { console.log("GET StoreInfo " + propName + ": " + JSON.stringify(value.templates.map(template => { return {  //???
-      name: template.item.name, title: template.item.title, type: template.item.type }; } ), null, 2 ) ); } //???
     return this._store.get(propName);
   }
 
@@ -308,10 +303,6 @@ class SolutionStore
     propName: string,
     value: any
   ): void {
-    if (propName === "spatialReferenceInfo" || propName === "featureServices") { console.log("SET StoreInfo " + propName + ": " + JSON.stringify(value, null, 2)) } //???
-    else if (propName === "defaultWkid") { console.log("SET StoreInfo " + propName + ": ", value) } //???
-    else { console.log("GET StoreInfo " + propName + ": " + JSON.stringify(value.templates.map(template => { return {  //???
-      name: template.item.name, title: template.item.title, type: template.item.type }; } ), null, 2 ) ); } //???
     this._store.set(propName, value);
     this._flagStoreHasChanges(true);
 }
@@ -384,14 +375,12 @@ class SolutionStore
    */
   protected _flagStoreHasChanges(flagHasChanges: boolean): void {
     // Event for notifying if the store has changes or not
-    //???if (this._hasChanges !== flagHasChanges) {
-      window.dispatchEvent(new CustomEvent("solutionStoreHasChanges", {
-        detail: flagHasChanges,
-        bubbles: true,
-        cancelable: false,
-        composed: true
-      }));
-    //???}
+    window.dispatchEvent(new CustomEvent("solutionStoreHasChanges", {
+      detail: flagHasChanges,
+      bubbles: true,
+      cancelable: false,
+      composed: true
+    }));
 
     this._hasChanges = flagHasChanges;
   }
@@ -410,9 +399,7 @@ class SolutionStore
   ): IItemTemplate[] {
     return templates.reduce((prev, cur) => {
       if (cur.type === "Feature Service" && cur.item.typeKeywords.indexOf("View Service") < 0) {
-        console.log("customizable fs:", cur.title);//???
         prev.push(cur);
-      } else { console.log("non-customizable fs:", cur.title, cur.type, cur.item.typeKeywords);//???
       }
       return prev;
     }, []);

@@ -111,14 +111,14 @@ export class SolutionSpatialRef {
           {this._translations.specifyParam}
         </label>
         <div class="spatial-ref-component" id="spatialRefDefn">
-            <calcite-label>
-              {this._translations.spatialReferenceInfo}
-              <label class="spatial-ref-default">
-                <spatial-ref defaultWkid={this.defaultWkid} disabled={this.locked} value={this.value}/>
-              </label>
-            </calcite-label>
-            {this._getFeatureServices(this.services)}
-          </div>
+          <calcite-label>
+            {this._translations.spatialReferenceInfo}
+            <label class="spatial-ref-default">
+              <spatial-ref defaultWkid={this.defaultWkid} disabled={this.locked} value={this.value}/>
+            </label>
+          </calcite-label>
+          {this._getFeatureServices(this.services)}
+        </div>
       </Host>
     );
   }
@@ -153,7 +153,6 @@ export class SolutionSpatialRef {
 
   @Listen("solutionStoreHasChanges", { target: "window" })
   solutionStoreHasChanges(): void {
-    console.log("SolutionSpatialRef: solutionStoreHasChanges event received");//???
     this.services = state.getStoreInfo("featureServices").map(service => service.name);
   }
 
@@ -162,7 +161,6 @@ export class SolutionSpatialRef {
    */
   @Listen("spatialReferenceChange", { target: "window" })
   spatialReferenceChange(event: CustomEvent): void {
-    console.log("SolutionSpatialRef: spatialReferenceChange event received");//???
     this.value = event.detail.newValue;
     state.setStoreInfo("defaultWkid", event.detail.newValue);
 
