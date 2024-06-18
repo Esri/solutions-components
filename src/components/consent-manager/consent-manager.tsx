@@ -113,6 +113,7 @@ export class ConsentManager {
    * Initialize and return the telemetry instance if consent has been granted
    */
   @Method()
+  // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
   async getInstance(): Promise<Telemetry | undefined> {
     if (localStorage.getItem(this.firstUseVar) === "true") {
       await this._init();
