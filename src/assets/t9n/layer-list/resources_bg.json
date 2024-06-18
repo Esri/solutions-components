@@ -1,4 +1,4 @@
 {
   "error": "Грешка",
-  "noLayerToDisplayErrorMsg": "й_Web map does not contain any editable layers________________________й."
+  "noLayerToDisplayErrorMsg": "Web map does not contain any editable layers."
 }
