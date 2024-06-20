@@ -1,6 +1,6 @@
 {
   "name": "@esri/solutions-components",
-  "version": "0.8.39",
+  "version": "0.8.60",
   "description": "Web Components for Esri's Solutions Applications",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -23,7 +23,7 @@
     "lint:ts": "eslint --ext .ts,.tsx src/components src/utils",
     "lint:ts:fix": "eslint --ext .ts,.tsx --fix src/components src/utils",
     "lint:ts:prettier": "prettier --write \"**/*.ts?(x)\"",
-    "release:publish": "npm publish --access public && ts-node ./support/releaseToGitHub.ts",
+    "release:publish": "npm publish --access public && node ./support/releaseToGitHub.mjs",
     "test": "stencil test --spec --e2e --detectOpenHandles --coverage --collectCoverageFrom=src/utils/*.ts",
     "test:clean": "npm run clean:src && npm run lint:ts:fix && stencil test --spec --e2e --detectOpenHandles",
     "test.watch": "stencil test --spec --e2e --watchAll",
@@ -69,14 +69,13 @@
     "jest-cli": "^29.7.0",
     "mkdirp": "3.0.1",
     "ncp": "^2.0.0",
-    "pify": "^6.1.0",
     "prettier": "3.3.2",
     "puppeteer": "^22.10.1",
     "react": "^18.3.1",
     "rimraf": "^5.0.7",
     "tailwindcss": "3.4.4",
-    "ts-node": "^10.9.2",
     "tslib": "^2.6.3",
+    "tsx": "^4.15.6",
     "typescript": "^5.4.5"
   },
   "dependencies": {

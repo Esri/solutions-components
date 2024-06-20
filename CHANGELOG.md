@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.8.60] - June 20th 2024
+Switched to dynamic imports
+
 ## [0.8.39] - June 18th 2024
 Error occured during publish
 
@@ -672,4 +675,5 @@ Recover from test releases
 [0.8.37]: https://github.com/Esri/solution.js/compare/v0.8.36...v0.8.37 "v0.8.37"
 [0.8.38]: https://github.com/Esri/solution.js/compare/v0.8.37...v0.8.38 "v0.8.38"
 [0.8.39]: https://github.com/Esri/solution.js/compare/v0.8.38...v0.8.39 "v0.8.39"
-[Unreleased]: https://github.com/Esri/solution.js/compare/v0.8.39...HEAD "Unreleased Changes"
+[0.8.60]: https://github.com/Esri/solution.js/compare/v0.8.39...v0.8.60 "v0.8.60"
+[Unreleased]: https://github.com/Esri/solution.js/compare/v0.8.60...HEAD "Unreleased Changes"
