@@ -493,7 +493,6 @@ export class LayerTable {
     this._initLayerExpressions();
     this._initToolInfos();
     this._updateToolbar();
-    console.log("mapInfoWatchHandler")
     await this._sortTable()
   }
 
@@ -1676,6 +1675,9 @@ export class LayerTable {
    * Reset basic table props
    */
   protected async _resetTable(): Promise<void> {
+    console.log("_resetTable")
+    console.log(this._table)
+    console.log(this._layer)
     this._clearSelection();
     this._allIds = await queryAllIds(this._layer);
 
@@ -1690,7 +1692,8 @@ export class LayerTable {
     await this._initLayerRefresh();
     this._checkEditEnabled();
     this._table.editingEnabled = this._editEnabled && this.enableInlineEdit;
-
+    await this._table.when();
+    console.log("after table when")
     await this.reactiveUtils.once(
       () => this._table.state === "loaded")
       .then(async () => {
@@ -1810,6 +1813,11 @@ export class LayerTable {
    * Sort the table with the configured field and the sort order
    */
   protected async _sortTable(): Promise<void> {
+    console.log("_sortTable");
+    console.log(this._table);
+    console.log(this._layer);
+    console.log(this.mapInfo?.layerOptions?.layers);
+    console.log(this.mapInfo?.layerOptions?.layers);
     //By default sort the table using objectIdField and in descending order
     let sortField = this._layer?.objectIdField;
     let sortOrder: "asc" | "desc" = 'desc';
@@ -1828,6 +1836,7 @@ export class LayerTable {
       }
     }
     if (this._table && this._layer) {
+      console.log("has layer and has table")
       await this._table.when();
       await this._layer.when(() => {
         console.log("sort on this._layer.when")
