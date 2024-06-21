@@ -1814,6 +1814,10 @@ export class LayerTable {
    */
   protected async _sortTable(): Promise<void> {
     console.log("_sortTable");
+    console.log(this._table);
+    console.log(this._layer);
+    console.log(this.mapInfo?.layerOptions?.layers);
+    console.log(this.mapInfo?.layerOptions?.layers);
     //By default sort the table using objectIdField and in descending order
     let sortField = this._layer?.objectIdField;
     let sortOrder: "asc" | "desc" = 'desc';
@@ -1832,6 +1836,7 @@ export class LayerTable {
       }
     }
     if (this._table && this._layer) {
+      console.log("has layer and has table")
       await this._table.when();
       await this._layer.when(() => {
         console.log("sort on this._layer.when")
