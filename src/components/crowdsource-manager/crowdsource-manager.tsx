@@ -358,15 +358,6 @@ export class CrowdsourceManager {
     this._expandPopup = this.hideMapOnLoad && !this._isMobile;
   }
 
-  /**
-   * When true the map will be hidden on load
-   */
-  @Watch("mapInfos")
-  mapInfosWatchHandler(): void {
-    console.log("mapInfosWatchHandler")
-    console.log(this.mapInfos)
-  }
-
   //--------------------------------------------------------------------------
   //
   //  Methods (public)
