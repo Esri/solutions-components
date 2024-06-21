@@ -1658,10 +1658,15 @@ export class LayerTable {
    * Reset the tables column templates when we get new column config
    */
   protected _resetColumnTemplates(): void {
+    console.log("_resetColumnTemplates")
     const columnTemplates = this._getColumnTemplates(this._layer?.id, this._layer?.fields);
     const hasChange = columnTemplates?.some((ct, i) => {
       return JSON.stringify(this._table?.tableTemplate.columnTemplates[i]) !== JSON.stringify(ct)
     });
+    console.log(this._table)
+    console.log(columnTemplates)
+    console.log(hasChange)
+    console.log(!this._columnsInfo)
     if (this._table && columnTemplates && (hasChange || !this._columnsInfo)) {
       this._table.tableTemplate = new this.TableTemplate({
         columnTemplates
