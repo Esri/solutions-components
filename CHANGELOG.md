@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.8.62] - June 24th 2024
+set rounding limits to max values and add extra check for table load
+
 ## [0.8.61] - June 21st 2024
 Debug logs for table not sorting on load issue and failure to load columns in more dropdown issue
 Also awaits table.when just before checking if table is loaded
@@ -681,4 +684,5 @@ Recover from test releases
 [0.8.39]: https://github.com/Esri/solution.js/compare/v0.8.38...v0.8.39 "v0.8.39"
 [0.8.60]: https://github.com/Esri/solution.js/compare/v0.8.39...v0.8.60 "v0.8.60"
 [0.8.61]: https://github.com/Esri/solution.js/compare/v0.8.60...v0.8.61 "v0.8.61"
-[Unreleased]: https://github.com/Esri/solution.js/compare/v0.8.61...HEAD "Unreleased Changes"
+[0.8.62]: https://github.com/Esri/solution.js/compare/v0.8.61...v0.8.62 "v0.8.62"
+[Unreleased]: https://github.com/Esri/solution.js/compare/v0.8.62...HEAD "Unreleased Changes"
