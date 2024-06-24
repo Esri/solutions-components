@@ -1696,11 +1696,6 @@ export class LayerTable {
     this._checkEditEnabled();
     this._table.editingEnabled = this._editEnabled && this.enableInlineEdit;
     await this._table.when();
-    await this.reactiveUtils.once(
-      () => this._table.state === "loaded")
-      .then(async () => {
-        await this.finishLoading();
-      });
 
     // This is a workaround.
     // In some cases the first time the app is loaded this._table.state === "loaded" is not being hit.
@@ -1711,6 +1706,12 @@ export class LayerTable {
         void this.finishLoading();
       }
     }, 1000);
+
+    await this.reactiveUtils.once(
+      () => this._table.state === "loaded")
+      .then(async () => {
+        await this.finishLoading();
+      });
   }
 
   /**
