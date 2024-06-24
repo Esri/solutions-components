@@ -308,6 +308,11 @@ export class LayerTable {
   protected _layerExpressions: LayerExpression[];
 
   /**
+   * boolean: When true the table has been successfully loaded
+   */
+  protected _loaded = false;
+
+  /**
    * IHandle: The map click handle
    */
   protected _mapClickHandle: IHandle;
@@ -1658,15 +1663,10 @@ export class LayerTable {
    * Reset the tables column templates when we get new column config
    */
   protected _resetColumnTemplates(): void {
-    console.log("_resetColumnTemplates")
     const columnTemplates = this._getColumnTemplates(this._layer?.id, this._layer?.fields);
     const hasChange = columnTemplates?.some((ct, i) => {
       return JSON.stringify(this._table?.tableTemplate.columnTemplates[i]) !== JSON.stringify(ct)
     });
-    console.log(this._table)
-    console.log(columnTemplates)
-    console.log(hasChange)
-    console.log(!this._columnsInfo)
     if (this._table && columnTemplates && (hasChange || !this._columnsInfo)) {
       this._table.tableTemplate = new this.TableTemplate({
         columnTemplates
@@ -1680,9 +1680,7 @@ export class LayerTable {
    * Reset basic table props
    */
   protected async _resetTable(): Promise<void> {
-    console.log("_resetTable")
-    console.log(this._table)
-    console.log(this._layer)
+    this._loaded = false;
     this._clearSelection();
     this._allIds = await queryAllIds(this._layer);
 
@@ -1698,20 +1696,40 @@ export class LayerTable {
     this._checkEditEnabled();
     this._table.editingEnabled = this._editEnabled && this.enableInlineEdit;
     await this._table.when();
-    console.log("after table when")
     await this.reactiveUtils.once(
       () => this._table.state === "loaded")
       .then(async () => {
-        console.log("this._table.state === 'loaded'")
-        this._table.highlightIds.removeAll();
-        this._table.clearSelectionFilter();
-        this._resetColumnTemplates();
-        this._showOnlySelected = false;
-        await this._handleDefaults();
-        await this._sortTable()
-        this._initToolInfos();
-        this._updateToolbar();
+        await this.finishLoading();
       });
+
+    // This is a workaround.
+    // In some cases the first time the app is loaded this._table.state === "loaded" is not being hit.
+    // When this issue occurs we will wait for 1 second and attempt to finish the loading process
+    setTimeout(() => {
+      if (!this._loaded) {
+        console.log(`table.state: ${this._table.state}`)
+        void this.finishLoading();
+      }
+    }, 1000);
+  }
+
+  /**
+   * Finish the table loading tasks
+   */
+  protected async finishLoading(): Promise<void> {
+    try {
+      this._loaded = true;
+      this._table.highlightIds.removeAll();
+      this._table.clearSelectionFilter();
+      this._resetColumnTemplates();
+      this._showOnlySelected = false;
+      await this._handleDefaults();
+      await this._sortTable()
+      this._initToolInfos();
+      this._updateToolbar();
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   /**
@@ -1818,11 +1836,6 @@ export class LayerTable {
    * Sort the table with the configured field and the sort order
    */
   protected async _sortTable(): Promise<void> {
-    console.log("_sortTable");
-    console.log(this._table);
-    console.log(this._layer);
-    console.log(this.mapInfo?.layerOptions?.layers);
-    console.log(this.mapInfo?.layerOptions?.layers);
     //By default sort the table using objectIdField and in descending order
     let sortField = this._layer?.objectIdField;
     let sortOrder: "asc" | "desc" = 'desc';
@@ -1841,10 +1854,8 @@ export class LayerTable {
       }
     }
     if (this._table && this._layer) {
-      console.log("has layer and has table")
       await this._table.when();
       await this._layer.when(() => {
-        console.log("sort on this._layer.when")
         this._table.sortColumn(sortField, sortOrder);
       });
     }
