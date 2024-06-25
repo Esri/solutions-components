@@ -859,9 +859,8 @@ export function _prepareAttributeValue(
           const numberFormatIntlOptions = intl.convertNumberFormatToIntlOptions(attributeFormat)
           value = intl.formatNumber(value, numberFormatIntlOptions);
         } else {
-          value = intl.formatNumber(value, {
-            maximumFractionDigits: 100,
-            maximumSignificantDigits: 21
+          value = intl.formatNumber(value?.toString(), {
+            maximumFractionDigits: 100
           });
         }
         break;
