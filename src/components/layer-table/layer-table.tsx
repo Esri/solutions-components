@@ -348,6 +348,11 @@ export class LayerTable {
   protected _selectAllElement: HTMLCalciteCheckboxElement;
 
   /**
+   * boolean: When true the current selection was done via the map and we will ignore shift->Select
+   */
+  protected _selectionFromMap = false;
+
+  /**
    * HTMLInstantAppsSocialShareElement: Element to support app sharing to social media
    */
   protected _shareNode: HTMLInstantAppsSocialShareElement;
@@ -1576,7 +1581,7 @@ export class LayerTable {
   protected async _handleOnChange(evt: any): Promise<void> {
     const ids = [...this._table.highlightIds.toArray()];
     if (!this._skipOnChange) {
-      if (!this._ctrlIsPressed && !this._shiftIsPressed) {
+      if ((!this._ctrlIsPressed && !this._shiftIsPressed) || (this._selectionFromMap && this._shiftIsPressed)) {
         if (this.selectedIds.length > 0) {
           this._skipOnChange = true;
           // only readd in specific case where we have multiple selected and then click one of the currently selected
@@ -1595,7 +1600,7 @@ export class LayerTable {
         }
       } else if (this._ctrlIsPressed) {
         this.selectedIds = ids.reverse();
-      } else if (this._shiftIsPressed) {
+      } else if (this._shiftIsPressed && ids?.length > 0) {
         this._skipOnChange = true;
         this._previousCurrentId = this._currentId;
         this._currentId = [...ids].reverse()[0];
@@ -1633,7 +1638,7 @@ export class LayerTable {
           }, []);
 
           const selectedIds = _start < _end ? idsInRange.reverse() : idsInRange;
-          this.selectedIds = [...new Set([...selectedIds ,...this.selectedIds])]
+          this.selectedIds = [...new Set([...selectedIds, ...this.selectedIds])]
 
           this._table.highlightIds.addMany(this.selectedIds.filter(i => ids.indexOf(i) < 0));
         }
@@ -1643,6 +1648,7 @@ export class LayerTable {
       this._skipOnChange = false;
     }
     this._currentId = [...this._table.highlightIds.toArray()].reverse()[0];
+    this._selectionFromMap = false;
   }
 
   /**
@@ -2020,6 +2026,7 @@ export class LayerTable {
         const id = (result.graphic as __esri.Graphic).getObjectId();
         const index = this._table.highlightIds.indexOf(id);
         if (index < 0) {
+          this._selectionFromMap = true;
           this._table.highlightIds.add(id);
         }
       });
