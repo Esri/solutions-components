@@ -829,11 +829,12 @@ export class MapSelectTools {
     searchConfiguration: ISearchConfiguration,
     view: __esri.MapView
   ): ISearchConfiguration {
-    const INCLUDE_DEFAULT_SOURCES = "includeDefaultSources";
     const sources = searchConfiguration?.sources;
-
     if (sources?.length > 0) {
-      searchConfiguration[INCLUDE_DEFAULT_SOURCES] = false;
+      searchConfiguration = {
+        ...searchConfiguration,
+        includeDefaultSources: false
+      }
 
       sources.forEach((source) => {
         const isLayerSource = source.hasOwnProperty("layer");
