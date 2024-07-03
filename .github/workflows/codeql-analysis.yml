@@ -14,11 +14,6 @@ jobs:
     name: Analyze
     runs-on: ubuntu-latest
 
-    strategy:
-      fail-fast: false
-      matrix:
-        language: [ 'javascript' ]
-
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -32,11 +27,7 @@ jobs:
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3
         with:
-          languages: ${{ matrix.language }}
-
-      # Autobuild attempts to build any compiled languages  (C/C++, C#, or Java).
-      - name: Autobuild
-        uses: github/codeql-action/autobuild@v2
+          languages: javascript
 
       - name: Build
         run: npx stencil build --docs
