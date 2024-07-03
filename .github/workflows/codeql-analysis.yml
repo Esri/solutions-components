@@ -5,9 +5,13 @@ name: "CodeQL"
 on:
   push:
     branches: [ 'fix/codeql', develop, master ]
+    paths-ignore:
+      - 'src/components/json-editor/assets/monaco-editor/**/*.*'
   pull_request:
     # The branches below must be a subset of the branches above
     branches: [ develop ]
+    paths-ignore:
+      - 'src/components/json-editor/assets/monaco-editor/**/*.*'
 
 jobs:
   analyze:
@@ -16,8 +20,6 @@ jobs:
 
     strategy:
       fail-fast: false
-      matrix:
-        language: [ 'javascript' ]
 
     steps:
       - uses: actions/checkout@v4
@@ -32,7 +34,7 @@ jobs:
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3
         with:
-          languages: ${{ matrix.language }}
+          languages: javascript
 
       # Autobuild attempts to build any compiled languages  (C/C++, C#, or Java).
       - name: Autobuild
