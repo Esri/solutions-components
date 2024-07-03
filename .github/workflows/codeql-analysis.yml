@@ -29,7 +29,8 @@ jobs:
 
     steps:
     - uses: actions/setup-node@v4
-      node-version: 18
+      with:
+        node-version: 18
 
     - name: Checkout repository
       uses: actions/checkout@v3
