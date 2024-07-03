@@ -1,10 +1,5 @@
 name: "CodeQL"
 
-paths:
-  - src
-paths-ignore:
-  - 'src/components/json-editor/assets/monaco-editor/**/*.*'
-
 on:
   push:
     branches: [ develop, master ]
