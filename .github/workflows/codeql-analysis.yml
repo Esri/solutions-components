@@ -2,6 +2,8 @@ name: "CodeQL"
 
 paths:
   - src
+paths-ignore:
+  - 'src/components/json-editor/assets/monaco-editor/**/*.*'
 
 on:
   push:
@@ -9,8 +11,6 @@ on:
   pull_request:
     # The branches below must be a subset of the branches above
     branches: [ develop ]
-    paths-ignore:
-      - 'src/components/json-editor/assets/monaco-editor/**/*.*'
   schedule:
     - cron: '30 15 * * 1'
 
@@ -28,12 +28,10 @@ jobs:
         # https://docs.github.com/en/free-pro-team@latest/github/finding-security-vulnerabilities-and-errors-in-your-code/configuring-code-scanning#changing-the-languages-that-are-analyzed
 
     steps:
+    - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
       with:
         node-version: 18
-
-    - name: Checkout repository
-      uses: actions/checkout@v3
 
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
