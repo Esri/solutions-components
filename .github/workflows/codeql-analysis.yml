@@ -4,7 +4,7 @@ name: "CodeQL"
 
 on:
   push:
-    branches: [ 'fix/codeql', develop, master ]
+    branches: [ develop, master ]
     paths-ignore:
       - 'src/components/json-editor/assets/monaco-editor/**/*.*'
   pull_request:
