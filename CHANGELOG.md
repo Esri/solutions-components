@@ -6,6 +6,12 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.8.66] - July 8th 2024
+Publish issue
+
+## [0.8.65] - July 8th 2024
+Reporter comments issue
+
 ## [0.8.64] - June 27th 2024
 change how includeDefaultSources is set for Public Notification
 
@@ -693,4 +699,6 @@ Recover from test releases
 [0.8.62]: https://github.com/Esri/solution.js/compare/v0.8.61...v0.8.62 "v0.8.62"
 [0.8.63]: https://github.com/Esri/solution.js/compare/v0.8.62...v0.8.63 "v0.8.63"
 [0.8.64]: https://github.com/Esri/solution.js/compare/v0.8.63...v0.8.64 "v0.8.64"
-[Unreleased]: https://github.com/Esri/solution.js/compare/v0.8.64...HEAD "Unreleased Changes"
+[0.8.65]: https://github.com/Esri/solution.js/compare/v0.8.64...v0.8.65 "v0.8.65"
+[0.8.66]: https://github.com/Esri/solution.js/compare/v0.8.65...v0.8.66 "v0.8.66"
+[Unreleased]: https://github.com/Esri/solution.js/compare/v0.8.66...HEAD "Unreleased Changes"
