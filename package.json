@@ -88,7 +88,7 @@
     "@esri/hub-initiatives": "^12.4.1",
     "@esri/hub-sites": "^12.6.0",
     "@esri/hub-teams": "^12.4.1",
-    "@esri/instant-apps-components": "1.0.0-beta.231",
+    "@esri/instant-apps-components": "1.0.0-beta.236",
     "@esri/solution-common": "^5.0.9",
     "@pdf-lib/fontkit": "^1.1.1",
     "focus-trap": "7.5.4",
