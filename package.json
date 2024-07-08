@@ -50,7 +50,7 @@
     "@types/jest": "^29.5.12",
     "@types/node": "^20.14.8",
     "@typescript-eslint/eslint-plugin": "^7.13.1",
-    "@typescript-eslint/parser": "^7.13.0",
+    "@typescript-eslint/parser": "^7.16.0",
     "arcgis-js-api": "^4.29.10",
     "autoprefixer": "^10.4.19",
     "babel-jest": "^29.7.0",
