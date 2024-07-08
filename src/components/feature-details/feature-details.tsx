@@ -370,7 +370,7 @@ export class FeatureDetails {
       //Get comments table id from map
       const relatedTableIdFromRelnship = selectedLayer.relationships[0].relatedTableId;
       const allTables = await getAllTables(this.mapView);
-      const relatedTable = allTables.filter((table) => relatedTableIdFromRelnship === (table as __esri.FeatureLayer).layerId);
+      const relatedTable = allTables.filter((table) => selectedLayer.url === (table as __esri.FeatureLayer).url && relatedTableIdFromRelnship === (table as __esri.FeatureLayer).layerId);
       this.relatedTableId = relatedTable?.length > 0 ? relatedTable[0].id : '';
 
       //**Get the related records for the current selected feature**

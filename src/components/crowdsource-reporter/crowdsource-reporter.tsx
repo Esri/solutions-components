@@ -1182,9 +1182,10 @@ export class CrowdsourceReporter {
    * @protected
    */
   protected async getRelatedTable(): Promise<void> {
-    const relatedTableIdFromRelnship = (this._currentFeature.layer as __esri.FeatureLayer).relationships[0].relatedTableId;
+    const selectedLayer = (this._currentFeature.layer as __esri.FeatureLayer);
+    const relatedTableIdFromRelnship = selectedLayer.relationships[0].relatedTableId;
     const allTables = await getAllTables(this.mapView);
-    const relatedTable = allTables.filter((table) => relatedTableIdFromRelnship === (table as __esri.FeatureLayer).layerId);
+    const relatedTable = allTables.filter((table) => selectedLayer.url === (table as __esri.FeatureLayer).url && relatedTableIdFromRelnship === (table as __esri.FeatureLayer).layerId);
     this._relatedTable = (relatedTable[0] as __esri.FeatureLayer);
   }
 
