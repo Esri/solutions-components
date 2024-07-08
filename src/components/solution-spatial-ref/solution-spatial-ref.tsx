@@ -203,7 +203,6 @@ export class SolutionSpatialRef {
     const configurableServices = services.filter(service => {
       return Object.keys(spatialReferenceInfo.services).some(srefServiceId => srefServiceId === service.id)
     });
-    console.log("_renderFeatureServicesList", configurableServices.map(service => service.name));//???
     return configurableServices.length > 0 ? (
       <div>
         <label class="spatial-ref-item-title">{this._translations.featureServicesHeading}</label>
@@ -253,7 +252,6 @@ export class SolutionSpatialRef {
     spatialReferenceInfo.services[id] = enabled;
     state.setStoreInfo("spatialReferenceInfo", spatialReferenceInfo);
 
-    console.log("_updateEnabledServices", id, name, enabled);//???
     this.featureServiceSpatialReferenceChange.emit({
       id,
       name,
