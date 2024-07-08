@@ -419,12 +419,12 @@ class SolutionStore
   protected _getFeatureServices(
     templates: IItemTemplate[]
   ): IFeatureServiceEnabledStatus[] {
-    const customizeableFeatureServices = this._getCustomizableFeatureServices(templates);
-    return customizeableFeatureServices.map(
+    const customizableFeatureServices = this._getCustomizableFeatureServices(templates);
+    return customizableFeatureServices.map(
       (fs) => {
         const name: string = fs.item.title || fs.item.name;
         const wkid = getProp(fs, "properties.service.spatialReference.wkid");
-        return { name, enabled: wkid.toString().startsWith("{{params.wkid||") } as IFeatureServiceEnabledStatus;
+        return { id: fs.itemId, name, enabled: wkid.toString().startsWith("{{params.wkid||") } as IFeatureServiceEnabledStatus;
       }
     );
   }
@@ -713,15 +713,15 @@ class SolutionStore
     templates: IItemTemplateEdit[]
   ): string | number {
     const customizingPrefix = "{{params.wkid||";
-    const customizeableFeatureServices = this._getCustomizableFeatureServices(templates);
+    const customizableFeatureServices = this._getCustomizableFeatureServices(templates);
 
     if (spatialReferenceInfo.enabled) {
       // Enable or disable this feature in each service
-      customizeableFeatureServices.forEach(
+      customizableFeatureServices.forEach(
         (fs) => {
-          const name: string = fs.item.title || fs.item.name;
+          const id: string = fs.itemId;
           let wkid: any;
-          if (spatialReferenceInfo.services[name] ) {  // enabled
+          if (spatialReferenceInfo.services[id] ) {  // enabled
             wkid = `{{params.wkid||${spatialReferenceInfo.spatialReference}}}`;
             setCreateProp(fs, "properties.service.spatialReference.wkid", wkid);
 
@@ -739,7 +739,7 @@ class SolutionStore
 
     } else {
       // Disable this feature in each service
-      customizeableFeatureServices.forEach(
+      customizableFeatureServices.forEach(
         (fs) => {
           const wkid = getProp(fs, "properties.service.spatialReference.wkid");
           // Remove customizing prefix if present

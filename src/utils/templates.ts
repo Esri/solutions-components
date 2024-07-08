@@ -58,7 +58,7 @@ export function getFeatureServices(
       prev.indexOf(name) < 0
     ) {
       const wkid = getProp(cur, "properties.service.spatialReference.wkid");
-      prev.push({ name, enabled: wkid.toString().startsWith("{{params.wkid||")});
+      prev.push({ id: cur.itemId, name, enabled: wkid.toString().startsWith("{{params.wkid||")});
     }
     return prev;
   }, []);
@@ -299,7 +299,7 @@ export function getSpatialReferenceInfo(
 ): any {
   const defaultServices: any = {};
   services.forEach(service => {
-    defaultServices[service.name] = service.enabled;
+    defaultServices[service.id] = service.enabled;
   });
   const wkid = getProp(data, "params.wkid.default");
   return {
