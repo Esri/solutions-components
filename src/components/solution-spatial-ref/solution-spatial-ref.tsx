@@ -206,20 +206,20 @@ export class SolutionSpatialRef {
     return configurableServices.length > 0 ? (
       <div>
         <label class="spatial-ref-item-title">{this._translations.featureServicesHeading}</label>
-          <ul class="spatial-ref-services-list">
-            {configurableServices.map(configurableService => (
-              <li class="spatial-ref-services-list-item">
-                <label class="switch-label">
-                  <calcite-switch
-                    checked={spatialReferenceInfo.services[configurableService.id]}
-                    class="spatial-ref-item-switch"
-                    disabled={this.locked}
-                    onCalciteSwitchChange={(event) => this._updateEnabledServices(event, configurableService.id, configurableService.name)}
-                    scale="m"
-                  />{configurableService.name}
-                </label>
-              </li>
-            ))}
+        <ul class="spatial-ref-services-list">
+          {configurableServices.map(configurableService => (
+            <li class="spatial-ref-services-list-item">
+              <label class="switch-label">
+                <calcite-switch
+                  checked={spatialReferenceInfo.services[configurableService.id]}
+                  class="spatial-ref-item-switch"
+                  disabled={this.locked}
+                  onCalciteSwitchChange={(event) => this._updateEnabledServices(event, configurableService.id, configurableService.name)}
+                  scale="m"
+                />{configurableService.name}
+              </label>
+            </li>
+          ))}
         </ul>
       </div>
     ) : (null);
