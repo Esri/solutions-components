@@ -29,7 +29,7 @@ Set up:
 npm install
 ```
 
-To interactively transpile components and update the display of src/index.html via http://localhost:3333/src:
+To interactively transpile components and update the display of src/index.html via `http://localhost:3333/src`:
 
 ```bash
 npm start
