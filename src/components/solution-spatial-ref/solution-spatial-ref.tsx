@@ -21,7 +21,17 @@ import state from "../../utils/solution-store";
 import { getLocaleComponentStrings } from '../../utils/locale';
 import { nodeListToArray } from '../../utils/common';
 
+/**
+ * Feature service name and whether the service is enabled for SR configuration
+ */
+interface IFeatureServiceEnabledStatus {
+  id: string;
+  name: string;
+  enabled: boolean;
+}
+
 interface IFeatureServiceSpatialReferenceChange {
+  id: string;
   name: string;
   enabled: boolean;
 }
@@ -76,9 +86,9 @@ export class SolutionSpatialRef {
   }
 
   /**
-  * List of service names the spatial reference should apply to
+  * List of services the spatial reference should apply to
   */
-  @Prop({ mutable: true, reflect: true }) services: string[] = [];
+  @Prop({ mutable: true, reflect: true }) services: IFeatureServiceEnabledStatus[] = [];
 
   /**
    * Contains the public value for this component, which is a wkid or a wkt.
@@ -117,7 +127,7 @@ export class SolutionSpatialRef {
               <spatial-ref defaultWkid={this.defaultWkid} disabled={this.locked} value={this.value}/>
             </label>
           </calcite-label>
-          {this._getFeatureServices(this.services)}
+          {this._renderFeatureServicesList(this.services)}
         </div>
       </Host>
     );
@@ -153,7 +163,7 @@ export class SolutionSpatialRef {
 
   @Listen("solutionStoreHasChanges", { target: "window" })
   solutionStoreHasChanges(): void {
-    this.services = state.getStoreInfo("featureServices").map(service => service.name);
+    this.services = state.getStoreInfo("featureServices");
   }
 
   /**
@@ -187,29 +197,29 @@ export class SolutionSpatialRef {
    * @param services List of feature services
    * @returns a node to control each feature service
    */
-  private _getFeatureServices(services: string[]): VNode {
+  private _renderFeatureServicesList(services: IFeatureServiceEnabledStatus[]): VNode {
     // verify they are in state
     const spatialReferenceInfo = state.getStoreInfo("spatialReferenceInfo");
-    const _services = services.filter(serviceName => {
-      return Object.keys(spatialReferenceInfo.services).some(srefServiceName => srefServiceName === serviceName)
+    const configurableServices = services.filter(service => {
+      return Object.keys(spatialReferenceInfo.services).some(srefServiceId => srefServiceId === service.id)
     });
-    return _services.length > 0 ? (
+    return configurableServices.length > 0 ? (
       <div>
         <label class="spatial-ref-item-title">{this._translations.featureServicesHeading}</label>
-          <ul class="spatial-ref-services-list">
-            {_services.map(name => (
-              <li class="spatial-ref-services-list-item">
-                <label class="switch-label">
-                  <calcite-switch
-                    checked={spatialReferenceInfo.services[name]}
-                    class="spatial-ref-item-switch"
-                    disabled={this.locked}
-                    onCalciteSwitchChange={(event) => this._updateEnabledServices(event, name)}
-                    scale="m"
-                  />{name}
-                </label>
-              </li>
-            ))}
+        <ul class="spatial-ref-services-list">
+          {configurableServices.map(configurableService => (
+            <li class="spatial-ref-services-list-item">
+              <label class="switch-label">
+                <calcite-switch
+                  checked={spatialReferenceInfo.services[configurableService.id]}
+                  class="spatial-ref-item-switch"
+                  disabled={this.locked}
+                  onCalciteSwitchChange={(event) => this._updateEnabledServices(event, configurableService.id, configurableService.name)}
+                  scale="m"
+                />{configurableService.name}
+              </label>
+            </li>
+          ))}
         </ul>
       </div>
     ) : (null);
@@ -221,28 +231,29 @@ export class SolutionSpatialRef {
    * @param services list of service names
    */
   private _setFeatureServiceDefaults(
-    services: string[]
+    services: IFeatureServiceEnabledStatus[]
   ): void {
     // switch all spatial-ref-item-switch
     const fsNodes = nodeListToArray(this.el.getElementsByClassName("spatial-ref-item-switch"));
     fsNodes.forEach((node: any) => node.checked = true);
-    services.forEach(name => this._updateEnabledServices({detail: { switched: true }}, name));
+    services.forEach(service => this._updateEnabledServices({detail: { switched: true }}, service.id, service.name));
   }
 
   /**
    * Updates the enabled/disabled state of the service in spatialReferenceInfo.
    */
-  private _updateEnabledServices(event, name): void {
+  private _updateEnabledServices(event, id, name): void {
     const spatialReferenceInfo = state.getStoreInfo("spatialReferenceInfo");
     const enabled = event.detail?.switched !== undefined // internal event
       ? event.detail.switched
       : event.target?.checked !== undefined // calcite event
         ? event.target.checked
         : true;
-    spatialReferenceInfo.services[name] = enabled;
+    spatialReferenceInfo.services[id] = enabled;
     state.setStoreInfo("spatialReferenceInfo", spatialReferenceInfo);
 
     this.featureServiceSpatialReferenceChange.emit({
+      id,
       name,
       enabled
     });

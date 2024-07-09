@@ -16,20 +16,9 @@ export const config: Config = {
     {
       type: 'dist',
       copy: [
-        {
-          src: 'assets/arcgis-pdf-creator',
-          dest: '../assets/arcgis-pdf-creator'
-        },
-        {
-          src: 'assets/data',
-          dest: '../assets/data'
-        },
-        {
-          src: 'assets/t9n',
-          dest: '../assets/t9n'
-        },
-        { src: 'demos' },
-        { src: 'utils' }
+        { src: 'assets', dest: 'assets' },
+        { src: 'demos',  dest: 'demos'  },
+        { src: 'utils',  dest: 'utils'  }
       ]
     },
     {

@@ -31,10 +31,10 @@ describe('solution-spatial-ref', () => {
     state.setStoreInfo("spatialReferenceInfo", {
       enabled: true,
       services: {
-        "Feature Service 1": true,
-        "Feature Service 2": false
+        "123": true,
+        "456": false
       },
-      spatialReference: undefined
+      spatialReference: "2865"
     });
   });
 
@@ -47,18 +47,21 @@ describe('solution-spatial-ref', () => {
       components: [SolutionSpatialRef],
       supportsShadowDom: false,
       template: () => (
-        <solution-spatial-ref services={["Feature Service 1", "Feature Service 2"]}></solution-spatial-ref>
+        <solution-spatial-ref services={[
+          {id: "123", name: "Feature Service 1", enabled: true},
+          {id: "456", name: "Feature Service 2", enabled: false}
+        ]} value="2865"></solution-spatial-ref>
       )
     });
     expect(page.root).toEqualHtml(`
-      <solution-spatial-ref default-wkid="102100" locked="" value="102100">
+      <solution-spatial-ref default-wkid="102100" locked="" value="2865">
         <label class="switch-label">
           <calcite-switch class="spatial-ref-switch" scale="m"></calcite-switch>
         </label>
         <div class="spatial-ref-component" id="spatialRefDefn">
           <calcite-label>
             <label class="spatial-ref-default">
-              <spatial-ref defaultwkid="102100" disabled="" value="102100"></spatial-ref>
+              <spatial-ref defaultwkid="102100" disabled="" value="2865"></spatial-ref>
             </label>
           </calcite-label>
           <div>

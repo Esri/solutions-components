@@ -1434,9 +1434,9 @@ export namespace Components {
          */
         "locked": boolean;
         /**
-          * List of service names the spatial reference should apply to
+          * List of services the spatial reference should apply to
          */
-        "services": string[];
+        "services": IFeatureServiceEnabledStatus[];
         /**
           * Contains the public value for this component, which is a wkid or a wkt.
          */
@@ -3840,9 +3840,9 @@ declare namespace LocalJSX {
         "onFeatureServiceSpatialReferenceChange"?: (event: SolutionSpatialRefCustomEvent<IFeatureServiceSpatialReferenceChange>) => void;
         "onLockedSpatialReferenceChange"?: (event: SolutionSpatialRefCustomEvent<{ locked: boolean }>) => void;
         /**
-          * List of service names the spatial reference should apply to
+          * List of services the spatial reference should apply to
          */
-        "services"?: string[];
+        "services"?: IFeatureServiceEnabledStatus[];
         /**
           * Contains the public value for this component, which is a wkid or a wkt.
          */

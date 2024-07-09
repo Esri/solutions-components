@@ -310,6 +310,7 @@ export interface ISolutionModels {
  * Feature service name and whether the service is enabled for SR configuration
  */
 export interface IFeatureServiceEnabledStatus {
+  id: string;
   name: string;
   enabled: boolean;
 }
