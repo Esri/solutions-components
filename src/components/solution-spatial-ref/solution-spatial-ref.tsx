@@ -60,7 +60,7 @@ export class SolutionSpatialRef {
   /**
   * The wkid that will be used as the default when no user selection has been made.
   */
-  @Prop({ mutable: true, reflect: true }) defaultWkid = 102100;
+  @Prop({ mutable: true, reflect: true }) defaultWkid = 3857;
 
   /**
   * Indicates if the control has been enabled.
@@ -118,15 +118,9 @@ export class SolutionSpatialRef {
             onCalciteSwitchChange={(event) => this._updateLocked(event)}
             scale="m"
            />
-          {this._translations.specifyParam}
+          {this._translations.enableDefaultSpatialReference}
         </label>
         <div class="spatial-ref-component" id="spatialRefDefn">
-          <calcite-label>
-            {this._translations.spatialReferenceInfo}
-            <label class="spatial-ref-default">
-              <spatial-ref defaultWkid={this.defaultWkid} disabled={this.locked} value={this.value}/>
-            </label>
-          </calcite-label>
           {this._renderFeatureServicesList(this.services)}
         </div>
       </Host>

@@ -2,5 +2,6 @@
     "paramDescription": "Expose the Spatial Reference parameter and allow users to change the layers spatial reference when deploying the solution.",
     "specifyParam": "Spatial Reference parameter",
     "spatialReferenceInfo": "Default Spatial Reference",
-    "featureServicesHeading": "Feature Services"
+    "enableDefaultSpatialReference": "Enable the default spatial reference (Web Mercator 3857)",
+    "featureServicesHeading": "Use the default for these feature services"
 }

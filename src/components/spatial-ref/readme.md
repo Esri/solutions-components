@@ -71,10 +71,6 @@ Description, or "WKID &lt;wkid&gt;" if a description doesn't exist for the WKID
 
 ## Dependencies
 
-### Used by
-
- - [solution-spatial-ref](../solution-spatial-ref)
-
 ### Depends on
 
 - calcite-input
@@ -91,7 +87,6 @@ graph TD;
   calcite-input --> calcite-icon
   calcite-tree-item --> calcite-icon
   calcite-tree-item --> calcite-checkbox
-  solution-spatial-ref --> spatial-ref
   style spatial-ref fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
