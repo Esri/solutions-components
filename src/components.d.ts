@@ -1502,6 +1502,7 @@ export namespace Components {
           * Credentials for requests
          */
         "authentication": UserSession;
+        "getStoreInfo": (propName: string) => Promise<any>;
         /**
           * Templates for the current solution
          */

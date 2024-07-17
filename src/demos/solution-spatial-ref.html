@@ -22,13 +22,17 @@
 
   <link rel="stylesheet" type="text/css" href="https://js.arcgis.com/calcite-components/2.0.0/calcite.css" />
   <link rel="stylesheet" href="https://webapps-cdn.esri.com/CDN/fonts/v1.4.1/fonts.css" />
-  <link rel="stylesheet" href="../solutions-components.css" type="text/css">
   <style>
+    body {
+      padding: 16px;
+      background-color: #F4F4F4;
+    }
+    .fadeIn {
+      opacity: 0;
+      transition: 1s;
+    }
     .content {
       padding: 20px;
-    }
-    .full-height {
-      height: calc(100% - 40px);
     }
   </style>
 
@@ -38,28 +42,60 @@
 
 <body>
   <h1>Demo Solution Spatial Reference</h1>
-  <main id="appContainer">
-    <div class="content full-height">
-      <store-manager id="helper"/>
-      <solution-spatial-ref id="demo"/>
+  <main id="appContainer" class="fadeIn">
+    <div>
+      <store-manager id="state"/>
+      <solution-spatial-ref/>
     </div>
   </main>
 
+  <!-- Feedback from store -->
+  <br/><hr/>
+  <div id="storeContents" class="fadeIn">
+    <h3>Store</h3>
+    <h4>spatialReferenceInfo</h4>
+    <pre id="spatialReferenceInfo"></pre>
+    <h4>featureServices</h4>
+    <pre id="featureServices"></pre>
+  </div>
+
   <script src="./libs/require.js"></script>
   <script src="./libs/setLocale.js"></script>
-  <script>
-    require([],
-    function () {
-      const demo = document.getElementById("demo");
-      const helper = document.getElementById("helper");
+  <script type="module">
+    // Activate Stencil component
+    const state = document.getElementById("state");
+    state.getStoreInfo("spatialReferenceInfo")
+    .then(() => {
+      const spatialReferenceInfo = document.getElementById("spatialReferenceInfo");
+      const featureServices = document.getElementById("featureServices");
 
-      // set the data
+      // Set the data
       fetch("./data/election-outreach.json").then(result => {
         result.json().then(data => {
+          state.value = JSON.stringify(data);
+
+          // Echo store values
+          setTimeout(updateStoreDisplay, 1000);
+          window.addEventListener("solutionStoreHasChanges",
+            () => { updateStoreDisplay(); }
+          );
+
+          // Show the UI
           document.getElementById("appContainer").style.opacity = "1";
-          helper.value = JSON.stringify(data);
+          document.getElementById("storeContents").style.opacity = "1";
         });
       });
+
+      let getStoreInfo = async (propName) => {
+        const value = await state.getStoreInfo(propName);
+        return Promise.resolve(JSON.stringify(value, null, 2));
+      }
+
+      let updateStoreDisplay = async () => {
+        spatialReferenceInfo.innerHTML = await getStoreInfo("spatialReferenceInfo");
+        featureServices.innerHTML = await getStoreInfo("featureServices");
+      }
+      //(info) => {console.log(JSON.stringify(info, null, 2));}
     });
   </script>
 </body>

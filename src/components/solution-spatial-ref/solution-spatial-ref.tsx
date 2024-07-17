@@ -76,7 +76,7 @@ export class SolutionSpatialRef {
   @Watch("locked")
   lockedChanged(newLocked: boolean): void {
     if (!newLocked) {
-      // By default enable all Feature Services on first load
+      // By default enable all Feature Services on first enablement
       this._setFeatureServiceDefaults(this.services);
     }
 
@@ -105,6 +105,7 @@ export class SolutionSpatialRef {
    * StencilJS: Called once just after the component is first connected to the DOM.
    */
   componentWillLoad(): Promise<void> {
+    this._updateStore();
     return this._getTranslations();
   }
 
@@ -158,19 +159,6 @@ export class SolutionSpatialRef {
   @Listen("solutionStoreHasChanges", { target: "window" })
   solutionStoreHasChanges(): void {
     this.services = state.getStoreInfo("featureServices");
-  }
-
-  /**
-   * Saves changes to the embedded spatial reference value
-   */
-  @Listen("spatialReferenceChange", { target: "window" })
-  spatialReferenceChange(event: CustomEvent): void {
-    this.value = event.detail.newValue;
-    state.setStoreInfo("defaultWkid", event.detail.newValue);
-
-    const spatialReferenceInfo = state.getStoreInfo("spatialReferenceInfo");
-    spatialReferenceInfo.spatialReference = event.detail.newValue;
-    state.setStoreInfo("spatialReferenceInfo", spatialReferenceInfo);
   }
 
   //--------------------------------------------------------------------------
@@ -246,6 +234,10 @@ export class SolutionSpatialRef {
     spatialReferenceInfo.services[id] = enabled;
     state.setStoreInfo("spatialReferenceInfo", spatialReferenceInfo);
 
+    // Update featureServices
+    this._updateFeatureServices(spatialReferenceInfo);
+
+    // Report the change
     this.featureServiceSpatialReferenceChange.emit({
       id,
       name,
@@ -254,30 +246,49 @@ export class SolutionSpatialRef {
   }
 
   /**
+   * Updates the enabled/disabled state of the services in the featureServices part of the store.
+   *
+   * @param spatialReferenceInfo The spatial reference information
+   */
+  private _updateFeatureServices(
+    spatialReferenceInfo: any
+  ): void {
+    const featureServices = state.getStoreInfo("featureServices");
+    featureServices.forEach(service => {
+      service.enabled = spatialReferenceInfo.services[service.id];
+    });
+    state.setStoreInfo("featureServices", featureServices);
+  }
+
+  /**
    * Toggles the ability to set the default spatial reference.
    */
   private _updateLocked(event): void {
     this.locked = !event.target.checked;
-    this._updateStore();
     if (!this.loaded) {
       // when this is switched on when loading we have reloaded a solution that
       // has a custom wkid param and we should honor the settings they already have in the templates
       if (event.target.checked) {
-        // By default enable all Feature Services on first load
+        // By default enable all Feature Services on enablement
         this._setFeatureServiceDefaults(this.services);
       }
       this.loaded = true;
     }
+    this._updateStore();
   };
 
   /**
    * Updates the enabled and spatialReference prop in spatialReferenceInfo.
    */
   private _updateStore(): void {
+    // Update spatialReferenceInfo
     const spatialReferenceInfo = state.getStoreInfo("spatialReferenceInfo");
     spatialReferenceInfo.enabled = !this.locked;
     spatialReferenceInfo.spatialReference = this.value;
     state.setStoreInfo("spatialReferenceInfo", spatialReferenceInfo);
+
+    // Update featureServices
+    this._updateFeatureServices(spatialReferenceInfo);
   }
 
   /**
