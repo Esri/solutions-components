@@ -52,7 +52,6 @@
     "@types/node": "^20.14.10",
     "@typescript-eslint/eslint-plugin": "^7.13.1",
     "@typescript-eslint/parser": "^7.16.0",
-    "arcgis-js-api": "~4.29.10",
     "autoprefixer": "^10.4.19",
     "babel-jest": "^29.7.0",
     "braces": "^3.0.3",
@@ -80,6 +79,7 @@
     "typescript": "^5.5.3"
   },
   "dependencies": {
+    "@arcgis/core": "^4.30.8",
     "@esri/arcgis-rest-auth": "^3.7.0",
     "@esri/arcgis-rest-feature-layer": "^3.7.0",
     "@esri/arcgis-rest-portal": "^3.7.0",
