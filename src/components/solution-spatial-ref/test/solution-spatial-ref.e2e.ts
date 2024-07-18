@@ -30,6 +30,7 @@ describe('solution-spatial-ref', () => {
     expect(solution_spatial_ref).toHaveClass('hydrated');
     expect(await solution_spatial_ref.getProperty('defaultWkid')).toBe(3857);
     expect(await solution_spatial_ref.getProperty('value')).toBe('3857');
+    expect(await solution_spatial_ref.getProperty('services')).toEqual([]);
   });
 
 });
