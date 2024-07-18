@@ -22,6 +22,7 @@
 
   <link rel="stylesheet" type="text/css" href="https://js.arcgis.com/calcite-components/2.0.0/calcite.css" />
   <link rel="stylesheet" href="https://webapps-cdn.esri.com/CDN/fonts/v1.4.1/fonts.css" />
+  <link rel="stylesheet" href="../solutions-components.css" type="text/css">
   <style>
     body {
       padding: 16px;
@@ -42,7 +43,7 @@
 
 <body>
   <h1>Demo Solution Spatial Reference</h1>
-  <main id="appContainer" class="fadeIn">
+  <main id="main" class="fadeIn">
     <div>
       <store-manager id="state"/>
       <solution-spatial-ref/>
@@ -81,7 +82,7 @@
           );
 
           // Show the UI
-          document.getElementById("appContainer").style.opacity = "1";
+          document.getElementById("main").style.opacity = "1";
           document.getElementById("storeContents").style.opacity = "1";
         });
       });

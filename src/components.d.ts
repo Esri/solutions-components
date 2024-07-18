@@ -1502,6 +1502,10 @@ export namespace Components {
           * Credentials for requests
          */
         "authentication": UserSession;
+        /**
+          * Returns the store info for the supplied property name.
+          * @param propName Name of the property to return
+         */
         "getStoreInfo": (propName: string) => Promise<any>;
         /**
           * Templates for the current solution

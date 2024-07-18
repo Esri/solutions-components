@@ -25,13 +25,13 @@
 
 ### `getStoreInfo(propName: string) => Promise<any>`
 
-
+Returns the store info for the supplied property name.
 
 #### Parameters
 
-| Name       | Type     | Description |
-| ---------- | -------- | ----------- |
-| `propName` | `string` |             |
+| Name       | Type     | Description                    |
+| ---------- | -------- | ------------------------------ |
+| `propName` | `string` | Name of the property to return |
 
 #### Returns
 

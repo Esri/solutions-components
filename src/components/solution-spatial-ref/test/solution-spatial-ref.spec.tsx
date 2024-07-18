@@ -36,6 +36,18 @@ describe('solution-spatial-ref', () => {
       },
       spatialReference: "2865"
     });
+    state.setStoreInfo("featureServices", [
+      {
+        id: "123",
+        name: "Feature Service 1",
+        enabled: true
+      },
+      {
+        id: "456",
+        name: "Feature Service 2",
+        enabled: false
+      }
+    ]);
   });
 
   afterEach(() => {
@@ -47,29 +59,21 @@ describe('solution-spatial-ref', () => {
       components: [SolutionSpatialRef],
       supportsShadowDom: false,
       template: () => (
-        <solution-spatial-ref services={[
-          {id: "123", name: "Feature Service 1", enabled: true},
-          {id: "456", name: "Feature Service 2", enabled: false}
-        ]} value="2865"></solution-spatial-ref>
+        <solution-spatial-ref value="2865"/>
       )
     });
     expect(page.root).toEqualHtml(`
-      <solution-spatial-ref default-wkid="102100" locked="" value="2865">
+      <solution-spatial-ref default-wkid="3857" locked="" value="2865">
         <label class="switch-label">
           <calcite-switch class="spatial-ref-switch" scale="m"></calcite-switch>
         </label>
         <div class="spatial-ref-component" id="spatialRefDefn">
-          <calcite-label>
-            <label class="spatial-ref-default">
-              <spatial-ref defaultwkid="102100" disabled="" value="2865"></spatial-ref>
-            </label>
-          </calcite-label>
           <div>
             <label class="spatial-ref-item-title"></label>
             <ul class="spatial-ref-services-list">
               <li class="spatial-ref-services-list-item">
                 <label class="switch-label">
-                  <calcite-switch checked="" class="spatial-ref-item-switch" disabled="" scale="m"></calcite-switch>
+                  <calcite-switch checked class="spatial-ref-item-switch" disabled="" scale="m"></calcite-switch>
                   Feature Service 1
                 </label>
               </li>
