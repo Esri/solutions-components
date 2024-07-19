@@ -29,7 +29,8 @@ describe('solution-spatial-ref', () => {
 
     state._testAccess("_emptyTheStore");
     state.setStoreInfo("spatialReferenceInfo", {
-      enabled: true,
+      enabled: false,
+      enabledDefault: false,
       services: {
         "123": true,
         "456": false
@@ -63,9 +64,14 @@ describe('solution-spatial-ref', () => {
       )
     });
     expect(page.root).toEqualHtml(`
-      <solution-spatial-ref default-wkid="3857" locked="" value="2865">
+      <solution-spatial-ref default-wkid="3857" value="2865">
         <label class="switch-label">
           <calcite-switch class="spatial-ref-switch" scale="m"></calcite-switch>
+        </label>
+        <br>
+        <br>
+        <label class="switch-label spatial-ref-component">
+          <calcite-switch class="spatial-ref-switch" disabled="" scale="m"></calcite-switch>
         </label>
         <div class="spatial-ref-component" id="spatialRefDefn">
           <div>

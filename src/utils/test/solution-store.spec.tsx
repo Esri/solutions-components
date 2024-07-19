@@ -310,7 +310,8 @@ describe("solution-store", () => {
       const featureServices = state._testAccess("_getFeatureServices", state.getStoreInfo("solutionData").templates) as IFeatureServiceEnabledStatus[];
       const result = await state._testAccess("_getSpatialReferenceInfo", featureServices, "2865") as ISolutionSpatialReferenceInfo;
       expect(result).toEqual({
-        "enabled": true,
+        "enabled": false,
+        "enableDefault": false,
         "services": {
           "Driver_Activity": false,
           "OperationsManagement": false,
@@ -329,7 +330,8 @@ describe("solution-store", () => {
       const featureServices = state._testAccess("_getFeatureServices", state.getStoreInfo("solutionData").templates) as IFeatureServiceEnabledStatus[];
       const result = await state._testAccess("_getSpatialReferenceInfo", featureServices, 2865) as ISolutionSpatialReferenceInfo;
       expect(result).toEqual({
-        "enabled": true,
+        "enabled": false,
+        "enableDefault": false,
         "services": {
           "Driver_Activity": false,
           "OperationsManagement": false,
@@ -349,6 +351,7 @@ describe("solution-store", () => {
       const result = await state._testAccess("_getSpatialReferenceInfo", featureServices) as ISolutionSpatialReferenceInfo;
       expect(result).toEqual({
         "enabled": false,
+        "enableDefault": false,
         "services": {
           "Driver_Activity": false,
           "OperationsManagement": false,
