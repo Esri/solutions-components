@@ -303,7 +303,8 @@ export function getSpatialReferenceInfo(
   });
   const wkid = getProp(data, "params.wkid.default");
   return {
-    enabled: wkid !== undefined && wkid !== "",
+    enabled: false,
+    enableDefault: wkid !== undefined && wkid !== "",
     services: defaultServices,
     spatialReference: wkid ? { wkid } : undefined
   }

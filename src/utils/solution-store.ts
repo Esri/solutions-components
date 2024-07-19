@@ -97,6 +97,7 @@ const EmptySolutionStore: ISolutionStoreData = {
   featureServices: [],
   spatialReferenceInfo: {
     enabled: false,
+    enableDefault: false,
     services: {},
     spatialReference: undefined
   }
@@ -545,7 +546,7 @@ class SolutionStore
    * be exposed while deploying this solution and if so what feature services will support it and what will the default wkid be
    *
    * @param services a list of objects with service name and enabled property (indicates if they currently use a spatial reference var)
-   * @param data the data object of a solution item
+   * @param defaultWkid the default wkid
    *
    * @returns an object that stores if a custom spatial reference parameter is enabled/disabled,
    * a list of services and if they are enabled/disabled, and the default wkid
@@ -562,7 +563,8 @@ class SolutionStore
     });
 
     return {
-      enabled: defaultWkid !== undefined,
+      enabled: false,
+      enableDefault: false,
       services: defaultServices,
       spatialReference: defaultWkid ? defaultWkid : undefined
     }

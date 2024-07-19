@@ -490,6 +490,7 @@ describe("solution-store", () => {
       jest.spyOn(common, "setCreateProp").mockImplementation(() => {});
       const spatialReferenceInfo: ISolutionSpatialReferenceInfo = {
         enabled: true,
+        enableDefault: true,
         services: {
           "Driver_Activity": false,      // has "wkid": 102100
           "OperationsManagement": true,  // has "wkid": 102100
@@ -509,6 +510,7 @@ describe("solution-store", () => {
       jest.spyOn(common, "setCreateProp").mockImplementation(() => {});
       const spatialReferenceInfo: ISolutionSpatialReferenceInfo = {
         enabled: false,
+        enableDefault: true,
         services: {
           "Driver_Activity": false,      // has "wkid": 102100
           "OperationsManagement": true,  // has "wkid": 102100

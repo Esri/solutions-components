@@ -1426,13 +1426,17 @@ export namespace Components {
          */
         "defaultWkid": number;
         /**
-          * Indicates if the control has been enabled. The first time Spatial Reference has been enabled it should enable all feature services.
+          * When true, all but the main switch are disabled to prevent interaction.
          */
-        "loaded": boolean;
+        "enableDefault": boolean;
         /**
           * When true, all but the main switch are disabled to prevent interaction.
          */
-        "locked": boolean;
+        "enabled": boolean;
+        /**
+          * Indicates if the control has been enabled. The first time Spatial Reference has been enabled it should enable all feature services.
+         */
+        "loaded": boolean;
         /**
           * List of services the spatial reference should apply to
          */
@@ -2239,7 +2243,8 @@ declare global {
     };
     interface HTMLSolutionSpatialRefElementEventMap {
         "featureServiceSpatialReferenceChange": IFeatureServiceSpatialReferenceChange;
-        "lockedSpatialReferenceChange": { locked: boolean };
+        "enableDefaultSpatialReferenceChange": { enableDefault: boolean };
+        "enabledSpatialReferenceChange": { enabled: boolean };
     }
     interface HTMLSolutionSpatialRefElement extends Components.SolutionSpatialRef, HTMLStencilElement {
         addEventListener<K extends keyof HTMLSolutionSpatialRefElementEventMap>(type: K, listener: (this: HTMLSolutionSpatialRefElement, ev: SolutionSpatialRefCustomEvent<HTMLSolutionSpatialRefElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -3835,15 +3840,20 @@ declare namespace LocalJSX {
          */
         "defaultWkid"?: number;
         /**
-          * Indicates if the control has been enabled. The first time Spatial Reference has been enabled it should enable all feature services.
+          * When true, all but the main switch are disabled to prevent interaction.
          */
-        "loaded"?: boolean;
+        "enableDefault"?: boolean;
         /**
           * When true, all but the main switch are disabled to prevent interaction.
          */
-        "locked"?: boolean;
+        "enabled"?: boolean;
+        /**
+          * Indicates if the control has been enabled. The first time Spatial Reference has been enabled it should enable all feature services.
+         */
+        "loaded"?: boolean;
+        "onEnableDefaultSpatialReferenceChange"?: (event: SolutionSpatialRefCustomEvent<{ enableDefault: boolean }>) => void;
+        "onEnabledSpatialReferenceChange"?: (event: SolutionSpatialRefCustomEvent<{ enabled: boolean }>) => void;
         "onFeatureServiceSpatialReferenceChange"?: (event: SolutionSpatialRefCustomEvent<IFeatureServiceSpatialReferenceChange>) => void;
-        "onLockedSpatialReferenceChange"?: (event: SolutionSpatialRefCustomEvent<{ locked: boolean }>) => void;
         /**
           * List of services the spatial reference should apply to
          */

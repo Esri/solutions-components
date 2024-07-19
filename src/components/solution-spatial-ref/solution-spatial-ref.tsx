@@ -71,17 +71,24 @@ export class SolutionSpatialRef {
   /**
   * When true, all but the main switch are disabled to prevent interaction.
   */
-  @Prop({ mutable: true, reflect: true }) locked = true;
+  @Prop({ mutable: true, reflect: true }) enabled = false;
 
-  @Watch("locked")
-  lockedChanged(newLocked: boolean): void {
-    if (!newLocked) {
-      // By default enable all Feature Services on first enablement
-      this._setFeatureServiceDefaults(this.services);
-    }
+  @Watch("enabled")
+  enabledChanged(newEnabled: boolean): void {
+    this.enabledSpatialReferenceChange.emit({
+      enabled: newEnabled
+    });
+  }
 
-    this.lockedSpatialReferenceChange.emit({
-      locked: newLocked
+  /**
+  * When true, all but the main switch are disabled to prevent interaction.
+  */
+  @Prop({ mutable: true, reflect: true }) enableDefault = false;
+
+  @Watch("enableDefault")
+  enableDefaultChanged(newEnableDefault: boolean): void {
+    this.enableDefaultSpatialReferenceChange.emit({
+      enableDefault: newEnableDefault
     });
   }
 
@@ -114,7 +121,7 @@ export class SolutionSpatialRef {
       <Host>
         <label class="switch-label">
           <calcite-switch
-            checked={!this.locked}
+            checked={this.enabled}
             class="spatial-ref-switch"
             onCalciteSwitchChange={(event) => this._enableSpatialRefParam(event)}
             scale="m"
@@ -124,8 +131,9 @@ export class SolutionSpatialRef {
         <br /><br />
         <label class="switch-label spatial-ref-component">
           <calcite-switch
-            checked={!this.locked}
+            checked={this.enableDefault}
             class="spatial-ref-switch"
+            disabled={!this.enabled}
             onCalciteSwitchChange={(event) => this._enableDefaultSpatialRefParam(event)}
             scale="m"
            />
@@ -164,7 +172,9 @@ export class SolutionSpatialRef {
 
   @Event() featureServiceSpatialReferenceChange: EventEmitter<IFeatureServiceSpatialReferenceChange>;
 
-  @Event() lockedSpatialReferenceChange: EventEmitter<{ locked: boolean }>;
+  @Event() enableDefaultSpatialReferenceChange: EventEmitter<{ enableDefault: boolean }>;
+
+  @Event() enabledSpatialReferenceChange: EventEmitter<{ enabled: boolean }>;
 
   @Listen("solutionStoreHasChanges", { target: "window" })
   solutionStoreHasChanges(): void {
@@ -205,7 +215,7 @@ export class SolutionSpatialRef {
                 <calcite-switch
                   checked={spatialReferenceInfo.services[configurableService.id]}
                   class="spatial-ref-item-switch"
-                  disabled={this.locked}
+                  disabled={!this.enabled}
                   onCalciteSwitchChange={(event) => this._updateEnabledServices(event, configurableService.id, configurableService.name)}
                   scale="m"
                 />{configurableService.name}
@@ -274,16 +284,7 @@ export class SolutionSpatialRef {
    * Toggles the enablement of the default spatial reference.
    */
   private _enableDefaultSpatialRefParam(event): void {
-    this.locked = !event.target.checked;
-    if (!this.loaded) {
-      // when this is switched on when loading we have reloaded a solution that
-      // has a custom wkid param and we should honor the settings they already have in the templates
-      if (event.target.checked) {
-        // By default enable all Feature Services on enablement
-        this._setFeatureServiceDefaults(this.services);
-      }
-      this.loaded = true;
-    }
+    this.enableDefault = event.target.checked;
     this._updateStore();
   };
 
@@ -291,7 +292,7 @@ export class SolutionSpatialRef {
    * Toggles the enablement of the spatial reference parameter.
    */
   private _enableSpatialRefParam(event): void {
-    this.locked = !event.target.checked;
+    this.enabled = event.target.checked;
     if (!this.loaded) {
       // when this is switched on when loading we have reloaded a solution that
       // has a custom wkid param and we should honor the settings they already have in the templates
@@ -307,10 +308,12 @@ export class SolutionSpatialRef {
   /**
    * Updates the enabled and spatialReference prop in spatialReferenceInfo.
    */
-  private _updateStore(): void {
+  private _updateStore(
+  ): void {
     // Update spatialReferenceInfo
     const spatialReferenceInfo = state.getStoreInfo("spatialReferenceInfo");
-    spatialReferenceInfo.enabled = !this.locked;
+    spatialReferenceInfo.enabled = this.enabled;
+    spatialReferenceInfo.enableDefault = this.enableDefault;
     spatialReferenceInfo.spatialReference = this.value;
     state.setStoreInfo("spatialReferenceInfo", spatialReferenceInfo);
 
