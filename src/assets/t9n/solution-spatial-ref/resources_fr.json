@@ -1,7 +1,5 @@
 {
-    "paramDescription": "Exposez le paramètre Spatial Reference et autorisez les utilisateurs à modifier la référence spatiale des couches lors du déploiement de la solution.",
-    "specifyParam": "Paramètre de référence spatiale",
-    "spatialReferenceInfo": "Référence spatiale par défaut",
+    "enableSpatialReference": "Activer le paramètre de référence spatiale",
     "enableDefaultSpatialReference": "Activer la référence spatiale par défaut (Web Mercator 3857)",
-    "featureServicesHeading": "Utiliser la valeur par défaut pour ces services de fonctionnalités"
+    "featureServicesHeading": "Appliquez la sélection de références spatiales à ces services d'entités :"
 }

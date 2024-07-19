@@ -1,7 +1,5 @@
 {
-    "paramDescription": "חשוף את הפרמטר Spatial Reference ואפשר למשתמשים לשנות את ההתייחסות המרחבית לשכבות בעת פריסת הפתרון.",
-    "specifyParam": "פרמטר התייחסות מרחבית",
-    "spatialReferenceInfo": "ברירת המחדל של הפניה מרחבית",
+    "enableSpatialReference": "אפשר פרמטר התייחסות מרחבית",
     "enableDefaultSpatialReference": "אפשר את ברירת המחדל של הפניה מרחבית",
-    "featureServicesHeading": "הפעל את ברירת המחדל של הפניה מרחבית (Web Mercator 3857)"
+    "featureServicesHeading": "החל בחירת התייחסות מרחבית על שירותי תכונה אלה:"
 }

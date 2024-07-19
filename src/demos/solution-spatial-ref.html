@@ -27,6 +27,12 @@
     body {
       padding: 16px;
       background-color: #F4F4F4;
+      width: unset;
+      overflow-y: auto;
+    }
+    h1 {
+      margin: 0 0 12px 0;
+      padding-left: 0;
     }
     .fadeIn {
       opacity: 0;
@@ -52,7 +58,7 @@
 
   <!-- Feedback from store -->
   <br/><hr/>
-  <div id="storeContents" class="fadeIn">
+  <div id="storeContents" class="fadeIn" dir="ltr">
     <h3>Store</h3>
     <h4>spatialReferenceInfo</h4>
     <pre id="spatialReferenceInfo"></pre>

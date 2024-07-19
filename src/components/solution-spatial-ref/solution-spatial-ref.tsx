@@ -116,7 +116,17 @@ export class SolutionSpatialRef {
           <calcite-switch
             checked={!this.locked}
             class="spatial-ref-switch"
-            onCalciteSwitchChange={(event) => this._updateLocked(event)}
+            onCalciteSwitchChange={(event) => this._enableSpatialRefParam(event)}
+            scale="m"
+           />
+          {this._translations.enableSpatialReference}
+        </label>
+        <br /><br />
+        <label class="switch-label spatial-ref-component">
+          <calcite-switch
+            checked={!this.locked}
+            class="spatial-ref-switch"
+            onCalciteSwitchChange={(event) => this._enableDefaultSpatialRefParam(event)}
             scale="m"
            />
           {this._translations.enableDefaultSpatialReference}
@@ -261,9 +271,26 @@ export class SolutionSpatialRef {
   }
 
   /**
-   * Toggles the ability to set the default spatial reference.
+   * Toggles the enablement of the default spatial reference.
    */
-  private _updateLocked(event): void {
+  private _enableDefaultSpatialRefParam(event): void {
+    this.locked = !event.target.checked;
+    if (!this.loaded) {
+      // when this is switched on when loading we have reloaded a solution that
+      // has a custom wkid param and we should honor the settings they already have in the templates
+      if (event.target.checked) {
+        // By default enable all Feature Services on enablement
+        this._setFeatureServiceDefaults(this.services);
+      }
+      this.loaded = true;
+    }
+    this._updateStore();
+  };
+
+  /**
+   * Toggles the enablement of the spatial reference parameter.
+   */
+  private _enableSpatialRefParam(event): void {
     this.locked = !event.target.checked;
     if (!this.loaded) {
       // when this is switched on when loading we have reloaded a solution that
