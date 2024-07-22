@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, h, Host, Listen, Prop, State, Watch, VNode } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, h, Host, Listen, Method, Prop, State, Watch, VNode } from '@stencil/core';
 import '@esri/calcite-components';
 import SolutionSpatialRef_T9n from '../../assets/t9n/solution-spatial-ref/resources.json';
 import state from "../../utils/solution-store";
@@ -176,6 +176,31 @@ export class SolutionSpatialRef {
   //  Public Methods (async)
   //
   //--------------------------------------------------------------------------
+
+  /** Provides access to protected methods for unit testing.
+   *
+   *  @param methodName Name of protected method to run
+   *  @param arg1 First argument to forward to method, e.g., for "_prepareSolutionItemsForEditing", `solutionItemId`
+   *  @param arg2 Second argument to forward to method, e.g., for "_prepareSolutionItemsForEditing", `templates`
+   *  @param arg3 Third argument to forward to method, e.g., for "_prepareSolutionItemsForEditing", `authentication`
+   *
+   *  @returns
+   */
+  @Method()
+  async _testAccess(
+    methodName: string,
+    arg1?: any,
+    arg2?: any,
+    arg3?: any
+  ): Promise<any> {
+    switch (methodName) {
+      case "_parameterizeWkid":
+        return Promise.resolve(this._parameterizeWkid(arg1));
+      case "_unparameterizeWkid":
+        return Promise.resolve(this._unparameterizeWkid(arg1));
+    }
+    return Promise.resolve(null);
+  }
 
   //--------------------------------------------------------------------------
   //
@@ -353,9 +378,11 @@ export class SolutionSpatialRef {
   private _parameterizeWkid(
     wkid: string
   ): string {
-    return wkid.toString().startsWith(CSpatialRefCustomizingPrefix)
-      ? wkid
-      : `${CSpatialRefCustomizingPrefix}${wkid}${CSpatialRefCustomizingSuffix}`;
+    return wkid
+      ? wkid.toString().startsWith(CSpatialRefCustomizingPrefix)
+        ? wkid
+        : `${CSpatialRefCustomizingPrefix}${wkid}${CSpatialRefCustomizingSuffix}`
+      : wkid;
   };
 
   /**
@@ -367,10 +394,10 @@ export class SolutionSpatialRef {
   private _unparameterizeWkid(
     wkid: string
   ): string {
-    return wkid.toString().startsWith(CSpatialRefCustomizingPrefix)
-      ? wkid.substring(
-        CSpatialRefCustomizingPrefix.length, wkid.length - CSpatialRefCustomizingSuffix.length)
-      : wkid;
+    return wkid && wkid.toString().startsWith(CSpatialRefCustomizingPrefix)
+      ? wkid.substring(CSpatialRefCustomizingPrefix.length, wkid.length - CSpatialRefCustomizingSuffix.length)
+      : wkid
+
   }
 
   /**

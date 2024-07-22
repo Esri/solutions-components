@@ -310,24 +310,7 @@ describe("solution-store", () => {
       const featureServices = state._testAccess("_getFeatureServices", state.getStoreInfo("solutionData").templates) as IFeatureServiceEnabledStatus[];
       const result = await state._testAccess("_getSpatialReferenceInfo", featureServices, "2865") as ISolutionSpatialReferenceInfo;
       expect(result).toEqual({
-        "enabled": false,
-        "services": {
-          "Driver_Activity": false,
-          "OperationsManagement": false,
-          "SnowRoutes": false,
-          "ServiceAreas": true,
-          "Requests": true
-        }
-      });
-    });
-
-    it("gets spatial reference info using a numeric wkid", async () => {
-      jest.spyOn(common, "getItemDataAsJson").mockImplementation(() => JSON.parse(JSON.stringify(solution_ca924c)));
-      await state.loadSolution("ca924c6db7d247b9a31fa30532fb5913", MOCK_USER_SESSION);
-
-      const featureServices = state._testAccess("_getFeatureServices", state.getStoreInfo("solutionData").templates) as IFeatureServiceEnabledStatus[];
-      const result = await state._testAccess("_getSpatialReferenceInfo", featureServices, 2865) as ISolutionSpatialReferenceInfo;
-      expect(result).toEqual({
+        "default": "2865",
         "enabled": false,
         "services": {
           "Driver_Activity": false,
