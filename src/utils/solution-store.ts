@@ -17,11 +17,13 @@
 import { createStore } from "@stencil/store";
 import {
   EUpdateType,
+  CSpatialRefCustomizingPrefix,
   IFeatureServiceEnabledStatus,
   IItemShare,
   IItemTemplateEdit,
   IResourcePath,
   ISolutionTemplateEdits,
+  ISolutionSpatialReferenceData,
   ISolutionSpatialReferenceInfo
 } from './interfaces';
 import {
@@ -97,9 +99,7 @@ const EmptySolutionStore: ISolutionStoreData = {
   featureServices: [],
   spatialReferenceInfo: {
     enabled: false,
-    enableDefault: false,
-    services: {},
-    spatialReference: undefined
+    services: {}
   }
 }
 
@@ -186,7 +186,7 @@ class SolutionStore
 
     const solutionData = await getItemDataAsJson(solutionItemId, authentication);
     if (solutionData) {
-      const defaultWkid: string | number = getProp(solutionData, "params.wkid.default");
+      const defaultWkid: string = getProp(solutionData, "params.wkid.default");
       await this._prepareSolutionItemsForEditing(solutionItemId, solutionData.templates, authentication);
       const featureServices = this._getFeatureServices(solutionData.templates);
       const spatialReferenceInfo = this._getSpatialReferenceInfo(featureServices, defaultWkid);
@@ -248,19 +248,28 @@ class SolutionStore
     // Update the templates in the original solution item data
     const solutionItemId = this._store.get("solutionItemId");
     const solutionData = this._store.get("solutionData");
-    const spatialReferenceInfo = this._store.get("spatialReferenceInfo");
+    const spatialReferenceInfo: ISolutionSpatialReferenceInfo = this._store.get("spatialReferenceInfo");
+    const featureServices: IFeatureServiceEnabledStatus[] = this._store.get("featureServices");
 
     await this._prepareSolutionItemsForStorage(solutionItemId, solutionData.templates, this._authentication);
-    const updatedDefaultWkid = this._setSpatialReferenceInfo(spatialReferenceInfo, solutionData.templates);
-    if (updatedDefaultWkid) {
-      setCreateProp(solutionData, "params.wkid", {
+
+    // Update the templates in the solution item data
+    this._updateFSSpatialReferenceInfoInTemplates(featureServices, solutionData.templates);
+
+    // Update the solution-level information about the spatial reference parameter
+    if (spatialReferenceInfo.enabled) {
+      const solutionSpatialReferenceData: ISolutionSpatialReferenceData = {
         "label": "Spatial Reference",
-        "default": updatedDefaultWkid,
         "valueType": "spatialReference",
         "attributes": {
-          "required": "true"
+          "required": true
         }
-      });
+      }
+      if (spatialReferenceInfo.default) {
+        solutionSpatialReferenceData.default = spatialReferenceInfo.default;
+      }
+      setCreateProp(solutionData, "params.wkid", solutionSpatialReferenceData);
+
     } else {
       setCreateProp(solutionData, "params.wkid", {});
     }
@@ -344,7 +353,7 @@ class SolutionStore
       case "_prepareSolutionItemsForStorage":
         return this._prepareSolutionItemsForStorage(arg1, arg2, arg3);
       case "_setSpatialReferenceInfo":
-        return this._setSpatialReferenceInfo(arg1, arg2);
+        return this._updateFSSpatialReferenceInfoInTemplates(arg1, arg2);
       case "_splitFilename":
         return this._splitFilename(arg1);
     }
@@ -425,7 +434,12 @@ class SolutionStore
       (fs) => {
         const name: string = fs.item.title || fs.item.name;
         const wkid = getProp(fs, "properties.service.spatialReference.wkid");
-        return { id: fs.itemId, name, enabled: wkid.toString().startsWith("{{params.wkid||") } as IFeatureServiceEnabledStatus;
+        return {
+          id: fs.itemId,
+          name,
+          enabled: wkid.toString().startsWith(CSpatialRefCustomizingPrefix),
+          wkid
+        } as IFeatureServiceEnabledStatus;
       }
     );
   }
@@ -555,19 +569,21 @@ class SolutionStore
    */
   protected _getSpatialReferenceInfo(
     services: any[],
-    defaultWkid: string | number
+    defaultWkid: string
   ): ISolutionSpatialReferenceInfo {
     const defaultServices: any = {};
     services.forEach(service => {
       defaultServices[service.name] = service.enabled;
     });
 
-    return {
+    const spatialReferenceInfo: ISolutionSpatialReferenceInfo = {
       enabled: false,
-      enableDefault: false,
-      services: defaultServices,
-      spatialReference: defaultWkid ? defaultWkid : undefined
+      services: defaultServices
     }
+    if (defaultWkid) {
+      spatialReferenceInfo.default = defaultWkid;
+    }
+    return spatialReferenceInfo;
   }
 
   /**
@@ -702,57 +718,36 @@ class SolutionStore
    * Stores basic spatial reference information that is used to determine if a custom spatial reference parameter will
    * be exposed while deploying this solution and if so what feature services will support it and what will the default wkid be
    *
-   * @param spatialReferenceInfo The configuration settings for a custom spatial reference
+   * @param featureServices The configuration settings for a custom spatial reference by feature service
    * @param templates The templates in the current solution, which will be updated in place if
    * `spatialReferenceInfo.enabled` is true
    *
-   * @returns The new default wkid
-   *
    * @protected
    */
-  protected _setSpatialReferenceInfo(
-    spatialReferenceInfo: ISolutionSpatialReferenceInfo,
+  protected _updateFSSpatialReferenceInfoInTemplates(
+    featureServices: IFeatureServiceEnabledStatus[],
     templates: IItemTemplateEdit[]
-  ): string | number {
-    const customizingPrefix = "{{params.wkid||";
+  ): void {
     const customizableFeatureServices = this._getCustomizableFeatureServices(templates);
 
-    if (spatialReferenceInfo.enabled) {
-      // Enable or disable this feature in each service
-      customizableFeatureServices.forEach(
-        (fs) => {
-          const id: string = fs.itemId;
-          let wkid: any;
-          if (spatialReferenceInfo.services[id] ) {  // enabled
-            wkid = `{{params.wkid||${spatialReferenceInfo.spatialReference}}}`;
-            setCreateProp(fs, "properties.service.spatialReference.wkid", wkid);
+    // Enable or disable this feature in each service
+    customizableFeatureServices.forEach(
+      (fsTemplate) => {
+        const id: string = fsTemplate.itemId;
+        const fsEnablement = featureServices.find((fs) => fs.id === id);
+        if (fsEnablement) {
+          setCreateProp(fsTemplate, "properties.service.spatialReference.wkid", fsEnablement.wkid);
 
-          } else {                                     // disabled
-            wkid = getProp(fs, "properties.service.spatialReference.wkid");
-            // Remove customizing prefix if present
-            if (wkid.toString().startsWith(customizingPrefix)) {
-              wkid = wkid.toString().substring(customizingPrefix.length, wkid.length - 2);
-              setCreateProp(fs, "properties.service.spatialReference.wkid", wkid);
+          if (fsEnablement.enabled) {
+            // We don't keep the latestWkid property with a parameterized wkid
+            const latestWkid = getProp(fsTemplate, "properties.service.spatialReference.latestWkid");
+            if (latestWkid) {
+              delete fsTemplate.properties.service.spatialReference.latestWkid;
             }
           }
         }
-      );
-      return spatialReferenceInfo.spatialReference;
-
-    } else {
-      // Disable this feature in each service
-      customizableFeatureServices.forEach(
-        (fs) => {
-          const wkid = getProp(fs, "properties.service.spatialReference.wkid");
-          // Remove customizing prefix if present
-          if (wkid.toString().startsWith(customizingPrefix)) {
-            setCreateProp(fs, "properties.service.spatialReference.wkid",
-              wkid.toString().substring(customizingPrefix.length, wkid.length - 2));
-          }
-        }
-      );
-      return undefined;
-    }
+      }
+    );
   }
 
   /**

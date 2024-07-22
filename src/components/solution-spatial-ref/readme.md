@@ -19,11 +19,11 @@
 
 ## Events
 
-| Event                                  | Description | Type                                                 |
-| -------------------------------------- | ----------- | ---------------------------------------------------- |
-| `enableDefaultSpatialReferenceChange`  |             | `CustomEvent<{ enableDefault: boolean; }>`           |
-| `enabledSpatialReferenceChange`        |             | `CustomEvent<{ enabled: boolean; }>`                 |
-| `featureServiceSpatialReferenceChange` |             | `CustomEvent<IFeatureServiceSpatialReferenceChange>` |
+| Event                                  | Description | Type                                        |
+| -------------------------------------- | ----------- | ------------------------------------------- |
+| `enableDefaultSpatialReferenceChange`  |             | `CustomEvent<{ enableDefault: boolean; }>`  |
+| `enabledSpatialReferenceChange`        |             | `CustomEvent<{ enabled: boolean; }>`        |
+| `featureServiceSpatialReferenceChange` |             | `CustomEvent<IFeatureServiceEnabledStatus>` |
 
 
 ## Dependencies

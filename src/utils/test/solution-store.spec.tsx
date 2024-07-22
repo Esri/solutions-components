@@ -184,7 +184,7 @@ describe("solution-store", () => {
           "params": {
             "wkid": {
               "label": "Spatial Reference",
-              "default": 102100,
+              "default": "102100",
               "valueType": "spatialReference",
               "attributes": {
                   "required": "true"
@@ -311,15 +311,13 @@ describe("solution-store", () => {
       const result = await state._testAccess("_getSpatialReferenceInfo", featureServices, "2865") as ISolutionSpatialReferenceInfo;
       expect(result).toEqual({
         "enabled": false,
-        "enableDefault": false,
         "services": {
           "Driver_Activity": false,
           "OperationsManagement": false,
           "SnowRoutes": false,
           "ServiceAreas": true,
           "Requests": true
-        },
-        "spatialReference": "2865"
+        }
       });
     });
 
@@ -331,15 +329,13 @@ describe("solution-store", () => {
       const result = await state._testAccess("_getSpatialReferenceInfo", featureServices, 2865) as ISolutionSpatialReferenceInfo;
       expect(result).toEqual({
         "enabled": false,
-        "enableDefault": false,
         "services": {
           "Driver_Activity": false,
           "OperationsManagement": false,
           "SnowRoutes": false,
           "ServiceAreas": true,
           "Requests": true
-        },
-        "spatialReference": 2865
+        }
       });
     });
 
@@ -351,15 +347,13 @@ describe("solution-store", () => {
       const result = await state._testAccess("_getSpatialReferenceInfo", featureServices) as ISolutionSpatialReferenceInfo;
       expect(result).toEqual({
         "enabled": false,
-        "enableDefault": false,
         "services": {
           "Driver_Activity": false,
           "OperationsManagement": false,
           "SnowRoutes": false,
           "ServiceAreas": true,
           "Requests": true
-        },
-        "spatialReference": undefined
+        }
       });
     });
   });
@@ -493,15 +487,14 @@ describe("solution-store", () => {
       jest.spyOn(common, "setCreateProp").mockImplementation(() => {});
       const spatialReferenceInfo: ISolutionSpatialReferenceInfo = {
         enabled: true,
-        enableDefault: true,
+        default: "2865",
         services: {
           "Driver_Activity": false,      // has "wkid": 102100
           "OperationsManagement": true,  // has "wkid": 102100
           "Requests": false,             // has "wkid": "{{params.wkid||102100}}"
           "ServiceAreas": true,          // has "wkid": "{{params.wkid||102100}}"
           "SnowRoutes": false            // has "wkid": 4326
-        },
-        spatialReference: 2865
+        }
       };
       const solutionTemplates = JSON.parse(JSON.stringify(solution_ca924c)).templates;
 
@@ -513,15 +506,14 @@ describe("solution-store", () => {
       jest.spyOn(common, "setCreateProp").mockImplementation(() => {});
       const spatialReferenceInfo: ISolutionSpatialReferenceInfo = {
         enabled: false,
-        enableDefault: true,
+        default: "2865",
         services: {
           "Driver_Activity": false,      // has "wkid": 102100
           "OperationsManagement": true,  // has "wkid": 102100
           "Requests": false,             // has "wkid": "{{params.wkid||102100}}"
           "ServiceAreas": true,          // has "wkid": "{{params.wkid||102100}}"
           "SnowRoutes": false            // has "wkid": 4326
-        },
-        spatialReference: 2865
+        }
       };
       const solutionTemplates = JSON.parse(JSON.stringify(solution_ca924c)).templates;
 

@@ -5,11 +5,11 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { ButtonType, DistanceUnit, EditType, EDrawMode, ELayoutMode, IBasemapConfig, IConsentResponse, IExportInfos, IInventoryItem, ILayerAndTableIds, ILayerExpression, IMapChange, IMapInfo, IReportingOptions, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISortingInfo, ISpatialRefRepresentation, IValueChange, theme } from "./utils/interfaces";
+import { ButtonType, DistanceUnit, EditType, EDrawMode, ELayoutMode, IBasemapConfig, IConsentResponse, IExportInfos, IFeatureServiceEnabledStatus, IInventoryItem, ILayerAndTableIds, ILayerExpression, IMapChange, IMapInfo, IReportingOptions, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISortingInfo, ISpatialRefRepresentation, IValueChange, theme } from "./utils/interfaces";
 import { IReportingOptions as IReportingOptions1 } from "./components";
 import { ILayerItemsHash } from "./components/layer-list/layer-list";
 import { UserSession } from "@esri/solution-common";
-export { ButtonType, DistanceUnit, EditType, EDrawMode, ELayoutMode, IBasemapConfig, IConsentResponse, IExportInfos, IInventoryItem, ILayerAndTableIds, ILayerExpression, IMapChange, IMapInfo, IReportingOptions, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISortingInfo, ISpatialRefRepresentation, IValueChange, theme } from "./utils/interfaces";
+export { ButtonType, DistanceUnit, EditType, EDrawMode, ELayoutMode, IBasemapConfig, IConsentResponse, IExportInfos, IFeatureServiceEnabledStatus, IInventoryItem, ILayerAndTableIds, ILayerExpression, IMapChange, IMapInfo, IReportingOptions, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISortingInfo, ISpatialRefRepresentation, IValueChange, theme } from "./utils/interfaces";
 export { IReportingOptions as IReportingOptions1 } from "./components";
 export { ILayerItemsHash } from "./components/layer-list/layer-list";
 export { UserSession } from "@esri/solution-common";
@@ -2242,7 +2242,7 @@ declare global {
         new (): HTMLSolutionResourceItemElement;
     };
     interface HTMLSolutionSpatialRefElementEventMap {
-        "featureServiceSpatialReferenceChange": IFeatureServiceSpatialReferenceChange;
+        "featureServiceSpatialReferenceChange": IFeatureServiceEnabledStatus;
         "enableDefaultSpatialReferenceChange": { enableDefault: boolean };
         "enabledSpatialReferenceChange": { enabled: boolean };
     }
@@ -3853,7 +3853,7 @@ declare namespace LocalJSX {
         "loaded"?: boolean;
         "onEnableDefaultSpatialReferenceChange"?: (event: SolutionSpatialRefCustomEvent<{ enableDefault: boolean }>) => void;
         "onEnabledSpatialReferenceChange"?: (event: SolutionSpatialRefCustomEvent<{ enabled: boolean }>) => void;
-        "onFeatureServiceSpatialReferenceChange"?: (event: SolutionSpatialRefCustomEvent<IFeatureServiceSpatialReferenceChange>) => void;
+        "onFeatureServiceSpatialReferenceChange"?: (event: SolutionSpatialRefCustomEvent<IFeatureServiceEnabledStatus>) => void;
         /**
           * List of services the spatial reference should apply to
          */

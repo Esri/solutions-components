@@ -77,6 +77,9 @@ export enum EDrawMode {
   REFINE="REFINE"
 }
 
+export const CSpatialRefCustomizingPrefix = "{{params.wkid||";
+export const CSpatialRefCustomizingSuffix = "}}";
+
 /* eslint-enable no-unused-vars */
 
 export type ValidSize = 6|10|14|20|30|60|80;
@@ -313,6 +316,7 @@ export interface IFeatureServiceEnabledStatus {
   id: string;
   name: string;
   enabled: boolean;
+  wkid: string;
 }
 
 /**
@@ -323,13 +327,24 @@ export interface IServiceInfo {
 }
 
 /**
- * Key spatial reference information for the solution
+ * Key spatial reference information for the solution data
+ */
+export interface ISolutionSpatialReferenceData {
+  label: string;
+  default?: string;
+  valueType: string;
+  attributes: {
+    required: boolean;
+  }
+}
+
+/**
+ * Key spatial reference information for components for the solution
  */
 export interface ISolutionSpatialReferenceInfo {
   enabled: boolean;
-  enableDefault: boolean;
+  default?: string;
   services: IServiceInfo;
-  spatialReference: string | number;
 }
 
 /**
