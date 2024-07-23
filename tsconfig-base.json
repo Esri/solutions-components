@@ -7,13 +7,13 @@
     "importHelpers": true,
     "jsx": "react",
     "jsxFactory": "h",
-    "lib": ["dom", "es2017"],
+    "lib": ["dom", "es2022"],
     "module": "esnext",
     "moduleResolution": "node",
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "resolveJsonModule": true,
     "rootDir": "src",
-    "target": "es2017"
+    "target": "es2022"
   }
 }
