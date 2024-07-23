@@ -1428,12 +1428,12 @@ export namespace Components {
         /**
           * Provides access to protected methods for unit testing.
           * @param methodName Name of protected method to run
-          * @param arg1 First argument to forward to method, e.g., for "_prepareSolutionItemsForEditing", `solutionItemId`
-          * @param arg2 Second argument to forward to method, e.g., for "_prepareSolutionItemsForEditing", `templates`
-          * @param arg3 Third argument to forward to method, e.g., for "_prepareSolutionItemsForEditing", `authentication`
+          * @param _arg1 First argument to forward to method, e.g., for "_prepareSolutionItemsForEditing", `solutionItemId`
+          * @param _arg2 Second argument to forward to method, e.g., for "_prepareSolutionItemsForEditing", `templates`
+          * @param _arg3 Third argument to forward to method, e.g., for "_prepareSolutionItemsForEditing", `authentication`
           * @returns
          */
-        "_testAccess": (methodName: string, arg1?: any, arg2?: any, arg3?: any) => Promise<any>;
+        "_testAccess": (methodName: string, _arg1?: any, _arg2?: any, _arg3?: any) => Promise<any>;
         /**
           * The wkid that will be used as the default when no user selection has been made.
          */

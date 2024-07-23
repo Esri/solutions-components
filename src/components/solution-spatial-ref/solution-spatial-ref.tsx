@@ -180,24 +180,24 @@ export class SolutionSpatialRef {
   /** Provides access to protected methods for unit testing.
    *
    *  @param methodName Name of protected method to run
-   *  @param arg1 First argument to forward to method, e.g., for "_prepareSolutionItemsForEditing", `solutionItemId`
-   *  @param arg2 Second argument to forward to method, e.g., for "_prepareSolutionItemsForEditing", `templates`
-   *  @param arg3 Third argument to forward to method, e.g., for "_prepareSolutionItemsForEditing", `authentication`
+   *  @param _arg1 First argument to forward to method, e.g., for "_prepareSolutionItemsForEditing", `solutionItemId`
+   *  @param _arg2 Second argument to forward to method, e.g., for "_prepareSolutionItemsForEditing", `templates`
+   *  @param _arg3 Third argument to forward to method, e.g., for "_prepareSolutionItemsForEditing", `authentication`
    *
    *  @returns
    */
   @Method()
   async _testAccess(
     methodName: string,
-    arg1?: any,
-    arg2?: any,
-    arg3?: any
+    _arg1?: any,
+    _arg2?: any,
+    _arg3?: any
   ): Promise<any> {
     switch (methodName) {
       case "_parameterizeWkid":
-        return Promise.resolve(this._parameterizeWkid(arg1));
+        return Promise.resolve(this._parameterizeWkid(_arg1));
       case "_unparameterizeWkid":
-        return Promise.resolve(this._unparameterizeWkid(arg1));
+        return Promise.resolve(this._unparameterizeWkid(_arg1));
     }
     return Promise.resolve(null);
   }

@@ -28,7 +28,7 @@
 
 ## Methods
 
-### `_testAccess(methodName: string, arg1?: any, arg2?: any, arg3?: any) => Promise<any>`
+### `_testAccess(methodName: string, _arg1?: any, _arg2?: any, _arg3?: any) => Promise<any>`
 
 Provides access to protected methods for unit testing.
 
@@ -37,9 +37,9 @@ Provides access to protected methods for unit testing.
 | Name         | Type     | Description                                                                                        |
 | ------------ | -------- | -------------------------------------------------------------------------------------------------- |
 | `methodName` | `string` | Name of protected method to run                                                                    |
-| `arg1`       | `any`    | First argument to forward to method, e.g., for "_prepareSolutionItemsForEditing", `solutionItemId` |
-| `arg2`       | `any`    | Second argument to forward to method, e.g., for "_prepareSolutionItemsForEditing", `templates`     |
-| `arg3`       | `any`    | Third argument to forward to method, e.g., for "_prepareSolutionItemsForEditing", `authentication` |
+| `_arg1`      | `any`    | First argument to forward to method, e.g., for "_prepareSolutionItemsForEditing", `solutionItemId` |
+| `_arg2`      | `any`    | Second argument to forward to method, e.g., for "_prepareSolutionItemsForEditing", `templates`     |
+| `_arg3`      | `any`    | Third argument to forward to method, e.g., for "_prepareSolutionItemsForEditing", `authentication` |
 
 #### Returns
 
