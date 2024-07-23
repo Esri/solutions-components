@@ -1,5 +1,5 @@
 {
-    "enableSpatialReference": "Enable spatial reference parameter",
-    "enableDefaultSpatialReference": "Enable default spatial reference (Web Mercator 3857)",
-    "featureServicesHeading": "Apply spatial reference selection to these feature services:"
+  "enableSpatialReference": "Enable spatial reference parameter",
+  "enableDefaultSpatialReference": "Enable default spatial reference (Web Mercator 3857)",
+  "featureServicesHeading": "Apply spatial reference selection to these feature services (select at least one):"
 }
