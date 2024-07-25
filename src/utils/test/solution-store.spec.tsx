@@ -465,43 +465,74 @@ describe("solution-store", () => {
 
   });
 
-  describe("_setSpatialReferenceInfo", () => {
-    it("handles an enabled custom spatial reference", () => {
-      jest.spyOn(common, "setCreateProp").mockImplementation(() => {});
-      const spatialReferenceInfo: ISolutionSpatialReferenceInfo = {
-        enabled: true,
-        default: "2865",
-        services: {
-          "Driver_Activity": false,      // has "wkid": 102100
-          "OperationsManagement": true,  // has "wkid": 102100
-          "Requests": false,             // has "wkid": "{{params.wkid||102100}}"
-          "ServiceAreas": true,          // has "wkid": "{{params.wkid||102100}}"
-          "SnowRoutes": false            // has "wkid": 4326
-        }
-      };
+  describe("_updateFSSpatialReferenceInfoInTemplates", () => {
+    it("updates a template with custom spatial references", () => {
+      /* Load customizable feature services from a set of templates
+          [
+            {
+              "id": "79036430a6274e17ae915d0278b8569c",
+              "name": "Driver_Activity",
+              "enabled": false,
+              "wkid": 102100
+            },
+            {
+              "id": "6f072b0ebad74ae9a06ab4569c065956",
+              "name": "OperationsManagement",
+              "enabled": false,
+              "wkid": 102100
+            },
+            {
+              "id": "f592ca2b671e44be9508162b84ca91c0",
+              "name": "SnowRoutes",
+              "enabled": false,
+              "wkid": 4326
+            },
+            {
+              "id": "b9ade1d6f8d04656ab0eab2d68a2f979",
+              "name": "ServiceAreas",
+              "enabled": true,
+              "wkid": "{{params.wkid||102100}}"
+            },
+            {
+              "id": "9daf5761f0974c2ba20afa6e8c386d0e",
+              "name": "Requests",
+              "enabled": true,
+              "wkid": "{{params.wkid||102100}}"
+            }
+          ]
+      */
       const solutionTemplates = JSON.parse(JSON.stringify(solution_ca924c)).templates;
+      const featureServices = state._testAccess("_getFeatureServices", solutionTemplates);
 
-      const updatedWkid = state._testAccess("_setSpatialReferenceInfo", spatialReferenceInfo, solutionTemplates);
-      expect(updatedWkid).toEqual(2865);
-    });
-
-    it("handles a disabled custom spatial reference", () => {
-      jest.spyOn(common, "setCreateProp").mockImplementation(() => {});
-      const spatialReferenceInfo: ISolutionSpatialReferenceInfo = {
-        enabled: false,
-        default: "2865",
-        services: {
-          "Driver_Activity": false,      // has "wkid": 102100
-          "OperationsManagement": true,  // has "wkid": 102100
-          "Requests": false,             // has "wkid": "{{params.wkid||102100}}"
-          "ServiceAreas": true,          // has "wkid": "{{params.wkid||102100}}"
-          "SnowRoutes": false            // has "wkid": 4326
+      const findTemplate = (id: string) => {
+        const template = {
+          ...solutionTemplates.find(t => t.itemId === id)
         }
-      };
-      const solutionTemplates = JSON.parse(JSON.stringify(solution_ca924c)).templates;
+        return common.getProp(template, "properties.service.spatialReference");
+      }
 
-      const updatedWkid = state._testAccess("_setSpatialReferenceInfo", spatialReferenceInfo, solutionTemplates);
-      expect(updatedWkid).toBeUndefined();
+      // Check spatial reference values before modifications
+      expect(findTemplate("79036430a6274e17ae915d0278b8569c")).toEqual({ wkid: 102100, latestWkid: 3857 });
+      expect(findTemplate("6f072b0ebad74ae9a06ab4569c065956")).toEqual({ wkid: 102100, latestWkid: 3857 });
+      expect(findTemplate("f592ca2b671e44be9508162b84ca91c0")).toEqual({ wkid: 4326, latestWkid: 4326 });
+      expect(findTemplate("b9ade1d6f8d04656ab0eab2d68a2f979")).toEqual({ wkid: "{{params.wkid||102100}}", latestWkid: 3857 });
+      expect(findTemplate("9daf5761f0974c2ba20afa6e8c386d0e")).toEqual({ wkid: "{{params.wkid||102100}}", latestWkid: 3857 });
+
+      // Modify the featureServices structure
+      featureServices[0].enabled = true;
+      featureServices[0].wkid = "{{params.wkid||102100}}";
+      featureServices[4].enabled = false;
+      featureServices[4].wkid = "102100";
+
+      // Register the changes in the templates
+      state._testAccess("_updateFSSpatialReferenceInfoInTemplates", featureServices, solutionTemplates);
+
+      // Check spatial reference values after modifications
+      expect(findTemplate("79036430a6274e17ae915d0278b8569c")).toEqual({ wkid: "{{params.wkid||102100}}" });
+      expect(findTemplate("6f072b0ebad74ae9a06ab4569c065956")).toEqual({ wkid: 102100, latestWkid: 3857 });
+      expect(findTemplate("f592ca2b671e44be9508162b84ca91c0")).toEqual({ wkid: 4326, latestWkid: 4326 });
+      expect(findTemplate("b9ade1d6f8d04656ab0eab2d68a2f979")).toEqual({ wkid: "{{params.wkid||102100}}" });
+      expect(findTemplate("9daf5761f0974c2ba20afa6e8c386d0e")).toEqual({ wkid: 102100, latestWkid: 3857 });
     });
   });
 
