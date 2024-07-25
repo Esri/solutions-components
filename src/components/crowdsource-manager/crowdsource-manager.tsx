@@ -110,6 +110,11 @@ export class CrowdsourceManager {
   @Prop() enableColumnReorder = true;
 
   /**
+   * boolean: when true the users can have the option to create features
+   */
+  @Prop() enableCreateFeatures = true;
+
+  /**
    * boolean: when true the export to csv button will be available
    */
   @Prop() enableCSV = true;
