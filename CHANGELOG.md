@@ -6,6 +6,10 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.9.0] - July 25th 2024
+Start for R3 work
+Adds enableCreateFeatures prop placeholder for Manager
+
 ## [0.8.67] - July 9th 2024
 Move assets and update NodeJS for Travis
 
@@ -705,4 +709,5 @@ Recover from test releases
 [0.8.65]: https://github.com/Esri/solution.js/compare/v0.8.64...v0.8.65 "v0.8.65"
 [0.8.66]: https://github.com/Esri/solution.js/compare/v0.8.65...v0.8.66 "v0.8.66"
 [0.8.67]: https://github.com/Esri/solution.js/compare/v0.8.66...v0.8.67 "v0.8.67"
-[Unreleased]: https://github.com/Esri/solution.js/compare/v0.8.67...HEAD "Unreleased Changes"
+[0.9.0]: https://github.com/Esri/solution.js/compare/v0.8.67...v0.9.0 "v0.9.0"
+[Unreleased]: https://github.com/Esri/solution.js/compare/v0.9.0...HEAD "Unreleased Changes"
