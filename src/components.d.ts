@@ -214,6 +214,10 @@ export namespace Components {
          */
         "enableColumnReorder": boolean;
         /**
+          * boolean: when true the users can have the option to create features
+         */
+        "enableCreateFeatures": boolean;
+        /**
           * boolean: when true the fullscreen widget will be available
          */
         "enableFloorFilter": boolean;
@@ -2588,6 +2592,10 @@ declare namespace LocalJSX {
           * boolean: when true the layer table will support drag/drop of columns to adjust order
          */
         "enableColumnReorder"?: boolean;
+        /**
+          * boolean: when true the users can have the option to create features
+         */
+        "enableCreateFeatures"?: boolean;
         /**
           * boolean: when true the fullscreen widget will be available
          */
