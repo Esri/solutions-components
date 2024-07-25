@@ -33,6 +33,7 @@ import {
   generateStorageFilePaths,
   getItemDataAsJson,
   getProp,
+  getPropWithDefault,
   getThumbnailFromStorageItem,
   IDeployFileCopyPath,
   IItemTemplate,
@@ -42,6 +43,7 @@ import {
   isSupportedFileType,
   removeItemResourceFile,
   setCreateProp,
+  setProp,
   updateItem,
   updateItemResourceFile,
   UserSession
@@ -352,10 +354,10 @@ class SolutionStore
         return this._prepareSolutionItemsForEditing(arg1, arg2, arg3);
       case "_prepareSolutionItemsForStorage":
         return this._prepareSolutionItemsForStorage(arg1, arg2, arg3);
-      case "_setSpatialReferenceInfo":
-        return this._updateFSSpatialReferenceInfoInTemplates(arg1, arg2);
       case "_splitFilename":
         return this._splitFilename(arg1);
+      case "_updateFSSpatialReferenceInfoInTemplates":
+        return this._updateFSSpatialReferenceInfoInTemplates(arg1, arg2);
     }
     return null;
   }
@@ -733,21 +735,31 @@ class SolutionStore
     // Enable or disable this feature in each service
     customizableFeatureServices.forEach(
       (fsTemplate) => {
-        const id: string = fsTemplate.itemId;
-        const fsEnablement = featureServices.find((fs) => fs.id === id);
+        const fsEnablement = featureServices.find((fs) => fs.id === fsTemplate.itemId);
         if (fsEnablement) {
-          setCreateProp(fsTemplate, "properties.service.spatialReference.wkid", fsEnablement.wkid);
-
-          if (fsEnablement.enabled) {
-            // We don't keep the latestWkid property with a parameterized wkid
-            const latestWkid = getProp(fsTemplate, "properties.service.spatialReference.latestWkid");
-            if (latestWkid) {
-              delete fsTemplate.properties.service.spatialReference.latestWkid;
-            }
+          const spatialReference = getPropWithDefault(fsTemplate, "properties.service.spatialReference", {});
+          spatialReference.wkid = fsEnablement.wkid;
+          if (fsEnablement.enabled && spatialReference.latestWkid) {
+            delete spatialReference.latestWkid;
           }
+          setProp(fsTemplate, "properties.service.spatialReference", spatialReference);
         }
       }
     );
+
+    // Copy the updates back into the templates
+    templates.forEach((t: IItemTemplateEdit) => {
+      const customizedTemplate = customizableFeatureServices.find((fs) => fs.itemId === t.itemId);
+      if (customizedTemplate) {
+        t.properties.service.spatialReference = {
+          ...customizedTemplate.properties.service.spatialReference
+        };
+        const nWkid = Number.parseInt(t.properties.service.spatialReference.wkid);
+        if (!isNaN(nWkid)) {
+          t.properties.service.spatialReference.wkid = nWkid;
+        }
+      }
+    });
   }
 
   /**
