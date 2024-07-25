@@ -77,7 +77,8 @@
     "tailwindcss": "3.4.6",
     "tslib": "^2.6.3",
     "tsx": "^4.16.2",
-    "typescript": "^5.5.4"
+    "typescript": "^5.5.4",
+    "workbox-build": "^4.3.1"
   },
   "dependencies": {
     "@arcgis/core": "^4.30.8",
