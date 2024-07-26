@@ -25,7 +25,7 @@
  *
 */
 
-import { Component, Element, Event, EventEmitter, Prop, VNode } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Method, Prop, VNode } from '@stencil/core';
 import state from "../../utils/solution-store";
 import { getFeatureServices, /*getModels,*/ getSpatialReferenceInfo } from '../../utils/templates';
 import { ISolutionItemData, UserSession } from '@esri/solution-common';
@@ -93,6 +93,24 @@ export class StoreManager {
   //--------------------------------------------------------------------------
 
   @Event() stateLoaded: EventEmitter<any>;
+
+  //--------------------------------------------------------------------------
+  //
+  //  Public Methods (async)
+  //
+  //--------------------------------------------------------------------------
+
+  /**
+   * Returns the store info for the supplied property name.
+   *
+   * @param propName Name of the property to return
+   */
+  @Method()
+  async getStoreInfo(
+    propName: string
+  ): Promise<any> {
+    return Promise.resolve(state.getStoreInfo(propName));
+  }
 
   //--------------------------------------------------------------------------
   //

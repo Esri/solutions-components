@@ -1,6 +1,5 @@
 {
-    "paramDescription": "חשוף את הפרמטר Spatial Reference ואפשר למשתמשים לשנות את ההתייחסות המרחבית לשכבות בעת פריסת הפתרון.",
-    "specifyParam": "פרמטר התייחסות מרחבית",
-    "spatialReferenceInfo": "ברירת המחדל של הפניה מרחבית",
-    "featureServicesHeading": "שירותי תכונה"
+  "enableSpatialReference": "אפשר פרמטר התייחסות מרחבית",
+  "enableDefaultSpatialReference": "אפשר את ברירת המחדל של הפניה מרחבית",
+  "featureServicesHeading": "החל בחירת התייחסות מרחבית על שירותי תכונה אלה (בחר לפחות אחד):"
 }

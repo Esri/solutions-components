@@ -5,11 +5,11 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { ButtonType, DistanceUnit, EditType, EDrawMode, ELayoutMode, IBasemapConfig, IConsentResponse, IExportInfos, IInventoryItem, ILayerAndTableIds, ILayerExpression, IMapChange, IMapInfo, IReportingOptions, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISortingInfo, ISpatialRefRepresentation, IValueChange, theme } from "./utils/interfaces";
+import { ButtonType, DistanceUnit, EditType, EDrawMode, ELayoutMode, IBasemapConfig, IConsentResponse, IExportInfos, IFeatureServiceEnabledStatus, IInventoryItem, ILayerAndTableIds, ILayerExpression, IMapChange, IMapInfo, IReportingOptions, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISortingInfo, ISpatialRefRepresentation, IValueChange, theme } from "./utils/interfaces";
 import { IReportingOptions as IReportingOptions1 } from "./components";
 import { ILayerItemsHash } from "./components/layer-list/layer-list";
 import { UserSession } from "@esri/solution-common";
-export { ButtonType, DistanceUnit, EditType, EDrawMode, ELayoutMode, IBasemapConfig, IConsentResponse, IExportInfos, IInventoryItem, ILayerAndTableIds, ILayerExpression, IMapChange, IMapInfo, IReportingOptions, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISortingInfo, ISpatialRefRepresentation, IValueChange, theme } from "./utils/interfaces";
+export { ButtonType, DistanceUnit, EditType, EDrawMode, ELayoutMode, IBasemapConfig, IConsentResponse, IExportInfos, IFeatureServiceEnabledStatus, IInventoryItem, ILayerAndTableIds, ILayerExpression, IMapChange, IMapInfo, IReportingOptions, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISortingInfo, ISpatialRefRepresentation, IValueChange, theme } from "./utils/interfaces";
 export { IReportingOptions as IReportingOptions1 } from "./components";
 export { ILayerItemsHash } from "./components/layer-list/layer-list";
 export { UserSession } from "@esri/solution-common";
@@ -1426,17 +1426,30 @@ export namespace Components {
     }
     interface SolutionSpatialRef {
         /**
+          * Provides access to protected methods for unit testing.
+          * @param methodName Name of protected method to run
+          * @param _arg1 First argument to forward to method, e.g., for "_prepareSolutionItemsForEditing", `solutionItemId`
+          * @param _arg2 Second argument to forward to method, e.g., for "_prepareSolutionItemsForEditing", `templates`
+          * @param _arg3 Third argument to forward to method, e.g., for "_prepareSolutionItemsForEditing", `authentication`
+          * @returns
+         */
+        "_testAccess": (methodName: string, _arg1?: any, _arg2?: any, _arg3?: any) => Promise<any>;
+        /**
           * The wkid that will be used as the default when no user selection has been made.
          */
         "defaultWkid": number;
         /**
-          * Indicates if the control has been enabled. The first time Spatial Reference has been enabled it should enable all feature services.
+          * When true, all but the main switch are disabled to prevent interaction.
          */
-        "loaded": boolean;
+        "enableDefault": boolean;
         /**
           * When true, all but the main switch are disabled to prevent interaction.
          */
-        "locked": boolean;
+        "enabled": boolean;
+        /**
+          * Indicates if the control has been enabled. The first time Spatial Reference has been enabled it should enable all feature services.
+         */
+        "loaded": boolean;
         /**
           * List of services the spatial reference should apply to
          */
@@ -1506,6 +1519,11 @@ export namespace Components {
           * Credentials for requests
          */
         "authentication": UserSession;
+        /**
+          * Returns the store info for the supplied property name.
+          * @param propName Name of the property to return
+         */
+        "getStoreInfo": (propName: string) => Promise<any>;
         /**
           * Templates for the current solution
          */
@@ -2237,8 +2255,9 @@ declare global {
         new (): HTMLSolutionResourceItemElement;
     };
     interface HTMLSolutionSpatialRefElementEventMap {
-        "featureServiceSpatialReferenceChange": IFeatureServiceSpatialReferenceChange;
-        "lockedSpatialReferenceChange": { locked: boolean };
+        "featureServiceSpatialReferenceChange": IFeatureServiceEnabledStatus;
+        "enableDefaultSpatialReferenceChange": { enableDefault: boolean };
+        "enabledSpatialReferenceChange": { enabled: boolean };
     }
     interface HTMLSolutionSpatialRefElement extends Components.SolutionSpatialRef, HTMLStencilElement {
         addEventListener<K extends keyof HTMLSolutionSpatialRefElementEventMap>(type: K, listener: (this: HTMLSolutionSpatialRefElement, ev: SolutionSpatialRefCustomEvent<HTMLSolutionSpatialRefElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -3838,15 +3857,20 @@ declare namespace LocalJSX {
          */
         "defaultWkid"?: number;
         /**
-          * Indicates if the control has been enabled. The first time Spatial Reference has been enabled it should enable all feature services.
+          * When true, all but the main switch are disabled to prevent interaction.
          */
-        "loaded"?: boolean;
+        "enableDefault"?: boolean;
         /**
           * When true, all but the main switch are disabled to prevent interaction.
          */
-        "locked"?: boolean;
-        "onFeatureServiceSpatialReferenceChange"?: (event: SolutionSpatialRefCustomEvent<IFeatureServiceSpatialReferenceChange>) => void;
-        "onLockedSpatialReferenceChange"?: (event: SolutionSpatialRefCustomEvent<{ locked: boolean }>) => void;
+        "enabled"?: boolean;
+        /**
+          * Indicates if the control has been enabled. The first time Spatial Reference has been enabled it should enable all feature services.
+         */
+        "loaded"?: boolean;
+        "onEnableDefaultSpatialReferenceChange"?: (event: SolutionSpatialRefCustomEvent<{ enableDefault: boolean }>) => void;
+        "onEnabledSpatialReferenceChange"?: (event: SolutionSpatialRefCustomEvent<{ enabled: boolean }>) => void;
+        "onFeatureServiceSpatialReferenceChange"?: (event: SolutionSpatialRefCustomEvent<IFeatureServiceEnabledStatus>) => void;
         /**
           * List of services the spatial reference should apply to
          */

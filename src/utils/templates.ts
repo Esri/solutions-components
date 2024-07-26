@@ -19,13 +19,14 @@
 */
 import {
   //EUpdateType,
+  CSpatialRefCustomizingPrefix,
+  IFeatureServiceEnabledStatus,
   IInventoryItem,
   //IItemDetails,
   //IItemShare,
   IOrganizationVariableItem,
   //IResourcePath,
   ISolutionModels,
-  //ISolutionSpatialReferenceInfo,
   IVariableItem
 } from '../utils/interfaces';
 import {
@@ -50,7 +51,7 @@ import {
  */
 export function getFeatureServices(
   templates: IItemTemplate[]
-): any[] {
+): IFeatureServiceEnabledStatus[] {
   return templates.reduce((prev, cur) => {
     const name: string = cur.item.title || cur.item.name;
     if (cur.type === "Feature Service" &&
@@ -58,7 +59,7 @@ export function getFeatureServices(
       prev.indexOf(name) < 0
     ) {
       const wkid = getProp(cur, "properties.service.spatialReference.wkid");
-      prev.push({ id: cur.itemId, name, enabled: wkid.toString().startsWith("{{params.wkid||")});
+      prev.push({ id: cur.itemId, name, enabled: wkid.toString().startsWith(CSpatialRefCustomizingPrefix), wkid});
     }
     return prev;
   }, []);
@@ -302,11 +303,16 @@ export function getSpatialReferenceInfo(
     defaultServices[service.id] = service.enabled;
   });
   const wkid = getProp(data, "params.wkid.default");
-  return {
-    enabled: wkid !== undefined && wkid !== "",
-    services: defaultServices,
-    spatialReference: wkid ? { wkid } : undefined
-  }
+  return wkid
+    ? {
+        enabled: false,
+        default: wkid,
+        services: defaultServices
+      }
+    : {
+        enabled: false,
+        services: defaultServices
+      };
 }
 
 //--------------------------------------------------------------------------

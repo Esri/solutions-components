@@ -175,9 +175,9 @@ export class SolutionConfiguration {
                       <div class="config-solution">
                         <solution-spatial-ref
                           defaultWkid={wkid}
+                          enabled={!wkid}
                           id="configure-solution-spatial-ref"
                           key={`${this.solutionItemId}-spatial-ref`}
-                          locked={!wkid}
                           services={state.getStoreInfo("featureServices").map(fs => fs.name)}
                         />
                       </div>

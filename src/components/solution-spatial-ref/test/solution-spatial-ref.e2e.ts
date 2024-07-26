@@ -28,22 +28,9 @@ describe('solution-spatial-ref', () => {
 
     const solution_spatial_ref = await page.find('solution-spatial-ref');
     expect(solution_spatial_ref).toHaveClass('hydrated');
-    expect(await solution_spatial_ref.getProperty('defaultWkid')).toBe(102100);
-    expect(await solution_spatial_ref.getProperty('value')).toBe('102100');
-  });
-
-  it('echoes value of contained spatial-ref component', async () => {
-    await page.setContent('<solution-spatial-ref/>');
-    await page.waitForChanges();
-
-    const newSpatialRef = '2243';
-    const spatial_ref = await page.find('spatial-ref');
-    await page.waitForChanges();
-    await spatial_ref.setProperty('value', newSpatialRef);
-    await page.waitForChanges();
-
-    const solution_spatial_ref = await page.find('solution-spatial-ref');
-    expect(await solution_spatial_ref.getProperty('value')).toBe(newSpatialRef);
+    expect(await solution_spatial_ref.getProperty('defaultWkid')).toBe(3857);
+    expect(await solution_spatial_ref.getProperty('value')).toBe('3857');
+    expect(await solution_spatial_ref.getProperty('services')).toEqual([]);
   });
 
 });
