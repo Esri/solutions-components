@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.10.0] - July 26th 2024
+Simplified solution-spatial-ref
+
 ## [0.9.0] - July 25th 2024
 Start for R3 work
 Adds enableCreateFeatures prop placeholder for Manager
@@ -710,4 +713,5 @@ Recover from test releases
 [0.8.66]: https://github.com/Esri/solution.js/compare/v0.8.65...v0.8.66 "v0.8.66"
 [0.8.67]: https://github.com/Esri/solution.js/compare/v0.8.66...v0.8.67 "v0.8.67"
 [0.9.0]: https://github.com/Esri/solution.js/compare/v0.8.67...v0.9.0 "v0.9.0"
-[Unreleased]: https://github.com/Esri/solution.js/compare/v0.9.0...HEAD "Unreleased Changes"
+[0.10.0]: https://github.com/Esri/solution.js/compare/v0.9.0...v0.10.0 "v0.10.0"
+[Unreleased]: https://github.com/Esri/solution.js/compare/v0.10.0...HEAD "Unreleased Changes"
