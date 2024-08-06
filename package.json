@@ -40,7 +40,7 @@
     "@esri/calcite-design-tokens": "^2.2.0",
     "@esri/eslint-plugin-calcite-components": "^1.2.0",
     "@esri/instant-apps-components": "^1.0.0-beta.237",
-    "@esri/solution-common": "5.3.7",
+    "@esri/solution-common": "5.5.1",
     "@esri/telemetry": "8.0.0",
     "@esri/telemetry-amazon": "3.0.1",
     "@esri/telemetry-google-analytics": "2.0.1",
