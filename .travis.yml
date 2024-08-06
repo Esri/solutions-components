@@ -1,8 +1,9 @@
 language: node_js
-dist: jammynode
+dist: jammy
 node_js:
-  - "20"
-cache: npm
+  - 22
+cache:
+  npm: false
 before_script:
   - export NODE_OPTIONS=--max_old_space_size=32768
 script:
