@@ -69,7 +69,7 @@
     "jest-cli": "^29.7.0",
     "mkdirp": "3.0.1",
     "ncp": "^2.0.0",
-    "npm-check-updates": "^16.14.20",
+    "npm-check-updates": "^17.0.6",
     "prettier": "3.3.3",
     "puppeteer": "^22.13.1",
     "react": "^18.3.1",
