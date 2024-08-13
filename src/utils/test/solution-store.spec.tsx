@@ -171,7 +171,7 @@ describe("solution-store", () => {
     await state.loadSolution("ca924c6db7d247b9a31fa30532fb5913", MOCK_USER_SESSION);
 
     const origDefaultWkid = state.getStoreInfo("defaultWkid");
-    expect(origDefaultWkid).toBeUndefined();
+    expect(origDefaultWkid).toEqual("");
 
     state.setStoreInfo("defaultWkid", "2865");
     const modifiedDefaultWkid = state.getStoreInfo("defaultWkid");

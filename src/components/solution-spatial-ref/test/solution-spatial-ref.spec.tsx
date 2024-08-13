@@ -41,7 +41,7 @@ describe('solution-spatial-ref', () => {
           "123": true,
           "456": false
         },
-        spatialReference: "2865"
+        wkid: "2865"
       });
       state.setStoreInfo("featureServices", [
         {
@@ -70,34 +70,33 @@ describe('solution-spatial-ref', () => {
         )
       });
       expect(page.root).toEqualHtml(`
-        <solution-spatial-ref>
+        <solution-spatial-ref enabled="">
           <label class="switch-label">
-            <calcite-switch class="spatial-ref-switch" scale="m"></calcite-switch>
+            <calcite-switch checked="" class="spatial-ref-switch" scale="m"></calcite-switch>
           </label>
           <br>
-          <br>
-          <label class="switch-label spatial-ref-component">
-            <calcite-switch class="spatial-ref-switch" disabled="" scale="m"></calcite-switch>
-          </label>
           <div class="spatial-ref-component" id="spatialRefDefn">
             <div>
               <label class="spatial-ref-item-title"></label>
               <ul class="spatial-ref-services-list">
                 <li class="spatial-ref-services-list-item">
                   <label class="switch-label">
-                    <calcite-switch class="spatial-ref-item-switch" disabled="" scale="m"></calcite-switch>
+                    <calcite-switch checked="" class="spatial-ref-item-switch" scale="m"></calcite-switch>
                     Feature Service 1
                   </label>
                 </li>
                 <li class="spatial-ref-services-list-item">
                   <label class="switch-label">
-                    <calcite-switch class="spatial-ref-item-switch" disabled="" scale="m"></calcite-switch>
+                    <calcite-switch class="spatial-ref-item-switch" scale="m"></calcite-switch>
                     Feature Service 2
                   </label>
                 </li>
               </ul>
             </div>
           </div>
+          <label class="switch-label spatial-ref-component">
+            <calcite-switch class="spatial-ref-switch" scale="m"></calcite-switch>
+          </label>
         </solution-spatial-ref>
       `);
     });
@@ -111,13 +110,13 @@ describe('solution-spatial-ref', () => {
       it('parameterizes', async () => {
         const component = new SolutionSpatialRef();
         const result = await component._testAccess("_parameterizeWkid", "2865");
-        expect(result).toEqual(`${CSpatialRefCustomizingPrefix}2965${CSpatialRefCustomizingSuffix}`);
+        expect(result).toEqual(`${CSpatialRefCustomizingPrefix}2865${CSpatialRefCustomizingSuffix}`);
       });
 
       it('returns already-parameterized string', async () => {
         const component = new SolutionSpatialRef();
-        const result = await component._testAccess("_parameterizeWkid", `${CSpatialRefCustomizingPrefix}2965${CSpatialRefCustomizingSuffix}`);
-        expect(result).toEqual(`${CSpatialRefCustomizingPrefix}2965${CSpatialRefCustomizingSuffix}`);
+        const result = await component._testAccess("_parameterizeWkid", `${CSpatialRefCustomizingPrefix}2865${CSpatialRefCustomizingSuffix}`);
+        expect(result).toEqual(`${CSpatialRefCustomizingPrefix}2865${CSpatialRefCustomizingSuffix}`);
       });
 
       it('handles undefined wkid', async () => {
@@ -144,7 +143,7 @@ describe('solution-spatial-ref', () => {
 
       it('unparameterizes', async () => {
         const component = new SolutionSpatialRef();
-        const result = await component._testAccess("_unparameterizeWkid", `${CSpatialRefCustomizingPrefix}2965${CSpatialRefCustomizingSuffix}`);
+        const result = await component._testAccess("_unparameterizeWkid", `${CSpatialRefCustomizingPrefix}2865${CSpatialRefCustomizingSuffix}`);
         expect(result).toEqual("2865");
       });
 

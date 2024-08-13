@@ -28,9 +28,9 @@ describe('solution-spatial-ref', () => {
 
     const solution_spatial_ref = await page.find('solution-spatial-ref');
     expect(solution_spatial_ref).toHaveClass('hydrated');
-    expect(await solution_spatial_ref.getProperty('defaultWkid')).toBe(3857);
-    expect(await solution_spatial_ref.getProperty('value')).toBe('3857');
-    expect(await solution_spatial_ref.getProperty('services')).toEqual([]);
+    expect(await solution_spatial_ref.getProperty('enabled')).toBeFalsy();
+    expect(await solution_spatial_ref.getProperty('enableDefault')).toBeFalsy();
+    expect(await solution_spatial_ref.getProperty('featureServices')).toEqual([]);
   });
 
 });
