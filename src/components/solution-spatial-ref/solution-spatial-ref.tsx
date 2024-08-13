@@ -53,12 +53,6 @@ export class SolutionSpatialRef {
   //--------------------------------------------------------------------------
 
   /**
-  * Indicates if the control has been enabled.
-  * The first time Spatial Reference has been enabled it should enable all feature services.
-  */
-  //???@Prop({ mutable: true, reflect: true }) loaded = false;
-
-  /**
   * When true, all but the main switch are disabled to prevent interaction.
   */
   @Prop({ mutable: true, reflect: true }) enabled = false;
@@ -230,21 +224,7 @@ export class SolutionSpatialRef {
    */
   private _handleSpatialRefParamChange(): void {
     // Update featureServices
-
-    /*
-    if (this.enabled) {
-      if (!this.loaded) {
-        // when this is switched on when loading we have reloaded a solution that
-        // has a custom wkid param and we should honor the settings they already have in the templates
-        // By default enable all Feature Services on enablement
-        this.loaded = true;
-        this._setFeatureServiceDefaults(this.featureServices);
-      }
-
-    } else {
-    */  //???
-
-    if (!this.enabled) {  //???
+    if (!this.enabled) {
       // Disable the default spatial reference button
       this.enableDefault = false;
 
@@ -308,22 +288,6 @@ export class SolutionSpatialRef {
       </div>
     ) : (null);
   }
-
-  /**
-   * Enable spatial reference variable for all feature services.
-   *
-   * @param services list of service names
-   */
-  /*
-  private _setFeatureServiceDefaults(
-    featureServices: IFeatureServiceEnabledStatus[]
-  ): void {
-    // switch all spatial-ref-item-switch
-    const fsNodes = nodeListToArray(this.el.getElementsByClassName("spatial-ref-item-switch"));
-    fsNodes.forEach((node: any) => node.checked = true);
-    featureServices.forEach(service => this._updateEnabledServices({detail: { switched: true }}, service));
-  }
-  */  //???
 
   /**
    * Updates the enabled/disabled state of the service in spatialReferenceInfo.
