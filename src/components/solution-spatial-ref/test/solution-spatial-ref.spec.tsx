@@ -19,6 +19,10 @@ import state from "../../../utils/solution-store";
 import { h } from '@stencil/core';
 import { newSpecPage } from '@stencil/core/testing';
 import { SolutionSpatialRef } from '../solution-spatial-ref';
+import {
+  CSpatialRefCustomizingPrefix,
+  CSpatialRefCustomizingSuffix,
+} from '../../../utils/interfaces';
 
 describe('solution-spatial-ref', () => {
 
@@ -62,11 +66,11 @@ describe('solution-spatial-ref', () => {
         components: [SolutionSpatialRef],
         supportsShadowDom: false,
         template: () => (
-          <solution-spatial-ref value="2865"/>
+          <solution-spatial-ref/>
         )
       });
       expect(page.root).toEqualHtml(`
-        <solution-spatial-ref default-wkid="3857" value="2865">
+        <solution-spatial-ref>
           <label class="switch-label">
             <calcite-switch class="spatial-ref-switch" scale="m"></calcite-switch>
           </label>
@@ -107,13 +111,13 @@ describe('solution-spatial-ref', () => {
       it('parameterizes', async () => {
         const component = new SolutionSpatialRef();
         const result = await component._testAccess("_parameterizeWkid", "2865");
-        expect(result).toEqual("{{params.wkid||2865}}");
+        expect(result).toEqual(`${CSpatialRefCustomizingPrefix}2965${CSpatialRefCustomizingSuffix}`);
       });
 
       it('returns already-parameterized string', async () => {
         const component = new SolutionSpatialRef();
-        const result = await component._testAccess("_parameterizeWkid", "{{params.wkid||2865}}");
-        expect(result).toEqual("{{params.wkid||2865}}");
+        const result = await component._testAccess("_parameterizeWkid", `${CSpatialRefCustomizingPrefix}2965${CSpatialRefCustomizingSuffix}`);
+        expect(result).toEqual(`${CSpatialRefCustomizingPrefix}2965${CSpatialRefCustomizingSuffix}`);
       });
 
       it('handles undefined wkid', async () => {
@@ -140,7 +144,7 @@ describe('solution-spatial-ref', () => {
 
       it('unparameterizes', async () => {
         const component = new SolutionSpatialRef();
-        const result = await component._testAccess("_unparameterizeWkid", "{{params.wkid||2865}}");
+        const result = await component._testAccess("_unparameterizeWkid", `${CSpatialRefCustomizingPrefix}2965${CSpatialRefCustomizingSuffix}`);
         expect(result).toEqual("2865");
       });
 

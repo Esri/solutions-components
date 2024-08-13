@@ -7,21 +7,18 @@
 
 ## Properties
 
-| Property        | Attribute        | Description                                                                                                                         | Type                             | Default                       |
-| --------------- | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------- | -------------------------------- | ----------------------------- |
-| `defaultWkid`   | `default-wkid`   | The wkid that will be used as the default when no user selection has been made.                                                     | `number`                         | `3857`                        |
-| `enableDefault` | `enable-default` | When true, all but the main switch are disabled to prevent interaction.                                                             | `boolean`                        | `false`                       |
-| `enabled`       | `enabled`        | When true, all but the main switch are disabled to prevent interaction.                                                             | `boolean`                        | `false`                       |
-| `loaded`        | `loaded`         | Indicates if the control has been enabled. The first time Spatial Reference has been enabled it should enable all feature services. | `boolean`                        | `false`                       |
-| `services`      | --               | List of services the spatial reference should apply to                                                                              | `IFeatureServiceEnabledStatus[]` | `[]`                          |
-| `value`         | `value`          | Contains the public value for this component, which is a wkid or a wkt.                                                             | `string`                         | `this.defaultWkid.toString()` |
+| Property          | Attribute        | Description                                                             | Type                             | Default |
+| ----------------- | ---------------- | ----------------------------------------------------------------------- | -------------------------------- | ------- |
+| `enableDefault`   | `enable-default` | When true, a default value is used for feature services.                | `boolean`                        | `false` |
+| `enabled`         | `enabled`        | When true, all but the main switch are disabled to prevent interaction. | `boolean`                        | `false` |
+| `featureServices` | --               | List of services the spatial reference should apply to                  | `IFeatureServiceEnabledStatus[]` | `[]`    |
 
 
 ## Events
 
 | Event                                  | Description | Type                                        |
 | -------------------------------------- | ----------- | ------------------------------------------- |
-| `enableDefaultSpatialReferenceChange`  |             | `CustomEvent<{ enableDefault: boolean; }>`  |
+| `enableDefaultSpatialReferenceChange`  |             | `CustomEvent<{ defaultWkid: string; }>`     |
 | `enabledSpatialReferenceChange`        |             | `CustomEvent<{ enabled: boolean; }>`        |
 | `featureServiceSpatialReferenceChange` |             | `CustomEvent<IFeatureServiceEnabledStatus>` |
 
