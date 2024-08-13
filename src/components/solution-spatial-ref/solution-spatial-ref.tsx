@@ -110,7 +110,10 @@ export class SolutionSpatialRef {
            />
           {this._translations.enableSpatialReference}
         </label>
-        <br /><br />
+        <br />
+        <div class="spatial-ref-component" id="spatialRefDefn">
+          {this._renderFeatureServicesList(this.featureServices)}
+        </div>
         <label class="switch-label spatial-ref-component">
           <calcite-switch
             checked={this.enableDefault}
@@ -121,9 +124,6 @@ export class SolutionSpatialRef {
            />
           {this._translations.enableDefaultSpatialReference}
         </label>
-        <div class="spatial-ref-component" id="spatialRefDefn">
-          {this._renderFeatureServicesList(this.featureServices)}
-        </div>
       </Host>
     );
   }
@@ -314,6 +314,7 @@ export class SolutionSpatialRef {
    *
    * @param services list of service names
    */
+  /*
   private _setFeatureServiceDefaults(
     featureServices: IFeatureServiceEnabledStatus[]
   ): void {
@@ -322,6 +323,7 @@ export class SolutionSpatialRef {
     fsNodes.forEach((node: any) => node.checked = true);
     featureServices.forEach(service => this._updateEnabledServices({detail: { switched: true }}, service));
   }
+  */  //???
 
   /**
    * Updates the enabled/disabled state of the service in spatialReferenceInfo.
