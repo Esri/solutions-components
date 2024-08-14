@@ -473,6 +473,9 @@ export interface IMapInfo {
   _hasValidLayers?: boolean;
   visible?: boolean;
   layerOptions?: ILayerOptions;
+  enableInlineEdit: boolean;
+  enableCreateFeatures: boolean;
+  enableEditGeometry: boolean;
 }
 
 export interface ILayerOptions {

@@ -40,6 +40,11 @@ export class EditCard {
   //--------------------------------------------------------------------------
 
   /**
+   * When true the geometry of the current feature will be editable
+   */
+  @Prop() enableEditGeometry = false;
+
+  /**
    * esri/Graphic[]: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
    */
   @Prop({mutable: true}) graphics: __esri.Graphic[];
@@ -321,14 +326,14 @@ export class EditCard {
   protected async _initEditorWidget(): Promise<void> {
     if (this.mapView && this.graphics && this.graphics.length > 0 && this.graphics[0]) {
       if (this._editor) {
-        this._editor.destroy()
+        this._editor.destroy();
       }
       const container = document.createElement("div");
       const layers = await getAllLayers(this.mapView)
       const layerInfos = layers.map(layer => {
         return {
           layer,
-          geometryUpdatesEnabled: false
+          geometryUpdatesEnabled: this.enableEditGeometry
         } as __esri.LayerInfo
       });
       this._editor = new this.Editor({
