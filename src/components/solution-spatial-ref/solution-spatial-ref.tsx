@@ -326,8 +326,7 @@ export class SolutionSpatialRef {
   ): string {
     return wkid && wkid.toString().startsWith(CSpatialRefCustomizingPrefix)
       ? wkid.substring(CSpatialRefCustomizingPrefix.length, wkid.length - CSpatialRefCustomizingSuffix.length)
-      : wkid
-
+      : wkid;
   }
 
   /**
