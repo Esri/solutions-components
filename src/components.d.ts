@@ -1435,11 +1435,7 @@ export namespace Components {
          */
         "_testAccess": (methodName: string, _arg1?: any, _arg2?: any, _arg3?: any) => Promise<any>;
         /**
-          * The wkid that will be used as the default when no user selection has been made.
-         */
-        "defaultWkid": number;
-        /**
-          * When true, all but the main switch are disabled to prevent interaction.
+          * When true, a default value is used for feature services.
          */
         "enableDefault": boolean;
         /**
@@ -1447,17 +1443,9 @@ export namespace Components {
          */
         "enabled": boolean;
         /**
-          * Indicates if the control has been enabled. The first time Spatial Reference has been enabled it should enable all feature services.
-         */
-        "loaded": boolean;
-        /**
           * List of services the spatial reference should apply to
          */
-        "services": IFeatureServiceEnabledStatus[];
-        /**
-          * Contains the public value for this component, which is a wkid or a wkt.
-         */
-        "value": string;
+        "featureServices": IFeatureServiceEnabledStatus[];
     }
     interface SolutionTemplateData {
         /**
@@ -2256,7 +2244,7 @@ declare global {
     };
     interface HTMLSolutionSpatialRefElementEventMap {
         "featureServiceSpatialReferenceChange": IFeatureServiceEnabledStatus;
-        "enableDefaultSpatialReferenceChange": { enableDefault: boolean };
+        "enableDefaultSpatialReferenceChange": { defaultWkid: string };
         "enabledSpatialReferenceChange": { enabled: boolean };
     }
     interface HTMLSolutionSpatialRefElement extends Components.SolutionSpatialRef, HTMLStencilElement {
@@ -3853,11 +3841,7 @@ declare namespace LocalJSX {
     }
     interface SolutionSpatialRef {
         /**
-          * The wkid that will be used as the default when no user selection has been made.
-         */
-        "defaultWkid"?: number;
-        /**
-          * When true, all but the main switch are disabled to prevent interaction.
+          * When true, a default value is used for feature services.
          */
         "enableDefault"?: boolean;
         /**
@@ -3865,20 +3849,12 @@ declare namespace LocalJSX {
          */
         "enabled"?: boolean;
         /**
-          * Indicates if the control has been enabled. The first time Spatial Reference has been enabled it should enable all feature services.
-         */
-        "loaded"?: boolean;
-        "onEnableDefaultSpatialReferenceChange"?: (event: SolutionSpatialRefCustomEvent<{ enableDefault: boolean }>) => void;
-        "onEnabledSpatialReferenceChange"?: (event: SolutionSpatialRefCustomEvent<{ enabled: boolean }>) => void;
-        "onFeatureServiceSpatialReferenceChange"?: (event: SolutionSpatialRefCustomEvent<IFeatureServiceEnabledStatus>) => void;
-        /**
           * List of services the spatial reference should apply to
          */
-        "services"?: IFeatureServiceEnabledStatus[];
-        /**
-          * Contains the public value for this component, which is a wkid or a wkt.
-         */
-        "value"?: string;
+        "featureServices"?: IFeatureServiceEnabledStatus[];
+        "onEnableDefaultSpatialReferenceChange"?: (event: SolutionSpatialRefCustomEvent<{ defaultWkid: string }>) => void;
+        "onEnabledSpatialReferenceChange"?: (event: SolutionSpatialRefCustomEvent<{ enabled: boolean }>) => void;
+        "onFeatureServiceSpatialReferenceChange"?: (event: SolutionSpatialRefCustomEvent<IFeatureServiceEnabledStatus>) => void;
     }
     interface SolutionTemplateData {
         /**

@@ -57,12 +57,12 @@ import {
 //   * solutionItemId: [string] id of the current solution
 //   * defaultWkid: [any] value of the solution's `params.wkid.default` data property, which may be undefined
 //   * solutionData: [ISolutionItemData] the solution's data, which is modified in-place
-//   * featureServices: [array] a list of Feature services that use a spatial reference var
+//   * featureServices: [array] a list of the enablement status and wkid of Feature services that use a spatial reference var
 //   * spatialReferenceInfo: [object] the current spatial reference (if enabled) and the services that use it
 //       * enabled: [boolean] use the spatial reference
 //       * services: [object] for each service in featureServices by service name, a switch indicating if the
 //           custom spatial reference parameter is enabled/disabled
-//       * spatialReference: [object] the custom spatial reference wkid
+//       * default: [string] the default spatial reference wkid if present
 //
 // Store singleton method:
 //   * Store: Creates singleton instance when accessed; default export from module.
@@ -188,7 +188,7 @@ class SolutionStore
 
     const solutionData = await getItemDataAsJson(solutionItemId, authentication);
     if (solutionData) {
-      const defaultWkid: string = getProp(solutionData, "params.wkid.default");
+      const defaultWkid: string = getPropWithDefault(solutionData, "params.wkid.default", "");
       await this._prepareSolutionItemsForEditing(solutionItemId, solutionData.templates, authentication);
       const featureServices = this._getFeatureServices(solutionData.templates);
       const spatialReferenceInfo = this._getSpatialReferenceInfo(featureServices, defaultWkid);

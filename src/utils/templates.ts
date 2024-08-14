@@ -31,7 +31,8 @@ import {
 } from '../utils/interfaces';
 import {
   IItemTemplate,
-  getProp
+  getProp,
+  getPropWithDefault
 } from '@esri/solution-common';
 
 //--------------------------------------------------------------------------
@@ -189,11 +190,11 @@ export function getModels(templates: any[]): ISolutionModels {
         title: t.item?.title,
         itemOriginValue: JSON.stringify(t.item),
         spatialReference: t.properties?.service?.spatialReference,
-        resources: [], //???
-        resourceFilePaths: [], //???
-        sourceResourceFilePaths: [], //???
-        thumbnailOrigin: undefined, //???
-        thumbnailNew: undefined, //???
+        resources: [],
+        resourceFilePaths: [],
+        sourceResourceFilePaths: [],
+        thumbnailOrigin: undefined,
+        thumbnailNew: undefined,
         type: t.type
       };
     }
@@ -303,14 +304,15 @@ export function getSpatialReferenceInfo(
     defaultServices[service.id] = service.enabled;
   });
   const wkid = getProp(data, "params.wkid.default");
+  const enabled = getPropWithDefault(data, "params.wkid.attributes.required", false);
   return wkid
     ? {
-        enabled: false,
+        enabled,
         default: wkid,
         services: defaultServices
       }
     : {
-        enabled: false,
+        enabled,
         services: defaultServices
       };
 }

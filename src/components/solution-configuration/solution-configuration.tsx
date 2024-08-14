@@ -18,7 +18,7 @@ import { Component, Element, h, Host, Listen, Method, Prop, State, VNode, Watch 
 import { IInventoryItem, IItemTemplateEdit, ISolutionSpatialReferenceInfo } from "../../utils/interfaces";
 import * as utils from "../../utils/templates";
 import state from "../../utils/solution-store";
-import { getProp, UserSession } from "@esri/solution-common";
+import { UserSession } from "@esri/solution-common";
 import "@esri/calcite-components";
 import SolutionConfiguration_T9n from "../../assets/t9n/solution-configuration/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
@@ -115,7 +115,7 @@ export class SolutionConfiguration {
    * Renders the component.
    */
   render(): VNode {
-    const wkid = getProp(state.getStoreInfo("spatialReferenceInfo"), "spatialReference");
+    const spatialReferenceInfo = state.getStoreInfo("spatialReferenceInfo");
     const hasServices: boolean = state.getStoreInfo("featureServices").length > 0;
 
     const solutionData = state.getStoreInfo("solutionData");
@@ -174,11 +174,11 @@ export class SolutionConfiguration {
                   ? <calcite-tab class="config-tab">
                       <div class="config-solution">
                         <solution-spatial-ref
-                          defaultWkid={wkid}
-                          enabled={!wkid}
+                          enableDefault={!!spatialReferenceInfo.default}
+                          enabled={spatialReferenceInfo?.enabled}
+                          featureServices={state.getStoreInfo("featureServices").map(fs => fs.name)}
                           id="configure-solution-spatial-ref"
                           key={`${this.solutionItemId}-spatial-ref`}
-                          services={state.getStoreInfo("featureServices").map(fs => fs.name)}
                         />
                       </div>
                     </calcite-tab>

@@ -20,6 +20,8 @@ import solution_734164 from "./solution_734164.json";
 import solution_ca924c from "./solution_ca924c.json";
 import state from "../solution-store";
 import {
+  CSpatialRefCustomizingPrefix,
+  CSpatialRefCustomizingSuffix,
   EUpdateType,
   IFeatureServiceEnabledStatus,
   IItemShare,
@@ -169,7 +171,7 @@ describe("solution-store", () => {
     await state.loadSolution("ca924c6db7d247b9a31fa30532fb5913", MOCK_USER_SESSION);
 
     const origDefaultWkid = state.getStoreInfo("defaultWkid");
-    expect(origDefaultWkid).toBeUndefined();
+    expect(origDefaultWkid).toEqual("");
 
     state.setStoreInfo("defaultWkid", "2865");
     const modifiedDefaultWkid = state.getStoreInfo("defaultWkid");
@@ -491,13 +493,13 @@ describe("solution-store", () => {
               "id": "b9ade1d6f8d04656ab0eab2d68a2f979",
               "name": "ServiceAreas",
               "enabled": true,
-              "wkid": "{{params.wkid||102100}}"
+              "wkid": `${CSpatialRefCustomizingPrefix}102100${CSpatialRefCustomizingSuffix}`
             },
             {
               "id": "9daf5761f0974c2ba20afa6e8c386d0e",
               "name": "Requests",
               "enabled": true,
-              "wkid": "{{params.wkid||102100}}"
+              "wkid": `${CSpatialRefCustomizingPrefix}102100${CSpatialRefCustomizingSuffix}`
             }
           ]
       */
@@ -515,12 +517,12 @@ describe("solution-store", () => {
       expect(findTemplate("79036430a6274e17ae915d0278b8569c")).toEqual({ wkid: 102100, latestWkid: 3857 });
       expect(findTemplate("6f072b0ebad74ae9a06ab4569c065956")).toEqual({ wkid: 102100, latestWkid: 3857 });
       expect(findTemplate("f592ca2b671e44be9508162b84ca91c0")).toEqual({ wkid: 4326, latestWkid: 4326 });
-      expect(findTemplate("b9ade1d6f8d04656ab0eab2d68a2f979")).toEqual({ wkid: "{{params.wkid||102100}}", latestWkid: 3857 });
-      expect(findTemplate("9daf5761f0974c2ba20afa6e8c386d0e")).toEqual({ wkid: "{{params.wkid||102100}}", latestWkid: 3857 });
+      expect(findTemplate("b9ade1d6f8d04656ab0eab2d68a2f979")).toEqual({ wkid: `${CSpatialRefCustomizingPrefix}102100${CSpatialRefCustomizingSuffix}`, latestWkid: 3857 });
+      expect(findTemplate("9daf5761f0974c2ba20afa6e8c386d0e")).toEqual({ wkid: `${CSpatialRefCustomizingPrefix}102100${CSpatialRefCustomizingSuffix}`, latestWkid: 3857 });
 
       // Modify the featureServices structure
       featureServices[0].enabled = true;
-      featureServices[0].wkid = "{{params.wkid||102100}}";
+      featureServices[0].wkid = `${CSpatialRefCustomizingPrefix}102100${CSpatialRefCustomizingSuffix}`;
       featureServices[4].enabled = false;
       featureServices[4].wkid = "102100";
 
@@ -528,10 +530,10 @@ describe("solution-store", () => {
       state._testAccess("_updateFSSpatialReferenceInfoInTemplates", featureServices, solutionTemplates);
 
       // Check spatial reference values after modifications
-      expect(findTemplate("79036430a6274e17ae915d0278b8569c")).toEqual({ wkid: "{{params.wkid||102100}}" });
+      expect(findTemplate("79036430a6274e17ae915d0278b8569c")).toEqual({ wkid: `${CSpatialRefCustomizingPrefix}102100${CSpatialRefCustomizingSuffix}` });
       expect(findTemplate("6f072b0ebad74ae9a06ab4569c065956")).toEqual({ wkid: 102100, latestWkid: 3857 });
       expect(findTemplate("f592ca2b671e44be9508162b84ca91c0")).toEqual({ wkid: 4326, latestWkid: 4326 });
-      expect(findTemplate("b9ade1d6f8d04656ab0eab2d68a2f979")).toEqual({ wkid: "{{params.wkid||102100}}" });
+      expect(findTemplate("b9ade1d6f8d04656ab0eab2d68a2f979")).toEqual({ wkid: `${CSpatialRefCustomizingPrefix}102100${CSpatialRefCustomizingSuffix}` });
       expect(findTemplate("9daf5761f0974c2ba20afa6e8c386d0e")).toEqual({ wkid: 102100, latestWkid: 3857 });
     });
   });
