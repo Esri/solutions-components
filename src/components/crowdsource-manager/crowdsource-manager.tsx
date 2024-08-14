@@ -135,11 +135,6 @@ export class CrowdsourceManager {
   @Prop() enableHome = true;
 
   /**
-   * boolean: when true edits can be applied directly within the table
-   */
-  @Prop() enableInlineEdit = false;
-
-  /**
    * boolean: when true the legend widget will be available
    */
   @Prop() enableLegend = true;
@@ -944,7 +939,7 @@ export class CrowdsourceManager {
             enableAutoRefresh={this.enableAutoRefresh}
             enableCSV={this.enableCSV}
             enableColumnReorder={this.enableColumnReorder}
-            enableInlineEdit={this.enableInlineEdit}
+            enableInlineEdit={this?._mapInfo?.enableInlineEdit}
             enableShare={this.enableShare}
             isMobile={this._isMobile}
             mapHidden={this._expandPopup}

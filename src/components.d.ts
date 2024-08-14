@@ -230,10 +230,6 @@ export namespace Components {
          */
         "enableHome": boolean;
         /**
-          * boolean: when true edits can be applied directly within the table
-         */
-        "enableInlineEdit": boolean;
-        /**
           * boolean: when true the legend widget will be available
          */
         "enableLegend": boolean;
@@ -445,6 +441,10 @@ export namespace Components {
         "layer": __esri.FeatureLayer;
     }
     interface EditCard {
+        /**
+          * When true the geometry of the current feature will be editable
+         */
+        "enableEditGeometry": boolean;
         /**
           * The index of the current graphic
          */
@@ -2628,10 +2628,6 @@ declare namespace LocalJSX {
          */
         "enableHome"?: boolean;
         /**
-          * boolean: when true edits can be applied directly within the table
-         */
-        "enableInlineEdit"?: boolean;
-        /**
           * boolean: when true the legend widget will be available
          */
         "enableLegend"?: boolean;
@@ -2863,6 +2859,10 @@ declare namespace LocalJSX {
         "onEditsComplete"?: (event: DeleteButtonCustomEvent<EditType>) => void;
     }
     interface EditCard {
+        /**
+          * When true the geometry of the current feature will be editable
+         */
+        "enableEditGeometry"?: boolean;
         /**
           * The index of the current graphic
          */
