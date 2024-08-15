@@ -42,6 +42,11 @@ export class InfoCard {
   //--------------------------------------------------------------------------
 
   /**
+   * When true the geometry of the current feature will be editable
+   */
+  @Prop() enableEditGeometry = false;
+
+  /**
    * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
    */
   @Prop() graphics: __esri.Graphic[];
@@ -253,7 +258,7 @@ export class InfoCard {
   }
 
   /**
-   * update the current graphics to the features widget 
+   * update the current graphics to the features widget
    */
   @Method()
   async updateCurrentGraphic(selectedGraphic: __esri.Graphic): Promise<void> {
@@ -438,6 +443,7 @@ export class InfoCard {
           </div>
           <edit-card
             class={editClass}
+            enableEditGeometry={this.enableEditGeometry}
             graphicIndex={this._features?.selectedFeatureIndex}
             graphics={this.graphics}
             mapView={this.mapView}

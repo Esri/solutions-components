@@ -9,6 +9,7 @@
 
 | Property                  | Attribute                     | Description                                                                                                                 | Type           | Default     |
 | ------------------------- | ----------------------------- | --------------------------------------------------------------------------------------------------------------------------- | -------------- | ----------- |
+| `enableEditGeometry`      | `enable-edit-geometry`        | When true the geometry of the current feature will be editable                                                              | `boolean`      | `false`     |
 | `isMobile`                | `is-mobile`                   | When true the component will render an optimized view for mobile devices                                                    | `boolean`      | `undefined` |
 | `layer`                   | --                            | esri/views/layers/FeatureLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html | `FeatureLayer` | `undefined` |
 | `mapView`                 | --                            | esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html                   | `MapView`      | `undefined` |
