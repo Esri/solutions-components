@@ -1065,6 +1065,18 @@ export namespace Components {
          */
         "defaultBufferUnit": DistanceUnit;
         /**
+          * boolean: When true users will be allowed to optionally use features from a layer as the selection geometry
+         */
+        "enableLayerFeatures": boolean;
+        /**
+          * boolean: When true users will be allowed to optionally create a buffer around the selection geometry
+         */
+        "enableSearchDistance": boolean;
+        /**
+          * boolean: When true sketch tools will be provided to allow users to draw a selection geometry
+         */
+        "enableSketchTools": boolean;
+        /**
           * string[]: Optional list of enabled layer ids  If empty all layers will be available
          */
         "enabledLayerIds": string[];
@@ -1256,6 +1268,18 @@ export namespace Components {
           * number: The default number of labels per page to export
          */
         "defaultNumLabelsPerPage": number;
+        /**
+          * boolean: When true users will be allowed to optionally use features from a layer as the selection geometry
+         */
+        "enableLayerFeatures": boolean;
+        /**
+          * boolean: When true users will be allowed to optionally create a buffer around the selection geometry
+         */
+        "enableSearchDistance": boolean;
+        /**
+          * boolean: When true sketch tools will be provided to allow users to draw a selection geometry
+         */
+        "enableSketchTools": boolean;
         /**
           * The effect that will be applied when featureHighlightEnabled is true  esri/layers/support/FeatureEffect: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-support-FeatureEffect.html
          */
@@ -3498,6 +3522,18 @@ declare namespace LocalJSX {
          */
         "defaultBufferUnit"?: DistanceUnit;
         /**
+          * boolean: When true users will be allowed to optionally use features from a layer as the selection geometry
+         */
+        "enableLayerFeatures"?: boolean;
+        /**
+          * boolean: When true users will be allowed to optionally create a buffer around the selection geometry
+         */
+        "enableSearchDistance"?: boolean;
+        /**
+          * boolean: When true sketch tools will be provided to allow users to draw a selection geometry
+         */
+        "enableSketchTools"?: boolean;
+        /**
           * string[]: Optional list of enabled layer ids  If empty all layers will be available
          */
         "enabledLayerIds"?: string[];
@@ -3669,6 +3705,18 @@ declare namespace LocalJSX {
           * number: The default number of labels per page to export
          */
         "defaultNumLabelsPerPage"?: number;
+        /**
+          * boolean: When true users will be allowed to optionally use features from a layer as the selection geometry
+         */
+        "enableLayerFeatures"?: boolean;
+        /**
+          * boolean: When true users will be allowed to optionally create a buffer around the selection geometry
+         */
+        "enableSearchDistance"?: boolean;
+        /**
+          * boolean: When true sketch tools will be provided to allow users to draw a selection geometry
+         */
+        "enableSketchTools"?: boolean;
         /**
           * The effect that will be applied when featureHighlightEnabled is true  esri/layers/support/FeatureEffect: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-support-FeatureEffect.html
          */
