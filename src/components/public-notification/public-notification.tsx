@@ -476,7 +476,7 @@ export class PublicNotification {
     await this._getTranslations();
     await this._initModules();
     this._initSymbols();
-    this._onboardingImageUrl = getAssetPath(`../assets/data/images/onboarding.png`);
+    this._onboardingImageUrl = getAssetPath(`../solutions-components/assets/data/images/onboarding.png`);
   }
 
   /**
@@ -1009,7 +1009,7 @@ export class PublicNotification {
                     </calcite-label>
                     <calcite-icon
                       class="padding-start-1-2 icon"
-                      flipRtl={!(this.locale.toLowerCase() === "he")}
+                      flipRtl={!(this.locale?.toLowerCase() === "he")}
                       icon="question"
                       id="remove-duplicates-icon"
                       scale="s"
@@ -1172,7 +1172,7 @@ export class PublicNotification {
           </calcite-label>
           <calcite-icon
               class="padding-start-1-2 icon"
-              flipRtl={!(this.locale.toLowerCase() === "he")}
+              flipRtl={!(this.locale?.toLowerCase() === "he")}
               icon="question"
               id="list-graphics-icon"
               scale="s"

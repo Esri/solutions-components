@@ -207,7 +207,7 @@ export class RefineSelection {
                 {this._translations.inputLayer}
                 <calcite-icon
                   class="padding-start-1-2 icon"
-                  flipRtl={!(this.locale.toLowerCase() === "he")}
+                  flipRtl={!(this.locale?.toLowerCase() === "he")}
                   icon="question"
                   id="refine-input-layer"
                   scale="s"

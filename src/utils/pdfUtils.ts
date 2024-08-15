@@ -68,7 +68,7 @@ async function downloadPDFFile(
     {
       pageType: "ANSI_A"
     },
-    getAssetPath(`../assets/arcgis-pdf-creator/`),
+    getAssetPath(`../solutions-components/assets/arcgis-pdf-creator/`),
     "en",
     filename  // filename without ".pdf"
   )

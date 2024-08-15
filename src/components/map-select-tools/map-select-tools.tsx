@@ -512,7 +512,7 @@ export class MapSelectTools {
               {this._translations.searchDistance}
               <calcite-icon
                 class="padding-start-1-2 icon"
-                flipRtl={!(this.locale.toLowerCase() === "he")}
+                flipRtl={!(this.locale?.toLowerCase() === "he")}
                 icon="question"
                 id="search-distance-icon"
                 scale="s"
@@ -561,7 +561,7 @@ export class MapSelectTools {
               {this._translations.useLayerFeatures}
               <calcite-icon
                 class="padding-start-1-2 icon"
-                flipRtl={!(this.locale.toLowerCase() === "he")}
+                flipRtl={!(this.locale?.toLowerCase() === "he")}
                 icon="question"
                 id="use-layer-features-icon"
                 scale="s"
@@ -1099,7 +1099,9 @@ export class MapSelectTools {
 
     if (clearLabel) {
       this._selectionLabel = "";
-      this._labelName.value = "";
+      if (this._labelName) {
+        this._labelName.value = "";
+      }
     }
 
     if (this._bufferGraphicsLayer) {
