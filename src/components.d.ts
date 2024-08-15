@@ -72,6 +72,10 @@ export namespace Components {
     }
     interface CardManager {
         /**
+          * When true the geometry of the current feature will be editable
+         */
+        "enableEditGeometry": boolean;
+        /**
           * When true the component will render an optimized view for mobile devices
          */
         "isMobile": boolean;
@@ -577,6 +581,10 @@ export namespace Components {
           * Go to the previous feature in the features widget
          */
         "back": () => Promise<void>;
+        /**
+          * When true the geometry of the current feature will be editable
+         */
+        "enableEditGeometry": boolean;
         /**
           * Get the current selected feature from the Features widget
           * @returns Promise resolving with the current feature
@@ -2440,6 +2448,10 @@ declare namespace LocalJSX {
     }
     interface CardManager {
         /**
+          * When true the geometry of the current feature will be editable
+         */
+        "enableEditGeometry"?: boolean;
+        /**
           * When true the component will render an optimized view for mobile devices
          */
         "isMobile"?: boolean;
@@ -2997,6 +3009,10 @@ declare namespace LocalJSX {
           * boolean: If true will show edit button
          */
         "allowEditing"?: boolean;
+        /**
+          * When true the geometry of the current feature will be editable
+         */
+        "enableEditGeometry"?: boolean;
         /**
           * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
          */

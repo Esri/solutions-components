@@ -7,16 +7,17 @@
 
 ## Properties
 
-| Property            | Attribute            | Description                                                                                               | Type        | Default      |
-| ------------------- | -------------------- | --------------------------------------------------------------------------------------------------------- | ----------- | ------------ |
-| `allowEditing`      | `allow-editing`      | boolean: If true will show edit button                                                                    | `boolean`   | `true`       |
-| `graphics`          | --                   | esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html             | `Graphic[]` | `undefined`  |
-| `highlightEnabled`  | `highlight-enabled`  | boolean: If true will highlights the features on map using Features Widget                                | `boolean`   | `true`       |
-| `isLoading`         | `is-loading`         | boolean: when true a loading indicator will be shown                                                      | `boolean`   | `false`      |
-| `isMobile`          | `is-mobile`          | When true the component will render an optimized view for mobile devices                                  | `boolean`   | `undefined`  |
-| `mapView`           | --                   | esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html | `MapView`   | `undefined`  |
-| `paginationEnabled` | `pagination-enabled` | boolean: If true will show the pagination for multiple features                                           | `boolean`   | `true`       |
-| `position`          | `position`           | string: Set the position of the feature info                                                              | `string`    | `'absolute'` |
+| Property             | Attribute              | Description                                                                                               | Type        | Default      |
+| -------------------- | ---------------------- | --------------------------------------------------------------------------------------------------------- | ----------- | ------------ |
+| `allowEditing`       | `allow-editing`        | boolean: If true will show edit button                                                                    | `boolean`   | `true`       |
+| `enableEditGeometry` | `enable-edit-geometry` | When true the geometry of the current feature will be editable                                            | `boolean`   | `false`      |
+| `graphics`           | --                     | esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html             | `Graphic[]` | `undefined`  |
+| `highlightEnabled`   | `highlight-enabled`    | boolean: If true will highlights the features on map using Features Widget                                | `boolean`   | `true`       |
+| `isLoading`          | `is-loading`           | boolean: when true a loading indicator will be shown                                                      | `boolean`   | `false`      |
+| `isMobile`           | `is-mobile`            | When true the component will render an optimized view for mobile devices                                  | `boolean`   | `undefined`  |
+| `mapView`            | --                     | esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html | `MapView`   | `undefined`  |
+| `paginationEnabled`  | `pagination-enabled`   | boolean: If true will show the pagination for multiple features                                           | `boolean`   | `true`       |
+| `position`           | `position`             | string: Set the position of the feature info                                                              | `string`    | `'absolute'` |
 
 
 ## Events

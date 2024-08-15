@@ -870,6 +870,7 @@ export class CrowdsourceManager {
       <div class={`width-50 height-full ${themeClass}`}>
         <card-manager
           class={`${cardManagerHeight} width-full`}
+          enableEditGeometry={this?._mapInfo?.enableEditGeometry}
           isMobile={this._isMobile}
           mapView={this?._mapView}
           zoomAndScrollToSelected={this.zoomAndScrollToSelected}

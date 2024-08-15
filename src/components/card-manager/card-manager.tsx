@@ -40,6 +40,11 @@ export class CardManager {
   //--------------------------------------------------------------------------
 
   /**
+   * When true the geometry of the current feature will be editable
+   */
+  @Prop() enableEditGeometry = false;
+
+  /**
    * When true the component will render an optimized view for mobile devices
    */
   @Prop() isMobile: boolean;
@@ -154,6 +159,7 @@ export class CardManager {
           <calcite-shell class={"position-relative " + featuresClass}>
             <div>
               <info-card
+                enableEditGeometry={this.enableEditGeometry}
                 graphics={this._graphics}
                 isLoading={this._cardLoading}
                 isMobile={this.isMobile}
