@@ -84,6 +84,21 @@ export class PublicNotification {
   @Prop() defaultNumLabelsPerPage = 6;
 
   /**
+   * boolean: When true users will be allowed to optionally use features from a layer as the selection geometry
+   */
+  @Prop() enableLayerFeatures = true;
+
+  /**
+   * boolean: When true users will be allowed to optionally create a buffer around the selection geometry
+   */
+  @Prop() enableSearchDistance = true;
+
+  /**
+   * boolean: When true sketch tools will be provided to allow users to draw a selection geometry
+   */
+  @Prop() enableSketchTools = true;
+
+  /**
    * The effect that will be applied when featureHighlightEnabled is true
    *
    * esri/layers/support/FeatureEffect: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-support-FeatureEffect.html
@@ -476,7 +491,7 @@ export class PublicNotification {
     await this._getTranslations();
     await this._initModules();
     this._initSymbols();
-    this._onboardingImageUrl = getAssetPath(`../assets/data/images/onboarding.png`);
+    this._onboardingImageUrl = getAssetPath(`../solutions-components/assets/data/images/onboarding.png`);
   }
 
   /**
@@ -943,6 +958,9 @@ export class PublicNotification {
             customLabelEnabled={this.customLabelEnabled}
             defaultBufferDistance={this.defaultBufferDistance}
             defaultBufferUnit={this.defaultBufferUnit}
+            enableLayerFeatures={this.enableLayerFeatures}
+            enableSearchDistance={this.enableSearchDistance}
+            enableSketchTools={this.enableSketchTools}
             enabledLayerIds={this.addresseeLayerIds}
             isUpdate={!!this._activeSelection}
             locale={this.locale}
@@ -1009,7 +1027,7 @@ export class PublicNotification {
                     </calcite-label>
                     <calcite-icon
                       class="padding-start-1-2 icon"
-                      flipRtl={!(this.locale.toLowerCase() === "he")}
+                      flipRtl={!(this.locale?.toLowerCase() === "he")}
                       icon="question"
                       id="remove-duplicates-icon"
                       scale="s"
@@ -1172,7 +1190,7 @@ export class PublicNotification {
           </calcite-label>
           <calcite-icon
               class="padding-start-1-2 icon"
-              flipRtl={!(this.locale.toLowerCase() === "he")}
+              flipRtl={!(this.locale?.toLowerCase() === "he")}
               icon="question"
               id="list-graphics-icon"
               scale="s"

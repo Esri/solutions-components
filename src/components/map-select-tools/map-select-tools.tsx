@@ -64,6 +64,21 @@ export class MapSelectTools {
   @Prop() enabledLayerIds: string[] = [];
 
   /**
+   * boolean: When true users will be allowed to optionally use features from a layer as the selection geometry
+   */
+  @Prop() enableLayerFeatures = true;
+
+  /**
+   * boolean: When true users will be allowed to optionally create a buffer around the selection geometry
+   */
+  @Prop() enableSearchDistance = true;
+
+  /**
+   * boolean: When true sketch tools will be provided to allow users to draw a selection geometry
+   */
+  @Prop() enableSketchTools = true;
+
+  /**
    * number: The default value to show for the buffer distance
    */
   @Prop() defaultBufferDistance: number;
@@ -386,9 +401,9 @@ export class MapSelectTools {
       id: this.isUpdate ? this.selectionSet.id : Date.now(),
       searchResult: this._searchResult,
       buffer: this._bufferGeometry,
-      distance: this._bufferTools.distance,
+      distance: this._bufferTools?.distance,
       download: true,
-      unit: this._bufferTools.unit,
+      unit: this._bufferTools?.unit,
       label: this._selectionLabel,
       selectedIds: this._selectedIds,
       layerView: this.selectLayerView,
@@ -466,15 +481,18 @@ export class MapSelectTools {
    * Renders the component.
    */
   render(): VNode {
+    const mapToolsClass = this.enableSketchTools ? "" : "display-none";
+    const mapToolsContainerClass = this.enableSketchTools ? "padding-top-1" : "";
     return (
       <Host>
         {this._getMapLayerPicker()}
         <div class="border-bottom" />
         <div class="padding-top-sides-1">
           <div class="search-widget" ref={(el) => { this._searchElement = el }} />
-          <div class="padding-top-1">
+          <div class={mapToolsContainerClass}>
             <map-draw-tools
               active={true}
+              class={mapToolsClass}
               editGraphicsEnabled={!this._useLayerFeaturesEnabled}
               graphics={this._graphics}
               mapView={this.mapView}
@@ -485,8 +503,8 @@ export class MapSelectTools {
               ref={(el) => { this._drawTools = el }}
             />
           </div>
-          {this._getBufferOptions()}
-          {this._getUseLayerFeaturesOptions()}
+          {this.enableSearchDistance ? this._getBufferOptions() : undefined}
+          {this.enableLayerFeatures ? this._getUseLayerFeaturesOptions() : undefined}
           {this._getNumSelected()}
         </div>
         <div class="border-bottom" />
@@ -512,7 +530,7 @@ export class MapSelectTools {
               {this._translations.searchDistance}
               <calcite-icon
                 class="padding-start-1-2 icon"
-                flipRtl={!(this.locale.toLowerCase() === "he")}
+                flipRtl={!(this.locale?.toLowerCase() === "he")}
                 icon="question"
                 id="search-distance-icon"
                 scale="s"
@@ -561,7 +579,7 @@ export class MapSelectTools {
               {this._translations.useLayerFeatures}
               <calcite-icon
                 class="padding-start-1-2 icon"
-                flipRtl={!(this.locale.toLowerCase() === "he")}
+                flipRtl={!(this.locale?.toLowerCase() === "he")}
                 icon="question"
                 id="use-layer-features-icon"
                 scale="s"
@@ -1099,7 +1117,9 @@ export class MapSelectTools {
 
     if (clearLabel) {
       this._selectionLabel = "";
-      this._labelName.value = "";
+      if (this._labelName) {
+        this._labelName.value = "";
+      }
     }
 
     if (this._bufferGraphicsLayer) {
@@ -1159,21 +1179,23 @@ export class MapSelectTools {
    * @protected
    */
   protected async _updateLabel(): Promise<void> {
-    const hasSketch = this._selectionLabel.indexOf(this._translations.sketch) > -1;
-    const hasSelect = this._selectionLabel.indexOf(this._translations.select) > -1;
-    const hasSearch = this._selectionLabel.indexOf(this._searchResult?.name) > -1;
+    if (this.enableSearchDistance) {
+      const hasSketch = this._selectionLabel.indexOf(this._translations.sketch) > -1;
+      const hasSelect = this._selectionLabel.indexOf(this._translations.select) > -1;
+      const hasSearch = this._selectionLabel.indexOf(this._searchResult?.name) > -1;
 
-    const label = this._workflowType === EWorkflowType.SEARCH ? this._searchResult?.name :
-      this._workflowType === EWorkflowType.SELECT ?
-        this._translations.select : this._translations.sketch;
+      const label = this._workflowType === EWorkflowType.SEARCH ? this._searchResult?.name :
+        this._workflowType === EWorkflowType.SELECT ?
+          this._translations.select : this._translations.sketch;
 
-    const _unit = !this._unit ? this._bufferTools.unit : this._unit;
-    const unit = await this._bufferTools.getTranslatedUnit(_unit)
-    const distance = isNaN(this._distance) ? this._bufferTools.distance : this._distance;
+      const _unit = !this._unit ? this._bufferTools.unit : this._unit;
+      const unit = await this._bufferTools.getTranslatedUnit(_unit);
+      const distance = isNaN(this._distance) ? this._bufferTools.distance : this._distance;
 
-    this._selectionLabel = hasSketch || hasSelect || hasSearch || !this._selectionLabel ?
-      `${label} ${distance} ${unit}` : this._selectionLabel
-    this._labelName.value = this._selectionLabel;
+      this._selectionLabel = hasSketch || hasSelect || hasSearch || !this._selectionLabel ?
+        `${label} ${distance} ${unit}` : this._selectionLabel
+      this._labelName.value = this._selectionLabel;
+    }
   }
 
   /**
