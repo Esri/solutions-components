@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.10.3] - August 16th 2024
+New props for Public Notification
+
 ## [0.10.2] - August 14th 2024
   * Support new IA prop updates
   * Modified solution-spatial-ref for better fit with solution creation app
@@ -723,4 +726,5 @@ Recover from test releases
 [0.10.0]: https://github.com/Esri/solution.js/compare/v0.9.0...v0.10.0 "v0.10.0"
 [0.10.1]: https://github.com/Esri/solution.js/compare/v0.10.0...v0.10.1 "v0.10.1"
 [0.10.2]: https://github.com/Esri/solution.js/compare/v0.10.1...v0.10.2 "v0.10.2"
-[Unreleased]: https://github.com/Esri/solution.js/compare/v0.10.2...HEAD "Unreleased Changes"
+[0.10.3]: https://github.com/Esri/solution.js/compare/v0.10.2...v0.10.3 "v0.10.3"
+[Unreleased]: https://github.com/Esri/solution.js/compare/v0.10.3...HEAD "Unreleased Changes"
