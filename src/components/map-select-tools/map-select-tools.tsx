@@ -798,8 +798,15 @@ export class MapSelectTools {
       this._searchWidget.on("select-result", (searchResults) => {
         if (searchResults.result) {
           this._searchResult = searchResults.result;
-          const useOIDs = searchResults.source?.layer?.id && searchResults.source.layer.id === this.selectLayerView.layer.id;
-          const oids = useOIDs ? [searchResults.result.feature.getObjectId()] : undefined;
+
+          const resultFeature = searchResults.result.feature;
+          const resultLayer = resultFeature?.layer as any;
+          const selectLayer = this.selectLayerView.layer;
+          const oid = resultFeature?.getObjectId();
+
+          const useOIDs = resultLayer?.url && selectLayer?.url && resultLayer.url === selectLayer.url && !isNaN(oid);
+
+          const oids = useOIDs ? [oid] : undefined;
           this._workflowType = EWorkflowType.SEARCH;
           void this._updateLabel();
 
@@ -1299,7 +1306,7 @@ export class MapSelectTools {
       });
 
       // OIDs are used when the addressee layer and the current "use layer features" layer are the same
-      const useOIDs = (this.layerViews[0].layer.title === this.selectLayerView.layer.title) && hasOID;
+      const useOIDs = (this.layerViews[0].layer.url === this.selectLayerView.layer.url) && hasOID;
 
       await this._sketchGraphicsChanged({
         detail: {
