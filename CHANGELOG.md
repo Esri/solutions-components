@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.10.4] - August 16th 2024
+Use url for layer compare for useOIDs
+
 ## [0.10.3] - August 16th 2024
 New props for Public Notification
 
@@ -727,4 +730,5 @@ Recover from test releases
 [0.10.1]: https://github.com/Esri/solution.js/compare/v0.10.0...v0.10.1 "v0.10.1"
 [0.10.2]: https://github.com/Esri/solution.js/compare/v0.10.1...v0.10.2 "v0.10.2"
 [0.10.3]: https://github.com/Esri/solution.js/compare/v0.10.2...v0.10.3 "v0.10.3"
-[Unreleased]: https://github.com/Esri/solution.js/compare/v0.10.3...HEAD "Unreleased Changes"
+[0.10.4]: https://github.com/Esri/solution.js/compare/v0.10.3...v0.10.4 "v0.10.4"
+[Unreleased]: https://github.com/Esri/solution.js/compare/v0.10.4...HEAD "Unreleased Changes"
