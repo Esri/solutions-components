@@ -5,11 +5,11 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { ButtonType, DistanceUnit, EditType, EDrawMode, ELayoutMode, IBasemapConfig, IConsentResponse, IExportInfos, IFeatureServiceEnabledStatus, IInventoryItem, ILayerAndTableIds, ILayerExpression, IMapChange, IMapInfo, IReportingOptions, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISortingInfo, ISpatialRefRepresentation, IValueChange, theme } from "./utils/interfaces";
+import { AppLayout, ButtonType, DistanceUnit, EditType, EDrawMode, ELayoutMode, IBasemapConfig, IConsentResponse, IExportInfos, IFeatureServiceEnabledStatus, IInventoryItem, ILayerAndTableIds, ILayerExpression, IMapChange, IMapInfo, IReportingOptions, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISortingInfo, ISpatialRefRepresentation, IValueChange, theme } from "./utils/interfaces";
 import { IReportingOptions as IReportingOptions1 } from "./components";
 import { ILayerItemsHash } from "./components/layer-list/layer-list";
 import { UserSession } from "@esri/solution-common";
-export { ButtonType, DistanceUnit, EditType, EDrawMode, ELayoutMode, IBasemapConfig, IConsentResponse, IExportInfos, IFeatureServiceEnabledStatus, IInventoryItem, ILayerAndTableIds, ILayerExpression, IMapChange, IMapInfo, IReportingOptions, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISortingInfo, ISpatialRefRepresentation, IValueChange, theme } from "./utils/interfaces";
+export { AppLayout, ButtonType, DistanceUnit, EditType, EDrawMode, ELayoutMode, IBasemapConfig, IConsentResponse, IExportInfos, IFeatureServiceEnabledStatus, IInventoryItem, ILayerAndTableIds, ILayerExpression, IMapChange, IMapInfo, IReportingOptions, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISortingInfo, ISpatialRefRepresentation, IValueChange, theme } from "./utils/interfaces";
 export { IReportingOptions as IReportingOptions1 } from "./components";
 export { ILayerItemsHash } from "./components/layer-list/layer-list";
 export { UserSession } from "@esri/solution-common";
@@ -165,6 +165,10 @@ export namespace Components {
         "table": __esri.FeatureLayer;
     }
     interface CrowdsourceManager {
+        /**
+          * AppLayout: The type of layout the application should use. Valid values: "mapView" or "tableView" or "splitView"
+         */
+        "appLayout": AppLayout;
         /**
           * Array of objects containing proxy information for premium platform services.
          */
@@ -2583,6 +2587,10 @@ declare namespace LocalJSX {
         "table"?: __esri.FeatureLayer;
     }
     interface CrowdsourceManager {
+        /**
+          * AppLayout: The type of layout the application should use. Valid values: "mapView" or "tableView" or "splitView"
+         */
+        "appLayout"?: AppLayout;
         /**
           * Array of objects containing proxy information for premium platform services.
          */

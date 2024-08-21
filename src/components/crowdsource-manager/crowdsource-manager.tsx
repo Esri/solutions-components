@@ -17,7 +17,7 @@
 import { Component, Element, Host, h, Listen, Prop, State, VNode, Watch, Event, EventEmitter } from "@stencil/core";
 import CrowdsourceManager_T9n from "../../assets/t9n/crowdsource-manager/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
-import { ELayoutMode, IBasemapConfig, ILayerAndTableIds, IMapChange, IMapInfo, ISearchConfiguration, theme } from "../../utils/interfaces";
+import { AppLayout, ELayoutMode, IBasemapConfig, ILayerAndTableIds, IMapChange, IMapInfo, ISearchConfiguration, theme } from "../../utils/interfaces";
 import { getLayerOrTable } from "../../utils/mapViewUtils";
 
 @Component({
@@ -38,6 +38,12 @@ export class CrowdsourceManager {
   //  Properties (public)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * AppLayout: The type of layout the application should use.
+   * Valid values: "mapView" or "tableView" or "splitView"
+   */
+  @Prop({mutable: true}) appLayout: AppLayout;
 
   /**
    * Array of objects containing proxy information for premium platform services.

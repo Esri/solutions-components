@@ -554,6 +554,8 @@ export type EditType = "update" | "add" | "delete";
 
 export type ButtonType = "button" | "action";
 
+export type AppLayout = "mapView" | "tableView" | "splitView";
+
 export interface IExpression {
   id: number;
   type?: ExpressionField;
