@@ -81,12 +81,12 @@
     "workbox-build": "^7.1.1"
   },
   "dependencies": {
-    "@arcgis/core": "^4.30.9",
+    "@arcgis/core": ">=4.31.0-next.20240624 <4.32",
     "@esri/arcgis-rest-auth": "^3.7.0",
     "@esri/arcgis-rest-feature-layer": "^3.7.0",
     "@esri/arcgis-rest-portal": "^3.7.0",
     "@esri/arcgis-rest-request": "^3.7.0",
-    "@esri/calcite-components": "2.10.1",
+    "@esri/calcite-components": "2.11.1",
     "@esri/hub-common": "^14.168.0",
     "@esri/hub-initiatives": "^14.0.0",
     "@esri/hub-sites": "^15.0.0",
