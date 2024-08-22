@@ -1,4 +1,4 @@
 {
   "error": "ข้อผิดพลาด",
-  "noLayerToDisplayErrorMsg": "Web map does not contain any editable layers."
+  "noLayerToDisplayErrorMsg": "เว็บแมปไม่มีชั้นข้อมูลที่สามารถแก้ไขได้"
 }
