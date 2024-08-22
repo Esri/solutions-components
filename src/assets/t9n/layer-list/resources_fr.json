@@ -1,4 +1,4 @@
 {
   "error": "Erreur",
-  "noLayerToDisplayErrorMsg": "Web map does not contain any editable layers."
+  "noLayerToDisplayErrorMsg": "La carte Web ne contient aucune couche modifiable."
 }

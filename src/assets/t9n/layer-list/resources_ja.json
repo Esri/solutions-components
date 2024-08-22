@@ -1,4 +1,4 @@
 {
   "error": "エラー",
-  "noLayerToDisplayErrorMsg": "Web map does not contain any editable layers."
+  "noLayerToDisplayErrorMsg": "Web マップに編集可能なレイヤーが含まれていません。"
 }
