@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.10.7] - August 22nd 2024
+Update IAC
+
 ## [0.10.6] - August 22nd 2024
 Translated strings for layer list
 
@@ -740,4 +743,5 @@ Recover from test releases
 [0.10.4]: https://github.com/Esri/solution.js/compare/v0.10.3...v0.10.4 "v0.10.4"
 [0.10.5]: https://github.com/Esri/solution.js/compare/v0.10.4...v0.10.5 "v0.10.5"
 [0.10.6]: https://github.com/Esri/solution.js/compare/v0.10.5...v0.10.6 "v0.10.6"
-[Unreleased]: https://github.com/Esri/solution.js/compare/v0.10.6...HEAD "Unreleased Changes"
+[0.10.7]: https://github.com/Esri/solution.js/compare/v0.10.6...v0.10.7 "v0.10.7"
+[Unreleased]: https://github.com/Esri/solution.js/compare/v0.10.7...HEAD "Unreleased Changes"
