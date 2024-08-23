@@ -667,7 +667,7 @@ export class LayerTable {
     @Listen("layerSelectionChange", { target: "window" })
     async layerSelectionChange(
       evt: CustomEvent
-    ): Promise<void> { 
+    ): Promise<void> {
       await this._layerSelectionChanged(evt);
     }
 
@@ -1268,7 +1268,7 @@ export class LayerTable {
     skipControls: string[]
   ): void {
     let update = JSON.stringify(controlsThatFit) !== JSON.stringify(this._controlsThatFit);
-    const actionbar = document.getElementById?.("solutions-action-bar");
+    const actionbar = document.getElementById("solutions-action-bar");
     actionbar?.childNodes?.forEach((n: any) => {
       if (skipControls.indexOf(n.id) < 0 && !update) {
         update = this._controlsThatFit.map(c => c.id).indexOf(n.id) < 0;

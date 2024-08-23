@@ -9,6 +9,7 @@
 
 | Property                  | Attribute                     | Description                                                                                                        | Type       | Default     |
 | ------------------------- | ----------------------------- | ------------------------------------------------------------------------------------------------------------------ | ---------- | ----------- |
+| `createFilterModal`       | `create-filter-modal`         | boolean: create filter modal optional (default true) boolean value to create filter modal in layer table           | `boolean`  | `true`      |
 | `defaultGlobalId`         | --                            | string: Global ID of the feature to select                                                                         | `string[]` | `undefined` |
 | `defaultLayerId`          | `default-layer-id`            | string: when provided this layer ID will be used when the app loads                                                | `string`   | `undefined` |
 | `defaultOid`              | --                            | number: when provided this will be used to select a feature in the table by default                                | `number[]` | `undefined` |
@@ -32,9 +33,53 @@
 
 ## Events
 
-| Event                    | Description                                | Type                    |
-| ------------------------ | ------------------------------------------ | ----------------------- |
-| `featureSelectionChange` | Emitted on demand when a layer is selected | `CustomEvent<number[]>` |
+| Event                    | Description                                     | Type                    |
+| ------------------------ | ----------------------------------------------- | ----------------------- |
+| `featureSelectionChange` | Emitted on demand when a layer is selected      | `CustomEvent<number[]>` |
+| `toggleFilter`           | Emitted on demand when filter action is clicked | `CustomEvent<void>`     |
+
+
+## Methods
+
+### `closeFilter() => Promise<void>`
+
+Closes the filter
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+### `filterReset() => Promise<void>`
+
+Reset the filter
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+### `filterUpdate() => Promise<void>`
+
+Updates the filter
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+### `refresh() => Promise<void>`
+
+refresh the feature table
+
+#### Returns
+
+Type: `Promise<void>`
+
+
 
 
 ## Dependencies
