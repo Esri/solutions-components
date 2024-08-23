@@ -28,6 +28,10 @@
   height: 100%;
 }
 
+.height-50-px {
+  height: 50px;
+}
+
 .box-shadow {
   box-shadow: none !important;
 }

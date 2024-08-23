@@ -44,6 +44,11 @@ export class MapPicker {
    */
   @Prop() mapInfos: IMapInfo[] = [];
 
+  /**
+   * boolean: when true map list will shown in half width.
+   */
+  @Prop() isMapLayout?: boolean;
+
   //--------------------------------------------------------------------------
   //
   //  State (internal)
@@ -123,6 +128,24 @@ export class MapPicker {
     if (id && mapInfos?.length > 0) {
       this._webMapSelected(mapInfos[0])
     }
+  }
+
+  /**
+   * Closes the list
+   */
+  @Method()
+  async close(): Promise<void> {
+    if (this._mapListExpanded) {
+      this._mapListExpanded = false;
+    }
+  }
+
+  /**
+   * Expands the list
+   */
+  @Method()
+  async toggle(mapListExpanded: boolean): Promise<void> {
+    this._mapListExpanded = mapListExpanded
   }
 
   //--------------------------------------------------------------------------
@@ -226,7 +249,7 @@ export class MapPicker {
    */
   protected _getToolbar(): VNode {
     return (
-      <div class="display-flex">
+      <div class="display-flex border-right">
         <calcite-action-bar
           class="border-bottom-1 action-bar-size"
           expand-disabled
@@ -251,7 +274,8 @@ export class MapPicker {
   protected _getMapNameList(
     show: boolean
   ): VNode {
-    const listClass = show ? "map-list border-bottom-1" : "display-none";
+    const width = this.isMapLayout ? "width-25" : "width-full";  
+    const listClass = show ? `map-list border-bottom-1 ${width}` : "display-none";
     return (
       <div class={listClass}>
         <calcite-list

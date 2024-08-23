@@ -23,6 +23,10 @@
   width: 100%;
 }
 
+.width-25 {
+  width: 25% !important;
+}
+
 .height-full {
   height: 100%;
 }
@@ -36,6 +40,10 @@
   border-bottom-width: 1px;
   border-style: solid;
   border-color: var(--calcite-color-border-3);
+}
+
+.border-right {
+  border-right: 1px solid var(--calcite-color-border-3);
 }
 
 .action-bar-size {

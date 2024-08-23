@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Listen, Prop, State, VNode, Watch, Event, EventEmitter } from "@stencil/core";
+import { Component, Element, Host, h, Listen, Prop, State, VNode, Watch, Event, EventEmitter, Fragment } from "@stencil/core";
 import CrowdsourceManager_T9n from "../../assets/t9n/crowdsource-manager/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
-import { AppLayout, ELayoutMode, IBasemapConfig, ILayerAndTableIds, IMapChange, IMapInfo, ISearchConfiguration, theme } from "../../utils/interfaces";
+import { AppLayout, ELayoutMode, IBasemapConfig, IMapChange, IMapInfo, ISearchConfiguration, theme } from "../../utils/interfaces";
 import { getLayerOrTable } from "../../utils/mapViewUtils";
+import { LayerExpression } from "@esri/instant-apps-components";
 
 @Component({
   tag: "crowdsource-manager",
@@ -43,7 +44,7 @@ export class CrowdsourceManager {
    * AppLayout: The type of layout the application should use.
    * Valid values: "mapView" or "tableView" or "splitView"
    */
-  @Prop({mutable: true}) appLayout: AppLayout;
+  @Prop({mutable: true}) appLayout: AppLayout = 'splitView';
 
   /**
    * Array of objects containing proxy information for premium platform services.
@@ -237,11 +238,6 @@ export class CrowdsourceManager {
   //--------------------------------------------------------------------------
 
   /**
-   * When true the info panel with the popup details will take the full height and prevent the map from displaying
-   */
-  @State() _expandPopup = false;
-
-  /**
    * When true the mobile footer will be hidden
    */
   @State() _hideFooter = false;
@@ -293,9 +289,9 @@ export class CrowdsourceManager {
   @State() _numSelected = 0;
 
   /**
-   * When true only editable tables have been found and the map will be hidden
+   * boolean: When true the filter component will be displayed
    */
-  @State() _tableOnly = false;
+  @State() _filterOpen = false;
 
   //--------------------------------------------------------------------------
   //
@@ -341,6 +337,21 @@ export class CrowdsourceManager {
    */
   protected _shouldSetMapView = false;
 
+  /**
+   * LayerExpression[]: All layer expressions from the current filter config for the currently selected layer
+   */
+  protected _layerExpressions: LayerExpression[];
+
+  /**
+   * HTMLInstantAppsFilterListElement: Component from Instant Apps that supports interacting with the current filter config
+   */
+  protected _filterList: HTMLInstantAppsFilterListElement;
+
+  /**
+   * boolean: True when app is directly rendered to map view layout
+   */
+  protected _isMapViewOnLoad = false;
+
   //--------------------------------------------------------------------------
   //
   //  Watch handlers
@@ -361,7 +372,6 @@ export class CrowdsourceManager {
   @Watch("hideMapOnLoad")
   hideMapOnLoadWatchHandler(): void {
     this.showHideMapPopupAndTable(this.hideMapOnLoad && !this._isMobile);
-    this._expandPopup = this.hideMapOnLoad && !this._isMobile;
   }
 
   //--------------------------------------------------------------------------
@@ -407,20 +417,6 @@ export class CrowdsourceManager {
   }
 
   /**
-   * Listen for idsFound event to be fired so we can know that all layer ids have been fetched
-   */
-  @Listen("idsFound", { target: "window" })
-  async idsFound(
-    evt: CustomEvent
-  ): Promise<void> {
-    const ids: ILayerAndTableIds = evt.detail;
-    this._tableOnly = ids.tableIds.length > 0 && ids.layerIds.length === 0;
-    if (this._tableOnly) {
-      this._expandPopup = true;
-    }
-  }
-
-  /**
    * Listen for layoutChanged event to be fired so we can adjust the layout
    */
   @Listen("layoutChanged", { target: "window" })
@@ -444,16 +440,6 @@ export class CrowdsourceManager {
   }
 
   /**
-   * Listen for beforeMapChanged and minimize the popup if it's expanded
-   */
-  @Listen("beforeMapChanged", { target: "window" })
-  async beforeMapChanged(): Promise<void> {
-    if (this._expandPopup) {
-      this._shouldSetMapView = true;
-    }
-  }
-
-  /**
    * Get the layer for the provided layer id
    */
   @Listen("layerSelectionChange", { target: "window" })
@@ -464,6 +450,7 @@ export class CrowdsourceManager {
     const layer = await getLayerOrTable(this._mapView, id);
     await layer.when(() => {
       this._layer = layer;
+      this._initLayerExpressions();
     });
   }
 
@@ -473,7 +460,6 @@ export class CrowdsourceManager {
   @Listen("mapInfoChange", { target: "window" })
   async mapInfoChange(
   ): Promise<void> {
-    this._expandPopup = this.hideMapOnLoad && !this._isMobile;
     this._hideMapOnLoadHonored = false;
   }
 
@@ -509,6 +495,8 @@ export class CrowdsourceManager {
           </calcite-panel>
           {this._getFooter()}
         </calcite-shell>
+        {/* create a filter modal from manager to keep a comman modal for both layer-table and map-card and maintain state while switchig from one component to other*/}
+        {this._filterModal()}
       </Host>
     );
   }
@@ -531,6 +519,12 @@ export class CrowdsourceManager {
    */
   async componentDidLoad(): Promise<void> {
     this._resizeObserver.observe(this.el);
+    // for backward compatibility if hidemaponload is true then render table layout as default
+    if (this.hideMapOnLoad) {
+      this.appLayout = 'tableView';
+    }
+    this._isMapViewOnLoad = this.appLayout === 'mapView';
+    this._setActiveLayout(this.appLayout);
   }
 
   //--------------------------------------------------------------------------
@@ -570,6 +564,27 @@ export class CrowdsourceManager {
         </div>
       </div>
     ) : undefined;
+  }
+
+  /**
+   * sets the active layout to render
+   * @param appLayout new app layout
+   * 
+   * @protected
+   */
+  protected _setActiveLayout(appLayout: AppLayout): void {
+    //When going to splitView layout the panel should be open
+    if(appLayout === 'splitView' && !this._panelOpen){
+      this._toggleLayout();
+    }
+    //Move the map node based on the selected layout
+    //for mapView layout show map in full view and or all other layout show in the card view
+    //for tableView the map will be hidden using css
+    if (appLayout === 'mapView') {
+      this._showMapInFullView();
+    } else {
+      this._showMapInCardView();
+    }
   }
 
   /**
@@ -762,13 +777,17 @@ export class CrowdsourceManager {
   protected _getMapNode(
     panelOpen: boolean
   ): VNode {
-    const mapContainerClass = this._layoutMode === ELayoutMode.HORIZONTAL && (!this._isMobile || panelOpen) ? "" : "adjusted-height-50";
+    const isMapLayout = this.appLayout === 'mapView';
+    const isTableLayout = this.appLayout === 'tableView';
+    const mapContainerClass = (isMapLayout || isTableLayout) ? "position-absolute-0" : this._layoutMode === ELayoutMode.HORIZONTAL && (!this._isMobile || panelOpen) ? "" : "adjusted-height-50";
+    const hasMapAndLayer = this.defaultWebmap && this.defaultLayer;
     return (
-      <div class={`${mapContainerClass} overflow-hidden`} >
+      <div class={`${mapContainerClass} overflow-hidden`} id="card-mapView">
         <map-card
           appProxies={this.appProxies}
           basemapConfig={this.basemapConfig}
           class="width-full"
+          defaultLayerId={hasMapAndLayer ? this.defaultLayer : ""}
           defaultWebmapId={this.defaultWebmap}
           enableBasemap={this.enableBasemap}
           enableFloorFilter={this.enableFloorFilter}
@@ -777,17 +796,25 @@ export class CrowdsourceManager {
           enableLegend={this.enableLegend}
           enableSearch={this.enableSearch}
           enableSingleExpand={true}
-          hidden={this._expandPopup && !this._isMobile}
+          hidden={!this._isMobile && isTableLayout}
           homeZoomIndex={3}
           homeZoomPosition={"top-left"}
           homeZoomToolsSize={"s"}
+          isMapLayout={isMapLayout}
+          isMobile={this._isMobile}
+          mapInfo={this._mapInfo}
           mapInfos={this.mapInfos?.filter(mapInfo => mapInfo.visible !== false)}
           mapWidgetsIndex={0}
           mapWidgetsPosition={"top-right"}
           mapWidgetsSize={"m"}
+          onToggleFilter={this._toggleFilter.bind(this)}
+          onlyShowUpdatableLayers={this.onlyShowUpdatableLayers}
+          selectedFeaturesIds={this._layerTable?.selectedIds}
+          selectedLayer={this._layer}
           stackTools={true}
           theme={this.theme}
           toolOrder={["legend", "search", "fullscreen", "basemap", "floorfilter"]}
+          zoomToScale={this.zoomToScale}
         />
       </div>
     );
@@ -800,11 +827,7 @@ export class CrowdsourceManager {
    * @protected
    */
   protected _getPopupExpandNode(): VNode {
-    const icon = this._expandPopup ? "chevrons-down" : "chevrons-up";
-    const id = "expand-popup";
-    const tooltip = this._expandPopup ? this._translations.collapsePopup : this._translations.expandPopup;
-    const themeClass = this.theme === "dark" ? "calcite-mode-dark" : "calcite-mode-light";
-    const popupNodeClass = !this._expandPopup ? "height-full" : this.mapInfos?.length === 1 || this._isMobile ? "position-absolute-0" : "position-absolute-50";
+    const popupNodeClass = "height-full"
     const headerClass = this._isMobile ? "display-none height-0" : "";
     const headerTheme = this.popupHeaderColor ? "" : !this._isMobile ? "calcite-mode-dark" : "calcite-mode-light";
     const containerClass = this._isMobile && this._hideTable ? "position-absolute-0 width-full height-full" : this._isMobile ? "display-none height-0" : "";
@@ -830,37 +853,10 @@ export class CrowdsourceManager {
               </div>
             ) : undefined
           }
-          <calcite-action
-            class={headerClass}
-            disabled={this._tableOnly}
-            icon={icon}
-            id={id}
-            onClick={() => this._togglePopup()}
-            slot="header-actions-end"
-            text=""
-          />
-          {!this._tableOnly ? <calcite-tooltip
-            class={themeClass}
-            label=""
-            placement="bottom"
-            reference-element={id}
-          >
-            <span>{tooltip}</span>
-          </calcite-tooltip> : undefined}
           {this._getCardNode()}
         </calcite-panel>
       </div>
     );
-  }
-
-  /**
-   * Toggle the popup information
-   *
-   * @protected
-   */
-  protected _togglePopup(): void {
-    this._expandPopup = !this._expandPopup;
-    this._hideMapOnLoadHonored = true;
   }
 
   /**
@@ -870,7 +866,9 @@ export class CrowdsourceManager {
    * @protected
    */
   protected _getCardNode(): VNode {
-    const cardManagerHeight = !this._expandPopup && !this._isMobile ? "height-50" : "height-full";
+    const isMapLayout = this.appLayout === 'mapView';
+    const isTableLayout = this.appLayout === 'tableView';
+    const cardManagerHeight = ( isMapLayout || isTableLayout ) ? "height-full" : !this._isMobile ? "height-50" : "height-full";
     const themeClass = this.theme === "dark" ? "calcite-mode-dark" : "calcite-mode-light";
     return (
       <div class={`width-50 height-full ${themeClass}`}>
@@ -878,7 +876,9 @@ export class CrowdsourceManager {
           class={`${cardManagerHeight} width-full`}
           enableEditGeometry={this?._mapInfo?.enableEditGeometry}
           isMobile={this._isMobile}
+          layer={this._layer}
           mapView={this?._mapView}
+          selectedFeaturesIds={this._layerTable?.selectedIds}
           zoomAndScrollToSelected={this.zoomAndScrollToSelected}
         />
       </div>
@@ -899,11 +899,11 @@ export class CrowdsourceManager {
     panelOpen: boolean,
     hideTable: boolean
   ): VNode {
-    const tableClass = hideTable && this._isMobile ? "visibility-hidden" : "";
+    const isMapLayout = this.appLayout === 'mapView';
+    const isTableLayout = this.appLayout === 'tableView';
+    const tableClass = hideTable && this._isMobile ? "visibility-hidden" : isMapLayout ? "display-none" : "";
+    const mapClass = isMapLayout ? "height-full width-full" : "display-none";
     const tableSizeClass = this._getTableSizeClass(layoutMode, panelOpen)
-    const icon = this._getDividerIcon(layoutMode, panelOpen);
-    const tooltip = panelOpen ? this._translations.close : this._translations.open;
-    const id = "toggle-layout";
     const toggleLayout = layoutMode === ELayoutMode.HORIZONTAL ? "horizontal" : "vertical";
     const toggleSlot = layoutMode === ELayoutMode.HORIZONTAL  ? "header" : "panel-start";
     const hasMapAndLayer = this.defaultWebmap && this.defaultLayer;
@@ -912,7 +912,7 @@ export class CrowdsourceManager {
     const defaultOid = !this.defaultOid ? undefined :
       this.defaultOid?.indexOf(",") > -1 ? this.defaultOid.split(",").map(o=> parseInt(o, 10)) : [parseInt(this.defaultOid, 10)];
     return (
-      <calcite-shell class={`${tableSizeClass} ${tableClass} border-bottom`}>
+      <calcite-shell class={`${tableSizeClass} border-bottom`}>
         {
           !this._isMobile ? (
             <calcite-action-bar
@@ -921,52 +921,210 @@ export class CrowdsourceManager {
               layout={toggleLayout}
               slot={toggleSlot}
             >
-              <calcite-action
-                class="toggle-node"
-                icon={icon}
-                id={id}
-                onClick={() => this._toggleLayout()}
-                text=""
-              />
-              <calcite-tooltip
-                label={tooltip}
-                placement="bottom"
-                reference-element={id}
-              >
-                <span>{tooltip}</span>
-              </calcite-tooltip>
+              {this.getActions(layoutMode, panelOpen)}
             </calcite-action-bar>
           ) : undefined
         }
-        <div class={`width-full height-full position-relative`}>
-          <layer-table
-            defaultGlobalId={hasMapAndLayer ? globalId : undefined}
-            defaultLayerId={hasMapAndLayer ? this.defaultLayer : ""}
-            defaultOid={hasMapAndLayer && !globalId ? defaultOid : undefined}
-            enableAutoRefresh={this.enableAutoRefresh}
-            enableCSV={this.enableCSV}
-            enableColumnReorder={this.enableColumnReorder}
-            enableInlineEdit={this?._mapInfo?.enableInlineEdit}
-            enableShare={this.enableShare}
-            isMobile={this._isMobile}
-            mapHidden={this._expandPopup}
-            mapInfo={this._mapInfo}
-            mapView={this?._mapView}
-            onlyShowUpdatableLayers={this.onlyShowUpdatableLayers}
-            ref={(el) => this._layerTable = el}
-            shareIncludeEmbed={this.shareIncludeEmbed}
-            shareIncludeSocial={this.shareIncludeSocial}
-            showNewestFirst={this.showNewestFirst}
-            zoomAndScrollToSelected={this.zoomAndScrollToSelected}
-            zoomToScale={this.zoomToScale}
-          />
+        <div class={`width-full height-full position-relative ${tableClass}`}>
+            <layer-table
+              createFilterModal={false}
+              defaultGlobalId={hasMapAndLayer ? globalId : undefined}
+              defaultLayerId={hasMapAndLayer ? this.defaultLayer : ""}
+              defaultOid={hasMapAndLayer && !globalId ? defaultOid : undefined}
+              enableAutoRefresh={this.enableAutoRefresh}
+              enableCSV={this.enableCSV}
+              enableColumnReorder={this.enableColumnReorder}
+              enableInlineEdit={this?._mapInfo?.enableInlineEdit}
+              enableShare={this.enableShare}
+              isMobile={this._isMobile}
+              mapHidden={isTableLayout}
+              mapInfo={this._mapInfo}
+              mapView={this?._mapView}
+              onToggleFilter={this._toggleFilter.bind(this)}
+              onlyShowUpdatableLayers={this.onlyShowUpdatableLayers}
+              ref={(el) => this._layerTable = el}
+              shareIncludeEmbed={this.shareIncludeEmbed}
+              shareIncludeSocial={this.shareIncludeSocial}
+              showNewestFirst={this.showNewestFirst}
+              zoomAndScrollToSelected={this.zoomAndScrollToSelected}
+              zoomToScale={this.zoomToScale}
+            />
         </div>
+        <div class={mapClass} id="full-map-view" />
       </calcite-shell>
     );
   }
 
   /**
+   * Returns the Actions for table's node
+   * 
+   * @returns Node
+   * @protected
+   */
+  protected getActions(
+    layoutMode: ELayoutMode,
+    panelOpen: boolean,
+  ): Node {
+    const icon = this._getDividerIcon(layoutMode, panelOpen);
+    const tooltip = panelOpen ? this._translations.close : this._translations.open;
+    const id = "toggle-layout";
+    return (
+      <Fragment>
+        <calcite-action
+          active={this.appLayout === 'splitView'}
+          class="toggle-node"
+          icon={"browser"}
+          id={"browser-action"}
+          onClick={() => { this._changeLayout('splitView') }}
+          text=""
+        />
+        <calcite-tooltip
+          placement="right"
+          reference-element={"browser-action"}
+        >
+          <span>{this._translations.splitView}</span>
+        </calcite-tooltip>
+
+        <calcite-action
+          active={this.appLayout === 'tableView'}
+          class="toggle-node"
+          icon={"dock-left"}
+          id={"dock-left-action"}
+          onClick={() => { this._changeLayout('tableView') }}
+          text=""
+        />
+        <calcite-tooltip
+          placement="right"
+          reference-element={"dock-left-action"}
+        >
+          <span>{this._translations.tableView}</span>
+        </calcite-tooltip>
+
+        <calcite-action
+          active={this.appLayout === 'mapView'}
+          class="toggle-node"
+          icon={"browser-map"}
+          id={"browser-map-action"}
+          onClick={() => { this._changeLayout('mapView') }}
+          text=""
+        />
+        <calcite-tooltip
+          placement="right"
+          reference-element={"browser-map-action"}
+        >
+          <span>{this._translations.mapView}</span>
+        </calcite-tooltip>
+
+        <calcite-action
+          class="toggle-node"
+          icon={icon}
+          id={id}
+          onClick={() => this._toggleLayout()}
+          slot="actions-end"
+          text=""
+        />
+        <calcite-tooltip
+          placement="bottom"
+          reference-element={id}
+        >
+          <span>{tooltip}</span>
+        </calcite-tooltip>
+
+      </Fragment>
+    )
+  }
+
+  /**
+   * Show filter component in modal
+   *
+   * @returns node to interact with any configured filters for the current layer
+   * @protected
+   */
+   protected _filterModal(): VNode {
+      return (
+        <calcite-modal
+          aria-labelledby="modal-title"
+          class="modal"
+          kind="brand"
+          onCalciteModalClose={() => void this._closeFilter()}
+          open={this._filterOpen}
+          widthScale="s"
+        >
+          <div
+            class="display-flex align-center"
+            id="modal-title"
+            slot="header"
+          >
+            {this._translations?.filter?.replace("{{title}}", this._layer?.title)}
+          </div>
+          <div slot="content">
+            <instant-apps-filter-list
+              autoUpdateUrl={false}
+              closeBtn={true}
+              closeBtnOnClick={async () => this._closeFilter()}
+              comboboxOverlayPositioning="fixed"
+              layerExpressions={this._layerExpressions}
+              onFilterListReset={() => this._handleFilterListReset()}
+              onFilterUpdate={() => void this._layerTable?.filterUpdate()}
+              ref={(el) => this._filterList = el}
+              view={this._mapView}
+              zoomBtn={false}
+            />
+          </div>
+        </calcite-modal>
+      );
+    }
+
+  /**
+   * Store any filters for the current layer.
+   * Should only occur on layer change
+   * 
+   * @protected
+   */
+  protected _initLayerExpressions(): void {
+    const layerExpressions = this._mapInfo?.filterConfig?.layerExpressions;
+    this._layerExpressions = layerExpressions ? layerExpressions.filter(
+      (exp) => exp.id === this._layer?.id) : [];
+    this._filterList.layerExpressions = this._layerExpressions;
+    this._layerExpressions.filter(lyrExp => {
+      return lyrExp.expressions.filter(exp => exp.active).length > 0
+    }).length > 0;
+  }
+
+  /**
+   * Toggle the filter modal
+   * 
+   * @protected
+   */
+  protected _toggleFilter(): void {
+    this._filterOpen = !this._filterOpen
+  }
+
+  /**
+   * Reset the filter active prop
+   * 
+   * @protected
+   */
+  protected _handleFilterListReset(): void {
+    void this._layerTable.filterReset();
+  }
+
+  /**
+   * Close the filter modal
+   * 
+   * @protected
+   */
+  protected async _closeFilter(): Promise<void> {
+    if (this._filterOpen) {
+      this._filterOpen = false;
+      void this._layerTable.closeFilter();
+    }
+  }
+
+  /**
    * Update the component layout when its size changes
+   * 
+   * @protected
    */
   protected _onResize(): void {
     const isMobile = this.el.offsetWidth < 1024;
@@ -984,27 +1142,75 @@ export class CrowdsourceManager {
   /**
    * Open/Close the appropriate panel.
    * The panel that is toggled is dependent upon the layout mode and if using classic grid or not
+   * 
+   * @protected
    */
   protected _toggleLayout(): void {
     this._panelOpen = !this._panelOpen;
   }
 
   /**
+   * Changes the layout mode
+   * @param appLayout selected active app layout
+   * 
+   * @protected
+   */
+  protected _changeLayout(appLayout: AppLayout): void {
+    if(this.appLayout !== appLayout) {
+      this._setActiveLayout(appLayout);
+      this.appLayout = appLayout;
+      if (this._isMapViewOnLoad) {
+        void this._layerTable.refresh();
+        this._isMapViewOnLoad = false;
+      }
+    }
+  }
+
+  /**
+    * shows the map in card view
+    *
+    * @protected
+    */
+  protected _showMapInCardView(): void {
+    if (this.appLayout === 'mapView') {
+      const fullMapView = document.getElementById('full-map-view').childNodes[0];
+      const splitMapClass = document.getElementById('card-mapView');
+      if (fullMapView) {
+        splitMapClass.appendChild(fullMapView);
+      }
+    }
+  }
+
+  /**
+   * Shows the map in full view
+   *
+   * @protected
+   */
+  protected _showMapInFullView(): void {
+    const splitMap = document.getElementById('card-mapView').childNodes[0];
+    const fullMapViewClass = document.getElementById('full-map-view');
+    if (splitMap) {
+      fullMapViewClass.appendChild(splitMap);
+    }
+  }
+
+  /**
    * Show/Hide the map, popup, and table
    *
    * @param show when true the map, popup, and table will be displayed
+   * @protected
    */
   protected showHideMapPopupAndTable(
     show: boolean
   ): void {
-    this._expandPopup = false;
     this._hideTable = show;
     this._hideFooter = show;
   }
 
   /**
    * Get the current map info (configuration details) when maps change
-   *
+   * @param id map changed id
+   * 
    * @returns IMapInfo for the provided id
    * @protected
    */
