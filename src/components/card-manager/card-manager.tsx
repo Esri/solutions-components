@@ -52,7 +52,7 @@ export class CardManager {
   /**
    * esri/views/layers/FeatureLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html
    */
-  @Prop() layer: __esri.FeatureLayer;
+  @Prop({ mutable: true }) layer: __esri.FeatureLayer;
 
   /**
    * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
@@ -63,6 +63,11 @@ export class CardManager {
    * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
    */
   @Prop() zoomAndScrollToSelected: boolean;
+
+  /**
+   * A list of ids that are currently selected
+   */
+  @Prop() selectedFeaturesIds: number[];
 
   //--------------------------------------------------------------------------
   //
@@ -112,12 +117,7 @@ export class CardManager {
     evt: CustomEvent
   ): Promise<void> {
     const ids = evt.detail;
-    this._cardLoading = true;
-    // only query if we have some ids...query with no ids will result in all features being returned
-    const featureSet = ids.length > 0 ? await queryFeaturesByID(ids, this.layer, [], false, this.mapView.spatialReference) : [];
-    // https://github.com/Esri/solutions-components/issues/365
-    this._graphics = featureSet.sort((a,b) => ids.indexOf(a.getObjectId()) - ids.indexOf(b.getObjectId()));
-    this._cardLoading = false;
+    this._graphics = await this._getFeaturesByIds(ids);
   }
 
   /**
@@ -144,6 +144,9 @@ export class CardManager {
    */
   async componentWillLoad(): Promise<void> {
     await this._getTranslations();
+    if(this.selectedFeaturesIds?.length > 0) {
+      this._graphics = await this._getFeaturesByIds(this.selectedFeaturesIds);
+    }
   }
 
   /**
@@ -184,6 +187,19 @@ export class CardManager {
   //  Functions (protected)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Gets the Feature using its ids
+   *
+   * @returns Promise when complete
+   * @protected
+   */
+  protected async _getFeaturesByIds(ids: number[]): Promise<__esri.Graphic[]> {
+    // only query if we have some ids...query with no ids will result in all features being returned
+    const featureSet = ids.length > 0 ? await queryFeaturesByID(ids, this.layer, [], false, this.mapView.spatialReference) : [];
+    // https://github.com/Esri/solutions-components/issues/365
+    return featureSet.sort((a, b) => ids.indexOf(a.getObjectId()) - ids.indexOf(b.getObjectId()));
+  }
 
   /**
    * Fetches the component's translations
