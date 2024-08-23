@@ -7,9 +7,10 @@
 
 ## Properties
 
-| Property   | Attribute | Description                                  | Type         | Default |
-| ---------- | --------- | -------------------------------------------- | ------------ | ------- |
-| `mapInfos` | --        | IMapInfo[]: array of map infos (name and id) | `IMapInfo[]` | `[]`    |
+| Property      | Attribute       | Description                                           | Type         | Default     |
+| ------------- | --------------- | ----------------------------------------------------- | ------------ | ----------- |
+| `isMapLayout` | `is-map-layout` | boolean: when true map list will shown in half width. | `boolean`    | `undefined` |
+| `mapInfos`    | --              | IMapInfo[]: array of map infos (name and id)          | `IMapInfo[]` | `[]`        |
 
 
 ## Events
@@ -21,6 +22,16 @@
 
 ## Methods
 
+### `close() => Promise<void>`
+
+Closes the list
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
 ### `setMapByID(id: string) => Promise<void>`
 
 
@@ -30,6 +41,22 @@
 | Name | Type     | Description |
 | ---- | -------- | ----------- |
 | `id` | `string` |             |
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+### `toggle(mapListExpanded: boolean) => Promise<void>`
+
+Expands the list
+
+#### Parameters
+
+| Name              | Type      | Description |
+| ----------------- | --------- | ----------- |
+| `mapListExpanded` | `boolean` |             |
 
 #### Returns
 

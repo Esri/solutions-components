@@ -40,6 +40,7 @@
 ### Used by
 
  - [layer-table](../layer-table)
+ - [map-card](../map-card)
  - [map-select-tools](../map-select-tools)
  - [refine-selection](../refine-selection)
 
@@ -88,6 +89,7 @@ graph TD;
   calcite-button --> calcite-icon
   calcite-dropdown-item --> calcite-icon
   layer-table --> map-layer-picker
+  map-card --> map-layer-picker
   map-select-tools --> map-layer-picker
   refine-selection --> map-layer-picker
   style map-layer-picker fill:#f9f,stroke:#333,stroke-width:4px

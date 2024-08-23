@@ -14,10 +14,13 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, State, Watch } from "@stencil/core";
+import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, State, Watch, Fragment, Method } from "@stencil/core";
+import MapCard_T9n from  "../../assets/t9n/map-card/resources.json"
 import { loadModules } from "../../utils/loadModules";
 import { IBasemapConfig, IMapChange, IMapInfo, ISearchConfiguration, theme } from "../../utils/interfaces";
 import { joinAppProxies } from "templates-common-library-esm/functionality/proxy";
+import { getLocaleComponentStrings } from "../../utils/locale";
+import { getFeatureLayerView, goToSelection } from "../../utils/mapViewUtils";
 
 // TODO navigation and accessability isn't right for the map list
 //   tab does not go into the list when it's open
@@ -55,6 +58,11 @@ export class MapCard {
    * string: Item ID of the web map that should be selected by default when the app loads
    */
   @Prop() defaultWebmapId = "";
+
+  /**
+   * string: when provided this layer ID will be used when the app loads
+   */
+  @Prop() defaultLayerId: string;
 
   /**
    * boolean: when true the home widget will be available
@@ -163,11 +171,52 @@ export class MapCard {
    */
   @Prop() toolOrder: string[];
 
+  /**
+   * boolean: When true map will shown is full screen
+   */
+  @Prop() isMapLayout: boolean
+
+  /**
+   * number[]: A list of ids that are currently selected
+   */
+  @Prop() selectedFeaturesIds: number[];
+
+  /**
+   * __esri.FeatureLayer: Selected layer
+   */
+  @Prop() selectedLayer: __esri.FeatureLayer;
+
+  /**
+   * number: default scale to zoom to when zooming to a single point feature
+   */
+  @Prop() zoomToScale: number;
+
+  /**
+   * boolean: When true only editable layers that support the update capability will be available
+   */
+  @Prop() onlyShowUpdatableLayers: boolean;
+
+  /**
+   * When true the component will render an optimized view for mobile devices
+   */
+  @Prop() isMobile: boolean;
+
+  /**
+   * IMapInfo: key configuration details about the current map
+   */
+  @Prop() mapInfo: IMapInfo;
+  
   //--------------------------------------------------------------------------
   //
   //  State (internal)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Contains the translations for this component.
+   * All UI strings should be defined here.
+   */
+  @State() _translations: typeof MapCard_T9n;
 
   /**
    * ISearchConfiguration: Configuration details for the Search widget
@@ -178,6 +227,11 @@ export class MapCard {
    * IMapInfo: id and name of the map to display
    */
   @State() _webMapInfo: IMapInfo;
+
+  /**
+   * boolean: When true the show/hide fields list is forced open
+   */
+  @State() _showHideOpen = false;
 
   //--------------------------------------------------------------------------
   //
@@ -235,6 +289,26 @@ export class MapCard {
    */
   protected _mapTools: HTMLMapToolsElement;
 
+  /**
+   * HTMLCalciteDropdownElement: Dropdown the will support overflow tools that won't fit in the current display
+   */
+  protected _moreDropdown: HTMLCalciteDropdownElement;
+
+  /**
+   * boolean: When true the show/hide fields list is forced open
+   */
+  protected _mapListExpanded = false;
+
+  /**
+   * boolean: When true an indicator will be shown on the action
+   */
+  protected _filterActive = false;
+
+  /**
+   * string: The current layers definition expression
+   */
+  protected _definitionExpression: string;
+
   //--------------------------------------------------------------------------
   //
   //  Watch handlers
@@ -249,11 +323,37 @@ export class MapCard {
     this._initHome();
   }
 
+  /**
+   * watch for changes in layer view and verify if it has editing enabled
+   */
+    @Watch("selectedLayer")
+    async selectedLayerWatchHandler(): Promise<void> {
+      await this.selectedLayer?.when(async () => {
+        this._definitionExpression = this.selectedLayer.definitionExpression;
+      })
+    }
+
   //--------------------------------------------------------------------------
   //
   //  Methods (public)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Reset the filter
+   */
+    @Method()
+    async filterReset(): Promise<void> {
+      this._filterActive = false;
+    }
+
+  /**
+   * updates the filter
+   */
+    @Method()
+    async updateFilter(): Promise<void> {
+      this._filterActive = this._definitionExpression !== this.selectedLayer.definitionExpression;
+    }
 
   //--------------------------------------------------------------------------
   //
@@ -272,6 +372,11 @@ export class MapCard {
   @Event() beforeMapChanged: EventEmitter<void>;
 
   /**
+   * Emitted on demand when filter action is clicked
+   */
+  @Event() toggleFilter: EventEmitter<void>;
+
+  /**
    * Listen for changes to map info and load the appropriate map
    */
   @Listen("mapInfoChange", { target: "window" })
@@ -280,6 +385,15 @@ export class MapCard {
   ): Promise<void> {
     await this._loadMap(evt.detail);
   }
+
+  /**
+   * Listen for change when mapview doesn't contain any layer
+   */
+    @Listen("noLayersFound", { target: "window" })
+    noLayersFound(): void {
+      this.selectedLayer = undefined;
+      this.selectedFeaturesIds = [];
+    }
 
   //--------------------------------------------------------------------------
   //
@@ -291,6 +405,7 @@ export class MapCard {
    * StencilJS: Called once just after the component is first connected to the DOM.
    */
   async componentWillLoad(): Promise<void> {
+    await this._getTranslations();
     await this._initModules();
   }
 
@@ -298,14 +413,46 @@ export class MapCard {
    * Renders the component.
    */
   render() {
+    const mapContainerClass = this.isMapLayout ? "display-flex height-50-px" : "";
     const mapClass = this.hidden ? "visibility-hidden-1" : "";
     const themeClass = this.theme === "dark" ? "calcite-mode-dark" : "calcite-mode-light";
     const mapPickerClass = this.mapInfos?.length > 1 ? "" : "display-none";
     const mapHeightClass = this.mapInfos?.length > 1 ? "map-height" : "height-full";
+    const containerClass = this.isMobile ? "width-full" : "";
+    const mobileClass = this.isMobile ? "border-top" : "";
+    const headerElements = this.isMapLayout ? "" : "display-none";
     return (
       <Host>
-        <map-picker class={mapPickerClass} mapInfos={this.mapInfos} ref={(el) => this._mapPicker = el}/>
-        <div class={`${mapHeightClass} ${mapClass}`} ref={(el) => (this._mapDiv = el)}/>
+        <div class={`${mapContainerClass}`}>
+          <map-picker
+            class={mapPickerClass}
+            isMapLayout={this.isMapLayout}
+            mapInfos={this.mapInfos}
+            ref={(el) => this._mapPicker = el} />
+
+          <div class={`mapView-header display-flex ${headerElements}`}>
+
+            <div class={`border-end ${containerClass} ${mobileClass}`} id="solutions-map-layer-picker-container">
+              {this.mapView && <map-layer-picker
+                appearance="transparent"
+                defaultLayerId={this.defaultLayerId}
+                display="inline-flex"
+                height={50}
+                isMobile={this.isMobile}
+                mapView={this.mapView}
+                onlyShowUpdatableLayers={this.onlyShowUpdatableLayers}
+                placeholderIcon="layers"
+                scale="l"
+                selectedIds={this.selectedLayer ? [this.selectedLayer.id] : []}
+                showSingleLayerAsLabel={true}
+                showTables={true}
+                type="dropdown"
+              />}
+              </div>
+              {this._getDropDownItem()}
+            </div>
+        </div>
+        <div class={`${mapHeightClass} ${mapClass}`} ref={(el) => (this._mapDiv = el)} />
         <map-tools
           basemapConfig={this.basemapConfig}
           class={`box-shadow ${themeClass}`}
@@ -328,6 +475,13 @@ export class MapCard {
       </Host>
     );
   }
+
+  /**
+   * Called each time after the component is loaded
+   */
+    async componentDidRender(): Promise<void> {
+      document.onclick = (e) => this._handleDocumentClick(e);
+    }
 
   //--------------------------------------------------------------------------
   //
@@ -437,5 +591,184 @@ export class MapCard {
       this.mapView.ui.remove(this._homeWidget);
     }
   }
+
+  /**
+   * Toggle show/hide dropdown
+   */
+  protected _toggleShowHide(): void {
+    this._showHideOpen = !this._showHideOpen;
+  }
+
+  /**
+   * Open show/hide dropdown
+   */
+  protected _forceShowHide(): void {
+    if (this._moreDropdown) {
+      this._moreDropdown.open = this._showHideOpen;
+    }
+  }
+
+  /**
+   * Close show/hide dropdown when the user clicks outside of it
+   */
+  protected _handleDocumentClick(
+    e: MouseEvent
+  ): void {
+    const id = (e.target as any)?.id;
+    if (this._showHideOpen && id !== "solutions-subset-list" && id !== "solutions-more" && id !== "chevron-down"){
+      if (this._moreDropdown) {
+        this._showHideOpen = false;
+        this._moreDropdown.open = false;
+      }
+    }
+    // if clicked on map picker then toggle the dropdown
+    if ((e.target as any).tagName === 'MAP-PICKER') {
+      this._mapListExpanded = !this._mapListExpanded
+      void this._mapPicker.toggle(this._mapListExpanded);
+    }
+    // if clicked on other place then just close the dropdown
+    if ((e.target as any).tagName !== 'MAP-PICKER') {
+      this._mapListExpanded = false;
+      void this._mapPicker.close();
+    }
+  }
+  
+    /**
+   * Zoom to all selected features
+   *
+   * @returns a promise that will resolve when the operation is complete
+   */
+    protected async _zoom(): Promise<void> {
+      if (this.selectedLayer) {
+        const selectedLayerView = await getFeatureLayerView(this.mapView, this.selectedLayer.id);
+        await goToSelection(this.selectedFeaturesIds, selectedLayerView, this.mapView, true, undefined, this.zoomToScale);
+      }
+    }
+
+    protected async _toggleFilter(): Promise<void> {
+      this.toggleFilter.emit();
+    }
+
+  /**
+   * Return true when we have at least 1 layer expression for the current layer
+   *
+   * @returns boolean
+   */
+  protected _hasFilterExpressions(): boolean {
+    let layerExpressions;
+    if (this.mapInfo?.filterConfig?.layerExpressions && this.selectedLayer?.id) {
+      layerExpressions = this.mapInfo.filterConfig.layerExpressions.filter(
+        (exp) => exp.id === this.selectedLayer.id);
+    }
+    return layerExpressions?.length > 0;
+  }
+
+  /**
+   * Get Dropdown action item
+   * @returns Dropdown item
+   */
+  protected _getDropDownItem(): Node {
+    return (
+      <calcite-dropdown
+        closeOnSelectDisabled={true}
+        disabled={this.selectedLayer === undefined}
+        id="solutions-more"
+        onCalciteDropdownBeforeClose={() => this._forceShowHide()}
+        ref={(el) => this._moreDropdown = el}
+        widthScale="l"
+      >
+        <calcite-action
+          appearance="solid"
+          id={'solutions-more'}
+          label=""
+          onClick={() => this._toggleShowHide()}
+          slot="trigger"
+          text=""
+        >
+          <calcite-button
+            appearance="transparent"
+            iconEnd={this._showHideOpen ? "chevron-up" : "chevron-down"}
+            kind="neutral"
+          >
+            {this._translations.more}
+          </calcite-button>
+        </calcite-action>
+        <calcite-dropdown-group
+        selectionMode="none"
+        >
+          {this._getDropDownItems()}
+        </calcite-dropdown-group>
+      </calcite-dropdown>
+    )
+  }
+  
+  /**
+   * Gets the dropdown items
+   * @returns dropdown items
+   */
+  protected _getDropDownItems(): Node {
+    const featureSelected = this.selectedFeaturesIds?.length > 0;
+    const showMultipleEdits = this.selectedFeaturesIds?.length > 1;
+    const hasFilterExpressions = this._hasFilterExpressions()
+    return (
+      <Fragment>
+        <calcite-dropdown-group
+          selectionMode={"none"}>
+          <calcite-dropdown-item
+            disabled={!showMultipleEdits}
+            iconStart={"pencil"}
+            id="solutions-subset-list"
+            onClick={() => alert(this._translations.editMultiple)}>
+            {this._translations.editMultiple}
+          </calcite-dropdown-item>
+        </calcite-dropdown-group>
+
+        <calcite-dropdown-group
+          selectionMode={"none"}>
+          <calcite-dropdown-item
+            iconStart={"refresh"}
+            id="solutions-subset-list"
+            onClick={() => { this.selectedLayer.refresh() }}>
+            {this._translations.refresh}
+          </calcite-dropdown-item>
+        </calcite-dropdown-group>
+
+        <calcite-dropdown-group
+          selectionMode={"none"}>
+          <calcite-dropdown-item
+            disabled={!featureSelected}
+            iconStart={"zoom-to-object"}
+            id="solutions-subset-list"
+            onClick={this._zoom.bind(this)}>
+            {this._translations.zoom}
+          </calcite-dropdown-item>
+        </calcite-dropdown-group>
+
+        {hasFilterExpressions &&
+          <calcite-dropdown-group>
+            <calcite-dropdown-item
+              disabled={false}
+              iconStart={"filter"}
+              id="solutions-subset-list"
+              onClick={this._toggleFilter.bind(this)}
+              selected={this._filterActive}>
+              {this._translations.filters}
+            </calcite-dropdown-item>
+          </calcite-dropdown-group>}
+
+      </Fragment>
+    )
+  }
+
+    /**
+   * Fetches the component's translations
+   *
+   * @returns Promise when complete
+   * @protected
+   */
+    protected async _getTranslations(): Promise<void> {
+      const messages = await getLocaleComponentStrings(this.el);
+      this._translations = messages[0] as typeof MapCard_T9n;
+    }
 
 }

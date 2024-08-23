@@ -88,6 +88,10 @@ export namespace Components {
          */
         "mapView": __esri.MapView;
         /**
+          * A list of ids that are currently selected
+         */
+        "selectedFeaturesIds": number[];
+        /**
           * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
          */
         "zoomAndScrollToSelected": boolean;
@@ -703,6 +707,14 @@ export namespace Components {
     }
     interface LayerTable {
         /**
+          * Closes the filter
+         */
+        "closeFilter": () => Promise<void>;
+        /**
+          * boolean: create filter modal optional (default true) boolean value to create filter modal in layer table
+         */
+        "createFilterModal": boolean;
+        /**
           * string: Global ID of the feature to select
          */
         "defaultGlobalId": string[];
@@ -735,6 +747,14 @@ export namespace Components {
          */
         "enableShare": boolean;
         /**
+          * Reset the filter
+         */
+        "filterReset": () => Promise<void>;
+        /**
+          * Updates the filter
+         */
+        "filterUpdate": () => Promise<void>;
+        /**
           * When true the component will render an optimized view for mobile devices
          */
         "isMobile": boolean;
@@ -754,6 +774,10 @@ export namespace Components {
           * boolean: When true only editable layers that support the update capability will be available
          */
         "onlyShowUpdatableLayers": boolean;
+        /**
+          * refresh the feature table
+         */
+        "refresh": () => Promise<void>;
         /**
           * number[]: A list of ids that are currently selected
          */
@@ -795,6 +819,10 @@ export namespace Components {
          */
         "basemapConfig": IBasemapConfig;
         /**
+          * string: when provided this layer ID will be used when the app loads
+         */
+        "defaultLayerId": string;
+        /**
           * string: Item ID of the web map that should be selected by default when the app loads
          */
         "defaultWebmapId": string;
@@ -827,6 +855,10 @@ export namespace Components {
          */
         "enableSingleExpand": boolean;
         /**
+          * Reset the filter
+         */
+        "filterReset": () => Promise<void>;
+        /**
           * boolean: When true the map display will be hidden
          */
         "hidden": boolean;
@@ -842,6 +874,18 @@ export namespace Components {
           * "s" | "m" | "l": Used for Zoom and Home tools
          */
         "homeZoomToolsSize": "s" | "m" | "l";
+        /**
+          * boolean: When true map will shown is full screen
+         */
+        "isMapLayout": boolean;
+        /**
+          * When true the component will render an optimized view for mobile devices
+         */
+        "isMobile": boolean;
+        /**
+          * IMapInfo: key configuration details about the current map
+         */
+        "mapInfo": IMapInfo;
         /**
           * IMapInfo[]: array of map infos (name and id)
          */
@@ -863,6 +907,18 @@ export namespace Components {
          */
         "mapWidgetsSize": "s" | "m" | "l";
         /**
+          * boolean: When true only editable layers that support the update capability will be available
+         */
+        "onlyShowUpdatableLayers": boolean;
+        /**
+          * number[]: A list of ids that are currently selected
+         */
+        "selectedFeaturesIds": number[];
+        /**
+          * __esri.FeatureLayer: Selected layer
+         */
+        "selectedLayer": __esri.FeatureLayer;
+        /**
           * boolean: When true the map widget tools will have no margin between them. When false the map widget tools will have a margin between them.
          */
         "stackTools": boolean;
@@ -874,6 +930,14 @@ export namespace Components {
           * Valid tools: "legend", "search", "fullscreen", "basemap", "floorfilter"
          */
         "toolOrder": string[];
+        /**
+          * updates the filter
+         */
+        "updateFilter": () => Promise<void>;
+        /**
+          * number: default scale to zoom to when zooming to a single point feature
+         */
+        "zoomToScale": number;
     }
     interface MapDrawTools {
         /**
@@ -1011,10 +1075,22 @@ export namespace Components {
     }
     interface MapPicker {
         /**
+          * Closes the list
+         */
+        "close": () => Promise<void>;
+        /**
+          * boolean: when true map list will shown in half width.
+         */
+        "isMapLayout"?: boolean;
+        /**
           * IMapInfo[]: array of map infos (name and id)
          */
         "mapInfos": IMapInfo[];
         "setMapByID": (id: string) => Promise<void>;
+        /**
+          * Expands the list
+         */
+        "toggle": (mapListExpanded: boolean) => Promise<void>;
     }
     interface MapSearch {
         /**
@@ -1979,6 +2055,7 @@ declare global {
     };
     interface HTMLLayerTableElementEventMap {
         "featureSelectionChange": number[];
+        "toggleFilter": void;
     }
     interface HTMLLayerTableElement extends Components.LayerTable, HTMLStencilElement {
         addEventListener<K extends keyof HTMLLayerTableElementEventMap>(type: K, listener: (this: HTMLLayerTableElement, ev: LayerTableCustomEvent<HTMLLayerTableElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2026,6 +2103,7 @@ declare global {
     interface HTMLMapCardElementEventMap {
         "mapChanged": IMapChange;
         "beforeMapChanged": void;
+        "toggleFilter": void;
     }
     interface HTMLMapCardElement extends Components.MapCard, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMapCardElementEventMap>(type: K, listener: (this: HTMLMapCardElement, ev: MapCardCustomEvent<HTMLMapCardElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2491,6 +2569,10 @@ declare namespace LocalJSX {
           * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
+        /**
+          * A list of ids that are currently selected
+         */
+        "selectedFeaturesIds"?: number[];
         /**
           * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
          */
@@ -3128,6 +3210,10 @@ declare namespace LocalJSX {
     }
     interface LayerTable {
         /**
+          * boolean: create filter modal optional (default true) boolean value to create filter modal in layer table
+         */
+        "createFilterModal"?: boolean;
+        /**
           * string: Global ID of the feature to select
          */
         "defaultGlobalId"?: string[];
@@ -3180,6 +3266,10 @@ declare namespace LocalJSX {
          */
         "onFeatureSelectionChange"?: (event: LayerTableCustomEvent<number[]>) => void;
         /**
+          * Emitted on demand when filter action is clicked
+         */
+        "onToggleFilter"?: (event: LayerTableCustomEvent<void>) => void;
+        /**
           * boolean: When true only editable layers that support the update capability will be available
          */
         "onlyShowUpdatableLayers"?: boolean;
@@ -3227,6 +3317,10 @@ declare namespace LocalJSX {
           * IBasemapConfig: List of any basemaps to filter out from the basemap widget
          */
         "basemapConfig"?: IBasemapConfig;
+        /**
+          * string: when provided this layer ID will be used when the app loads
+         */
+        "defaultLayerId"?: string;
         /**
           * string: Item ID of the web map that should be selected by default when the app loads
          */
@@ -3276,6 +3370,18 @@ declare namespace LocalJSX {
          */
         "homeZoomToolsSize"?: "s" | "m" | "l";
         /**
+          * boolean: When true map will shown is full screen
+         */
+        "isMapLayout"?: boolean;
+        /**
+          * When true the component will render an optimized view for mobile devices
+         */
+        "isMobile"?: boolean;
+        /**
+          * IMapInfo: key configuration details about the current map
+         */
+        "mapInfo"?: IMapInfo;
+        /**
           * IMapInfo[]: array of map infos (name and id)
          */
         "mapInfos"?: IMapInfo[];
@@ -3304,6 +3410,22 @@ declare namespace LocalJSX {
          */
         "onMapChanged"?: (event: MapCardCustomEvent<IMapChange>) => void;
         /**
+          * Emitted on demand when filter action is clicked
+         */
+        "onToggleFilter"?: (event: MapCardCustomEvent<void>) => void;
+        /**
+          * boolean: When true only editable layers that support the update capability will be available
+         */
+        "onlyShowUpdatableLayers"?: boolean;
+        /**
+          * number[]: A list of ids that are currently selected
+         */
+        "selectedFeaturesIds"?: number[];
+        /**
+          * __esri.FeatureLayer: Selected layer
+         */
+        "selectedLayer"?: __esri.FeatureLayer;
+        /**
           * boolean: When true the map widget tools will have no margin between them. When false the map widget tools will have a margin between them.
          */
         "stackTools"?: boolean;
@@ -3315,6 +3437,10 @@ declare namespace LocalJSX {
           * Valid tools: "legend", "search", "fullscreen", "basemap", "floorfilter"
          */
         "toolOrder"?: string[];
+        /**
+          * number: default scale to zoom to when zooming to a single point feature
+         */
+        "zoomToScale"?: number;
     }
     interface MapDrawTools {
         /**
@@ -3473,6 +3599,10 @@ declare namespace LocalJSX {
         "mapView"?: __esri.MapView;
     }
     interface MapPicker {
+        /**
+          * boolean: when true map list will shown in half width.
+         */
+        "isMapLayout"?: boolean;
         /**
           * IMapInfo[]: array of map infos (name and id)
          */

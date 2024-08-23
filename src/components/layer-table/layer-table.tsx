@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, State, VNode, Watch } from "@stencil/core";
+import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, State, VNode, Watch, Method } from "@stencil/core";
 import LayerTable_T9n from "../../assets/t9n/layer-table/resources.json";
 import { loadModules } from "../../utils/loadModules";
 import { getLocaleComponentStrings } from "../../utils/locale";
@@ -138,6 +138,11 @@ export class LayerTable {
    * number: default scale to zoom to when zooming to a single point feature
    */
   @Prop() zoomToScale: number;
+
+  /**
+   * boolean: create filter modal optional (default true) boolean value to create filter modal in layer table
+   */
+  @Prop() createFilterModal: boolean = true;
 
   //--------------------------------------------------------------------------
   //
@@ -500,7 +505,9 @@ export class LayerTable {
   @Watch("mapInfo")
   async mapInfoWatchHandler(): Promise<void> {
     this._resetColumnTemplates();
-    this._initLayerExpressions();
+    if (this.createFilterModal) {
+      this._initLayerExpressions();
+    }
     this._initToolInfos();
     this._updateToolbar();
     await this._sortTable()
@@ -538,7 +545,9 @@ export class LayerTable {
       this._floorField = this._layer.floorInfo?.floorField;
       this._updateFloorDefinitionExpression();
       await this._resetTable();
-      this._initLayerExpressions();
+      if (this.createFilterModal) {
+        this._initLayerExpressions();
+      }
       this._updateShareUrl();
       this._fetchingData = false;
     })
@@ -566,6 +575,38 @@ export class LayerTable {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * Reset the filter
+   */
+    @Method()
+    async filterReset(): Promise<void> {
+      void this._handleFilterListReset();
+    }
+
+  /**
+   * Updates the filter
+   */
+    @Method()
+    async filterUpdate(): Promise<void> {
+      this._handleFilterUpdate();
+    }
+
+  /**
+   * Closes the filter
+   */
+    @Method()
+    async closeFilter(): Promise<void> {
+      await this._closeFilter();
+    }
+
+    /**
+     * refresh the feature table
+     */
+    @Method()
+    async refresh(): Promise<void> {
+      await this._refresh();
+    }
+
   //--------------------------------------------------------------------------
   //
   //  Events (public)
@@ -576,6 +617,11 @@ export class LayerTable {
    * Emitted on demand when a layer is selected
    */
   @Event() featureSelectionChange: EventEmitter<number[]>;
+
+  /**
+   * Emitted on demand when filter action is clicked
+   */
+  @Event() toggleFilter: EventEmitter<void>;
 
   /**
    * Scroll and zoom to the selected feature from the Features widget.
@@ -612,6 +658,18 @@ export class LayerTable {
       }
     }
   }
+
+    /**
+   * Handles layer selection change to show new table
+   *
+   * @param evt CustomEvent the id for the current layer
+   */
+    @Listen("layerSelectionChange", { target: "window" })
+    async layerSelectionChange(
+      evt: CustomEvent
+    ): Promise<void> {
+      await this._layerSelectionChanged(evt);
+    }
 
   /**
    * Refresh the table when edits are completed
@@ -729,7 +787,7 @@ export class LayerTable {
             }
           </div>
         </calcite-shell>
-        {this._filterModal()}
+        {this.createFilterModal && this._filterModal()}
       </Host>
     );
   }
@@ -835,10 +893,10 @@ export class LayerTable {
             height={50}
             isMobile={this.isMobile}
             mapView={this.mapView}
-            onLayerSelectionChange={(evt) => void this._layerSelectionChanged(evt)}
             onlyShowUpdatableLayers={this.onlyShowUpdatableLayers}
             placeholderIcon="layers"
             scale="l"
+            selectedIds={this._layer ? [this._layer?.id] : []}
             showSingleLayerAsLabel={true}
             showTables={true}
             type="dropdown"
@@ -930,15 +988,19 @@ export class LayerTable {
    */
   _validateEnabledActions(): void {
     const featuresSelected = this._featuresSelected();
+    const showMultipleEdits = this.selectedIds.length > 1 && this._layer?.capabilities?.operations?.supportsUpdate;
     const selectionDependant = [
       "zoom-to-object",
+      "pencil",
       "trash",
       "erase",
       "selected-items-filter"
     ];
     this._toolInfos?.forEach(ti => {
       if (ti && selectionDependant.indexOf(ti.icon) > -1) {
-        ti.disabled = !featuresSelected;
+        // disable the pencil icon if multiple features are not selected
+        // For other icons disable them if any feature is not selected
+        ti.disabled = ti.icon === "pencil" ? !showMultipleEdits : !featuresSelected;
       }
     });
   }
@@ -974,6 +1036,7 @@ export class LayerTable {
    */
   protected _initToolInfos(): void {
     const featuresSelected = this._featuresSelected();
+    const showMultipleEdits = this.selectedIds.length > 1 && this._layer?.capabilities?.operations?.supportsUpdate;
     const featuresEmpty = this._featuresEmpty();
     const hasFilterExpressions = this._hasFilterExpressions();
     if (this._translations) {
@@ -991,20 +1054,30 @@ export class LayerTable {
         active: false,
         icon: "filter",
         indicator: false,
-        label: this._translations.filters,
-        func: () => this._toggleFilter(),
-        disabled: false,
-        isOverflow: false
-      } : undefined,
-      this._deleteEnabled ? {
-        active: undefined,
-        icon: "trash",
-        indicator: undefined,
-        label: undefined,
-        func: undefined,
-        disabled: !featuresSelected,
-        isDanger: true,
-        isOverflow: false
+          label: this._translations.filters,
+          func: () => this.createFilterModal ? this._toggleFilter() : this.toggleFilter.emit(),
+          disabled: false,
+          isOverflow: false
+        } : undefined,
+        !this.mapHidden ? {
+          active: false,
+          icon: "pencil",
+          indicator: false,
+          label: this._translations.editMultiple,
+          func: () => alert(this._translations.editMultiple),
+          disabled: !showMultipleEdits,
+          isOverflow: false,
+          isSublist: false
+        } : undefined,
+        this._deleteEnabled ? {
+          active: undefined,
+          icon: "trash",
+          indicator: undefined,
+          label: undefined,
+          func: undefined,
+          disabled: !featuresSelected,
+          isDanger: true,
+          isOverflow: false
       } : undefined, {
         active: false,
         icon: "erase",
@@ -1196,7 +1269,7 @@ export class LayerTable {
   ): void {
     let update = JSON.stringify(controlsThatFit) !== JSON.stringify(this._controlsThatFit);
     const actionbar = document.getElementById("solutions-action-bar");
-    actionbar.childNodes.forEach((n: any) => {
+    actionbar?.childNodes?.forEach((n: any) => {
       if (skipControls.indexOf(n.id) < 0 && !update) {
         update = this._controlsThatFit.map(c => c.id).indexOf(n.id) < 0;
       }
