@@ -117,11 +117,6 @@ export class CrowdsourceManager {
   @Prop() enableColumnReorder = true;
 
   /**
-   * boolean: when true the users can have the option to create features
-   */
-  @Prop() enableCreateFeatures = true;
-
-  /**
    * boolean: when true the export to csv button will be available
    */
   @Prop() enableCSV = true;
@@ -236,6 +231,11 @@ export class CrowdsourceManager {
   //  State (internal)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * boolean: when true the users can have the option to create features
+   */
+  @State() _enableCreateFeatures = true;
 
   /**
    * When true the mobile footer will be hidden
@@ -569,7 +569,7 @@ export class CrowdsourceManager {
   /**
    * sets the active layout to render
    * @param appLayout new app layout
-   * 
+   *
    * @protected
    */
   protected _setActiveLayout(appLayout: AppLayout): void {
@@ -957,7 +957,7 @@ export class CrowdsourceManager {
 
   /**
    * Returns the Actions for table's node
-   * 
+   *
    * @returns Node
    * @protected
    */
@@ -1078,7 +1078,7 @@ export class CrowdsourceManager {
   /**
    * Store any filters for the current layer.
    * Should only occur on layer change
-   * 
+   *
    * @protected
    */
   protected _initLayerExpressions(): void {
@@ -1093,7 +1093,7 @@ export class CrowdsourceManager {
 
   /**
    * Toggle the filter modal
-   * 
+   *
    * @protected
    */
   protected _toggleFilter(): void {
@@ -1102,7 +1102,7 @@ export class CrowdsourceManager {
 
   /**
    * Reset the filter active prop
-   * 
+   *
    * @protected
    */
   protected _handleFilterListReset(): void {
@@ -1111,7 +1111,7 @@ export class CrowdsourceManager {
 
   /**
    * Close the filter modal
-   * 
+   *
    * @protected
    */
   protected async _closeFilter(): Promise<void> {
@@ -1123,7 +1123,7 @@ export class CrowdsourceManager {
 
   /**
    * Update the component layout when its size changes
-   * 
+   *
    * @protected
    */
   protected _onResize(): void {
@@ -1142,7 +1142,7 @@ export class CrowdsourceManager {
   /**
    * Open/Close the appropriate panel.
    * The panel that is toggled is dependent upon the layout mode and if using classic grid or not
-   * 
+   *
    * @protected
    */
   protected _toggleLayout(): void {
@@ -1152,7 +1152,7 @@ export class CrowdsourceManager {
   /**
    * Changes the layout mode
    * @param appLayout selected active app layout
-   * 
+   *
    * @protected
    */
   protected _changeLayout(appLayout: AppLayout): void {
@@ -1210,7 +1210,7 @@ export class CrowdsourceManager {
   /**
    * Get the current map info (configuration details) when maps change
    * @param id map changed id
-   * 
+   *
    * @returns IMapInfo for the provided id
    * @protected
    */
@@ -1234,6 +1234,7 @@ export class CrowdsourceManager {
    */
   protected async _setMapView(): Promise<void> {
     this._mapInfo = this._getMapInfo(this._mapChange.id);
+    this._enableCreateFeatures = this._mapInfo.enableCreateFeatures;
     this._mapView = this._mapChange.mapView;
     this._initMapZoom();
     this._mapView.popupEnabled = false;
