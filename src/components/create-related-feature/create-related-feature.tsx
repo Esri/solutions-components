@@ -360,7 +360,14 @@ export class CreateRelatedFeature {
     childRelationship: __esri.Relationship
   ): object {
     const parentKeyField = parentRelationship.keyField;
-    const parentKeyValue = parentFeature.getAttribute(parentKeyField);
+    let parentKeyValue;
+    if (parentFeature.attributes.hasOwnProperty(parentKeyField)) {
+      parentKeyValue = parentFeature.getAttribute(parentKeyField);
+    } else if (parentFeature.attributes.hasOwnProperty(parentKeyField.toLowerCase())) {
+      parentKeyValue = parentFeature.getAttribute(parentKeyField.toLowerCase());
+    } else if (parentFeature.attributes.hasOwnProperty(parentKeyField.toUpperCase())) {
+      parentKeyValue = parentFeature.getAttribute(parentKeyField.toUpperCase());
+    }
     let childKeyField = childRelationship.keyField;
     // get the field from table which name is same as childKeyField and use that field name as childKeyField
     const field = this.table.fields.find((field) => field.name.toLocaleLowerCase() === childKeyField.toLocaleLowerCase());

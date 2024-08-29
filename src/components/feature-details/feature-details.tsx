@@ -370,8 +370,9 @@ export class FeatureDetails {
       //Get comments table id from map
       const relatedTableIdFromRelnship = selectedLayer.relationships[0].relatedTableId;
       const allTables = await getAllTables(this.mapView);
-      const relatedTable = allTables.filter((table) => selectedLayer.url === (table as __esri.FeatureLayer).url && relatedTableIdFromRelnship === (table as __esri.FeatureLayer).layerId);
-      this.relatedTableId = relatedTable?.length > 0 ? relatedTable[0].id : '';
+      const allRelatedTables = allTables.filter((table: __esri.FeatureLayer) => selectedLayer.url === table.url && relatedTableIdFromRelnship === table.layerId);
+      const relatedTable = allRelatedTables?.length > 0 ? allRelatedTables[0] as __esri.FeatureLayer : null;
+      this.relatedTableId = relatedTable?.id ?? '';
 
       //**Get the related records for the current selected feature**
       if (this.relatedTableId) {
@@ -389,8 +390,8 @@ export class FeatureDetails {
         const relatedOIDs = [];
         if (result[objectId]) {
           result[objectId].features.forEach((feature) => {
-            relatedOIDs.push(feature.attributes.OBJECTID);
-          })
+            relatedOIDs.push(feature.attributes[relatedTable.objectIdField]);
+          });
         }
 
         // Store the objectid's of the related features, this will be used to show the comments and its count
