@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.10.10] - August 29th 2024
+Comments in Reporter for Enterprise
+
 ## [0.10.9] - August 23rd 2024
 Set create features
 
@@ -752,4 +755,5 @@ Recover from test releases
 [0.10.7]: https://github.com/Esri/solution.js/compare/v0.10.6...v0.10.7 "v0.10.7"
 [0.10.8]: https://github.com/Esri/solution.js/compare/v0.10.7...v0.10.8 "v0.10.8"
 [0.10.9]: https://github.com/Esri/solution.js/compare/v0.10.8...v0.10.9 "v0.10.9"
-[Unreleased]: https://github.com/Esri/solution.js/compare/v0.10.9...HEAD "Unreleased Changes"
+[0.10.10]: https://github.com/Esri/solution.js/compare/v0.10.9...v0.10.10 "v0.10.10"
+[Unreleased]: https://github.com/Esri/solution.js/compare/v0.10.10...HEAD "Unreleased Changes"
