@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.8.66a] - August 30th 2024
+Bug fix for ArcGIS Enterprise 11.4
+
 ## [0.8.66] - July 8th 2024
 Publish issue
 
