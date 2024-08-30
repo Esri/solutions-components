@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, h, Element, Prop, State, Method, Event, EventEmitter, Watch} from '@stencil/core';
+import { Component, h, Element, Prop, State, Method, Event, EventEmitter, Watch } from '@stencil/core';
 import { loadModules } from "../../utils/loadModules";
 import { getAllTables } from '../../utils/mapViewUtils';
 import { IReportingOptions } from '../../components';
@@ -370,8 +370,9 @@ export class FeatureDetails {
       //Get comments table id from map
       const relatedTableIdFromRelnship = selectedLayer.relationships[0].relatedTableId;
       const allTables = await getAllTables(this.mapView);
-      const relatedTable = allTables.filter((table) => selectedLayer.url === (table as __esri.FeatureLayer).url && relatedTableIdFromRelnship === (table as __esri.FeatureLayer).layerId);
-      this.relatedTableId = relatedTable?.length > 0 ? relatedTable[0].id : '';
+      const allRelatedTables = allTables.filter((table: __esri.FeatureLayer) => selectedLayer.url === table.url && relatedTableIdFromRelnship === table.layerId);
+      const relatedTable = allRelatedTables?.length > 0 ? allRelatedTables[0] as __esri.FeatureLayer : null;
+      this.relatedTableId = relatedTable?.id ?? '';
 
       //**Get the related records for the current selected feature**
       if (this.relatedTableId) {
@@ -389,8 +390,8 @@ export class FeatureDetails {
         const relatedOIDs = [];
         if (result[objectId]) {
           result[objectId].features.forEach((feature) => {
-            relatedOIDs.push(feature.attributes.OBJECTID);
-          })
+            relatedOIDs.push(feature.attributes[relatedTable.objectIdField]);
+          });
         }
 
         // Store the objectid's of the related features, this will be used to show the comments and its count
@@ -431,7 +432,7 @@ export class FeatureDetails {
       }
       //Check if selected layer have the configured like and dislike field and it is of integer types
       selectedLayer.fields.forEach((eachField: __esri.Field) => {
-        if (this._validFieldTypes.indexOf(eachField.type) > -1  && this.layerItemsHash[selectedLayer.id].supportsUpdate) {
+        if (this._validFieldTypes.indexOf(eachField.type) > -1 && this.layerItemsHash[selectedLayer.id].supportsUpdate) {
           if (eachField.name === likeField && this.reportingOptions[selectedLayer.id].like) {
             likeFieldAvailable = true;
           } else if (eachField.name === dislikeField && this.reportingOptions[selectedLayer.id].dislike) {
