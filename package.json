@@ -86,7 +86,7 @@
     "@esri/arcgis-rest-feature-layer": "^3.7.0",
     "@esri/arcgis-rest-portal": "^3.7.0",
     "@esri/arcgis-rest-request": "^3.7.0",
-    "@esri/calcite-components": "2.11.1",
+    "@esri/calcite-components": "2.12.0",
     "@esri/hub-common": "^14.177.0",
     "@esri/hub-initiatives": "^14.0.0",
     "@esri/hub-sites": "^15.0.0",
