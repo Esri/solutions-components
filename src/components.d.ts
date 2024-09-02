@@ -125,6 +125,10 @@ export namespace Components {
          */
         "customizeSubmit"?: boolean;
         /**
+          * boolean: When true the application will be in mobile mode, controls the mobile or desktop view
+         */
+        "isMobile": boolean;
+        /**
           * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
@@ -1823,6 +1827,7 @@ declare global {
         "drawComplete": void;
         "editingAttachment": boolean;
         "progressStatus": number;
+        "modeChanged": void;
     }
     interface HTMLCreateFeatureElement extends Components.CreateFeature, HTMLStencilElement {
         addEventListener<K extends keyof HTMLCreateFeatureElementEventMap>(type: K, listener: (this: HTMLCreateFeatureElement, ev: CreateFeatureCustomEvent<HTMLCreateFeatureElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2610,6 +2615,10 @@ declare namespace LocalJSX {
          */
         "customizeSubmit"?: boolean;
         /**
+          * boolean: When true the application will be in mobile mode, controls the mobile or desktop view
+         */
+        "isMobile"?: boolean;
+        /**
           * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
@@ -2625,6 +2634,10 @@ declare namespace LocalJSX {
           * Emitted on demand when the feature creation is failed
          */
         "onFail"?: (event: CreateFeatureCustomEvent<Error>) => void;
+        /**
+          * Emitted on switched form mobile to desktop or vice versa
+         */
+        "onModeChanged"?: (event: CreateFeatureCustomEvent<void>) => void;
         /**
           * Emitted on demand when editor panel changes
          */

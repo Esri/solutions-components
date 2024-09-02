@@ -417,9 +417,9 @@ export class CrowdsourceReporter {
   protected _layerItemsHash: ILayerItemsHash;
 
   /**
-   * boolean: when true allow map to be collapsed
+   * boolean: when true allow panel to show in full height
    */
-  protected isFormOpen: boolean;
+  protected _showFullPanel: boolean;
 
   //--------------------------------------------------------------------------
   //
@@ -432,7 +432,7 @@ export class CrowdsourceReporter {
    */
   @Watch("isMobile")
   async isMobileWatchHandler(): Promise<void> {
-      this._sidePanelCollapsed = false;
+    this.updatePanelState(false, this._showFullPanel);
   }
 
   /**
@@ -835,7 +835,6 @@ export class CrowdsourceReporter {
         collapsed={this.isMobile && this._sidePanelCollapsed}
         heading={this.reportButtonText ? this.reportButtonText : this._translations.createReportButtonText}
         onCalciteFlowItemBack={this.backFromSelectedPanel.bind(this)}>
-        {this.isMobile && this.getActionToExpandCollapsePanel()}
         <calcite-panel
           full-height
           full-width>
@@ -871,7 +870,6 @@ export class CrowdsourceReporter {
         collapsed={this.isMobile && this._sidePanelCollapsed}
         heading={this._selectedLayerName}
         onCalciteFlowItemBack={this.backFromCreateFeaturePanel.bind(this)}>
-        {this.isMobile && this.getActionToExpandCollapsePanel()}
         {this._showSubmitCancelButton && <div class={"width-full"}
           slot="footer">
           <calcite-button
@@ -904,13 +902,15 @@ export class CrowdsourceReporter {
           </calcite-notice>
           <create-feature
             customizeSubmit
+            isMobile={this.isMobile}
             mapView={this.mapView}
             onDrawComplete={this.onFormReady.bind(this)}
             onEditingAttachment={this.showSubmitCancelButton.bind(this)}
             onFail={this.createFeatureFailed.bind(this)}
+            onModeChanged={this.backFromCreateFeaturePanel.bind(this)}
             onProgressStatus={this.updatedProgressStatus.bind(this)}
             onSuccess={this.onReportSubmitted.bind(this)}
-            ref={el => this._createFeature = el }
+            ref={el => this._createFeature = el}
             searchConfiguration={this.searchConfiguration}
             selectedLayerId={this._selectedLayerId}
           />
@@ -932,8 +932,6 @@ export class CrowdsourceReporter {
    * @protected
    */
   protected onFormReady(): void {
-    // update the form state when form is ready
-    this.updateFormState(true);
     this._showSubmitCancelButton = true;
   }
 
@@ -964,9 +962,6 @@ export class CrowdsourceReporter {
       void this._createFeature.close();
     }
     //on back form will be closed, so update the form state
-    if (this.isFormOpen) {
-      this.updateFormState(false);
-    }
     this.backFromSelectedPanel();
   }
 
@@ -990,9 +985,6 @@ export class CrowdsourceReporter {
       this._showSubmitCancelButton = false;
     }
     //on back form will be closed, so update the form state
-    if (this.isFormOpen) {
-      this.updateFormState(false);
-    }
     this.backFromSelectedPanel();
   }
 
@@ -1012,10 +1004,11 @@ export class CrowdsourceReporter {
    */
   protected onReportSubmitted(): void {
     //on report submit form will be closed, so update the form state
-    if (this.isFormOpen) {
-      this.updateFormState(false);
+    if (this._showFullPanel) {
+      this.updatePanelState(this._sidePanelCollapsed, false);
     }
     this._reportSubmitted = true;
+    this._updatedProgressBarStatus = 0.25;
     void this.navigateToHomePage();
   }
 
@@ -1075,6 +1068,7 @@ export class CrowdsourceReporter {
       void this.setSelectedLayer(evt.detail.layerId, evt.detail.layerName);
     }
     this._showSubmitCancelButton = false;
+    this.updatePanelState(false, true);
     this._flowItems = [...this._flowItems, "feature-create"];
   }
 
@@ -1083,6 +1077,7 @@ export class CrowdsourceReporter {
    * @protected
    */
   protected navigateToChooseCategory(): void {
+    this.updatePanelState(false, true);
     this._flowItems = [...this._flowItems, "reporting-layer-list"];
   }
 
@@ -1144,6 +1139,12 @@ export class CrowdsourceReporter {
       updatedFlowItems[updatedFlowItems.length - 1] === 'add-comment')) {
       this.clearHighlights();
     }
+
+    // update the panel to the default state while coming back from Reports creation
+    if (updatedFlowItems[updatedFlowItems.length - 1] === 'reporting-layer-list' || (updatedFlowItems[updatedFlowItems.length - 1] === 'feature-create' &&
+      (updatedFlowItems[0] === 'feature-list' || updatedFlowItems[updatedFlowItems.length - 2] === 'feature-list'))) {
+      this.updatePanelState(this._sidePanelCollapsed, false);
+    }
     updatedFlowItems.pop();
     //Back to layer list, and return as the flowItems will be reset in navigateToHomePage
     if (updatedFlowItems.length === 1 && updatedFlowItems[0] === 'layer-list') {
@@ -1159,17 +1160,19 @@ export class CrowdsourceReporter {
    */
   protected toggleSidePanel(): void {
     this._sidePanelCollapsed = !this._sidePanelCollapsed;
-    this.togglePanel.emit({ panelState: this._sidePanelCollapsed, isFormOpen: this.isFormOpen });
+    this.togglePanel.emit({ panelState: this._sidePanelCollapsed, isFormOpen: this._showFullPanel });
   }
 
   /**
-   * Hide map when form open in case of mobile
-   * @param isFormOpen updated form state
+   * Updates the Panel state
+   * @param sidePanelCollapsed side panel collapsed state
+   * @param showFullPanel updated panel state
    * @protected
    */
-  protected updateFormState(isFormOpen: boolean): void {
-    this.isFormOpen = isFormOpen;
-    this.togglePanel.emit({ panelState: this._sidePanelCollapsed, isFormOpen: this.isFormOpen });
+  protected updatePanelState(sidePanelCollapsed: boolean, showFullPanel: boolean): void {
+    this._sidePanelCollapsed = sidePanelCollapsed;
+    this._showFullPanel = showFullPanel;
+    this.togglePanel.emit({ panelState: this._sidePanelCollapsed, isFormOpen: this._showFullPanel });
   }
 
   /**

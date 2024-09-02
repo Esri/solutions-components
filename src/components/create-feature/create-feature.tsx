@@ -60,6 +60,10 @@ export class CreateFeature {
    */
   @Prop() searchConfiguration: ISearchConfiguration;
 
+  /**
+   * boolean: When true the application will be in mobile mode, controls the mobile or desktop view
+   */
+  @Prop() isMobile: boolean;
   //--------------------------------------------------------------------------
   //
   //  State (internal)
@@ -101,7 +105,19 @@ export class CreateFeature {
   protected FeatureLayer: typeof import("esri/layers/FeatureLayer");
 
   /**
-   * "esri/widgets/Search": https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search.html
+   * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+   * The MapView instance
+   */
+  protected MapView: typeof import("esri/views/MapView");
+
+  /**
+   * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+   * Updated map view instance
+   */
+  protected _updatedMapView: __esri.MapView;
+
+  /**
+   * esri/widgets/Search: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search.html
    * The Search instance
    */
   protected Search: typeof import("esri/widgets/Search");
@@ -128,6 +144,11 @@ export class CreateFeature {
   protected _container: HTMLDivElement;
 
   /**
+   * HTMLDivElement: The node for the map view
+   */
+  protected _mapViewContainer: HTMLDivElement;
+
+  /**
    * boolean: Flag to maintain form submission using submit button
    */
   protected _isSubmitBtnClicked = false;
@@ -145,6 +166,15 @@ export class CreateFeature {
     await this.mapView.when(async () => {
       await this.init();
     });
+  }
+
+  /**
+   * Called each time when isMobile prop is changed.
+   */
+  @Watch("isMobile")
+  async isMobileHandler(): Promise<void> {
+    // emit an event when mode is changed to back to the feature selection panel (to avoid multiple maps conflict)
+    this.modeChanged.emit();
   }
 
   /**
@@ -220,6 +250,11 @@ export class CreateFeature {
    */
   @Event() progressStatus: EventEmitter<number>;
 
+  /**
+   * Emitted on switched form mobile to desktop or vice versa
+   */
+  @Event() modeChanged: EventEmitter<void>;
+
   //--------------------------------------------------------------------------
   //
   //  Functions (lifecycle)
@@ -248,6 +283,7 @@ export class CreateFeature {
     const showSearchWidget = this._showSearchWidget ? '' : 'display-none';
     const loaderClass = this._editorLoading ? "" : "display-none";
     const featureFormClass = this._editorLoading ? "display-none" : "";
+    const mobileMapClass = this.isMobile ? "show-map" : "display-none";
     return (
       <Fragment>
         <calcite-loader
@@ -257,6 +293,7 @@ export class CreateFeature {
         />
         <div class={featureFormClass} id="feature-form"/>
         <div class={`search-widget ${showSearchWidget} ${featureFormClass}`} id="search-widget-ref"/>
+        <div class={`${mobileMapClass}`} ref={(el) => { this._mapViewContainer = el }} />
       </Fragment>
     );
   }
@@ -272,8 +309,9 @@ export class CreateFeature {
    */
   protected async init(): Promise<void> {
     if (this.mapView && this.selectedLayerId) {
-      await this.createEditorWidget();
-      await this.createSearchWidget();
+      this._updatedMapView = this.mapView;
+      // In mobile mode show the map in panel
+      await (this.isMobile ? this.createMobileMapView() : this._loadWidgets());
     }
   }
 
@@ -283,14 +321,43 @@ export class CreateFeature {
    * @protected
    */
   protected async initModules(): Promise<void> {
-    const [Editor, reactiveUtils, Search] = await loadModules([
+    const [Editor, reactiveUtils, Search, MapView] = await loadModules([
       "esri/widgets/Editor",
       "esri/core/reactiveUtils",
-      "esri/widgets/Search"
+      "esri/widgets/Search",
+      "esri/views/MapView"
     ]);
     this.Editor = Editor;
     this.reactiveUtils = reactiveUtils;
     this.Search = Search;
+    this.MapView = MapView;
+  }
+
+  /**
+   * updates the map view (in case of mobile)
+   * @protected
+   */
+  protected async createMobileMapView(): Promise<void> {
+    this._mapViewContainer.classList.add('hide-map');
+    await new this.MapView({
+      map: this.mapView.map,
+      container: this._mapViewContainer
+    }).when((view: __esri.MapView) => {
+      // update the mapView and load all widgets
+      this._updatedMapView = view;
+      void this._loadWidgets();
+    }, (e) => {
+      console.log(e);
+    });
+  }
+
+  /**
+   * Loads the Editor and Search widgets
+   * @protected
+   */
+  protected async _loadWidgets(): Promise<void> {
+    await this.createEditorWidget();
+    await this.createSearchWidget();
   }
 
   /**
@@ -304,7 +371,7 @@ export class CreateFeature {
     const layerInfos = []
     this._container = document.createElement("div");
     this._container?.classList.add("display-none");
-    const allMapLayers = await getAllLayers(this.mapView);
+    const allMapLayers = await getAllLayers(this._updatedMapView);
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
     allMapLayers.forEach(async (eachLayer: __esri.FeatureLayer) => {
       layerInfos.push({
@@ -318,14 +385,18 @@ export class CreateFeature {
 
     this._editor = new this.Editor({
       allowedWorkflows: "create-features",
-      view: this.mapView,
+      view: this._updatedMapView,
       layerInfos: layerInfos,
       visibleElements: {
         snappingControls: false
       },
       container: this._container
     });
-    this.el.appendChild(this._container);
+    if (this._mapViewContainer) {
+      this.el.insertBefore(this._container, this._mapViewContainer);
+    } else {
+      this.el.appendChild(this._container);
+    }
 
     //Add handle to watch if attachments are added/edited
     const attachmentHandle = this.reactiveUtils.watch(
@@ -359,6 +430,7 @@ export class CreateFeature {
       () => this._editor.viewModel.featureFormViewModel?.state,
       (state) => {
         if (state === 'ready') {
+          this._mapViewContainer?.classList?.replace("show-map", "hide-map");
           this._showSearchWidget = false;
           this.progressStatus.emit(1);
           this.drawComplete.emit();
@@ -371,6 +443,7 @@ export class CreateFeature {
       () => this._editor.viewModel.state,
       (state) => {
         if (state === 'creating-features') {
+          this._mapViewContainer?.classList?.replace("hide-map", "show-map");
           this._editorLoading = true;
           this._showSearchWidget = true;
         }
@@ -383,6 +456,8 @@ export class CreateFeature {
    * @protected
    */
   protected async startCreate(): Promise<void> {
+    // hides the header elements on template picker page 
+    await this.hideEditorsElements();
     return new Promise<any>((resolve, reject) => {
       if (this._editor.viewModel.featureTemplatesViewModel.items?.length) {
         const items: __esri.TemplateItem[] = this._editor.viewModel.featureTemplatesViewModel.items[0].get("items");
@@ -420,10 +495,10 @@ export class CreateFeature {
    */
   protected async createSearchWidget(): Promise<void> {
     let searchOptions: __esri.widgetsSearchProperties = {
-      view: this.mapView,
+      view: this._updatedMapView,
     };
     if (this.searchConfiguration) {
-      const searchConfiguration = this._getSearchConfig(this.searchConfiguration, this.mapView);
+      const searchConfiguration = this._getSearchConfig(this.searchConfiguration, this._updatedMapView);
       searchOptions = {
         ...searchConfiguration
       }
@@ -433,11 +508,11 @@ export class CreateFeature {
     this._search.popupEnabled = false;
     this._search.resultGraphicEnabled = false;
 
-    const layer = await getLayerOrTable(this.mapView, this.selectedLayerId);
+    const layer = await getLayerOrTable(this._updatedMapView, this.selectedLayerId);
     let pointGeometry = null;
     // on search get the geometry of the searched location and pass it in sketchViewModel and go to featureForm page
     this._search.on('search-complete', (e) => {
-      void this.mapView.goTo(e.results[0].results[0].extent);
+      void this._updatedMapView.goTo(e.results[0].results[0].extent);
       if (layer.geometryType === 'point') {
         pointGeometry = e.results[0].results[0]?.feature.geometry;
       }

@@ -57,3 +57,16 @@
 .display-none {
   display: none !important;
 }
+
+.hide-map {
+  height: 1%;
+  visibility: hidden;
+}
+
+.show-map {
+  padding: 10px !important;
+  position: absolute;
+  bottom: 0;
+  width: calc(100% - 22px);
+  height: 50%;
+}
