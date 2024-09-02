@@ -33,7 +33,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
-    "@babel/preset-env": "^7.25.3",
+    "@babel/preset-env": "^7.25.4",
     "@babel/preset-typescript": "^7.24.7",
     "@babel/types": "^7.25.4",
     "@esri/arcgis-rest-service-admin": "^3.7.0",
