@@ -60,6 +60,11 @@ export class FeatureDetails {
    */
   @Prop() layerItemsHash: ILayerItemsHash;
 
+  /**
+   * boolean: When true the profile image of the comment creator will be shown in the comments list
+   */
+  @Prop() showUserImageInCommentsList: boolean = false;
+
   //--------------------------------------------------------------------------
   //
   //  State (internal)
@@ -321,6 +326,7 @@ export class FeatureDetails {
             selectedLayerId={this.relatedTableId}
             showErrorWhenNoFeatures={false}
             showInitialLoading={false}
+            showUserImageInList={this.showUserImageInCommentsList}
             textSize={"small"}
             whereClause={commentsListWhereClause}
           />}

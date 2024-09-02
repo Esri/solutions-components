@@ -169,6 +169,11 @@ export class CrowdsourceReporter {
   @Prop() showComments: boolean;
 
   /**
+   * boolean: When true the profile image of the comment creator will be shown in the comments list
+   */
+  @Prop() showUserImageInCommentsList: boolean = false;
+
+  /**
    * theme: "light" | "dark" theme to be used
    */
   @Prop() theme: theme = "light";
@@ -1320,6 +1325,7 @@ export class CrowdsourceReporter {
             onLoadingStatus={(evt) => void this.updatingFeatureDetails(evt.detail)}
             ref={el => this._featureDetails = el }
             reportingOptions={this.reportingOptions}
+            showUserImageInCommentsList={this.showUserImageInCommentsList}
           />
           {showCommentBtn &&
             <calcite-button
