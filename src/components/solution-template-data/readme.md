@@ -59,7 +59,6 @@ graph TD;
   solution-organization-variables --> calcite-tree
   solution-organization-variables --> calcite-tree-item
   calcite-tree-item --> calcite-icon
-  calcite-tree-item --> calcite-checkbox
   solution-variables --> calcite-tree
   solution-variables --> calcite-tree-item
   solution-variables --> solution-item-icon

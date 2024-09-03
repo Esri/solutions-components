@@ -36,7 +36,6 @@ graph TD;
   solution-organization-variables --> calcite-tree
   solution-organization-variables --> calcite-tree-item
   calcite-tree-item --> calcite-icon
-  calcite-tree-item --> calcite-checkbox
   solution-template-data --> solution-organization-variables
   style solution-organization-variables fill:#f9f,stroke:#333,stroke-width:4px
 ```
