@@ -7,12 +7,13 @@
 
 ## Properties
 
-| Property           | Attribute | Description                                                                                               | Type                | Default     |
-| ------------------ | --------- | --------------------------------------------------------------------------------------------------------- | ------------------- | ----------- |
-| `graphics`         | --        | esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html             | `Graphic[]`         | `undefined` |
-| `layerItemsHash`   | --        | ILayerItemsHash: LayerDetailsHash for each layer in the map                                               | `ILayerItemsHash`   | `undefined` |
-| `mapView`          | --        | esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html | `MapView`           | `undefined` |
-| `reportingOptions` | --        | IReportingOptions: Key options for reporting                                                              | `IReportingOptions` | `undefined` |
+| Property                      | Attribute                          | Description                                                                                               | Type                | Default     |
+| ----------------------------- | ---------------------------------- | --------------------------------------------------------------------------------------------------------- | ------------------- | ----------- |
+| `graphics`                    | --                                 | esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html             | `Graphic[]`         | `undefined` |
+| `layerItemsHash`              | --                                 | ILayerItemsHash: LayerDetailsHash for each layer in the map                                               | `ILayerItemsHash`   | `undefined` |
+| `mapView`                     | --                                 | esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html | `MapView`           | `undefined` |
+| `reportingOptions`            | --                                 | IReportingOptions: Key options for reporting                                                              | `IReportingOptions` | `undefined` |
+| `showUserImageInCommentsList` | `show-user-image-in-comments-list` | boolean: When true the profile image of the comment creator will be shown in the comments list            | `boolean`           | `false`     |
 
 
 ## Events
@@ -133,6 +134,7 @@ graph TD;
   feature-list --> calcite-list
   feature-list --> calcite-pagination
   feature-list --> calcite-list-item
+  feature-list --> calcite-avatar
   feature-list --> calcite-icon
   calcite-list --> calcite-scrim
   calcite-list --> calcite-stack
@@ -145,6 +147,7 @@ graph TD;
   calcite-list-item --> calcite-handle
   calcite-list-item --> calcite-action
   calcite-handle --> calcite-icon
+  calcite-avatar --> calcite-icon
   crowdsource-reporter --> feature-details
   style feature-details fill:#f9f,stroke:#333,stroke-width:4px
 ```

@@ -17,6 +17,7 @@
 | `selectedLayerId`         | `selected-layer-id`           | string: Layer id of the feature layer to show the list                                                                                               | `string`             | `undefined` |
 | `showErrorWhenNoFeatures` | `show-error-when-no-features` | boolean: If true will show error msg when features are not present                                                                                   | `boolean`            | `true`      |
 | `showInitialLoading`      | `show-initial-loading`        | boolean: Show initial loading indicator when creating list                                                                                           | `boolean`            | `true`      |
+| `showUserImageInList`     | `show-user-image-in-list`     | boolean: If true display's profile img on each feature item                                                                                          | `boolean`            | `false`     |
 | `sortingInfo`             | --                            | ISortingInfo: Sorting field and order using which features list will be sorted                                                                       | `ISortingInfo`       | `undefined` |
 | `textSize`                | `text-size`                   | string(small/large): Controls the font size of the title                                                                                             | `"large" \| "small"` | `"large"`   |
 | `whereClause`             | `where-clause`                | string: where clause to filter the features list                                                                                                     | `string`             | `undefined` |
@@ -57,6 +58,7 @@ Promise that resolves when the operation is complete
 - calcite-list
 - calcite-pagination
 - calcite-list-item
+- calcite-avatar
 - calcite-icon
 
 ### Graph
@@ -68,6 +70,7 @@ graph TD;
   feature-list --> calcite-list
   feature-list --> calcite-pagination
   feature-list --> calcite-list-item
+  feature-list --> calcite-avatar
   feature-list --> calcite-icon
   calcite-panel --> calcite-action
   calcite-panel --> calcite-action-menu
@@ -91,6 +94,7 @@ graph TD;
   calcite-list-item --> calcite-handle
   calcite-list-item --> calcite-action
   calcite-handle --> calcite-icon
+  calcite-avatar --> calcite-icon
   crowdsource-reporter --> feature-list
   feature-details --> feature-list
   style feature-list fill:#f9f,stroke:#333,stroke-width:4px
