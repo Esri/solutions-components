@@ -34,12 +34,23 @@
 
 .feature-list-popup-title {
   font-weight: 500;
-  padding: 10px 12px;
   white-space: pre-line;
 }
 
 .feature-list-popup-title-small {
   font-size: small;
-  padding: 10px 12px;
   white-space: pre-line;
+}
+
+.feature-list-popup-title-padding {
+  padding: 10px 12px;
+}
+
+.feature-list-popup-title-padding-reduced {
+  padding: 10px 0;
+}
+
+.profile-img {
+  margin: 0 0.75rem;
+  min-width: 32px;
 }

@@ -97,6 +97,11 @@ export class FeatureList {
    */
   @Prop() showErrorWhenNoFeatures?: boolean = true;
   
+  /**
+   * boolean: If true display's profile img on each feature item
+   */
+  @Prop() showUserImageInList?: boolean = false;
+  
   //--------------------------------------------------------------------------
   //
   //  State (internal)
@@ -135,6 +140,12 @@ export class FeatureList {
    * The Color instance
    */
   protected Color: typeof import("esri/Color");
+
+  /**
+   * "esri/config": https://developers.arcgis.com/javascript/latest/api-reference/esri-config.html
+   * Esri config
+   */
+  protected esriConfig: typeof import("esri/config");
 
   /**
    * IPopupUtils: To fetch the list label using popup titles
@@ -293,10 +304,12 @@ export class FeatureList {
    * @protected
    */
     protected async initModules(): Promise<void> {
-      const [Color] = await loadModules([
-        "esri/Color"
+      const [Color, esriConfig] = await loadModules([
+        "esri/Color",
+        "esri/config",
       ]);
       this.Color = Color;
+      this.esriConfig = esriConfig;
     }
 
   /**
@@ -445,7 +458,16 @@ export class FeatureList {
     const currentFeatures = featureSet?.features;
     const items = currentFeatures.map(async (feature) => {
       const popupTitle = await this._popupUtils.getPopupTitle(feature, this.mapView.map);
-      return this.getFeatureItem(feature, popupTitle);
+      //fetch the feature creator user info to show the creator user image
+      let userInfo;
+      if (this.showUserImageInList) {
+        const creatorField = this._selectedLayer.editFieldsInfo?.creatorField.toLowerCase();
+        // if feature's creator field is present then only we can fetch the information of user
+        if (creatorField) {
+          userInfo = await this.getUserInformation(feature, creatorField);
+        }
+      }
+      return this.getFeatureItem(feature, popupTitle, userInfo);
     });
     return Promise.all(items);
   }
@@ -457,21 +479,31 @@ export class FeatureList {
    * @returns individual feature item to be rendered
    * @protected
    */
-  protected getFeatureItem(selectedFeature: __esri.Graphic, popupTitle: string): VNode {
+  protected getFeatureItem(selectedFeature: __esri.Graphic, popupTitle: string, userInfo: any): VNode {
     //get the object id value of the feature
     const oId = selectedFeature.attributes[this._selectedLayer.objectIdField].toString();
     //use object id if popupTitle is null or undefined
     popupTitle = popupTitle ?? oId;
     const popupTitleClass = this.textSize === 'small' ? 'feature-list-popup-title-small' : 'feature-list-popup-title'
+    const popupTitlePaddingClass = this.showUserImageInList ? 'feature-list-popup-title-padding-reduced': 'feature-list-popup-title-padding'
     return (
       <calcite-list-item
         onCalciteListItemSelect={(e) => { void this.featureClicked(e, selectedFeature) }}
         onMouseLeave={() => { void this.clearHighlights() }}
         onMouseOver={() => { void this.onFeatureHover(selectedFeature) }}
         value={oId}>
-        {/* --TODO ellipsis-- */}
+        {this.showUserImageInList &&
+          <calcite-avatar
+            class={'profile-img'}
+            full-name={userInfo?.fullName}
+            id={userInfo?.id}
+            scale="m"
+            slot="content-start"
+            thumbnail={userInfo?.userProfileUrl}
+            username={userInfo?.username} />
+        }
         <div
-          class={popupTitleClass}
+          class={`${popupTitleClass} ${popupTitlePaddingClass}`}
           slot="content-start">
           {popupTitle}
         </div>
@@ -481,6 +513,32 @@ export class FeatureList {
           scale="s"
           slot="content-end" />
       </calcite-list-item>);
+  }
+
+  /**
+   * 
+   * @param feature Each individual feature instance to be listed
+   * @param creatorField Feature's creator field from the layer
+   * @returns user information
+   * @protected
+   */
+  protected async getUserInformation(feature: __esri.Graphic, creatorField: string): Promise<any> {
+    const userToken = (this.mapView.map as any).portalItem.portal?.credential?.token;
+    //get the user information
+    let url = `${this.esriConfig.portalUrl}/sharing/rest/community/users/${feature.attributes[creatorField]}?f=json&returnUserLicensedItems=true`;
+    if (userToken) {
+      url += `&token=${userToken}`;
+    }
+    const data = await fetch(url);
+    const userInfo = await data.json();
+    //construct the url to get the user profile image
+    const userName = userInfo?.username ?? feature.attributes[creatorField];
+    let userProfileUrl = `${this.esriConfig.portalUrl}/sharing/rest/community/users/${userName}/info/blob.png`;
+    if (userInfo?.access && userToken) {
+      userProfileUrl += `?token=${userToken}`;
+    }
+    userInfo.userProfileUrl = userProfileUrl;
+    return userInfo;
   }
 
   /**

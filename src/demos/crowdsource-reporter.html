@@ -92,11 +92,12 @@
     <script type="module" src="../solutions-components.esm.js"></script>
 
     <script>
-      require(["esri/WebMap", "esri/views/MapView", "esri/widgets/Legend", "esri/config"], (
+      require(["esri/WebMap", "esri/views/MapView", "esri/widgets/Legend", "esri/config", "esri/portal/Portal"], (
         WebMap,
         MapView,
         Legend,
-        esriConfig
+        esriConfig,
+        Portal
       ) => {
         const demo = document.getElementById("demo");
         let custom = null;
@@ -157,6 +158,13 @@
         const webMap = new WebMap({
           portalItem: custom ?? portalItem
         });
+        //To show the sign in dialog
+        portal = new Portal({
+          url: esriConfig.portalUrl,
+          portalItem: portalItem,
+          authMode: "immediate"
+        });
+        portal.load();
 
         demo.mapView = new MapView({
           container: "viewDiv",
@@ -303,10 +311,10 @@
         //on change update the prop for is mobile
         mediaQueryList.onchange = (e) => {
           demo.isMobile = e.matches;
-          togglePanel({ detail: { panelState: false, isFormOpen: false } })
         }
         //listen to togglePanel event
         demo.addEventListener('togglePanel', togglePanel);
+        demo.showUserImageInCommentsList = true;
       });
 
     function togglePanel(evt) {
