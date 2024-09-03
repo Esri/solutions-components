@@ -38,7 +38,6 @@ graph TD;
   solution-variables --> calcite-tree-item
   solution-variables --> solution-item-icon
   calcite-tree-item --> calcite-icon
-  calcite-tree-item --> calcite-checkbox
   solution-template-data --> solution-variables
   style solution-variables fill:#f9f,stroke:#333,stroke-width:4px
 ```
