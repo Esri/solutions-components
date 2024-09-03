@@ -86,7 +86,6 @@ graph TD;
   calcite-input --> calcite-progress
   calcite-input --> calcite-icon
   calcite-tree-item --> calcite-icon
-  calcite-tree-item --> calcite-checkbox
   style spatial-ref fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
