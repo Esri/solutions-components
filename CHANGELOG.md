@@ -704,4 +704,5 @@ Recover from test releases
 [0.8.64]: https://github.com/Esri/solution.js/compare/v0.8.63...v0.8.64 "v0.8.64"
 [0.8.65]: https://github.com/Esri/solution.js/compare/v0.8.64...v0.8.65 "v0.8.65"
 [0.8.66]: https://github.com/Esri/solution.js/compare/v0.8.65...v0.8.66 "v0.8.66"
-[Unreleased]: https://github.com/Esri/solution.js/compare/v0.8.66...HEAD "Unreleased Changes"
+[0.8.66.1]: https://github.com/Esri/solution.js/compare/v0.8.66...v0.8.66.1 "v0.8.66.1"
+[Unreleased]: https://github.com/Esri/solution.js/compare/v0.8.66.1...HEAD "Unreleased Changes"
