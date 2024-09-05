@@ -17,7 +17,7 @@
 import { Component, Element, Event, EventEmitter, Host, h, Prop, State, VNode, Watch } from "@stencil/core";
 import MapLayerPicker_T9n from "../../assets/t9n/map-layer-picker/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
-import { getLayerOrTable, getMapLayerHash, getMapTableHash } from "../../utils/mapViewUtils";
+import { getMapLayerHash, getMapTableHash } from "../../utils/mapViewUtils";
 import state from "../../utils/publicNotificationStore";
 import { ILayerAndTableIds, ILayerHashInfo, IMapItemHash } from "../../utils/interfaces";
 
@@ -254,8 +254,10 @@ export class MapLayerPicker {
    */
   async componentWillRender(): Promise<void> {
     if (this.ids.length > 0 || this.selectedIds.length === 1) {
-      const layer = await getLayerOrTable(this.mapView, this.selectedIds[0]);
-      this.selectedName = layer?.title;
+      const id = this.selectedIds.length === 1 ? this.selectedIds[0] : this.ids[0];
+      if (id !== this.selectedIds[0]) {
+        this._setSelectedLayer(id);
+      }
     }
   }
 

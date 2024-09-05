@@ -1144,7 +1144,8 @@ export class MapSelectTools {
       this._graphics = [];
       await this._drawTools.clear();
     }
-    this.selectionSetChange.emit(this._selectedIds.length);
+    this._numSelected = this._selectedIds.length;
+    this.selectionSetChange.emit(this._numSelected);
   }
 
   /**
