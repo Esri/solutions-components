@@ -368,10 +368,15 @@ export class CreateRelatedFeature {
     } else if (parentFeature.attributes.hasOwnProperty(parentKeyField.toUpperCase())) {
       parentKeyValue = parentFeature.getAttribute(parentKeyField.toUpperCase());
     }
+    console.log(`parentKeyValue: ${parentKeyValue}`);
     let childKeyField = childRelationship.keyField;
+    console.log(`childKeyField: ${childKeyField}`);
+
     // get the field from table which name is same as childKeyField and use that field name as childKeyField
     const field = this.table.fields.find((field) => field.name.toLocaleLowerCase() === childKeyField.toLocaleLowerCase());
     childKeyField = field.name;
+    console.log(`childKeyField 2: ${childKeyField}`);
+
     const childAttributes = {
       [childKeyField]: parentKeyValue,
     };
