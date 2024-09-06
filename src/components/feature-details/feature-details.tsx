@@ -410,7 +410,6 @@ export class FeatureDetails {
       }
     } else {
       console.log(`seen as comments not enabled`);
-
       this._relatedFeaturesOIDs = [];
       this._commentsAvailable = false;
       this.relatedTableId = '';
