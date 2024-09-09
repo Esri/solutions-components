@@ -62,7 +62,7 @@
     "eslint-config-prettier": "9.1.0",
     "eslint-plugin-jest": "^28.8.2",
     "eslint-plugin-prettier": "5.2.1",
-    "eslint-plugin-react": "7.35.0",
+    "eslint-plugin-react": "7.35.2",
     "eslint-plugin-unicorn": "^55.0.0",
     "esri-loader": "^3.7.0",
     "form-request-submit-polyfill": "^2.0.0",
