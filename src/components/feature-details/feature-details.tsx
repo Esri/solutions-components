@@ -373,13 +373,11 @@ export class FeatureDetails {
       const allRelatedTables = allTables.filter((table: __esri.FeatureLayer) => selectedLayer.url === table.url && relatedTableIdFromRelnship === table.layerId);
       const relatedTable = allRelatedTables?.length > 0 ? allRelatedTables[0] as __esri.FeatureLayer : null;
       this.relatedTableId = relatedTable?.id ?? '';
-      console.log(`this.relatedTableId: ${this.relatedTableId}`);
 
       //**Get the related records for the current selected feature**
       if (this.relatedTableId) {
         //current selected feature's objectId
         const objectId = this._selectedGraphic.attributes[selectedLayer.objectIdField];
-        console.log(`objectId: ${objectId}`);
 
         //create relationship query to get all the related records with the current selected feature
         const relationshipQuery = new this.RelationshipQuery({
@@ -390,7 +388,6 @@ export class FeatureDetails {
         const result = await selectedLayer.queryRelatedFeatures(relationshipQuery).catch((e) => {
           console.error(e);
         });
-        console.log(`result: ${JSON.stringify(result)}`);
 
         const relatedOIDs = [];
         if (result[objectId]) {
@@ -398,7 +395,6 @@ export class FeatureDetails {
             relatedOIDs.push(feature.attributes[relatedTable.objectIdField]);
           });
         }
-        console.log(`relatedOIDs: ${JSON.stringify(relatedOIDs)}`);
 
         // Store the objectid's of the related features, this will be used to show the comments and its count
         this._relatedFeaturesOIDs = relatedOIDs;
@@ -409,7 +405,6 @@ export class FeatureDetails {
         this._commentsAvailable = false;
       }
     } else {
-      console.log(`seen as comments not enabled`);
       this._relatedFeaturesOIDs = [];
       this._commentsAvailable = false;
       this.relatedTableId = '';
