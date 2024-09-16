@@ -22,6 +22,7 @@ import CrowdsourceReporter_T9n from "../../assets/t9n/crowdsource-reporter/resou
 import { getAllLayers, getAllTables, getFeatureLayerView, getLayerOrTable, getMapLayerHash, highlightFeatures } from "../../utils/mapViewUtils";
 import { queryFeaturesByID } from "../../utils/queryUtils";
 import { ILayerItemsHash } from "../layer-list/layer-list";
+import { FilterInitState } from "@esri/instant-apps-components";
 
 @Component({
   tag: "crowdsource-reporter",
@@ -203,11 +204,6 @@ export class CrowdsourceReporter {
    * boolean: When true an indicator will be shown on the action
    */
   @State() _filterActive = false;
-
-  /**
-   * boolean: When true the filter component will be displayed
-   */
-  @State() _filterOpen = false;
 
   /**
    * string[]: Reporter flow items list
@@ -436,6 +432,16 @@ export class CrowdsourceReporter {
    */
   protected _formElements =  [];
 
+  /**
+   * string[]: URL params set by using filters.
+   */
+  protected _filterUrlParams: string[];
+
+  /**
+   * FilterInitState: filter's init state
+   */
+  protected _filterInitState: FilterInitState;
+
   //--------------------------------------------------------------------------
   //
   //  Watch handlers
@@ -585,7 +591,6 @@ export class CrowdsourceReporter {
             {this._getReporter()}
           </calcite-shell>
         </div>
-        {this.filterModal()}
       </Host>
     );
   }
@@ -652,6 +657,10 @@ export class CrowdsourceReporter {
         case "feature-list":
           renderLists.push(this.getFeatureListFlowItem(this._selectedLayerId, this._selectedLayerName));
           break;
+        case "filter-panel":
+          renderLists.push(this.getFilterPanel());
+          void this._restoreFilters();
+          break;
         case "feature-details":
           renderLists.push(this.getFeatureDetailsFlowItem());
           break;
@@ -679,66 +688,6 @@ export class CrowdsourceReporter {
           : <calcite-loader label="" scale="m" />}
       </calcite-panel>
     );
-  }
-
-  /**
-   * Show filter component in modal
-   * @returns node to interact with any configured filters for the current layer
-   */
-     protected filterModal(): VNode {
-       //get layer expression for current selected layer
-       const currentLayersExpressions = this.layerExpressions ? this.layerExpressions.filter(
-         (exp) => exp.id === this._selectedLayerId) : [];
-       return (currentLayersExpressions.length > 0 &&
-         <calcite-modal
-           aria-labelledby="modal-title"
-           class="modal"
-           kind="brand"
-           onCalciteModalClose={() => void this._closeFilter()}
-           open={this._filterOpen}
-           widthScale="s"
-         >
-           <div
-             class="display-flex align-center"
-             id="modal-title"
-             slot="header"
-           >
-             {this._translations?.filterLayerTitle?.replace("{{title}}", this._selectedLayerName)}
-           </div>
-           <div slot="content">
-             <instant-apps-filter-list
-               autoUpdateUrl={false}
-               closeBtn={true}
-               closeBtnOnClick={() => void this._closeFilter()}
-               comboboxOverlayPositioning="fixed"
-               layerExpressions={currentLayersExpressions}
-               onFilterListReset={() => this._handleFilterListReset()}
-               onFilterUpdate={() => this._handleFilterUpdate()}
-               ref={(el) => this._filterList = el}
-               view={this.mapView}
-               zoomBtn={false}
-             />
-           </div>
-         </calcite-modal>
-       );
-    }
-
-  /**
-   * Close the filter modal
-   * @protected
-   */
-  protected _closeFilter(): void {
-    if (this._filterOpen) {
-      this._filterOpen = false;
-    }
-  }
-
-  /**
-   * When true the filter modal will be displayed
-   * @protected
-   */
-  protected _toggleFilter(): void {
-    this._filterOpen = !this._filterOpen;
   }
 
   /**
@@ -805,14 +754,28 @@ export class CrowdsourceReporter {
   }
 
   /**
-   * Reset the filter active prop
+   * Restores the applied filters
+   * @protected 
+   */
+  protected _restoreFilters(): void {
+    // call the restore function when instant-apps-filter-list is ready
+    setTimeout(() => {
+      const canRestoreFilter = this._filterList && this._filterUrlParams && this._filterInitState;
+      if (canRestoreFilter) {
+        void this._filterList.restoreFilters(this._filterUrlParams[0], this._filterInitState);
+      }
+    }, 200);
+  }
+
+  /**
+   * Reset the filter
    * @protected
    */
-  protected _handleFilterListReset(): void {
-    //on reset filter list reset the filter active state
+  protected async _handleFilterListReset(): Promise<void> {
+    //on reset filter list reset the filter states
     this._filterActive = false;
-    //reset the features list to reflect the applied filters
-    void this._featureList.refresh();
+    this._filterUrlParams = null;
+    this._filterInitState = null;
   }
 
   /**
@@ -823,8 +786,7 @@ export class CrowdsourceReporter {
     //if filter are applied the url params will be generated
     //set the filter active state based on the length of applied filters
     this._filterActive = this._filterList.urlParams.getAll('filter').length > 0;
-    //reset the features list to reflect the applied filters
-    void this._featureList.refresh();
+    this._filterUrlParams = this._filterList.urlParams.getAll('filter');
   }
 
   /**
@@ -1173,6 +1135,16 @@ export class CrowdsourceReporter {
   }
 
   /**
+   * On back from filter panel get the filter's init state
+   * @protected
+   */
+  protected async backFromFilterPanel(): Promise<void> {
+    this._filterInitState = await this._filterList.getFilterInitState();
+    void this._featureList.refresh();
+    this.backFromSelectedPanel();
+  }
+
+  /**
    * On back from selected panel navigate to the previous panel
    * @protected
    */
@@ -1304,7 +1276,7 @@ export class CrowdsourceReporter {
         {showFilterIcon && <calcite-action
           icon="filter"
           indicator={this._filterActive}
-          onClick={this._toggleFilter.bind(this)}
+          onClick={() => {this._flowItems = [...this._flowItems, "filter-panel"]}}
           slot={"header-actions-end"}
           text={this._translations.filter}
           title={this._translations.filter} />}
@@ -1329,6 +1301,60 @@ export class CrowdsourceReporter {
             selectedLayerId={layerId}
             sortingInfo={this._updatedSorting}
           />}
+        </calcite-panel>
+      </calcite-flow-item>);
+  }
+
+  /**
+   * Get Filter page for apllying filter
+   * @param layerId Layer id
+   * @param layerName Layer name
+   * @returns feature list node
+   * @protected
+   */
+  protected getFilterPanel(
+  ): Node {
+    const currentLayersExpressions = this.layerExpressions ? this.layerExpressions.filter((exp) => exp.id === this._selectedLayerId) : [];
+    return (
+      <calcite-flow-item
+        collapsed={this.isMobile && this._sidePanelCollapsed}
+        heading={this._translations?.filterLayerTitle?.replace("{{title}}", this._selectedLayerName)}
+        loading={this._showLoadingIndicator}
+        onCalciteFlowItemBack={this.backFromFilterPanel.bind(this)}>
+        {this.isMobile && this.getActionToExpandCollapsePanel()}
+        <div class={"width-full"}
+          slot="footer">
+          <div class={"width-full"}
+            slot="footer">
+            <calcite-button
+              appearance="solid"
+              class={"footer-top-button footer-button"}
+              onClick={() => { void this._filterList?.forceReset() }}
+              width="full">
+              {this._translations.resetFilter}
+            </calcite-button>
+            <calcite-button
+              appearance="outline"
+              class={"footer-button"}
+              onClick={this.backFromFilterPanel.bind(this)}
+              width="full">
+              {this._translations.close}
+            </calcite-button>
+          </div>
+        </div>
+        <calcite-panel full-height>
+          <instant-apps-filter-list
+            autoUpdateUrl={false}
+            closeBtnOnClick={() => undefined}
+            comboboxOverlayPositioning="fixed"
+            layerExpressions={currentLayersExpressions}
+            onFilterListReset={() => this._handleFilterListReset()}
+            onFilterUpdate={() => this._handleFilterUpdate()}
+            ref={(el) => this._filterList = el}
+            resetFiltersOnDisconnect={false}
+            view={this.mapView}
+            zoomBtn={false}
+          />
         </calcite-panel>
       </calcite-flow-item>);
   }
