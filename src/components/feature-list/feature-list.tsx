@@ -17,7 +17,7 @@
 import { Component, Element, Prop, VNode, h, State, Event, Watch, EventEmitter, Method } from "@stencil/core";
 import { loadModules } from "../../utils/loadModules";
 import { PopupUtils } from "../../utils/popupUtils";
-import { IPopupUtils, ISortingInfo } from "../../utils/interfaces";
+import { IPopupUtils, IReportingOptions, ISortingInfo } from "../../utils/interfaces";
 import { getFeatureLayerView, getLayerOrTable, highlightFeatures } from "../../utils/mapViewUtils";
 import FeatureList_T9n from "../../assets/t9n/feature-list/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
@@ -101,6 +101,11 @@ export class FeatureList {
    * boolean: If true display's profile img on each feature item
    */
   @Prop() showUserImageInList?: boolean = false;
+
+  /**
+   * IReportingOptions: Key options for reporting
+   */
+  @Prop() reportingOptions: IReportingOptions;
   
   //--------------------------------------------------------------------------
   //
@@ -166,6 +171,22 @@ export class FeatureList {
    * HTMLCalcitePaginationElement: Calcite pagination element instance
    */
   protected _pagination: HTMLCalcitePaginationElement;
+
+  /**
+   * string[]: Valid field types for like
+   */
+  protected _validFieldTypes = ["small-integer", "integer", "big-integer", "single", "long"];
+
+  /**
+   * string: Abbrivated like count of the feature
+   */
+  protected _abbreviatedLikeCount: string;
+
+  /**
+   * boolean: When true configured like field is available in selected layer
+   */
+  protected _likeFieldAvailable = false;
+
   //--------------------------------------------------------------------------
   //
   //  Watch handlers
@@ -456,6 +477,7 @@ export class FeatureList {
    */
   protected async createFeatureItem(featureSet: any): Promise<VNode[]> {
     const currentFeatures = featureSet?.features;
+    const showLikeCount = this.reportingOptions && this.reportingOptions[this.selectedLayerId].like;
     const items = currentFeatures.map(async (feature) => {
       const popupTitle = await this._popupUtils.getPopupTitle(feature, this.mapView.map);
       //fetch the feature creator user info to show the creator user image
@@ -467,11 +489,36 @@ export class FeatureList {
           userInfo = await this.getUserInformation(feature, creatorField);
         }
       }
+      if (showLikeCount) {
+        void this.getAbbreviatedLikeCount(feature);
+      }
       return this.getFeatureItem(feature, popupTitle, userInfo);
     });
     return Promise.all(items);
   }
 
+  /**
+   * Displays the abbrivated like count on the feature list
+   * @param feature feature of the layer
+   * @protected
+   */
+  protected getAbbreviatedLikeCount(feature: __esri.Graphic): void {
+    const selectedLayer = this._selectedLayer;
+    const likeField = this.reportingOptions[selectedLayer.id].likeField;
+    selectedLayer.fields.forEach((eachField: __esri.Field) => {
+      if (this._validFieldTypes.indexOf(eachField.type) > -1) {
+        if (eachField.name === likeField && this.reportingOptions[selectedLayer.id].like) {
+          this._likeFieldAvailable = true;
+          let likes = feature.attributes[likeField] || 0;
+          if (likes > 999) {
+            likes = likes > 999999 ? this._translations.millionsAbbreviation.replace("{{abbreviated_value}}", Math.floor(likes / 1000000).toString()) : this._translations.thousandsAbbreviation.replace("{{abbreviated_value}}", Math.floor(likes / 1000).toString());
+          }
+          this._abbreviatedLikeCount = likes;
+        }
+      }
+    });
+  }
+    
   /**
    * Get each feature item
    * @param selectedFeature Each individual feature instance to be listed
@@ -484,6 +531,8 @@ export class FeatureList {
     const oId = selectedFeature.attributes[this._selectedLayer.objectIdField].toString();
     //use object id if popupTitle is null or undefined
     popupTitle = popupTitle ?? oId;
+    // get the formatted like count
+    const formattedLikeCount = Number(selectedFeature.attributes[this.reportingOptions?.[this._selectedLayer.id].likeField]).toLocaleString();
     const popupTitleClass = this.textSize === 'small' ? 'feature-list-popup-title-small' : 'feature-list-popup-title'
     const popupTitlePaddingClass = this.showUserImageInList ? 'feature-list-popup-title-padding-reduced': 'feature-list-popup-title-padding'
     return (
@@ -507,6 +556,18 @@ export class FeatureList {
           slot="content-start">
           {popupTitle}
         </div>
+
+        {this._likeFieldAvailable &&
+          <div class={"like-container"}
+            id={oId.concat("like")}
+            slot="content-end">
+            <span>{this._abbreviatedLikeCount}</span><calcite-icon icon="thumbs-up" scale='s' />
+            <calcite-tooltip
+              reference-element={oId.concat("like")}>
+              {formattedLikeCount}
+            </calcite-tooltip>
+          </div>}
+
         <calcite-icon
           flipRtl
           icon="chevron-right"

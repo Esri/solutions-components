@@ -1162,6 +1162,10 @@ export class CrowdsourceReporter {
       (updatedFlowItems[0] === 'feature-list' || updatedFlowItems[updatedFlowItems.length - 2] === 'feature-list'))) {
       this.updatePanelState(this._sidePanelCollapsed, false);
     }
+    // Coming back from feature details refresh the feature list to update the like count
+    if(this.reportingOptions && this.reportingOptions[this._selectedLayerId]?.like && updatedFlowItems[updatedFlowItems.length - 1] === 'feature-details') {
+      void this._featureList.refresh();
+    }
     updatedFlowItems.pop();
     //Back to layer list, and return as the flowItems will be reset in navigateToHomePage
     if (updatedFlowItems.length === 1 && updatedFlowItems[0] === 'layer-list') {
@@ -1298,6 +1302,7 @@ export class CrowdsourceReporter {
             onFeatureSelect={this.onFeatureSelectFromList.bind(this)}
             pageSize={30}
             ref={el => this._featureList = el }
+            reportingOptions={this.reportingOptions}
             selectedLayerId={layerId}
             sortingInfo={this._updatedSorting}
           />}
