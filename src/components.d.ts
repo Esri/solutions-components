@@ -125,6 +125,14 @@ export namespace Components {
          */
         "customizeSubmit"?: boolean;
         /**
+          * string: selected floor level
+         */
+        "floorLevel": string;
+        /**
+          * string: selected floor level
+         */
+        "formElements": any;
+        /**
           * boolean: When true the application will be in mobile mode, controls the mobile or desktop view
          */
         "isMobile": boolean;
@@ -132,6 +140,11 @@ export namespace Components {
           * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
+        /**
+          * refresh the feature form
+          * @returns Promise that resolves when the operation is complete
+         */
+        "refresh": (floorLevel: string) => Promise<void>;
         /**
           * ISearchConfiguration: Configuration details for the Search widget
          */
@@ -363,6 +376,10 @@ export namespace Components {
           * boolean: when true the zoom widget will be available
          */
         "enableZoom": boolean;
+        /**
+          * string: selected floor level
+         */
+        "floorLevel": string;
         /**
           * boolean: When true the application will be in mobile mode, controls the mobile or desktop view
          */
@@ -2615,6 +2632,14 @@ declare namespace LocalJSX {
          */
         "customizeSubmit"?: boolean;
         /**
+          * string: selected floor level
+         */
+        "floorLevel"?: string;
+        /**
+          * string: selected floor level
+         */
+        "formElements"?: any;
+        /**
           * boolean: When true the application will be in mobile mode, controls the mobile or desktop view
          */
         "isMobile"?: boolean;
@@ -2888,6 +2913,10 @@ declare namespace LocalJSX {
           * boolean: when true the zoom widget will be available
          */
         "enableZoom"?: boolean;
+        /**
+          * string: selected floor level
+         */
+        "floorLevel"?: string;
         /**
           * boolean: When true the application will be in mobile mode, controls the mobile or desktop view
          */

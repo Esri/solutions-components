@@ -73,7 +73,7 @@ export class PopupUtils {
 			}
 		}
 		//Format field values
-		if (layer.popupTemplate.fieldInfos) {
+		if (layer.popupTemplate?.fieldInfos) {
 			layer.fields.forEach((field) => {
 				const attributeValue = graphic.attributes[field.name];
 				//get the field info from popupTemplate

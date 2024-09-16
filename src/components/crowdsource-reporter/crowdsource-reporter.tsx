@@ -183,6 +183,11 @@ export class CrowdsourceReporter {
    */
   @Prop() zoomToScale: number;
 
+  /**
+   * string: selected floor level
+   */
+  @Prop() floorLevel: string;
+
   //--------------------------------------------------------------------------
   //
   //  State (internal)
@@ -421,6 +426,16 @@ export class CrowdsourceReporter {
    */
   protected _showFullPanel: boolean;
 
+  /**
+   * string: The current floor expression
+   */
+  protected _floorExpression: string;
+
+  /**
+   * _esri.Element: form elements of the selected layer
+   */
+  protected _formElements =  [];
+
   //--------------------------------------------------------------------------
   //
   //  Watch handlers
@@ -443,6 +458,32 @@ export class CrowdsourceReporter {
     await this.mapView.when(async () => {
       await this.setMapView();
     });
+  }
+
+  /**
+   * Called each time the floorLevel prop is changed.
+   */
+  @Watch("floorLevel")
+  async floorLevelWatchHandler(): Promise<void> {
+    if (this._editableLayerIds) {
+      // updates all layer's defination expression when floorLevel is changed
+      // then refresh the components to update features
+      for (const layerId of this._editableLayerIds) {
+        const layer = await getLayerOrTable(this.mapView, layerId);
+        if (layer.floorInfo?.floorField) {
+          this._updateFloorDefinitionExpression(layer);
+        }
+      }
+    }
+    if (this._layerList) {
+      await this._layerList.refresh();
+    }
+    if (this._featureList) {
+      void this._featureList.refresh();
+    }
+    if (this._createFeature) {
+      void this._createFeature.refresh(this.floorLevel);
+    }
   }
 
   //--------------------------------------------------------------------------
@@ -902,6 +943,8 @@ export class CrowdsourceReporter {
           </calcite-notice>
           <create-feature
             customizeSubmit
+            floorLevel={this.floorLevel}
+            formElements={this._formElements.find(elm => elm.id === this._selectedLayerId)}
             isMobile={this.isMobile}
             mapView={this.mapView}
             onDrawComplete={this.onFormReady.bind(this)}
@@ -1065,8 +1108,10 @@ export class CrowdsourceReporter {
    */
   protected async navigateToCreateFeature(evt: CustomEvent): Promise<void> {
     if (evt.detail.layerId && evt.detail.layerName) {
-      void this.setSelectedLayer(evt.detail.layerId, evt.detail.layerName);
+      await this.setSelectedLayer(evt.detail.layerId, evt.detail.layerName);
     }
+    // get the form template elements to pass in create-feature to create a LEVELID field in feature-form
+    this._getFormElements();
     this._showSubmitCancelButton = false;
     this.updatePanelState(false, true);
     this._flowItems = [...this._flowItems, "feature-create"];
@@ -1661,6 +1706,41 @@ export class CrowdsourceReporter {
     const messages = await getLocaleComponentStrings(this.el);
     this._translations = messages[0] as typeof CrowdsourceReporter_T9n;
   }
+
+  /**
+   * Applies a definition expression when floor field and level are available
+   *
+   * @returns boolean
+   * @protected
+   */
+  protected _updateFloorDefinitionExpression(layer: __esri.FeatureLayer): void {
+    const floorField = layer.floorInfo.floorField;
+    // update the layer defination expression
+    const floorExp = `${floorField} = '${this.floorLevel}'`;
+    const defExp = layer.definitionExpression;
+      layer.definitionExpression = defExp?.indexOf(this._floorExpression) > -1 ?
+        defExp.replace(this._floorExpression, floorExp) : floorExp;
+      this._floorExpression = floorExp;
+  }
+
+  /**
+   * Gets the form template elements 
+   * @protected
+   */
+  protected _getFormElements(): void {
+    const layer = this._selectedLayer;
+    const floorField = layer?.floorInfo?.floorField;
+    if (floorField && this.floorLevel && layer?.formTemplate) {
+      const formElement = this._formElements.find((elm) => elm.id === layer.id);
+      if (this._formElements.length === 0 || !formElement) {
+        this._formElements.push({
+          id: layer.id,
+          orgElements: layer.formTemplate.elements,
+          orgExpressionInfos: layer.formTemplate.expressionInfos
+        });
+      }
+    }
+  }  
 
   /**
    * Returns the ids of all OR configured layers that support edits with the update capability
