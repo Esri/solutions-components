@@ -103,6 +103,11 @@ export class FeatureList {
   @Prop() showUserImageInList?: boolean = false;
 
   /**
+   * boolean: If true display's feature symbol on each feature item
+   */
+  @Prop() showFeatureSymbol?: boolean = false;
+
+  /**
    * IReportingOptions: Key options for reporting
    */
   @Prop() reportingOptions: IReportingOptions;
@@ -151,6 +156,12 @@ export class FeatureList {
    * Esri config
    */
   protected esriConfig: typeof import("esri/config");
+
+  /**
+   * "esri/symbols/support/symbolUtils": https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-support-symbolUtils.html
+   * Symbol utils
+   */
+  protected symbolUtils: typeof import("esri/symbols/support/symbolUtils");
 
   /**
    * IPopupUtils: To fetch the list label using popup titles
@@ -319,18 +330,20 @@ export class FeatureList {
   //
   //--------------------------------------------------------------------------
 
-    /**
+  /**
    * Load esri javascript api modules
    * @returns Promise resolving when function is done
    * @protected
    */
     protected async initModules(): Promise<void> {
-      const [Color, esriConfig] = await loadModules([
+      const [Color, esriConfig, symbolUtils] = await loadModules([
         "esri/Color",
         "esri/config",
+        "esri/symbols/support/symbolUtils"
       ]);
       this.Color = Color;
       this.esriConfig = esriConfig;
+      this.symbolUtils = symbolUtils;
     }
 
   /**
@@ -482,6 +495,7 @@ export class FeatureList {
       const popupTitle = await this._popupUtils.getPopupTitle(feature, this.mapView.map);
       //fetch the feature creator user info to show the creator user image
       let userInfo;
+      let featureSymbol;
       if (this.showUserImageInList) {
         const creatorField = this._selectedLayer.editFieldsInfo?.creatorField.toLowerCase();
         // if feature's creator field is present then only we can fetch the information of user
@@ -489,10 +503,13 @@ export class FeatureList {
           userInfo = await this.getUserInformation(feature, creatorField);
         }
       }
+      if (this.showFeatureSymbol) {
+        featureSymbol = await this.getFeatureSymbol(feature);
+      }
       if (showLikeCount) {
         void this.getAbbreviatedLikeCount(feature);
       }
-      return this.getFeatureItem(feature, popupTitle, userInfo);
+      return this.getFeatureItem(feature, popupTitle, featureSymbol, userInfo);
     });
     return Promise.all(items);
   }
@@ -526,7 +543,7 @@ export class FeatureList {
    * @returns individual feature item to be rendered
    * @protected
    */
-  protected getFeatureItem(selectedFeature: __esri.Graphic, popupTitle: string, userInfo: any): VNode {
+  protected getFeatureItem(selectedFeature: __esri.Graphic, popupTitle: string, featureSymbol: HTMLDivElement, userInfo: any): VNode {
     //get the object id value of the feature
     const oId = selectedFeature.attributes[this._selectedLayer.objectIdField].toString();
     //use object id if popupTitle is null or undefined
@@ -534,7 +551,7 @@ export class FeatureList {
     // get the formatted like count
     const formattedLikeCount = Number(selectedFeature.attributes[this.reportingOptions?.[this._selectedLayer.id].likeField]).toLocaleString();
     const popupTitleClass = this.textSize === 'small' ? 'feature-list-popup-title-small' : 'feature-list-popup-title'
-    const popupTitlePaddingClass = this.showUserImageInList ? 'feature-list-popup-title-padding-reduced': 'feature-list-popup-title-padding'
+    const popupTitlePaddingClass = this.showUserImageInList || this.showFeatureSymbol ? 'feature-list-popup-title-padding-reduced': 'feature-list-popup-title-padding'
     return (
       <calcite-list-item
         onCalciteListItemSelect={(e) => { void this.featureClicked(e, selectedFeature) }}
@@ -549,8 +566,14 @@ export class FeatureList {
             scale="m"
             slot="content-start"
             thumbnail={userInfo?.userProfileUrl}
-            username={userInfo?.username} />
-        }
+            username={userInfo?.username} />}
+
+        {this.showFeatureSymbol &&
+          <div
+            class={'feature-symbol'}
+            ref={(el) => el && el.appendChild(featureSymbol)}
+            slot="content-start" />}
+
         <div
           class={`${popupTitleClass} ${popupTitlePaddingClass}`}
           slot="content-start">
@@ -600,6 +623,35 @@ export class FeatureList {
     }
     userInfo.userProfileUrl = userProfileUrl;
     return userInfo;
+  }
+
+  /**
+   * Creates a feature symbology
+   * @param feature Each individual feature
+   * @returns Feature symbology
+   * @protected
+   */
+  protected async getFeatureSymbol(feature: __esri.Graphic): Promise<HTMLDivElement> {
+    const nodeHtml = document.createElement('div');
+    await this.symbolUtils.getDisplayedSymbol(feature).then(async (symbol) => {
+      symbol && await this.symbolUtils?.renderPreviewHTML(symbol as __esri.symbolsSymbol, {
+        node: nodeHtml
+      });
+      if (nodeHtml.children?.length) {
+        const imgOrSvgElm = nodeHtml.children[0];
+        if (imgOrSvgElm) {
+          const height = Number(imgOrSvgElm.getAttribute('height'));
+          const width = Number(imgOrSvgElm.getAttribute('width'));
+          if (width > 30) {
+            imgOrSvgElm.setAttribute('width', '30');
+          } else if (width < 19) {
+            imgOrSvgElm.setAttribute('width', '20')
+          }
+          imgOrSvgElm.setAttribute('viewBox', `0 0 ${width} ${height}`);
+        }
+      }
+    });
+    return nodeHtml;
   }
 
   /**

@@ -63,3 +63,9 @@
   font-style: italic;
 }
 
+.feature-symbol {
+  padding: 3px 10px;
+  min-width: 30px;
+  display: flex;
+  justify-content: center;
+}

@@ -175,6 +175,11 @@ export class CrowdsourceReporter {
   @Prop() showUserImageInCommentsList: boolean = false;
 
   /**
+   * boolean: When true the feature symbology of the feature will shown in the features list
+   */
+  @Prop() showFeatureSymbol: boolean = false;
+
+  /**
    * theme: "light" | "dark" theme to be used
    */
   @Prop() theme: theme = "light";
@@ -1304,6 +1309,7 @@ export class CrowdsourceReporter {
             ref={el => this._featureList = el }
             reportingOptions={this.reportingOptions}
             selectedLayerId={layerId}
+            showFeatureSymbol={this.showFeatureSymbol}
             sortingInfo={this._updatedSorting}
           />}
         </calcite-panel>
