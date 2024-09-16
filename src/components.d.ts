@@ -72,6 +72,10 @@ export namespace Components {
     }
     interface CardManager {
         /**
+          * string: custom notice text to display
+         */
+        "customInfoText": string;
+        /**
           * When true the geometry of the current feature will be editable
          */
         "enableEditGeometry": boolean;
@@ -202,6 +206,10 @@ export namespace Components {
           * boolean: When true a cover page has been enabled in the consuming application. Also when true a floating button will be shown in the lower right of the window that will emit an event when clicked that the consuming application can respond to that will open the cover page.
          */
         "coverPageEnabled": boolean;
+        /**
+          * string: custom notification text to display in the card manager
+         */
+        "customInfoText": string;
         /**
           * string: default center point values for the map ; delimited x;y pair
          */
@@ -2608,6 +2616,10 @@ declare namespace LocalJSX {
     }
     interface CardManager {
         /**
+          * string: custom notice text to display
+         */
+        "customInfoText"?: string;
+        /**
           * When true the geometry of the current feature will be editable
          */
         "enableEditGeometry"?: boolean;
@@ -2755,6 +2767,10 @@ declare namespace LocalJSX {
           * boolean: When true a cover page has been enabled in the consuming application. Also when true a floating button will be shown in the lower right of the window that will emit an event when clicked that the consuming application can respond to that will open the cover page.
          */
         "coverPageEnabled"?: boolean;
+        /**
+          * string: custom notification text to display in the card manager
+         */
+        "customInfoText"?: string;
         /**
           * string: default center point values for the map ; delimited x;y pair
          */

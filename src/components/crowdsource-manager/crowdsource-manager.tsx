@@ -64,6 +64,11 @@ export class CrowdsourceManager {
   @Prop() coverPageEnabled: boolean;
 
   /**
+   * string: custom notification text to display in the card manager
+   */
+  @Prop() customInfoText: string;
+
+  /**
    * string: default center point values for the map
    * ; delimited x;y pair
    */
@@ -874,6 +879,7 @@ export class CrowdsourceManager {
       <div class={`width-50 height-full ${themeClass}`}>
         <card-manager
           class={`${cardManagerHeight} width-full`}
+          customInfoText={this.customInfoText}
           enableEditGeometry={this?._mapInfo?.enableEditGeometry}
           isMobile={this._isMobile}
           layer={this._layer}
