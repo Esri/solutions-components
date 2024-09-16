@@ -20,6 +20,7 @@
 | `enableNewReports`            | `enable-new-reports`               | boolean: When true the user will be allowed to submit new reports                                         | `boolean`              | `undefined` |
 | `enableSearch`                | `enable-search`                    | boolean: when true the search widget will be available                                                    | `boolean`              | `true`      |
 | `enableZoom`                  | `enable-zoom`                      | boolean: when true the zoom widget will be available                                                      | `boolean`              | `true`      |
+| `floorLevel`                  | `floor-level`                      | string: selected floor level                                                                              | `string`               | `undefined` |
 | `isMobile`                    | `is-mobile`                        | boolean: When true the application will be in mobile mode, controls the mobile or desktop view            | `boolean`              | `undefined` |
 | `layerExpressions`            | --                                 | ILayerExpression[]: Array of layer expressions for layers (filter configuration)                          | `ILayerExpression[]`   | `[]`        |
 | `layerId`                     | `layer-id`                         | string: Layer id of the feature from URL params                                                           | `string`               | `undefined` |
@@ -34,6 +35,8 @@
 | `reportsHeader`               | `reports-header`                   | string: The word(s) to display in the reports header                                                      | `string`               | `undefined` |
 | `searchConfiguration`         | --                                 | ISearchConfiguration: Configuration details for the Search widget                                         | `ISearchConfiguration` | `undefined` |
 | `showComments`                | `show-comments`                    | boolean: When true the comments from all users will be visible                                            | `boolean`              | `undefined` |
+| `showFeatureSymbol`           | `show-feature-symbol`              | boolean: When true the feature symbology of the feature will shown in the features list                   | `boolean`              | `false`     |
+| `showMyReportsOnly`           | `show-my-reports-only`             | boolean: To show only those features which are created by the logged in user                              | `boolean`              | `false`     |
 | `showUserImageInCommentsList` | `show-user-image-in-comments-list` | boolean: When true the profile image of the comment creator will be shown in the comments list            | `boolean`              | `false`     |
 | `theme`                       | `theme`                            | theme: "light" \| "dark" theme to be used                                                                 | `"dark" \| "light"`    | `"light"`   |
 | `zoomToScale`                 | `zoom-to-scale`                    | number: default scale to zoom to when zooming to a single point feature                                   | `number`               | `undefined` |
@@ -55,8 +58,6 @@
 - calcite-panel
 - calcite-flow
 - calcite-loader
-- calcite-modal
-- instant-apps-filter-list
 - calcite-popover
 - calcite-list
 - calcite-list-item
@@ -68,6 +69,7 @@
 - [create-feature](../create-feature)
 - calcite-action
 - [feature-list](../feature-list)
+- instant-apps-filter-list
 - instant-apps-social-share
 - [feature-details](../feature-details)
 - calcite-tooltip
@@ -82,8 +84,6 @@ graph TD;
   crowdsource-reporter --> calcite-panel
   crowdsource-reporter --> calcite-flow
   crowdsource-reporter --> calcite-loader
-  crowdsource-reporter --> calcite-modal
-  crowdsource-reporter --> instant-apps-filter-list
   crowdsource-reporter --> calcite-popover
   crowdsource-reporter --> calcite-list
   crowdsource-reporter --> calcite-list-item
@@ -95,6 +95,7 @@ graph TD;
   crowdsource-reporter --> create-feature
   crowdsource-reporter --> calcite-action
   crowdsource-reporter --> feature-list
+  crowdsource-reporter --> instant-apps-filter-list
   crowdsource-reporter --> instant-apps-social-share
   crowdsource-reporter --> feature-details
   crowdsource-reporter --> calcite-tooltip
@@ -113,40 +114,6 @@ graph TD;
   calcite-popover --> calcite-action
   calcite-popover --> calcite-icon
   calcite-scrim --> calcite-loader
-  calcite-modal --> calcite-scrim
-  calcite-modal --> calcite-icon
-  instant-apps-filter-list --> calcite-panel
-  instant-apps-filter-list --> calcite-loader
-  instant-apps-filter-list --> calcite-checkbox
-  instant-apps-filter-list --> calcite-block
-  instant-apps-filter-list --> calcite-combobox
-  instant-apps-filter-list --> calcite-combobox-item
-  instant-apps-filter-list --> calcite-slider
-  instant-apps-filter-list --> calcite-input-date-picker
-  instant-apps-filter-list --> calcite-action
-  instant-apps-filter-list --> calcite-button
-  calcite-block --> calcite-scrim
-  calcite-block --> calcite-loader
-  calcite-block --> calcite-icon
-  calcite-block --> calcite-handle
-  calcite-block --> calcite-action-menu
-  calcite-handle --> calcite-icon
-  calcite-combobox --> calcite-combobox-item
-  calcite-combobox --> calcite-chip
-  calcite-combobox --> calcite-icon
-  calcite-combobox-item --> calcite-icon
-  calcite-slider --> calcite-graph
-  calcite-input-date-picker --> calcite-input-text
-  calcite-input-date-picker --> calcite-date-picker
-  calcite-input-date-picker --> calcite-icon
-  calcite-input-text --> calcite-progress
-  calcite-input-text --> calcite-icon
-  calcite-date-picker --> calcite-date-picker-month-header
-  calcite-date-picker --> calcite-date-picker-month
-  calcite-date-picker-month-header --> calcite-icon
-  calcite-date-picker-month --> calcite-date-picker-day
-  calcite-button --> calcite-loader
-  calcite-button --> calcite-icon
   calcite-list --> calcite-scrim
   calcite-list --> calcite-stack
   calcite-list --> calcite-filter
@@ -156,8 +123,11 @@ graph TD;
   calcite-list-item --> calcite-icon
   calcite-list-item --> calcite-handle
   calcite-list-item --> calcite-action
+  calcite-handle --> calcite-icon
   calcite-flow-item --> calcite-action
   calcite-flow-item --> calcite-panel
+  calcite-button --> calcite-loader
+  calcite-button --> calcite-icon
   layer-list --> calcite-loader
   layer-list --> calcite-notice
   layer-list --> calcite-list
@@ -173,8 +143,38 @@ graph TD;
   feature-list --> calcite-list-item
   feature-list --> calcite-avatar
   feature-list --> calcite-icon
+  feature-list --> calcite-tooltip
   calcite-pagination --> calcite-icon
   calcite-avatar --> calcite-icon
+  instant-apps-filter-list --> calcite-panel
+  instant-apps-filter-list --> calcite-loader
+  instant-apps-filter-list --> calcite-checkbox
+  instant-apps-filter-list --> calcite-block
+  instant-apps-filter-list --> calcite-combobox
+  instant-apps-filter-list --> calcite-combobox-item
+  instant-apps-filter-list --> calcite-slider
+  instant-apps-filter-list --> calcite-input-date-picker
+  instant-apps-filter-list --> calcite-action
+  instant-apps-filter-list --> calcite-button
+  calcite-block --> calcite-scrim
+  calcite-block --> calcite-loader
+  calcite-block --> calcite-icon
+  calcite-block --> calcite-handle
+  calcite-block --> calcite-action-menu
+  calcite-combobox --> calcite-combobox-item
+  calcite-combobox --> calcite-chip
+  calcite-combobox --> calcite-icon
+  calcite-combobox-item --> calcite-icon
+  calcite-slider --> calcite-graph
+  calcite-input-date-picker --> calcite-input-text
+  calcite-input-date-picker --> calcite-date-picker
+  calcite-input-date-picker --> calcite-icon
+  calcite-input-text --> calcite-progress
+  calcite-input-text --> calcite-icon
+  calcite-date-picker --> calcite-date-picker-month-header
+  calcite-date-picker --> calcite-date-picker-month
+  calcite-date-picker-month-header --> calcite-icon
+  calcite-date-picker-month --> calcite-date-picker-day
   instant-apps-social-share --> calcite-popover
   instant-apps-social-share --> calcite-button
   instant-apps-social-share --> calcite-icon
@@ -196,6 +196,8 @@ graph TD;
   delete-button --> calcite-button
   delete-button --> calcite-action
   delete-button --> calcite-modal
+  calcite-modal --> calcite-scrim
+  calcite-modal --> calcite-icon
   edit-card --> calcite-notice
   edit-card --> calcite-loader
   create-related-feature --> calcite-loader

@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.10.13] - September 16th 2024
+Delivery for Reporter Instant app - AGOL-2024.R03 - Sprint2 #861
+
 ## [0.10.12] - September 5th 2024
 Layer selection change update
 
@@ -766,4 +769,5 @@ Recover from test releases
 [0.10.10]: https://github.com/Esri/solution.js/compare/v0.10.9...v0.10.10 "v0.10.10"
 [0.10.11]: https://github.com/Esri/solution.js/compare/v0.10.10...v0.10.11 "v0.10.11"
 [0.10.12]: https://github.com/Esri/solution.js/compare/v0.10.11...v0.10.12 "v0.10.12"
-[Unreleased]: https://github.com/Esri/solution.js/compare/v0.10.12...HEAD "Unreleased Changes"
+[0.10.13]: https://github.com/Esri/solution.js/compare/v0.10.12...v0.10.13 "v0.10.13"
+[Unreleased]: https://github.com/Esri/solution.js/compare/v0.10.13...HEAD "Unreleased Changes"

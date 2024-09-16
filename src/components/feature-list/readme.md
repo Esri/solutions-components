@@ -9,13 +9,16 @@
 
 | Property                  | Attribute                     | Description                                                                                                                                          | Type                 | Default     |
 | ------------------------- | ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------- | ----------- |
+| `applyLayerViewFilter`    | `apply-layer-view-filter`     | boolean: If true will consider the FeatureFilter applied on the layerview                                                                            | `boolean`            | `false`     |
 | `highlightOnHover`        | `highlight-on-hover`          | boolean: Highlight feature on map optional (default false) boolean to indicate if we should highlight when hover on Feature in list                  | `boolean`            | `false`     |
 | `highlightOnMap`          | `highlight-on-map`            | boolean: Highlight feature on map optional (default false) boolean to indicate if we should highlight and zoom to the extent of the feature geometry | `boolean`            | `false`     |
 | `mapView`                 | --                            | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html                                               | `MapView`            | `undefined` |
 | `noFeaturesFoundMsg`      | `no-features-found-msg`       | string: Message to be displayed when features are not found                                                                                          | `string`             | `undefined` |
 | `pageSize`                | `page-size`                   | number: Number features to be fetched per page, by default 100 features will be fetched                                                              | `number`             | `100`       |
+| `reportingOptions`        | --                            | IReportingOptions: Key options for reporting                                                                                                         | `IReportingOptions`  | `undefined` |
 | `selectedLayerId`         | `selected-layer-id`           | string: Layer id of the feature layer to show the list                                                                                               | `string`             | `undefined` |
 | `showErrorWhenNoFeatures` | `show-error-when-no-features` | boolean: If true will show error msg when features are not present                                                                                   | `boolean`            | `true`      |
+| `showFeatureSymbol`       | `show-feature-symbol`         | boolean: If true display's feature symbol on each feature item                                                                                       | `boolean`            | `false`     |
 | `showInitialLoading`      | `show-initial-loading`        | boolean: Show initial loading indicator when creating list                                                                                           | `boolean`            | `true`      |
 | `showUserImageInList`     | `show-user-image-in-list`     | boolean: If true display's profile img on each feature item                                                                                          | `boolean`            | `false`     |
 | `sortingInfo`             | --                            | ISortingInfo: Sorting field and order using which features list will be sorted                                                                       | `ISortingInfo`       | `undefined` |
@@ -60,6 +63,7 @@ Promise that resolves when the operation is complete
 - calcite-list-item
 - calcite-avatar
 - calcite-icon
+- calcite-tooltip
 
 ### Graph
 ```mermaid
@@ -72,6 +76,7 @@ graph TD;
   feature-list --> calcite-list-item
   feature-list --> calcite-avatar
   feature-list --> calcite-icon
+  feature-list --> calcite-tooltip
   calcite-panel --> calcite-action
   calcite-panel --> calcite-action-menu
   calcite-panel --> calcite-scrim

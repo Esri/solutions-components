@@ -136,6 +136,7 @@ graph TD;
   feature-list --> calcite-list-item
   feature-list --> calcite-avatar
   feature-list --> calcite-icon
+  feature-list --> calcite-tooltip
   calcite-list --> calcite-scrim
   calcite-list --> calcite-stack
   calcite-list --> calcite-filter
