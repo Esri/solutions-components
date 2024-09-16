@@ -40,6 +40,11 @@ export class CardManager {
   //--------------------------------------------------------------------------
 
   /**
+   * string: custom notice text to display
+   */
+  @Prop() customInfoText: string;
+
+  /**
    * When true the geometry of the current feature will be editable
    */
   @Prop() enableEditGeometry = false;
@@ -173,7 +178,7 @@ export class CardManager {
           <calcite-shell class={"position-relative " + messageClass}>
             <div class={"padding-1"}>
               <calcite-notice icon="table" open>
-                <div slot="message">{this._translations.selectFeaturesToStart}</div>
+                <div slot="message">{this.customInfoText || this._translations.selectFeaturesToStart}</div>
               </calcite-notice>
             </div>
           </calcite-shell>
