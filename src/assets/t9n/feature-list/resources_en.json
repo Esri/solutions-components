@@ -1,4 +1,6 @@
 {
   "error": "Error",
-  "featureErrorMsg": "No records found."
+  "featureErrorMsg": "No records found.",
+  "thousandsAbbreviation": "{{abbreviated_value}}k",
+  "millionsAbbreviation": "{{abbreviated_value}}M"
 }

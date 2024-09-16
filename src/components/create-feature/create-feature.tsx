@@ -64,6 +64,16 @@ export class CreateFeature {
    * boolean: When true the application will be in mobile mode, controls the mobile or desktop view
    */
   @Prop() isMobile: boolean;
+
+  /**
+   * string: selected floor level
+   */
+  @Prop() floorLevel: string;
+
+  /**
+   * string: selected floor level
+   */
+  @Prop() formElements: any;
   //--------------------------------------------------------------------------
   //
   //  State (internal)
@@ -91,6 +101,23 @@ export class CreateFeature {
    * The Editor constructor
    */
   protected Editor: typeof import("esri/widgets/Editor");
+
+  /**
+   * esri/form/ExpressionInfo: https://developers.arcgis.com/javascript/latest/api-reference/esri-form-ExpressionInfo.html
+   * The ExpressionInfo constructor
+   */
+  protected ExpressionInfo: typeof import("esri/form/ExpressionInfo");
+  
+  /**
+   * esri/form/elements/FieldElement: https://developers.arcgis.com/javascript/latest/api-reference/esri-form-elements-FieldElement.html
+   * The FieldElement constructor
+   */
+  protected FieldElement: typeof import("esri/form/elements/FieldElement");
+
+  /**
+   * esri/form/FormTemplate: https://developers.arcgis.com/javascript/latest/api-reference/esri-form-FormTemplate.html
+   */
+  protected FormTemplate: typeof import("esri/form/FormTemplate");
 
   /**
    * esri/widgets/Editor: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Editor.html
@@ -219,6 +246,17 @@ export class CreateFeature {
     }
   }
 
+  /**
+   * refresh the feature form
+   * @returns Promise that resolves when the operation is complete
+   */
+  @Method()
+  async refresh(floorLevel: string): Promise<void> {
+    if (this._editor) {
+      void this._setFloorLevel(floorLevel);
+    }
+  }
+
   //--------------------------------------------------------------------------
   //
   //  Events (public)
@@ -321,15 +359,21 @@ export class CreateFeature {
    * @protected
    */
   protected async initModules(): Promise<void> {
-    const [Editor, reactiveUtils, Search, MapView] = await loadModules([
+    const [Editor, reactiveUtils, Search, ExpressionInfo, FieldElement, FormTemplate, MapView] = await loadModules([
       "esri/widgets/Editor",
       "esri/core/reactiveUtils",
       "esri/widgets/Search",
+      "esri/form/ExpressionInfo",
+      "esri/form/elements/FieldElement",
+      "esri/form/FormTemplate",
       "esri/views/MapView"
     ]);
     this.Editor = Editor;
     this.reactiveUtils = reactiveUtils;
     this.Search = Search;
+    this.ExpressionInfo = ExpressionInfo;
+    this.FieldElement = FieldElement;
+    this.FormTemplate = FormTemplate;
     this.MapView = MapView;
   }
 
@@ -431,6 +475,7 @@ export class CreateFeature {
       (state) => {
         if (state === 'ready') {
           this._mapViewContainer?.classList?.replace("show-map", "hide-map");
+          void this._setFloorLevel(this.floorLevel);
           this._showSearchWidget = false;
           this.progressStatus.emit(1);
           this.drawComplete.emit();
@@ -589,6 +634,59 @@ export class CreateFeature {
       }
     }
     return searchConfiguration;
+  }
+
+  /**
+   * Add the floor level value to form
+   * @param level selected floor level
+   * 
+   * @protected
+   */
+  protected async _setFloorLevel(level: string): Promise<void> {
+    if (!level) {
+      return;
+    }
+    const layer = await getLayerOrTable(this._updatedMapView, this.selectedLayerId);
+    if (layer?.floorInfo?.floorField) {
+      const layerField = layer.fields.find((field) => field.name === layer.floorInfo.floorField);
+      // if layer field is present and form template is not present only then we can set value of floorfield into feature form otherwise create a mannual formtemplate to add the floorfeild element
+      if (layerField && !layer?.formTemplate) {
+        this._editor.viewModel.featureFormViewModel.setValue(layerField.name, level);
+        layerField.editable = false;
+      } else if (layer.formTemplate && this.formElements) {
+        const floorInfoExpression = new this.ExpressionInfo({
+          expression: `"${level}"`,
+          name: "floor-info-test",
+          title: "Floor Info",
+          returnType: "string"
+        });
+        const levelIdFieldElement = new this.FieldElement({
+          label: layer.floorInfo.floorField,
+          editableExpression: 'false',
+          fieldName: layer.floorInfo.floorField,
+          input: {
+            type: "text-box",
+            maxLength: 50,
+            minLength: 0
+          },
+          valueExpression: floorInfoExpression.name
+        });
+        this._updatedMapView.map.editableLayers.forEach((layer: __esri.FeatureLayer) => {
+          const orgElements = this.formElements.orgElements;
+          const orgExpressionInfos = this.formElements.orgExpressionInfos;
+          const elements = [...orgElements];
+          elements.push(levelIdFieldElement);
+          // Creating formtemplate
+          const floorInfoTemplate = new this.FormTemplate({
+            title: layer.formTemplate.title,
+            description: layer.formTemplate.description,
+            elements,
+            expressionInfos: [floorInfoExpression].concat(orgExpressionInfos)
+          });
+          layer.formTemplate = floorInfoTemplate;
+        });
+      }
+    }
   }
 
   /**

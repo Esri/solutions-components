@@ -54,3 +54,18 @@
   margin: 0 0.75rem;
   min-width: 32px;
 }
+
+.like-container {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: gray !important;
+  font-style: italic;
+}
+
+.feature-symbol {
+  padding: 3px 10px;
+  min-width: 30px;
+  display: flex;
+  justify-content: center;
+}

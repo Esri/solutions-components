@@ -125,6 +125,14 @@ export namespace Components {
          */
         "customizeSubmit"?: boolean;
         /**
+          * string: selected floor level
+         */
+        "floorLevel": string;
+        /**
+          * string: selected floor level
+         */
+        "formElements": any;
+        /**
           * boolean: When true the application will be in mobile mode, controls the mobile or desktop view
          */
         "isMobile": boolean;
@@ -132,6 +140,11 @@ export namespace Components {
           * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
+        /**
+          * refresh the feature form
+          * @returns Promise that resolves when the operation is complete
+         */
+        "refresh": (floorLevel: string) => Promise<void>;
         /**
           * ISearchConfiguration: Configuration details for the Search widget
          */
@@ -364,6 +377,10 @@ export namespace Components {
          */
         "enableZoom": boolean;
         /**
+          * string: selected floor level
+         */
+        "floorLevel": string;
+        /**
           * boolean: When true the application will be in mobile mode, controls the mobile or desktop view
          */
         "isMobile": boolean;
@@ -419,6 +436,14 @@ export namespace Components {
           * boolean: When true the comments from all users will be visible
          */
         "showComments": boolean;
+        /**
+          * boolean: When true the feature symbology of the feature will shown in the features list
+         */
+        "showFeatureSymbol": boolean;
+        /**
+          * boolean: To show only those features which are created by the logged in user
+         */
+        "showMyReportsOnly"?: boolean;
         /**
           * boolean: When true the profile image of the comment creator will be shown in the comments list
          */
@@ -523,6 +548,10 @@ export namespace Components {
     }
     interface FeatureList {
         /**
+          * boolean: If true will consider the FeatureFilter applied on the layerview
+         */
+        "applyLayerViewFilter"?: boolean;
+        /**
           * boolean: Highlight feature on map optional (default false) boolean to indicate if we should highlight when hover on Feature in list
          */
         "highlightOnHover"?: boolean;
@@ -548,6 +577,10 @@ export namespace Components {
          */
         "refresh": () => Promise<void>;
         /**
+          * IReportingOptions: Key options for reporting
+         */
+        "reportingOptions": IReportingOptions;
+        /**
           * string: Layer id of the feature layer to show the list
          */
         "selectedLayerId": string;
@@ -555,6 +588,10 @@ export namespace Components {
           * boolean: If true will show error msg when features are not present
          */
         "showErrorWhenNoFeatures"?: boolean;
+        /**
+          * boolean: If true display's feature symbol on each feature item
+         */
+        "showFeatureSymbol"?: boolean;
         /**
           * boolean: Show initial loading indicator when creating list
          */
@@ -695,6 +732,10 @@ export namespace Components {
         "value": any;
     }
     interface LayerList {
+        /**
+          * boolean: If true will consider the FeatureFilter applied on the layerview
+         */
+        "applyLayerViewFilter"?: boolean;
         /**
           * string[]: If passed will show only these layers in the list if they are present in map and are editable
          */
@@ -2615,6 +2656,14 @@ declare namespace LocalJSX {
          */
         "customizeSubmit"?: boolean;
         /**
+          * string: selected floor level
+         */
+        "floorLevel"?: string;
+        /**
+          * string: selected floor level
+         */
+        "formElements"?: any;
+        /**
           * boolean: When true the application will be in mobile mode, controls the mobile or desktop view
          */
         "isMobile"?: boolean;
@@ -2889,6 +2938,10 @@ declare namespace LocalJSX {
          */
         "enableZoom"?: boolean;
         /**
+          * string: selected floor level
+         */
+        "floorLevel"?: string;
+        /**
           * boolean: When true the application will be in mobile mode, controls the mobile or desktop view
          */
         "isMobile"?: boolean;
@@ -2948,6 +3001,14 @@ declare namespace LocalJSX {
           * boolean: When true the comments from all users will be visible
          */
         "showComments"?: boolean;
+        /**
+          * boolean: When true the feature symbology of the feature will shown in the features list
+         */
+        "showFeatureSymbol"?: boolean;
+        /**
+          * boolean: To show only those features which are created by the logged in user
+         */
+        "showMyReportsOnly"?: boolean;
         /**
           * boolean: When true the profile image of the comment creator will be shown in the comments list
          */
@@ -3067,6 +3128,10 @@ declare namespace LocalJSX {
     }
     interface FeatureList {
         /**
+          * boolean: If true will consider the FeatureFilter applied on the layerview
+         */
+        "applyLayerViewFilter"?: boolean;
+        /**
           * boolean: Highlight feature on map optional (default false) boolean to indicate if we should highlight when hover on Feature in list
          */
         "highlightOnHover"?: boolean;
@@ -3091,6 +3156,10 @@ declare namespace LocalJSX {
          */
         "pageSize"?: number;
         /**
+          * IReportingOptions: Key options for reporting
+         */
+        "reportingOptions"?: IReportingOptions;
+        /**
           * string: Layer id of the feature layer to show the list
          */
         "selectedLayerId"?: string;
@@ -3098,6 +3167,10 @@ declare namespace LocalJSX {
           * boolean: If true will show error msg when features are not present
          */
         "showErrorWhenNoFeatures"?: boolean;
+        /**
+          * boolean: If true display's feature symbol on each feature item
+         */
+        "showFeatureSymbol"?: boolean;
         /**
           * boolean: Show initial loading indicator when creating list
          */
@@ -3212,6 +3285,10 @@ declare namespace LocalJSX {
         "value"?: any;
     }
     interface LayerList {
+        /**
+          * boolean: If true will consider the FeatureFilter applied on the layerview
+         */
+        "applyLayerViewFilter"?: boolean;
         /**
           * string[]: If passed will show only these layers in the list if they are present in map and are editable
          */

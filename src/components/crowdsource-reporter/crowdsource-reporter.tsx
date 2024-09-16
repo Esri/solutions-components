@@ -22,6 +22,7 @@ import CrowdsourceReporter_T9n from "../../assets/t9n/crowdsource-reporter/resou
 import { getAllLayers, getAllTables, getFeatureLayerView, getLayerOrTable, getMapLayerHash, highlightFeatures } from "../../utils/mapViewUtils";
 import { queryFeaturesByID } from "../../utils/queryUtils";
 import { ILayerItemsHash } from "../layer-list/layer-list";
+import { FilterInitState } from "@esri/instant-apps-components";
 
 @Component({
   tag: "crowdsource-reporter",
@@ -174,6 +175,16 @@ export class CrowdsourceReporter {
   @Prop() showUserImageInCommentsList: boolean = false;
 
   /**
+   * boolean: When true the feature symbology of the feature will shown in the features list
+   */
+  @Prop() showFeatureSymbol: boolean = false;
+
+  /**
+   * boolean: To show only those features which are created by the logged in user
+   */
+  @Prop() showMyReportsOnly?: boolean = false;
+
+  /**
    * theme: "light" | "dark" theme to be used
    */
   @Prop() theme: theme = "light";
@@ -182,6 +193,11 @@ export class CrowdsourceReporter {
    * number: default scale to zoom to when zooming to a single point feature
    */
   @Prop() zoomToScale: number;
+
+  /**
+   * string: selected floor level
+   */
+  @Prop() floorLevel: string;
 
   //--------------------------------------------------------------------------
   //
@@ -198,11 +214,6 @@ export class CrowdsourceReporter {
    * boolean: When true an indicator will be shown on the action
    */
   @State() _filterActive = false;
-
-  /**
-   * boolean: When true the filter component will be displayed
-   */
-  @State() _filterOpen = false;
 
   /**
    * string[]: Reporter flow items list
@@ -377,6 +388,12 @@ export class CrowdsourceReporter {
   protected reactiveUtils: typeof import("esri/core/reactiveUtils");
 
   /**
+   * "esri/layers/support/FeatureFilter": https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-support-FeatureFilter.html
+   * Esri FeatureFilter
+   */
+  protected FeatureFilter: typeof import("esri/layers/support/FeatureFilter");
+
+  /**
    * __esri.Graphic: The selected feature
    */
   protected _selectedFeature: __esri.Graphic[];
@@ -421,6 +438,26 @@ export class CrowdsourceReporter {
    */
   protected _showFullPanel: boolean;
 
+  /**
+   * string: The current floor expression
+   */
+  protected _floorExpression: string;
+
+  /**
+   * _esri.Element: form elements of the selected layer
+   */
+  protected _formElements =  [];
+
+  /**
+   * string[]: URL params set by using filters.
+   */
+  protected _filterUrlParams: string[];
+
+  /**
+   * FilterInitState: filter's init state
+   */
+  protected _filterInitState: FilterInitState;
+
   //--------------------------------------------------------------------------
   //
   //  Watch handlers
@@ -443,6 +480,32 @@ export class CrowdsourceReporter {
     await this.mapView.when(async () => {
       await this.setMapView();
     });
+  }
+
+  /**
+   * Called each time the floorLevel prop is changed.
+   */
+  @Watch("floorLevel")
+  async floorLevelWatchHandler(): Promise<void> {
+    if (this._editableLayerIds) {
+      // updates all layer's defination expression when floorLevel is changed
+      // then refresh the components to update features
+      for (const layerId of this._editableLayerIds) {
+        const layer = await getLayerOrTable(this.mapView, layerId);
+        if (layer.floorInfo?.floorField) {
+          this._updateFloorDefinitionExpression(layer);
+        }
+      }
+    }
+    if (this._layerList) {
+      await this._layerList.refresh();
+    }
+    if (this._featureList) {
+      void this._featureList.refresh();
+    }
+    if (this._createFeature) {
+      void this._createFeature.refresh(this.floorLevel);
+    }
   }
 
   //--------------------------------------------------------------------------
@@ -544,7 +607,6 @@ export class CrowdsourceReporter {
             {this._getReporter()}
           </calcite-shell>
         </div>
-        {this.filterModal()}
       </Host>
     );
   }
@@ -563,10 +625,12 @@ export class CrowdsourceReporter {
    * @protected
    */
   protected async _initModules(): Promise<void> {
-    const [reactiveUtils] = await loadModules([
-      "esri/core/reactiveUtils"
+    const [reactiveUtils, FeatureFilter] = await loadModules([
+      "esri/core/reactiveUtils",
+      "esri/layers/support/FeatureFilter"
     ]);
     this.reactiveUtils = reactiveUtils;
+    this.FeatureFilter = FeatureFilter;
   }
 
   /**
@@ -611,6 +675,10 @@ export class CrowdsourceReporter {
         case "feature-list":
           renderLists.push(this.getFeatureListFlowItem(this._selectedLayerId, this._selectedLayerName));
           break;
+        case "filter-panel":
+          renderLists.push(this.getFilterPanel());
+          void this._restoreFilters();
+          break;
         case "feature-details":
           renderLists.push(this.getFeatureDetailsFlowItem());
           break;
@@ -638,66 +706,6 @@ export class CrowdsourceReporter {
           : <calcite-loader label="" scale="m" />}
       </calcite-panel>
     );
-  }
-
-  /**
-   * Show filter component in modal
-   * @returns node to interact with any configured filters for the current layer
-   */
-     protected filterModal(): VNode {
-       //get layer expression for current selected layer
-       const currentLayersExpressions = this.layerExpressions ? this.layerExpressions.filter(
-         (exp) => exp.id === this._selectedLayerId) : [];
-       return (currentLayersExpressions.length > 0 &&
-         <calcite-modal
-           aria-labelledby="modal-title"
-           class="modal"
-           kind="brand"
-           onCalciteModalClose={() => void this._closeFilter()}
-           open={this._filterOpen}
-           widthScale="s"
-         >
-           <div
-             class="display-flex align-center"
-             id="modal-title"
-             slot="header"
-           >
-             {this._translations?.filterLayerTitle?.replace("{{title}}", this._selectedLayerName)}
-           </div>
-           <div slot="content">
-             <instant-apps-filter-list
-               autoUpdateUrl={false}
-               closeBtn={true}
-               closeBtnOnClick={() => void this._closeFilter()}
-               comboboxOverlayPositioning="fixed"
-               layerExpressions={currentLayersExpressions}
-               onFilterListReset={() => this._handleFilterListReset()}
-               onFilterUpdate={() => this._handleFilterUpdate()}
-               ref={(el) => this._filterList = el}
-               view={this.mapView}
-               zoomBtn={false}
-             />
-           </div>
-         </calcite-modal>
-       );
-    }
-
-  /**
-   * Close the filter modal
-   * @protected
-   */
-  protected _closeFilter(): void {
-    if (this._filterOpen) {
-      this._filterOpen = false;
-    }
-  }
-
-  /**
-   * When true the filter modal will be displayed
-   * @protected
-   */
-  protected _toggleFilter(): void {
-    this._filterOpen = !this._filterOpen;
   }
 
   /**
@@ -764,14 +772,28 @@ export class CrowdsourceReporter {
   }
 
   /**
-   * Reset the filter active prop
+   * Restores the applied filters
+   * @protected 
+   */
+  protected _restoreFilters(): void {
+    // call the restore function when instant-apps-filter-list is ready
+    setTimeout(() => {
+      const canRestoreFilter = this._filterList && this._filterUrlParams && this._filterInitState;
+      if (canRestoreFilter) {
+        void this._filterList.restoreFilters(this._filterUrlParams[0], this._filterInitState);
+      }
+    }, 200);
+  }
+
+  /**
+   * Reset the filter
    * @protected
    */
-  protected _handleFilterListReset(): void {
-    //on reset filter list reset the filter active state
+  protected async _handleFilterListReset(): Promise<void> {
+    //on reset filter list reset the filter states
     this._filterActive = false;
-    //reset the features list to reflect the applied filters
-    void this._featureList.refresh();
+    this._filterUrlParams = null;
+    this._filterInitState = null;
   }
 
   /**
@@ -782,8 +804,7 @@ export class CrowdsourceReporter {
     //if filter are applied the url params will be generated
     //set the filter active state based on the length of applied filters
     this._filterActive = this._filterList.urlParams.getAll('filter').length > 0;
-    //reset the features list to reflect the applied filters
-    void this._featureList.refresh();
+    this._filterUrlParams = this._filterList.urlParams.getAll('filter');
   }
 
   /**
@@ -809,6 +830,7 @@ export class CrowdsourceReporter {
           full-height
           full-width>
           <layer-list
+            applyLayerViewFilter={this.showMyReportsOnly}
             class="height-full"
             layers={this._editableLayerIds?.length > 0 ? this._editableLayerIds : this._layers}
             mapView={this.mapView}
@@ -902,6 +924,8 @@ export class CrowdsourceReporter {
           </calcite-notice>
           <create-feature
             customizeSubmit
+            floorLevel={this.floorLevel}
+            formElements={this._formElements.find(elm => elm.id === this._selectedLayerId)}
             isMobile={this.isMobile}
             mapView={this.mapView}
             onDrawComplete={this.onFormReady.bind(this)}
@@ -1065,8 +1089,10 @@ export class CrowdsourceReporter {
    */
   protected async navigateToCreateFeature(evt: CustomEvent): Promise<void> {
     if (evt.detail.layerId && evt.detail.layerName) {
-      void this.setSelectedLayer(evt.detail.layerId, evt.detail.layerName);
+      await this.setSelectedLayer(evt.detail.layerId, evt.detail.layerName);
     }
+    // get the form template elements to pass in create-feature to create a LEVELID field in feature-form
+    this._getFormElements();
     this._showSubmitCancelButton = false;
     this.updatePanelState(false, true);
     this._flowItems = [...this._flowItems, "feature-create"];
@@ -1128,6 +1154,16 @@ export class CrowdsourceReporter {
   }
 
   /**
+   * On back from filter panel get the filter's init state
+   * @protected
+   */
+  protected async backFromFilterPanel(): Promise<void> {
+    this._filterInitState = await this._filterList.getFilterInitState();
+    void this._featureList.refresh();
+    this.backFromSelectedPanel();
+  }
+
+  /**
    * On back from selected panel navigate to the previous panel
    * @protected
    */
@@ -1144,6 +1180,10 @@ export class CrowdsourceReporter {
     if (updatedFlowItems[updatedFlowItems.length - 1] === 'reporting-layer-list' || (updatedFlowItems[updatedFlowItems.length - 1] === 'feature-create' &&
       (updatedFlowItems[0] === 'feature-list' || updatedFlowItems[updatedFlowItems.length - 2] === 'feature-list'))) {
       this.updatePanelState(this._sidePanelCollapsed, false);
+    }
+    // Coming back from feature details refresh the feature list to update the like count
+    if(this.reportingOptions && this.reportingOptions[this._selectedLayerId]?.like && updatedFlowItems[updatedFlowItems.length - 1] === 'feature-details') {
+      void this._featureList.refresh();
     }
     updatedFlowItems.pop();
     //Back to layer list, and return as the flowItems will be reset in navigateToHomePage
@@ -1259,7 +1299,7 @@ export class CrowdsourceReporter {
         {showFilterIcon && <calcite-action
           icon="filter"
           indicator={this._filterActive}
-          onClick={this._toggleFilter.bind(this)}
+          onClick={() => {this._flowItems = [...this._flowItems, "filter-panel"]}}
           slot={"header-actions-end"}
           text={this._translations.filter}
           title={this._translations.filter} />}
@@ -1274,6 +1314,7 @@ export class CrowdsourceReporter {
           </calcite-button>}
         <calcite-panel full-height>
           {<feature-list
+            applyLayerViewFilter={this.showMyReportsOnly}
             class="height-full"
             highlightOnHover
             mapView={this.mapView}
@@ -1281,9 +1322,65 @@ export class CrowdsourceReporter {
             onFeatureSelect={this.onFeatureSelectFromList.bind(this)}
             pageSize={30}
             ref={el => this._featureList = el }
+            reportingOptions={this.reportingOptions}
             selectedLayerId={layerId}
+            showFeatureSymbol={this.showFeatureSymbol}
             sortingInfo={this._updatedSorting}
           />}
+        </calcite-panel>
+      </calcite-flow-item>);
+  }
+
+  /**
+   * Get Filter page for apllying filter
+   * @param layerId Layer id
+   * @param layerName Layer name
+   * @returns feature list node
+   * @protected
+   */
+  protected getFilterPanel(
+  ): Node {
+    const currentLayersExpressions = this.layerExpressions ? this.layerExpressions.filter((exp) => exp.id === this._selectedLayerId) : [];
+    return (
+      <calcite-flow-item
+        collapsed={this.isMobile && this._sidePanelCollapsed}
+        heading={this._translations?.filterLayerTitle?.replace("{{title}}", this._selectedLayerName)}
+        loading={this._showLoadingIndicator}
+        onCalciteFlowItemBack={this.backFromFilterPanel.bind(this)}>
+        {this.isMobile && this.getActionToExpandCollapsePanel()}
+        <div class={"width-full"}
+          slot="footer">
+          <div class={"width-full"}
+            slot="footer">
+            <calcite-button
+              appearance="solid"
+              class={"footer-top-button footer-button"}
+              onClick={() => { void this._filterList?.forceReset() }}
+              width="full">
+              {this._translations.resetFilter}
+            </calcite-button>
+            <calcite-button
+              appearance="outline"
+              class={"footer-button"}
+              onClick={this.backFromFilterPanel.bind(this)}
+              width="full">
+              {this._translations.close}
+            </calcite-button>
+          </div>
+        </div>
+        <calcite-panel full-height>
+          <instant-apps-filter-list
+            autoUpdateUrl={false}
+            closeBtnOnClick={() => undefined}
+            comboboxOverlayPositioning="fixed"
+            layerExpressions={currentLayersExpressions}
+            onFilterListReset={() => this._handleFilterListReset()}
+            onFilterUpdate={() => this._handleFilterUpdate()}
+            ref={(el) => this._filterList = el}
+            resetFiltersOnDisconnect={false}
+            view={this.mapView}
+            zoomBtn={false}
+          />
         </calcite-panel>
       </calcite-flow-item>);
   }
@@ -1551,6 +1648,8 @@ export class CrowdsourceReporter {
    */
   protected async setMapView(): Promise<void> {
     await this.getLayersToShowInList();
+    // filter/update the feature(s) if any filter/condition is already applied
+    await this._updateFeatures();
     // if only one valid layer is present then directly render features list
     if (this._editableLayerIds?.length === 1) {
       await this.renderFeaturesList();
@@ -1663,6 +1762,41 @@ export class CrowdsourceReporter {
   }
 
   /**
+   * Applies a definition expression when floor field and level are available
+   *
+   * @returns boolean
+   * @protected
+   */
+  protected _updateFloorDefinitionExpression(layer: __esri.FeatureLayer): void {
+    const floorField = layer.floorInfo.floorField;
+    // update the layer defination expression
+    const floorExp = `${floorField} = '${this.floorLevel}'`;
+    const defExp = layer.definitionExpression;
+      layer.definitionExpression = defExp?.indexOf(this._floorExpression) > -1 ?
+        defExp.replace(this._floorExpression, floorExp) : floorExp;
+      this._floorExpression = floorExp;
+  }
+
+  /**
+   * Gets the form template elements 
+   * @protected
+   */
+  protected _getFormElements(): void {
+    const layer = this._selectedLayer;
+    const floorField = layer?.floorInfo?.floorField;
+    if (floorField && this.floorLevel && layer?.formTemplate) {
+      const formElement = this._formElements.find((elm) => elm.id === layer.id);
+      if (this._formElements.length === 0 || !formElement) {
+        this._formElements.push({
+          id: layer.id,
+          orgElements: layer.formTemplate.elements,
+          orgExpressionInfos: layer.formTemplate.expressionInfos
+        });
+      }
+    }
+  }  
+
+  /**
    * Returns the ids of all OR configured layers that support edits with the update capability
    * @param hash each layer item details
    * @param layers list of layers id
@@ -1680,6 +1814,37 @@ export class CrowdsourceReporter {
       }
       return prev;
     }, []);
+  }
+
+  /**
+   * updates the features for layer/feature list
+   * @protected
+   */
+  protected async _updateFeatures(): Promise<void> {
+    for (const eachLayerId of this._editableLayerIds) {
+      const featureLayerView = await getFeatureLayerView(this.mapView, eachLayerId);
+      // In case of show my features add filter for Featurelayerview
+      await this._showMyFeaturesOnly(featureLayerView);
+      const floorField = featureLayerView.layer?.floorInfo?.floorField;
+      if (floorField && this.floorLevel) {
+        // Update the layer's defination as per selected floor level from map for all editable layers
+        this._updateFloorDefinitionExpression(featureLayerView.layer);
+      }
+    }
+  }
+
+  /**
+   * Show only loggedIn user's features
+   * @protected
+   */
+  protected async _showMyFeaturesOnly(featureLayerView: __esri.FeatureLayerView): Promise<void> {
+      const loggedInUserName = (this.mapView.map as any).portalItem.portal?.credential?.userId;
+      if (loggedInUserName) {
+        const creatorField = featureLayerView.layer.editFieldsInfo?.creatorField.toLowerCase();
+        featureLayerView.filter = this.showMyReportsOnly && creatorField ? new this.FeatureFilter({
+          where: creatorField + "='" + loggedInUserName + "'"
+        }) : null;
+      }
   }
 
   /**

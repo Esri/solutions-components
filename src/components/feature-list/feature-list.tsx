@@ -17,7 +17,7 @@
 import { Component, Element, Prop, VNode, h, State, Event, Watch, EventEmitter, Method } from "@stencil/core";
 import { loadModules } from "../../utils/loadModules";
 import { PopupUtils } from "../../utils/popupUtils";
-import { IPopupUtils, ISortingInfo } from "../../utils/interfaces";
+import { IPopupUtils, IReportingOptions, ISortingInfo } from "../../utils/interfaces";
 import { getFeatureLayerView, getLayerOrTable, highlightFeatures } from "../../utils/mapViewUtils";
 import FeatureList_T9n from "../../assets/t9n/feature-list/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
@@ -101,6 +101,21 @@ export class FeatureList {
    * boolean: If true display's profile img on each feature item
    */
   @Prop() showUserImageInList?: boolean = false;
+
+  /**
+   * boolean: If true display's feature symbol on each feature item
+   */
+  @Prop() showFeatureSymbol?: boolean = false;
+
+  /**
+   * boolean: If true will consider the FeatureFilter applied on the layerview 
+   */
+  @Prop() applyLayerViewFilter?: boolean = false;
+
+  /**
+   * IReportingOptions: Key options for reporting
+   */
+  @Prop() reportingOptions: IReportingOptions;
   
   //--------------------------------------------------------------------------
   //
@@ -148,6 +163,12 @@ export class FeatureList {
   protected esriConfig: typeof import("esri/config");
 
   /**
+   * "esri/symbols/support/symbolUtils": https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-support-symbolUtils.html
+   * Symbol utils
+   */
+  protected symbolUtils: typeof import("esri/symbols/support/symbolUtils");
+
+  /**
    * IPopupUtils: To fetch the list label using popup titles
    */
   protected _popupUtils: IPopupUtils;
@@ -166,6 +187,22 @@ export class FeatureList {
    * HTMLCalcitePaginationElement: Calcite pagination element instance
    */
   protected _pagination: HTMLCalcitePaginationElement;
+
+  /**
+   * string[]: Valid field types for like
+   */
+  protected _validFieldTypes = ["small-integer", "integer", "big-integer", "single", "long"];
+
+  /**
+   * string: Abbrivated like count of the feature
+   */
+  protected _abbreviatedLikeCount: string;
+
+  /**
+   * boolean: When true configured like field is available in selected layer
+   */
+  protected _likeFieldAvailable = false;
+
   //--------------------------------------------------------------------------
   //
   //  Watch handlers
@@ -298,25 +335,27 @@ export class FeatureList {
   //
   //--------------------------------------------------------------------------
 
-    /**
+  /**
    * Load esri javascript api modules
    * @returns Promise resolving when function is done
    * @protected
    */
     protected async initModules(): Promise<void> {
-      const [Color, esriConfig] = await loadModules([
+      const [Color, esriConfig, symbolUtils] = await loadModules([
         "esri/Color",
         "esri/config",
+        "esri/symbols/support/symbolUtils"
       ]);
       this.Color = Color;
       this.esriConfig = esriConfig;
+      this.symbolUtils = symbolUtils;
     }
 
   /**
    * Return the where condition string considering the defined where clause and layer's definition expression 
    * @protected
    */
-  protected getWhereCondition(): string {
+  protected async getWhereCondition(): Promise<string> {
     //By Default load all the features
     let whereClause = '1=1';
     //if where clause is defined use it
@@ -326,6 +365,13 @@ export class FeatureList {
     //if layer has definitionExpression append it to the where clause
     if (this._selectedLayer?.definitionExpression) {
       whereClause = whereClause + ' AND ' + this._selectedLayer.definitionExpression;
+    }
+    // if layerview has any applied filter, use it
+    if (this.applyLayerViewFilter) {
+      const selectedLayerView = await getFeatureLayerView(this.mapView, this.selectedLayerId);
+      if (selectedLayerView?.filter?.where) {
+        whereClause = whereClause + ' AND ' + selectedLayerView.filter.where
+      }
     }
     return whereClause;
   }
@@ -339,8 +385,9 @@ export class FeatureList {
       void this._pagination?.goTo("start");
       this._isLoading = this.showInitialLoading;
       this._featureItems = await this.queryPage(0);
+      const whereCondition = await this.getWhereCondition();
       const query: any = {
-        where: this.getWhereCondition()
+        where: whereCondition
       };
       this._featuresCount = await this._selectedLayer.queryFeatureCount(query);
       this._isLoading = false;
@@ -432,12 +479,13 @@ export class FeatureList {
     const featureLayer = this._selectedLayer;
     const sortField: string = this.sortingInfo?.field ? this.sortingInfo.field : featureLayer.objectIdField;
     const sortOrder: 'asc' | 'desc' = this.sortingInfo?.order ? this.sortingInfo.order : 'desc';
+    const whereCondition = await this.getWhereCondition()
     const query: any = {
       start: page,
       num: this.pageSize,
       outFields: ["*"],
       returnGeometry: true,
-      where: this.getWhereCondition(),
+      where: whereCondition,
       outSpatialReference: this.mapView.spatialReference.toJSON()
     };
     //sort only when sort field and order is valid
@@ -456,10 +504,12 @@ export class FeatureList {
    */
   protected async createFeatureItem(featureSet: any): Promise<VNode[]> {
     const currentFeatures = featureSet?.features;
+    const showLikeCount = this.reportingOptions && this.reportingOptions[this.selectedLayerId].like;
     const items = currentFeatures.map(async (feature) => {
       const popupTitle = await this._popupUtils.getPopupTitle(feature, this.mapView.map);
       //fetch the feature creator user info to show the creator user image
       let userInfo;
+      let featureSymbol;
       if (this.showUserImageInList) {
         const creatorField = this._selectedLayer.editFieldsInfo?.creatorField.toLowerCase();
         // if feature's creator field is present then only we can fetch the information of user
@@ -467,11 +517,39 @@ export class FeatureList {
           userInfo = await this.getUserInformation(feature, creatorField);
         }
       }
-      return this.getFeatureItem(feature, popupTitle, userInfo);
+      if (this.showFeatureSymbol) {
+        featureSymbol = await this.getFeatureSymbol(feature);
+      }
+      if (showLikeCount) {
+        void this.getAbbreviatedLikeCount(feature);
+      }
+      return this.getFeatureItem(feature, popupTitle, featureSymbol, userInfo);
     });
     return Promise.all(items);
   }
 
+  /**
+   * Displays the abbrivated like count on the feature list
+   * @param feature feature of the layer
+   * @protected
+   */
+  protected getAbbreviatedLikeCount(feature: __esri.Graphic): void {
+    const selectedLayer = this._selectedLayer;
+    const likeField = this.reportingOptions[selectedLayer.id].likeField;
+    selectedLayer.fields.forEach((eachField: __esri.Field) => {
+      if (this._validFieldTypes.indexOf(eachField.type) > -1) {
+        if (eachField.name === likeField && this.reportingOptions[selectedLayer.id].like) {
+          this._likeFieldAvailable = true;
+          let likes = feature.attributes[likeField] || 0;
+          if (likes > 999) {
+            likes = likes > 999999 ? this._translations.millionsAbbreviation.replace("{{abbreviated_value}}", Math.floor(likes / 1000000).toString()) : this._translations.thousandsAbbreviation.replace("{{abbreviated_value}}", Math.floor(likes / 1000).toString());
+          }
+          this._abbreviatedLikeCount = likes;
+        }
+      }
+    });
+  }
+    
   /**
    * Get each feature item
    * @param selectedFeature Each individual feature instance to be listed
@@ -479,13 +557,15 @@ export class FeatureList {
    * @returns individual feature item to be rendered
    * @protected
    */
-  protected getFeatureItem(selectedFeature: __esri.Graphic, popupTitle: string, userInfo: any): VNode {
+  protected getFeatureItem(selectedFeature: __esri.Graphic, popupTitle: string, featureSymbol: HTMLDivElement, userInfo: any): VNode {
     //get the object id value of the feature
     const oId = selectedFeature.attributes[this._selectedLayer.objectIdField].toString();
     //use object id if popupTitle is null or undefined
     popupTitle = popupTitle ?? oId;
+    // get the formatted like count
+    const formattedLikeCount = Number(selectedFeature.attributes[this.reportingOptions?.[this._selectedLayer.id].likeField]).toLocaleString();
     const popupTitleClass = this.textSize === 'small' ? 'feature-list-popup-title-small' : 'feature-list-popup-title'
-    const popupTitlePaddingClass = this.showUserImageInList ? 'feature-list-popup-title-padding-reduced': 'feature-list-popup-title-padding'
+    const popupTitlePaddingClass = this.showUserImageInList || this.showFeatureSymbol ? 'feature-list-popup-title-padding-reduced': 'feature-list-popup-title-padding'
     return (
       <calcite-list-item
         onCalciteListItemSelect={(e) => { void this.featureClicked(e, selectedFeature) }}
@@ -500,13 +580,31 @@ export class FeatureList {
             scale="m"
             slot="content-start"
             thumbnail={userInfo?.userProfileUrl}
-            username={userInfo?.username} />
-        }
+            username={userInfo?.username} />}
+
+        {this.showFeatureSymbol &&
+          <div
+            class={'feature-symbol'}
+            ref={(el) => el && el.appendChild(featureSymbol)}
+            slot="content-start" />}
+
         <div
           class={`${popupTitleClass} ${popupTitlePaddingClass}`}
           slot="content-start">
           {popupTitle}
         </div>
+
+        {this._likeFieldAvailable &&
+          <div class={"like-container"}
+            id={oId.concat("like")}
+            slot="content-end">
+            <span>{this._abbreviatedLikeCount}</span><calcite-icon icon="thumbs-up" scale='s' />
+            <calcite-tooltip
+              reference-element={oId.concat("like")}>
+              {formattedLikeCount}
+            </calcite-tooltip>
+          </div>}
+
         <calcite-icon
           flipRtl
           icon="chevron-right"
@@ -539,6 +637,35 @@ export class FeatureList {
     }
     userInfo.userProfileUrl = userProfileUrl;
     return userInfo;
+  }
+
+  /**
+   * Creates a feature symbology
+   * @param feature Each individual feature
+   * @returns Feature symbology
+   * @protected
+   */
+  protected async getFeatureSymbol(feature: __esri.Graphic): Promise<HTMLDivElement> {
+    const nodeHtml = document.createElement('div');
+    await this.symbolUtils.getDisplayedSymbol(feature).then(async (symbol) => {
+      symbol && await this.symbolUtils?.renderPreviewHTML(symbol as __esri.symbolsSymbol, {
+        node: nodeHtml
+      });
+      if (nodeHtml.children?.length) {
+        const imgOrSvgElm = nodeHtml.children[0];
+        if (imgOrSvgElm) {
+          const height = Number(imgOrSvgElm.getAttribute('height'));
+          const width = Number(imgOrSvgElm.getAttribute('width'));
+          if (width > 30) {
+            imgOrSvgElm.setAttribute('width', '30');
+          } else if (width < 19) {
+            imgOrSvgElm.setAttribute('width', '20')
+          }
+          imgOrSvgElm.setAttribute('viewBox', `0 0 ${width} ${height}`);
+        }
+      }
+    });
+    return nodeHtml;
   }
 
   /**
