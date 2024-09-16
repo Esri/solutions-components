@@ -108,6 +108,11 @@ export class FeatureList {
   @Prop() showFeatureSymbol?: boolean = false;
 
   /**
+   * boolean: If true will consider the FeatureFilter applied on the layerview 
+   */
+  @Prop() applyLayerViewFilter?: boolean = false;
+
+  /**
    * IReportingOptions: Key options for reporting
    */
   @Prop() reportingOptions: IReportingOptions;
@@ -350,7 +355,7 @@ export class FeatureList {
    * Return the where condition string considering the defined where clause and layer's definition expression 
    * @protected
    */
-  protected getWhereCondition(): string {
+  protected async getWhereCondition(): Promise<string> {
     //By Default load all the features
     let whereClause = '1=1';
     //if where clause is defined use it
@@ -360,6 +365,13 @@ export class FeatureList {
     //if layer has definitionExpression append it to the where clause
     if (this._selectedLayer?.definitionExpression) {
       whereClause = whereClause + ' AND ' + this._selectedLayer.definitionExpression;
+    }
+    // if layerview has any applied filter, use it
+    if (this.applyLayerViewFilter) {
+      const selectedLayerView = await getFeatureLayerView(this.mapView, this.selectedLayerId);
+      if (selectedLayerView?.filter?.where) {
+        whereClause = whereClause + ' AND ' + selectedLayerView.filter.where
+      }
     }
     return whereClause;
   }
@@ -373,8 +385,9 @@ export class FeatureList {
       void this._pagination?.goTo("start");
       this._isLoading = this.showInitialLoading;
       this._featureItems = await this.queryPage(0);
+      const whereCondition = await this.getWhereCondition();
       const query: any = {
-        where: this.getWhereCondition()
+        where: whereCondition
       };
       this._featuresCount = await this._selectedLayer.queryFeatureCount(query);
       this._isLoading = false;
@@ -466,12 +479,13 @@ export class FeatureList {
     const featureLayer = this._selectedLayer;
     const sortField: string = this.sortingInfo?.field ? this.sortingInfo.field : featureLayer.objectIdField;
     const sortOrder: 'asc' | 'desc' = this.sortingInfo?.order ? this.sortingInfo.order : 'desc';
+    const whereCondition = await this.getWhereCondition()
     const query: any = {
       start: page,
       num: this.pageSize,
       outFields: ["*"],
       returnGeometry: true,
-      where: this.getWhereCondition(),
+      where: whereCondition,
       outSpatialReference: this.mapView.spatialReference.toJSON()
     };
     //sort only when sort field and order is valid

@@ -180,6 +180,11 @@ export class CrowdsourceReporter {
   @Prop() showFeatureSymbol: boolean = false;
 
   /**
+   * boolean: To show only those features which are created by the logged in user
+   */
+  @Prop() showMyReportsOnly?: boolean = false;
+
+  /**
    * theme: "light" | "dark" theme to be used
    */
   @Prop() theme: theme = "light";
@@ -381,6 +386,12 @@ export class CrowdsourceReporter {
    * esri/core/reactiveUtils: https://developers.arcgis.com/javascript/latest/api-reference/esri-core-reactiveUtils.html
    */
   protected reactiveUtils: typeof import("esri/core/reactiveUtils");
+
+  /**
+   * "esri/layers/support/FeatureFilter": https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-support-FeatureFilter.html
+   * Esri FeatureFilter
+   */
+  protected FeatureFilter: typeof import("esri/layers/support/FeatureFilter");
 
   /**
    * __esri.Graphic: The selected feature
@@ -614,10 +625,12 @@ export class CrowdsourceReporter {
    * @protected
    */
   protected async _initModules(): Promise<void> {
-    const [reactiveUtils] = await loadModules([
-      "esri/core/reactiveUtils"
+    const [reactiveUtils, FeatureFilter] = await loadModules([
+      "esri/core/reactiveUtils",
+      "esri/layers/support/FeatureFilter"
     ]);
     this.reactiveUtils = reactiveUtils;
+    this.FeatureFilter = FeatureFilter;
   }
 
   /**
@@ -817,6 +830,7 @@ export class CrowdsourceReporter {
           full-height
           full-width>
           <layer-list
+            applyLayerViewFilter={this.showMyReportsOnly}
             class="height-full"
             layers={this._editableLayerIds?.length > 0 ? this._editableLayerIds : this._layers}
             mapView={this.mapView}
@@ -1300,6 +1314,7 @@ export class CrowdsourceReporter {
           </calcite-button>}
         <calcite-panel full-height>
           {<feature-list
+            applyLayerViewFilter={this.showMyReportsOnly}
             class="height-full"
             highlightOnHover
             mapView={this.mapView}
@@ -1633,6 +1648,8 @@ export class CrowdsourceReporter {
    */
   protected async setMapView(): Promise<void> {
     await this.getLayersToShowInList();
+    // filter/update the feature(s) if any filter/condition is already applied
+    await this._updateFeatures();
     // if only one valid layer is present then directly render features list
     if (this._editableLayerIds?.length === 1) {
       await this.renderFeaturesList();
@@ -1797,6 +1814,37 @@ export class CrowdsourceReporter {
       }
       return prev;
     }, []);
+  }
+
+  /**
+   * updates the features for layer/feature list
+   * @protected
+   */
+  protected async _updateFeatures(): Promise<void> {
+    for (const eachLayerId of this._editableLayerIds) {
+      const featureLayerView = await getFeatureLayerView(this.mapView, eachLayerId);
+      // In case of show my features add filter for Featurelayerview
+      await this._showMyFeaturesOnly(featureLayerView);
+      const floorField = featureLayerView.layer?.floorInfo?.floorField;
+      if (floorField && this.floorLevel) {
+        // Update the layer's defination as per selected floor level from map for all editable layers
+        this._updateFloorDefinitionExpression(featureLayerView.layer);
+      }
+    }
+  }
+
+  /**
+   * Show only loggedIn user's features
+   * @protected
+   */
+  protected async _showMyFeaturesOnly(featureLayerView: __esri.FeatureLayerView): Promise<void> {
+      const loggedInUserName = (this.mapView.map as any).portalItem.portal?.credential?.userId;
+      if (loggedInUserName) {
+        const creatorField = featureLayerView.layer.editFieldsInfo?.creatorField.toLowerCase();
+        featureLayerView.filter = this.showMyReportsOnly && creatorField ? new this.FeatureFilter({
+          where: creatorField + "='" + loggedInUserName + "'"
+        }) : null;
+      }
   }
 
   /**

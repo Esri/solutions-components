@@ -15,7 +15,7 @@
  */
 
 import { Component, Element, Prop, VNode, h, State, Fragment, Event, EventEmitter, Method } from "@stencil/core";
-import { getAllLayers, getMapLayerHash } from "../../utils/mapViewUtils";
+import { getAllLayers, getFeatureLayerView, getMapLayerHash } from "../../utils/mapViewUtils";
 import LayerList_T9n from "../../assets/t9n/layer-list/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { formatNumber } from "../../utils/languageUtil"
@@ -70,6 +70,11 @@ export class LayerList {
    * boolean: If true display's arrow icon on each layer item
    */
   @Prop() showNextIcon?: boolean = false;
+
+  /**
+   * boolean: If true will consider the FeatureFilter applied on the layerview 
+   */
+  @Prop() applyLayerViewFilter?: boolean = false;
 
   //--------------------------------------------------------------------------
   //
@@ -222,10 +227,20 @@ export class LayerList {
     this._layerItemsHash = await getMapLayerHash(this.mapView, true) as ILayerItemsHash;
     const allMapLayers = await getAllLayers(this.mapView);
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
-    allMapLayers.forEach(async (eachLayer: __esri.FeatureLayer) => {
+    for (const eachLayer of allMapLayers as __esri.FeatureLayer[]) {
       if (eachLayer?.type === "feature") {
         if (this.showFeatureCount) {
           const q = eachLayer.createQuery();
+          //if layer has definitionExpression append it to the where clause
+          if (eachLayer?.definitionExpression) {
+            q.where = q.where + ' AND ' + eachLayer.definitionExpression;
+          }
+          if (this.applyLayerViewFilter) {
+            const featureLayerView = await getFeatureLayerView(this.mapView, eachLayer.id);
+            if (featureLayerView?.filter?.where) {
+              q.where = q.where ? q.where + ' AND ' + featureLayerView.filter.where : featureLayerView.filter.where;
+            }
+          }
           const result = eachLayer.queryFeatureCount(q);
           def.push(result);
           void result.then(async (resCount) => {
@@ -238,7 +253,7 @@ export class LayerList {
           });
         }
       }
-    });
+    }
     await Promise.all(def).then(() => {
       const editableLayerIds = this.getLayersToBeShownInList(this._layerItemsHash);
       this._mapLayerIds = editableLayerIds.reverse();

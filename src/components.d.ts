@@ -437,6 +437,14 @@ export namespace Components {
          */
         "showComments": boolean;
         /**
+          * boolean: When true the feature symbology of the feature will shown in the features list
+         */
+        "showFeatureSymbol": boolean;
+        /**
+          * boolean: To show only those features which are created by the logged in user
+         */
+        "showMyReportsOnly"?: boolean;
+        /**
           * boolean: When true the profile image of the comment creator will be shown in the comments list
          */
         "showUserImageInCommentsList": boolean;
@@ -540,6 +548,10 @@ export namespace Components {
     }
     interface FeatureList {
         /**
+          * boolean: If true will consider the FeatureFilter applied on the layerview
+         */
+        "applyLayerViewFilter"?: boolean;
+        /**
           * boolean: Highlight feature on map optional (default false) boolean to indicate if we should highlight when hover on Feature in list
          */
         "highlightOnHover"?: boolean;
@@ -565,6 +577,10 @@ export namespace Components {
          */
         "refresh": () => Promise<void>;
         /**
+          * IReportingOptions: Key options for reporting
+         */
+        "reportingOptions": IReportingOptions;
+        /**
           * string: Layer id of the feature layer to show the list
          */
         "selectedLayerId": string;
@@ -572,6 +588,10 @@ export namespace Components {
           * boolean: If true will show error msg when features are not present
          */
         "showErrorWhenNoFeatures"?: boolean;
+        /**
+          * boolean: If true display's feature symbol on each feature item
+         */
+        "showFeatureSymbol"?: boolean;
         /**
           * boolean: Show initial loading indicator when creating list
          */
@@ -712,6 +732,10 @@ export namespace Components {
         "value": any;
     }
     interface LayerList {
+        /**
+          * boolean: If true will consider the FeatureFilter applied on the layerview
+         */
+        "applyLayerViewFilter"?: boolean;
         /**
           * string[]: If passed will show only these layers in the list if they are present in map and are editable
          */
@@ -2978,6 +3002,14 @@ declare namespace LocalJSX {
          */
         "showComments"?: boolean;
         /**
+          * boolean: When true the feature symbology of the feature will shown in the features list
+         */
+        "showFeatureSymbol"?: boolean;
+        /**
+          * boolean: To show only those features which are created by the logged in user
+         */
+        "showMyReportsOnly"?: boolean;
+        /**
           * boolean: When true the profile image of the comment creator will be shown in the comments list
          */
         "showUserImageInCommentsList"?: boolean;
@@ -3096,6 +3128,10 @@ declare namespace LocalJSX {
     }
     interface FeatureList {
         /**
+          * boolean: If true will consider the FeatureFilter applied on the layerview
+         */
+        "applyLayerViewFilter"?: boolean;
+        /**
           * boolean: Highlight feature on map optional (default false) boolean to indicate if we should highlight when hover on Feature in list
          */
         "highlightOnHover"?: boolean;
@@ -3120,6 +3156,10 @@ declare namespace LocalJSX {
          */
         "pageSize"?: number;
         /**
+          * IReportingOptions: Key options for reporting
+         */
+        "reportingOptions"?: IReportingOptions;
+        /**
           * string: Layer id of the feature layer to show the list
          */
         "selectedLayerId"?: string;
@@ -3127,6 +3167,10 @@ declare namespace LocalJSX {
           * boolean: If true will show error msg when features are not present
          */
         "showErrorWhenNoFeatures"?: boolean;
+        /**
+          * boolean: If true display's feature symbol on each feature item
+         */
+        "showFeatureSymbol"?: boolean;
         /**
           * boolean: Show initial loading indicator when creating list
          */
@@ -3241,6 +3285,10 @@ declare namespace LocalJSX {
         "value"?: any;
     }
     interface LayerList {
+        /**
+          * boolean: If true will consider the FeatureFilter applied on the layerview
+         */
+        "applyLayerViewFilter"?: boolean;
         /**
           * string[]: If passed will show only these layers in the list if they are present in map and are editable
          */
