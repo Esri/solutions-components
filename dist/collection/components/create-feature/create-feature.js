@@ -335,20 +335,21 @@ export class CreateFeature {
             this.el.appendChild(this._container);
         }
         //Add handle to watch if attachments are added/edited
-        const attachmentHandle = this.reactiveUtils.watch(() => this._editor.viewModel.state, (state) => {
-            console.log('create-feature attachmentHandle');
-            if (state === 'adding-attachment' || state === 'editing-attachment') {
-                this._addingAttachment = true;
-                this.editingAttachment.emit(true);
-            }
-            else {
-                if (this._addingAttachment) {
-                    this.editingAttachment.emit(false);
-                    this._addingAttachment = false;
-                }
-            }
-        });
-        this._editor.viewModel.addHandles(attachmentHandle);
+        // const attachmentHandle = this.reactiveUtils.watch(
+        //   () =>  this._editor.viewModel.state,
+        //   (state) => {
+        //     console.log('create-feature attachmentHandle')
+        //     if (state === 'adding-attachment' || state === 'editing-attachment') {
+        //       this._addingAttachment = true;
+        //       this.editingAttachment.emit(true);
+        //     } else {
+        //       if (this._addingAttachment) {
+        //         this.editingAttachment.emit(false);
+        //         this._addingAttachment = false;
+        //       }
+        //     }
+        //   });
+        // this._editor.viewModel.addHandles(attachmentHandle);
         //Add handle to watch featureTemplatesViewModel ready state and then start the creation
         const handle = this.reactiveUtils.watch(() => this._editor.viewModel.featureTemplatesViewModel.state, (state) => {
             console.log('create-feature featureTemplatesViewModel.state');
@@ -573,15 +574,15 @@ export class CreateFeature {
         if (!this.customizeSubmit) {
             return;
         }
-        await this.timeout(700);
+        //await this.timeout(700);
         //hides the header and footer on the featureForm
-        this.el.querySelector('.esri-editor')?.querySelectorAll('calcite-flow-item')?.forEach((flowItem) => {
-            const article = flowItem.shadowRoot?.querySelector('calcite-panel')?.shadowRoot?.querySelector('article');
-            //hide the header
-            article?.querySelector('header')?.setAttribute('style', 'display: none');
-            //hide the footer
-            article?.querySelector('footer')?.setAttribute('style', 'display: none');
-        });
+        // this.el.querySelector('.esri-editor')?.querySelectorAll('calcite-flow-item')?.forEach((flowItem) => {
+        //   const article = flowItem.shadowRoot?.querySelector('calcite-panel')?.shadowRoot?.querySelector('article');
+        //   //hide the header
+        //   article?.querySelector('header')?.setAttribute('style', 'display: none');
+        //   //hide the footer
+        //   article?.querySelector('footer')?.setAttribute('style', 'display: none');
+        // });
     }
     /**
      * On creation of feature emit the event that the feature is created
@@ -589,6 +590,7 @@ export class CreateFeature {
      * @protected
      */
     async submitted(evt) {
+        console.log("===================submitted===========================");
         //return if any attribute is invalid , focus will be shifted to the invalid attribute in feature form
         if (evt.invalid.length) {
             this._isSubmitBtnClicked = false;
