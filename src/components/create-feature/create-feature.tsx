@@ -481,7 +481,7 @@ export class CreateFeature {
    */
   protected async startCreate(): Promise<void> {
     console.log('create-feature startCreate')
-    return new Promise<any>((resolve, reject) => {
+    return new Promise<any>((resolve) => {
       if (this._editor.viewModel.featureTemplatesViewModel.items?.length) {
         const items: __esri.TemplateItem[] = this._editor.viewModel.featureTemplatesViewModel.items[0].get("items");
         //once the feature template is selected handle the event for formSubmit and sketch complete
@@ -490,29 +490,29 @@ export class CreateFeature {
     console.log('create-feature select')
 
           // this.progressStatus.emit(0.75);
-          setTimeout(() => {
-            //on form submit
-            this._editor.viewModel.featureFormViewModel.on('submit', this.submitted.bind(this));
-            //hides the header and footer elements in editor widget
-            this.hideEditorsElements().then(() => {
-              resolve({});
-            }, e => reject(e));
-          }, 700);
+          // setTimeout(() => {
+          //   //on form submit
+          //   this._editor.viewModel.featureFormViewModel.on('submit', this.submitted.bind(this));
+          //   //hides the header and footer elements in editor widget
+          //   this.hideEditorsElements().then(() => {
+          //     resolve({});
+          //   }, e => reject(e));
+          // }, 700);
         });
         //if only one feature template then directly start geometry creation for that
         //else allow feature template selection to user
         if (items.length === 1) {
           this._editor.viewModel.featureTemplatesViewModel.select(items[0]);
         }
-    //     const resolvePromise = items.length > 1;
+         const resolvePromise = items.length > 1;
     //     this.hideEditorsElements().then(() => {
     // console.log('create-feature hideEditorsElements')
 
-    //       if (resolvePromise) {
-    //         resolve({});
-    //       }
+          if (resolvePromise) {
+            resolve({});
+          }
     //     }, e => resolvePromise && reject(e));
-    resolve({});
+    //resolve({});
       }
     });
   }
