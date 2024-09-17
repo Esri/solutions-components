@@ -460,17 +460,17 @@ export class CreateFeature {
     // this._editor.viewModel.addHandles(attachmentHandle);
 
     //Add handle to watch featureTemplatesViewModel ready state and then start the creation
-    const handle = this.reactiveUtils.watch(
-      () =>  this._editor.viewModel.featureTemplatesViewModel.state,
-      (state) => {
-        console.log('create-feature featureTemplatesViewModel.state')
+    // const handle = this.reactiveUtils.watch(
+    //   () =>  this._editor.viewModel.featureTemplatesViewModel.state,
+    //   (state) => {
+    //     console.log('create-feature featureTemplatesViewModel.state')
 
-        if(state === 'ready') {
-          this.progressStatus.emit(0.5);
-          this._editorLoading = true;
-        }
-      });
-    this._editor.viewModel.addHandles(handle);
+    //     if(state === 'ready') {
+    //       this.progressStatus.emit(0.5);
+    //       this._editorLoading = true;
+    //     }
+    //   });
+    // this._editor.viewModel.addHandles(handle);
 
     //Add handle to watch featureFormViewModel ready state
     const formHandle = this.reactiveUtils.watch(
