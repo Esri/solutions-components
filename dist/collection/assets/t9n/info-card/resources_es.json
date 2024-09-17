@@ -1,0 +1,10 @@
+{
+  "fetchingData": "Obteniendo datos",
+  "edit": "Editar",
+  "enableEditing": "La capacidad de actualización debe estar habilitada en la capa.",
+  "editDisabled": "Edición deshabilitada",
+  "next": "Siguiente",
+  "back": "Atrás",
+  "indexOfTotal": "{{index}} de {{total}}",
+  "delete": "Eliminar"
+}

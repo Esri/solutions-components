@@ -1,0 +1,30 @@
+{
+  "mapShortcuts": {
+    "arrowKeys": "Tecles de direcció",
+    "nudge": "Desplaça a l'esquerra, la dreta, amunt o avall",
+    "N": "Ajusta perquè apunti al nord",
+    "A": "Gira cap a l'esquerra",
+    "D": "Gira cap a la dreta",
+    "plus": "Apropa el centre",
+    "minus": "Allunya el centre"
+  },
+  "sceneShortcuts": {
+    "P": "Mou la càmera perquè apunti en sentit perpendicular a les dades que es mostren al ampa",
+    "N": "Ajusta el mapa perquè apunti al nord",
+    "W": "Inclina la càmera cap amunt",
+    "A": "Gira la càmera cap a l'esquerra",
+    "D": "Gira la càmera cap a la dreta",
+    "S": "Inclina la càmera cap avall",
+    "globalCommands": {
+      "J": "Mou cap avall més a prop del mapa",
+      "U": "Mou cap amunt per sobre del mapa"
+    }
+  },
+  "generalShortcuts": {
+    "menu": "menú d'accessos directes",
+    "shortcut": "Accés directe del teclat",
+    "action": "Acció",
+    "title": "Seleccioneu el mapa",
+    "label": "Dreceres de teclat"
+  }
+}

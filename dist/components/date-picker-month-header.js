@@ -1,0 +1,239 @@
+/*!
+ * Copyright 2022 Esri
+ * Licensed under the Apache License, Version 2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
+ */
+import { proxyCustomElement, HTMLElement, createEvent, h, Fragment } from '@stencil/core/internal/client';
+import { e as getOrder, b as dateFromRange, n as nextMonth, p as prevMonth, f as formatCalendarYear, h as parseCalendarYear } from './date.js';
+import { c as closestElementCrossShadowBoundary } from './dom.js';
+import { i as isActivationKey } from './key.js';
+import { n as numberStringFormatter } from './locale2.js';
+import { H as Heading } from './Heading.js';
+import { g as getIconScale } from './component.js';
+import { d as defineCustomElement$1 } from './icon.js';
+
+/*!
+ * All material copyright ESRI, All Rights Reserved, unless otherwise specified.
+ * See https://github.com/Esri/calcite-design-system/blob/dev/LICENSE.md for details.
+ * v2.12.0
+ */
+const CSS = {
+    header: "header",
+    month: "month",
+    chevron: "chevron",
+    suffix: "suffix",
+    yearSuffix: "year--suffix",
+    yearWrap: "year-wrap",
+    textReverse: "text--reverse",
+};
+const ICON = {
+    chevronLeft: "chevron-left",
+    chevronRight: "chevron-right",
+};
+
+const datePickerMonthHeaderCss = ":host{display:block}.header{display:flex;justify-content:space-between;padding-block:0px;padding-inline:0.25rem}:host([scale=s]) .text{margin-block:0.5rem;font-size:var(--calcite-font-size--1);line-height:1rem}:host([scale=s]) .chevron{block-size:2.25rem}:host([scale=m]) .text{margin-block:0.75rem;font-size:var(--calcite-font-size-0);line-height:1.25rem}:host([scale=m]) .chevron{block-size:3rem}:host([scale=l]) .text{margin-block:1rem;font-size:var(--calcite-font-size-1);line-height:1.5rem}:host([scale=l]) .chevron{block-size:3.5rem}.chevron{margin-inline:-0.25rem;box-sizing:content-box;display:flex;flex-grow:0;cursor:pointer;align-items:center;justify-content:center;border-style:none;background-color:var(--calcite-color-foreground-1);padding-inline:0.25rem;color:var(--calcite-color-text-3);outline:2px solid transparent;outline-offset:2px;outline-color:transparent;transition:background-color, block-size, border-color, box-shadow, color, inset-block-end, inset-block-start, inset-inline-end, inset-inline-start inset-size, opacity, outline-color, transform var(--calcite-animation-timing) ease-in-out 0s, outline 0s, outline-offset 0s;inline-size:14.2857142857%}.chevron:focus{outline:2px solid var(--calcite-ui-focus-color, var(--calcite-color-brand));outline-offset:calc(\n            -2px *\n            calc(\n              1 -\n              2 * clamp(\n                0,\n                var(--calcite-offset-invert-focus),\n                1\n              )\n            )\n          )}.chevron:hover,.chevron:focus{background-color:var(--calcite-color-foreground-2);fill:var(--calcite-color-text-1);color:var(--calcite-color-text-1)}.chevron:active{background-color:var(--calcite-color-foreground-3)}.chevron[aria-disabled=true]{pointer-events:none;opacity:0}.text{margin-block:auto;display:flex;inline-size:100%;flex:1 1 auto;align-items:center;justify-content:center;text-align:center;line-height:1}.text--reverse{flex-direction:row-reverse}.month,.year,.suffix{margin-inline:0.25rem;margin-block:auto;display:inline-block;background-color:var(--calcite-color-foreground-1);font-weight:var(--calcite-font-weight-medium);line-height:1.25;color:var(--calcite-color-text-1);font-size:inherit}.year{position:relative;inline-size:2.5rem;border-style:none;background-color:transparent;text-align:center;font-family:inherit;outline-color:transparent}.year:hover{transition-duration:100ms;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-property:outline-color;outline:2px solid var(--calcite-color-border-2);outline-offset:2px}.year:focus{outline:2px solid var(--calcite-ui-focus-color, var(--calcite-color-brand));outline-offset:calc(\n            2px *\n            calc(\n              1 -\n              2 * clamp(\n                0,\n                var(--calcite-offset-invert-focus),\n                1\n              )\n            )\n          )}.year--suffix{text-align:start}.year-wrap{position:relative}.suffix{inset-block-start:0px;white-space:nowrap;text-align:start;inset-inline-start:0}:host([hidden]){display:none}[hidden]{display:none}";
+const CalciteDatePickerMonthHeaderStyle0 = datePickerMonthHeaderCss;
+
+const DatePickerMonthHeader = /*@__PURE__*/ proxyCustomElement(class DatePickerMonthHeader extends HTMLElement {
+    constructor() {
+        super();
+        this.__registerHost();
+        this.__attachShadow();
+        this.calciteInternalDatePickerSelect = createEvent(this, "calciteInternalDatePickerSelect", 6);
+        //--------------------------------------------------------------------------
+        //
+        //  Private Methods
+        //
+        //--------------------------------------------------------------------------
+        /**
+         * Increment year on UP/DOWN keys
+         *
+         * @param event
+         */
+        this.onYearKey = (event) => {
+            const localizedYear = this.parseCalendarYear(event.target.value);
+            switch (event.key) {
+                case "ArrowDown":
+                    event.preventDefault();
+                    this.setYear({ localizedYear, offset: -1 });
+                    break;
+                case "ArrowUp":
+                    event.preventDefault();
+                    this.setYear({ localizedYear, offset: 1 });
+                    break;
+            }
+        };
+        this.onYearChange = (event) => {
+            this.setYear({
+                localizedYear: this.parseCalendarYear(event.target.value),
+            });
+        };
+        this.onYearInput = (event) => {
+            this.setYear({
+                localizedYear: this.parseCalendarYear(event.target.value),
+                commit: false,
+            });
+        };
+        this.prevMonthClick = (event) => {
+            this.handleArrowClick(event, this.prevMonthDate);
+        };
+        this.prevMonthKeydown = (event) => {
+            if (isActivationKey(event.key)) {
+                this.prevMonthClick(event);
+            }
+        };
+        this.nextMonthClick = (event) => {
+            this.handleArrowClick(event, this.nextMonthDate);
+        };
+        this.nextMonthKeydown = (event) => {
+            if (isActivationKey(event.key)) {
+                this.nextMonthClick(event);
+            }
+        };
+        /*
+         * Update active month on clicks of left/right arrows
+         */
+        this.handleArrowClick = (event, date) => {
+            event.preventDefault();
+            this.calciteInternalDatePickerSelect.emit(date);
+        };
+        this.selectedDate = undefined;
+        this.activeDate = undefined;
+        this.headingLevel = undefined;
+        this.min = undefined;
+        this.max = undefined;
+        this.scale = undefined;
+        this.localeData = undefined;
+        this.messages = undefined;
+        this.nextMonthDate = undefined;
+        this.prevMonthDate = undefined;
+    }
+    //--------------------------------------------------------------------------
+    //
+    //  Lifecycle
+    //
+    //--------------------------------------------------------------------------
+    componentWillLoad() {
+        this.parentDatePickerEl = closestElementCrossShadowBoundary(this.el, "calcite-date-picker");
+    }
+    connectedCallback() {
+        this.setNextPrevMonthDates();
+    }
+    render() {
+        return h("div", { key: '6e1476a12ba6ea69e21a6e2ad307ed524bdf3841', class: CSS.header }, this.renderContent());
+    }
+    renderContent() {
+        const { messages, localeData, activeDate } = this;
+        if (!activeDate || !localeData) {
+            return null;
+        }
+        if (this.parentDatePickerEl) {
+            const { numberingSystem, lang: locale } = this.parentDatePickerEl;
+            numberStringFormatter.numberFormatOptions = {
+                useGrouping: false,
+                ...(numberingSystem && { numberingSystem }),
+                ...(locale && { locale }),
+            };
+        }
+        const activeMonth = activeDate.getMonth();
+        const { months, unitOrder } = localeData;
+        const localizedMonth = (months.wide || months.narrow || months.abbreviated)[activeMonth];
+        const localizedYear = this.formatCalendarYear(activeDate.getFullYear());
+        const order = getOrder(unitOrder);
+        const reverse = order.indexOf("y") < order.indexOf("m");
+        const suffix = localeData.year?.suffix;
+        return (h(Fragment, null, h("a", { "aria-disabled": `${this.prevMonthDate.getMonth() === activeMonth}`, "aria-label": messages.prevMonth, class: CSS.chevron, href: "#", onClick: this.prevMonthClick, onKeyDown: this.prevMonthKeydown, role: "button", tabindex: this.prevMonthDate.getMonth() === activeMonth ? -1 : 0 }, h("calcite-icon", { "flip-rtl": true, icon: ICON.chevronLeft, scale: getIconScale(this.scale) })), h("div", { class: { text: true, [CSS.textReverse]: reverse } }, h(Heading, { class: CSS.month, level: this.headingLevel }, localizedMonth), h("span", { class: CSS.yearWrap }, h("input", { "aria-label": messages.year, class: {
+                year: true,
+                [CSS.yearSuffix]: !!suffix,
+            }, inputmode: "numeric", maxlength: "4", minlength: "1", onChange: this.onYearChange, onInput: this.onYearInput, onKeyDown: this.onYearKey, pattern: "\\d*", ref: (el) => (this.yearInput = el), type: "text", value: localizedYear }), suffix && h("span", { class: CSS.suffix }, suffix))), h("a", { "aria-disabled": `${this.nextMonthDate.getMonth() === activeMonth}`, "aria-label": messages.nextMonth, class: CSS.chevron, href: "#", onClick: this.nextMonthClick, onKeyDown: this.nextMonthKeydown, role: "button", tabindex: this.nextMonthDate.getMonth() === activeMonth ? -1 : 0 }, h("calcite-icon", { "flip-rtl": true, icon: ICON.chevronRight, scale: getIconScale(this.scale) }))));
+    }
+    setNextPrevMonthDates() {
+        if (!this.activeDate) {
+            return;
+        }
+        this.nextMonthDate = dateFromRange(nextMonth(this.activeDate), this.min, this.max);
+        this.prevMonthDate = dateFromRange(prevMonth(this.activeDate), this.min, this.max);
+    }
+    formatCalendarYear(year) {
+        return numberStringFormatter.localize(`${formatCalendarYear(year, this.localeData)}`);
+    }
+    parseCalendarYear(year) {
+        return numberStringFormatter.localize(`${parseCalendarYear(Number(numberStringFormatter.delocalize(year)), this.localeData)}`);
+    }
+    getInRangeDate({ localizedYear, offset = 0, }) {
+        const { min, max, activeDate } = this;
+        const parsedYear = Number(numberStringFormatter.delocalize(localizedYear));
+        const length = parsedYear.toString().length;
+        const year = isNaN(parsedYear) ? false : parsedYear + offset;
+        const inRange = year && (!min || min.getFullYear() <= year) && (!max || max.getFullYear() >= year);
+        // if you've supplied a year and it's in range
+        if (year && inRange && length === localizedYear.length) {
+            const nextDate = new Date(activeDate);
+            nextDate.setFullYear(year);
+            return dateFromRange(nextDate, min, max);
+        }
+    }
+    /**
+     * Parse localized year string from input,
+     * set to active if in range
+     *
+     * @param root0
+     * @param root0.localizedYear
+     * @param root0.commit
+     * @param root0.offset
+     */
+    setYear({ localizedYear, commit = true, offset = 0, }) {
+        const { yearInput, activeDate } = this;
+        const inRangeDate = this.getInRangeDate({ localizedYear, offset });
+        // if you've supplied a year and it's in range, update active date
+        if (inRangeDate) {
+            this.calciteInternalDatePickerSelect.emit(inRangeDate);
+        }
+        if (commit) {
+            yearInput.value = this.formatCalendarYear((inRangeDate || activeDate).getFullYear());
+        }
+    }
+    get el() { return this; }
+    static get watchers() { return {
+        "min": ["setNextPrevMonthDates"],
+        "max": ["setNextPrevMonthDates"],
+        "activeDate": ["setNextPrevMonthDates"]
+    }; }
+    static get style() { return CalciteDatePickerMonthHeaderStyle0; }
+}, [1, "calcite-date-picker-month-header", {
+        "selectedDate": [16],
+        "activeDate": [16],
+        "headingLevel": [2, "heading-level"],
+        "min": [16],
+        "max": [16],
+        "scale": [513],
+        "localeData": [16],
+        "messages": [1040],
+        "nextMonthDate": [32],
+        "prevMonthDate": [32]
+    }, undefined, {
+        "min": ["setNextPrevMonthDates"],
+        "max": ["setNextPrevMonthDates"],
+        "activeDate": ["setNextPrevMonthDates"]
+    }]);
+function defineCustomElement() {
+    if (typeof customElements === "undefined") {
+        return;
+    }
+    const components = ["calcite-date-picker-month-header", "calcite-icon"];
+    components.forEach(tagName => { switch (tagName) {
+        case "calcite-date-picker-month-header":
+            if (!customElements.get(tagName)) {
+                customElements.define(tagName, DatePickerMonthHeader);
+            }
+            break;
+        case "calcite-icon":
+            if (!customElements.get(tagName)) {
+                defineCustomElement$1();
+            }
+            break;
+    } });
+}
+defineCustomElement();
+
+export { DatePickerMonthHeader as D, defineCustomElement as d };

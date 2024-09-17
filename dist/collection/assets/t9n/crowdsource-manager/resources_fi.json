@@ -1,0 +1,8 @@
+{
+  "open": "Avaa",
+  "close": "Sulje",
+  "information": "Tiedot",
+  "expandPopup": "Laajenna ponnahdusikkuna",
+  "collapsePopup": "Pienennä ponnahdusikkuna",
+  "view": "Näkymä ({{n}})"
+}

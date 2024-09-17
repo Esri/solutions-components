@@ -1,0 +1,9 @@
+{
+  "add": "Afegeix",
+  "remove": "Elimina",
+  "featuresAdded": "Entitats afegides: {{n}}",
+  "featuresRemoved": "Entitats eliminades: {{n}}",
+  "totalSelected": "Total seleccionat: {{n}}",
+  "inputLayer": "Capa d'entrada",
+  "inputLayerTip": "Trieu la capa d'entrada les entitats seleccionades de la qual voleu revisar. Actualitzeu les entitats seleccionades d'una capa d'entitats cada vegada."
+}

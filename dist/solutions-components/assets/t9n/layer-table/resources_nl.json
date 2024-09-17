@@ -1,0 +1,19 @@
+{
+  "clearSelection": "Selectie wissen",
+  "exportCSV": "Exporteren naar CSV",
+  "filter": "Filter: {{title}}",
+  "filters": "Filters",
+  "hideField": "Veld verbergen",
+  "more": "Meer",
+  "selectAll": "Alles selecteren",
+  "share": "Delen",
+  "showSelected": "Selectie weergeven",
+  "switchSelected": "Selectie wisselen",
+  "zoom": "Zoomen",
+  "fetchingData": "Bezig met ophalen gegevens",
+  "refresh": "Vernieuwen",
+  "showAll": "Alles weergeven",
+  "recordsSelected": "Totaal: {{total}} | Selectie: {{selected}}",
+  "moreOptions": "Meer tabelopties",
+  "showHideColumns": "Kolommen weergeven/verbergen"
+}

@@ -1,0 +1,9 @@
+{
+  "add": "Adicionar",
+  "remove": "Remover",
+  "featuresAdded": "Feições adicionadas: {{n}}",
+  "featuresRemoved": "Feições removidas: {{n}}",
+  "totalSelected": "Total selecionado: {{n}}",
+  "inputLayer": "Camada de entrada",
+  "inputLayerTip": "Escolha a camada de entrada para revisar as feições selecionadas, atualize as feições selecionadas de uma camada de entrada por vez."
+}

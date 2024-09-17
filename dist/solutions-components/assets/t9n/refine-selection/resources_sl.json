@@ -1,0 +1,9 @@
+{
+  "add": "Dodaj",
+  "remove": "Odstrani",
+  "featuresAdded": "Dodani geoobjekti: {{n}}",
+  "featuresRemoved": "Odstranjeni geoobjekti: {{n}}",
+  "totalSelected": "Skupaj izbranih: {{n}}",
+  "inputLayer": "Vhodni sloj",
+  "inputLayerTip": "Izberite geobjektni sloj za pregled izbranih funkcij, posodobite izbrane funkcije iz enega geobjekta naenkrat."
+}

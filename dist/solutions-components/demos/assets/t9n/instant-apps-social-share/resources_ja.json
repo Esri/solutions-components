@@ -1,0 +1,38 @@
+{
+  "share": {
+    "label": "共有"
+  },
+  "embed": {
+    "label": "埋め込み",
+    "copy": "コピー",
+    "width": "幅",
+    "height": "高さ"
+  },
+  "info": {
+    "label": "ご存じですか？",
+    "tooltip": "コピー リンクに、現在のマップ ビュー、表示可能なレイヤー、開いているポップアップが保持されます。 このオプションを使用し、アプリに表示されるものを共有します。"
+  },
+  "success": {
+    "label": "成功です。",
+    "url": "アプリ URL がクリップボードにコピーされました。",
+    "embed": "埋め込みコードがクリップボードにコピーされました。"
+  },
+  "options": {
+    "link": {
+      "label": "リンクのコピー",
+      "tooltip": "クリックすると、クリップボードにリンクをコピーします"
+    },
+    "facebook": {
+      "label": "Facebook",
+      "tooltip": "クリックすると、Facebook アカウントに共有します"
+    },
+    "twitter": {
+      "label": "Twitter",
+      "tooltip": "クリックすると、Twitter アカウントに共有します"
+    },
+    "linkedIn": {
+      "label": "LinkedIn",
+      "tooltip": "クリックすると、LinkedIn アカウントに共有します"
+    }
+  }
+}

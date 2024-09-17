@@ -1,0 +1,16 @@
+{
+  "andOperator": "Resultaten kommer att visa ALLA matchande filter",
+  "andOperator2": "AND: Resultaten kommer att visa ALLA matchande filter",
+  "close": "Stäng",
+  "maxSlider": "{field}, övre gräns",
+  "minSlider": "{field}, nedre gräns",
+  "nextMonth": "Nästa månad",
+  "orOperator": "Resultaten kommer att visa EVENTUELLA matchande filter",
+  "orOperator2": "OR: Resultaten kommer att visa EVENTUELLA matchande filter",
+  "previousMonth": "Föregående månad",
+  "resetDatePicker": "Återställ datumväljare",
+  "resetFilter": "Återställ filter",
+  "selectFilter": "Välj filter",
+  "zoomTo": "Zooma till",
+  "zoomToExtent": "Zooma till utbredning"
+}

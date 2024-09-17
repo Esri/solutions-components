@@ -1,0 +1,15 @@
+{
+  "noLegend": "Tidak ada legenda",
+  "loading": "Memuat legenda interaktif",
+  "open": "Buka",
+  "close": "Tutup",
+  "expand": "Bentang",
+  "collapse": "Tutup",
+  "totalFeatureCount": "Total jumlah fitur",
+  "showAll": "Tampilkan semua",
+  "zoomTo": "Zoom hingga",
+  "relationship": {
+    "instructionalText": "Klik persegi warna untuk memfilter peta",
+    "notSupported": "Gaya menggambar hubungan saat ini tidak didukung."
+  }
+}

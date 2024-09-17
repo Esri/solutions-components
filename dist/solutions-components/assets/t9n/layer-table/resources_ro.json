@@ -1,0 +1,19 @@
+{
+  "clearSelection": "Golire selecție",
+  "exportCSV": "Export în CSV",
+  "filter": "Filtrare: {{title}}",
+  "filters": "Filtre",
+  "hideField": "Ascundeți câmpul",
+  "more": "Mai mult",
+  "selectAll": "Selectare globală",
+  "share": "Partajare",
+  "showSelected": "Afișare selectate",
+  "switchSelected": "Comutare selectată",
+  "zoom": "Zoom",
+  "fetchingData": "Extragerea datelor",
+  "refresh": "Reîmprospătare",
+  "showAll": "Afișare toate",
+  "recordsSelected": "Total: {{total}} | Selecție: {{selected}}",
+  "moreOptions": "Mai multe opțiuni de tabel",
+  "showHideColumns": "Afişare/ascundere coloane"
+}

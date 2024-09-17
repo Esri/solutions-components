@@ -1,0 +1,16 @@
+{
+  "andOperator": "Hasil akan menampilkan SEMUA filter yang cocok",
+  "andOperator2": "DAN: Hasil akan menampilkan SEMUA filter yang cocok",
+  "close": "Tutup",
+  "maxSlider": "{field}, batas atas",
+  "minSlider": "{field}, batas bawah",
+  "nextMonth": "Bulan depan",
+  "orOperator": "Hasil akan menampilkan SALAH SATU filter yang cocok",
+  "orOperator2": "ATAU: Hasil akan menampilkan SALAH SATU filter yang cocok",
+  "previousMonth": "Bulan sebelumnya",
+  "resetDatePicker": "Atur ulang pemilih tanggal",
+  "resetFilter": "Atur Ulang Filter",
+  "selectFilter": "Pilih Filter",
+  "zoomTo": "Zoom hingga",
+  "zoomToExtent": "Zoom untuk perluas jangkauan"
+}

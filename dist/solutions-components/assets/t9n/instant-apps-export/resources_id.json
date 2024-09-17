@@ -1,0 +1,11 @@
+{
+  "export": "Ekspor",
+  "exportPopover": "Ekspor popover",
+  "includeExtraContent": "Sertakan hasil",
+  "includeHeaderTheme": "Sertakan tema header",
+  "includeLegend": "Sertakan legenda",
+  "includeMap": "Sertakan peta",
+  "includePopup": "Sertakan popup",
+  "title": "Judul",
+  "toggleExport": "Aktifkan/Nonaktifkan Ekspor"
+}

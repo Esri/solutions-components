@@ -1,0 +1,16 @@
+{
+  "andOperator": "Phần kết quả sẽ hiển thị các bộ lọc trùng khớp với TẤT CẢ các tiêu chí",
+  "andOperator2": "VÀ: Phần kết quả sẽ hiển thị các bộ lọc trùng khớp với TẤT CẢ các tiêu chí",
+  "close": "Tắt",
+  "maxSlider": "{field}, giới hạn trên",
+  "minSlider": "{field}, giới hạn dưới",
+  "nextMonth": "Tháng sau",
+  "orOperator": "Phần kết quả sẽ hiển thị các bộ lọc trùng khớp với BẤT KỲ tiêu chí nào",
+  "orOperator2": "HOẶC: Phần kết quả sẽ hiển thị các bộ lọc trùng khớp với BẤT KỲ tiêu chí nào",
+  "previousMonth": "Tháng trước",
+  "resetDatePicker": "Thiết lập lại trình chọn ngày",
+  "resetFilter": "Thiết lập lại Bộ lọc",
+  "selectFilter": "Chọn bộ lọc",
+  "zoomTo": "Phóng tới",
+  "zoomToExtent": "Thu phóng đến phạm vi"
+}

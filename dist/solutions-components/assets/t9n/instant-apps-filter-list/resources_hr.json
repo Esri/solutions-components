@@ -1,0 +1,16 @@
+{
+  "andOperator": "Rezultati će prikazati SVE odgovarajuće filtre",
+  "andOperator2": "I: Rezultati će prikazati SVE odgovarajuće filtre",
+  "close": "Zatvori",
+  "maxSlider": "{field}, gornja granica",
+  "minSlider": "{field}, donja granica",
+  "nextMonth": "Sljedeći mjesec",
+  "orOperator": "Rezultati će prikazati BILO KOJE odgovarajuće filtre",
+  "orOperator2": "ILI: Rezultati će prikazati BILO KOJE odgovarajuće filtre",
+  "previousMonth": "Prethodni mjesec",
+  "resetDatePicker": "Resetiraj birač datuma",
+  "resetFilter": "Resetiraj filtar",
+  "selectFilter": "Odaberi filtar",
+  "zoomTo": "Povećaj na",
+  "zoomToExtent": "Povećaj na obuhvat"
+}

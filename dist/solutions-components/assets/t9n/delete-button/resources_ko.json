@@ -1,0 +1,8 @@
+{
+  "cancel": "취소",
+  "confirmMultiple": "해당 피처가 영구적으로 제거됩니다.",
+  "confirmSingle": "해당 피처가 영구적으로 제거됩니다.",
+  "delete": "삭제",
+  "deleteCount": "삭제({{n}})",
+  "deleteFeature": "피처 삭제"
+}

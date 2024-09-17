@@ -1,0 +1,10 @@
+{
+  "fetchingData": "กำลังดึงข้อมูล",
+  "edit": "แก้ไข",
+  "enableEditing": "ต้องเปิดใช้งานการอัปเดตความสามารถบนชั้นข้อมูล",
+  "editDisabled": "การแก้ไขถูกปิดใช้งาน",
+  "next": "ถัดไป",
+  "back": "กลับ",
+  "indexOfTotal": "{{index}} จาก {{total}}",
+  "delete": "ลบ"
+}

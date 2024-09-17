@@ -1,0 +1,16 @@
+{
+  "andOperator": "Výsledky zobrazia VŠETKY zodpovedajúce filtrom",
+  "andOperator2": "AND: Výsledky zobrazia VŠETKY zodpovedajúce filtrom",
+  "close": "Zatvoriť",
+  "maxSlider": "{field}, horný limit",
+  "minSlider": "{field}, dolný limit",
+  "nextMonth": "Nasledujúci mesiac",
+  "orOperator": "Výsledky zobrazia AKÉKOĽVEK zodpovedajúce filtrom",
+  "orOperator2": "OR: Výsledky zobrazia AKÉKOĽVEK zodpovedajúce filtrom",
+  "previousMonth": "Predchádzajúci mesiac",
+  "resetDatePicker": "Resetovať výber dátumu",
+  "resetFilter": "Resetovať filter",
+  "selectFilter": "Vybrať filter",
+  "zoomTo": "Priblížiť na",
+  "zoomToExtent": "Priblížiť na rozsah"
+}

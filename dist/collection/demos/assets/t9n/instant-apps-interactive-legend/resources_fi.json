@@ -1,0 +1,15 @@
+{
+  "noLegend": "Ei selitettä.",
+  "loading": "Ladataan vuorovaikutteista selitettä",
+  "open": "Avaa",
+  "close": "Sulje",
+  "expand": "Laajenna",
+  "collapse": "Kutista",
+  "totalFeatureCount": "Kohteiden kokonaismäärä",
+  "showAll": "Näytä kaikki",
+  "zoomTo": "Zoomaa kohteeseen",
+  "relationship": {
+    "instructionalText": "Suodata kartta napsauttamalla värineliöitä",
+    "notSupported": "Suhteen piirtotyyliä ei tueta tällä hetkellä."
+  }
+}

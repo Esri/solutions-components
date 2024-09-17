@@ -1,0 +1,38 @@
+{
+  "share": {
+    "label": "Koplietot"
+  },
+  "embed": {
+    "label": "Iegult",
+    "copy": "Kopēt",
+    "width": "Platums",
+    "height": "Augstums"
+  },
+  "info": {
+    "label": "Vai zinājāt?",
+    "tooltip": "Kopējot saiti, tiks saglabāts pašreizējais kartes skats, redzamie slāņi un atvērtie uznirstošie logi. Izmantojiet šo opciju, lai kopīgotu lietotnē redzamo informāciju."
+  },
+  "success": {
+    "label": "Izdevās!",
+    "url": "Lietotnes vietrādis (URL) ir iekopēts starpliktuvē.",
+    "embed": "Iegulšanas kods ir iekopēts starpliktuvē."
+  },
+  "options": {
+    "link": {
+      "label": "Kopēt saiti",
+      "tooltip": "Noklikšķiniet, lai kopētu saiti starpliktuvē"
+    },
+    "facebook": {
+      "label": "Facebook",
+      "tooltip": "Noklikšķiniet, lai koplietotu savā Facebook kontā"
+    },
+    "twitter": {
+      "label": "Twitter",
+      "tooltip": "Noklikšķiniet, lai koplietotu savā Twitter kontā"
+    },
+    "linkedIn": {
+      "label": "LinkedIn",
+      "tooltip": "Noklikšķiniet, lai koplietotu savā LinkedIn kontā"
+    }
+  }
+}

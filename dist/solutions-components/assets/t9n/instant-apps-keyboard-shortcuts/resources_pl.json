@@ -1,0 +1,30 @@
+{
+  "mapShortcuts": {
+    "arrowKeys": "Klawisze strzałek",
+    "nudge": "Posuń w lewo, w prawo, w górę lub w dół",
+    "N": "Dostosuj do kierunku północnego",
+    "A": "Obróć przeciwnie do ruchu wskazówek zegara",
+    "D": "Obróć zgodnie z ruchem wskazówek zegara",
+    "plus": "Powiększ po środku",
+    "minus": "Pomniejsz po środku"
+  },
+  "sceneShortcuts": {
+    "P": "Przenieś kamerę w taki sposób, aby była skierowana prostopadle do danych wyświetlanych na mapie",
+    "N": "Dostosuj mapę do kierunku północnego",
+    "W": "Pochyl kamerę w górę",
+    "A": "Obróć kamerę przeciwnie do ruchu wskazówek zegara",
+    "D": "Obróć kamerę zgodnie z ruchem wskazówek zegara",
+    "S": "Pochyl kamerę w dół",
+    "globalCommands": {
+      "J": "Przenieś w dół bliżej mapy",
+      "U": "Przenieś w górę dalej od mapy"
+    }
+  },
+  "generalShortcuts": {
+    "menu": "menu skrótów",
+    "shortcut": "Skrót",
+    "action": "Operacja",
+    "title": "Wybierz mapę",
+    "label": "Skróty klawiaturowe"
+  }
+}

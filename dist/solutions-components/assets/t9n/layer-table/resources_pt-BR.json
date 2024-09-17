@@ -1,0 +1,19 @@
+{
+  "clearSelection": "Limpar seleção",
+  "exportCSV": "Exportar para CSV",
+  "filter": "Filtro: {{title}}",
+  "filters": "Filtros",
+  "hideField": "Ocultar campo",
+  "more": "Mais",
+  "selectAll": "Selecionar todos",
+  "share": "Compartilhar",
+  "showSelected": "Mostrar selecionado",
+  "switchSelected": "Trocar selecionado",
+  "zoom": "Zoom",
+  "fetchingData": "Buscar Dados",
+  "refresh": "Atualizar",
+  "showAll": "Mostrar todos",
+  "recordsSelected": "Total: {{total}} | Seleção: {{selected}}",
+  "moreOptions": "Mais opções da tabela",
+  "showHideColumns": "Mostrar/ocultar colunas"
+}

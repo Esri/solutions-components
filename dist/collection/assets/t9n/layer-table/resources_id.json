@@ -1,0 +1,19 @@
+{
+  "clearSelection": "Hapus pilihan",
+  "exportCSV": "Ekspor ke CSV",
+  "filter": "Filter: {{title}}",
+  "filters": "Filter",
+  "hideField": "Sembunyikan kolom",
+  "more": "Lainnya",
+  "selectAll": "Pilih semua",
+  "share": "Bagikan",
+  "showSelected": "Tampilkan yang dipilih",
+  "switchSelected": "Alihkan yang dipilih",
+  "zoom": "Perbesar",
+  "fetchingData": "Mengambil data",
+  "refresh": "Muat Ulang",
+  "showAll": "Tampilkan semua",
+  "recordsSelected": "Total: {{total}} | Pilihan: {{selected}}",
+  "moreOptions": "Opsi tabel lainnya",
+  "showHideColumns": "Tampilkan/sembunyikan kolom"
+}

@@ -1,0 +1,11 @@
+{
+  "export": "Eksportēt",
+  "exportPopover": "Eksportēt uznirstošo logu",
+  "includeExtraContent": "Iekļaut rezultātus",
+  "includeHeaderTheme": "Iekļaut galvenes motīvu",
+  "includeLegend": "Iekļaut apzīmējumus",
+  "includeMap": "Iekļaut karti",
+  "includePopup": "Iekļaut uznirstošo logu",
+  "title": "Nosaukums",
+  "toggleExport": "Pārslēgt eksportēšanu"
+}

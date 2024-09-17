@@ -1,0 +1,9 @@
+{
+  "add": "Adăugare",
+  "remove": "Eliminare",
+  "featuresAdded": "Obiecte spațiale adăugate: {{n}}",
+  "featuresRemoved": "Obiecte spațiale eliminate: {{n}}",
+  "totalSelected": "Total selectate: {{n}}",
+  "inputLayer": "Strat tematic de intrare",
+  "inputLayerTip": "Alegeți stratul tematic de intrare pentru a consulta obiectele spațiale din acesta, actualizați obiectele spațiale selectate dintr-un strat tematic la un moment dat."
+}

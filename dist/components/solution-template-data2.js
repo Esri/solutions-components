@@ -1,0 +1,230 @@
+/*!
+ * Copyright 2022 Esri
+ * Licensed under the Apache License, Version 2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
+ */
+import { proxyCustomElement, HTMLElement, h, Host } from '@stencil/core/internal/client';
+import { s as state } from './solution-store.js';
+import { g as getLocaleComponentStrings } from './locale.js';
+import { d as defineCustomElement$g } from './action.js';
+import { d as defineCustomElement$f } from './action-menu.js';
+import { d as defineCustomElement$e } from './button.js';
+import { d as defineCustomElement$d } from './icon.js';
+import { d as defineCustomElement$c } from './loader.js';
+import { d as defineCustomElement$b } from './panel.js';
+import { d as defineCustomElement$a } from './popover.js';
+import { d as defineCustomElement$9 } from './scrim.js';
+import { d as defineCustomElement$8 } from './shell.js';
+import { d as defineCustomElement$7 } from './shell-panel.js';
+import { d as defineCustomElement$6 } from './tree.js';
+import { d as defineCustomElement$5 } from './tree-item.js';
+import { d as defineCustomElement$4 } from './json-editor2.js';
+import { d as defineCustomElement$3 } from './solution-item-icon2.js';
+import { d as defineCustomElement$2 } from './solution-organization-variables2.js';
+import { d as defineCustomElement$1 } from './solution-variables2.js';
+
+const solutionTemplateDataCss = ":host{display:flexbox}.solution-data-container{position:absolute;height:-moz-available;height:calc(100% - 48px);height:-webkit-fill-available;height:stretch;width:-moz-available;width:100%;width:-webkit-fill-available;width:stretch}.solution-data-child-container{display:flex;height:100%;width:100%;flex-direction:column;overflow-y:auto}.solution-data-editor-container{height:100%}.solution-data-child-container-collapsed{display:flex;height:100%;flex-direction:column;overflow:auto;width:50px}.inputBottomSeparation{margin-left:0px;margin-right:0px;margin-top:0px;margin-bottom:1.5rem}.json-editor{margin:1rem;width:auto;width:-webkit-fill-available -moz-available}.collapse-btn{padding-left:1rem;padding-right:1rem;padding-top:1rem;padding-bottom:0px}.org-vars{padding-left:1rem;padding-right:1rem;padding-top:1rem;padding-bottom:0px}.sol-vars{padding-top:0px;padding-bottom:0px;padding-left:1rem;padding-right:1rem;min-height:45%}.padding-1{padding:1rem}.light{background-color:#F4F4F4}";
+const SolutionTemplateDataStyle0 = solutionTemplateDataCss;
+
+const SolutionTemplateData = /*@__PURE__*/ proxyCustomElement(class SolutionTemplateData extends HTMLElement {
+    get el() { return this; }
+    itemIdWatchHandler() {
+        this._initializing = true;
+        this.value = JSON.stringify(this.instanceid === "data"
+            ? state.getItemInfo(this.itemId).data
+            : state.getItemInfo(this.itemId).properties, null, 2);
+    }
+    //--------------------------------------------------------------------------
+    //
+    //  Lifecycle
+    //
+    //--------------------------------------------------------------------------
+    constructor() {
+        super();
+        this.__registerHost();
+        this.instanceid = "";
+        this.itemId = "";
+        this.organizationVariables = "";
+        this.solutionVariables = "";
+        this.varsOpen = true;
+        this._translations = undefined;
+        this.value = "";
+        window.addEventListener("solutionEditorContentChanged", (evt) => {
+            if (this.itemId) {
+                const { id, contents } = evt.detail;
+                const [itemId, instanceId] = id.split("|");
+                if (itemId == this.itemId && instanceId === this.instanceid) {
+                    if (!this._initializing && contents.length > 0) {
+                        const itemEdit = state.getItemInfo(itemId);
+                        if (instanceId === "data") {
+                            itemEdit.data = JSON.parse(contents);
+                        }
+                        else {
+                            itemEdit.properties = JSON.parse(contents);
+                        }
+                        state.setItemInfo(itemEdit);
+                    }
+                    this._initializing = false;
+                }
+            }
+        });
+    }
+    /**
+     * StencilJS: Called once just after the component is first connected to the DOM.
+     */
+    componentWillLoad() {
+        return this._getTranslations();
+    }
+    /**
+     * Renders the component.
+     */
+    render() {
+        return (h(Host, { key: '2e0fd019cf024cccd287674fc47c8c7149c5896e' }, h("div", { key: 'f36da861eb0915300e6cfa66507bfa819c5175ca', class: "solution-data-container" }, h("calcite-shell", { key: '05f2abaa3e654c5098f1b0fa39540b8e1ba69414', class: "light var-container", dir: "ltr" }, h("calcite-panel", { key: '465260b700ea88b98e50b37cc1adf1815736c590', class: "json-editor" }, h("div", { key: '77828dc31fb4b3b556538a14660506dc0ce91c18', class: "solution-data-child-container calcite-match-height" }, h("json-editor", { key: 'cf7be387699d46e0efce1cc9d2bafa1ecd1bd54b', class: "solution-data-editor-container", instanceid: this.itemId + "|" + this.instanceid, value: this.value }))), h("calcite-shell-panel", { key: 'a0f2aedafaf8eb4376c8f90a230b5992392ca4ce', "height-scale": "l", position: "end", slot: "contextual-panel", "width-scale": "xs" }, h("div", { key: 'c6275b75e9f275fad1c5cbd420847d1876c0084b', class: this.varsOpen ? "solution-data-child-container" : "solution-data-child-container-collapsed" }, h("calcite-button", { key: '96329209db26f9acbfc5d8717fb9e09fba44a555', appearance: "transparent", class: "collapse-btn", "icon-start": this.varsOpen ? "chevrons-right" : "chevrons-left", id: "collapse-vars", onClick: () => this._toggleVars(), scale: "s", title: this.varsOpen ? this._translations.collapse : this._translations.expand }), h("div", { key: 'ab6dfc9c86fb7b6fdf67668589990d12a517e0c6', class: this.varsOpen ? "org-vars" : "org-vars display-none", id: "orgVars" }, h("solution-organization-variables", { key: '26a8b4bcedbe525cde504431549fb911f9987865', value: this.organizationVariables })), h("div", { key: 'f0900c1e28036dbb0a5af6fd7db0e8625340c458', class: this.varsOpen ? "sol-vars" : "sol-vars display-none", id: "solVars" }, h("solution-variables", { key: '4ec9c214341c65e4b03a9d83e0731545c56ef3dd', value: this.solutionVariables }))))))));
+    }
+    _initializing = false;
+    //--------------------------------------------------------------------------
+    //
+    //  Event Listeners
+    //
+    //--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    //
+    //  Events
+    //
+    //--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    //
+    //  Public Methods (async)
+    //
+    //--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    //
+    //  Private Methods
+    //
+    //--------------------------------------------------------------------------
+    /**
+     * Toggle varsOpen prop to show/hide variable containers
+     */
+    _toggleVars() {
+        this.varsOpen = !this.varsOpen;
+    }
+    /**
+     * Fetches the component's translations
+     *
+     * @protected
+     */
+    async _getTranslations() {
+        const translations = await getLocaleComponentStrings(this.el);
+        this._translations = translations[0];
+    }
+    static get watchers() { return {
+        "itemId": ["itemIdWatchHandler"]
+    }; }
+    static get style() { return SolutionTemplateDataStyle0; }
+}, [0, "solution-template-data", {
+        "instanceid": [1537],
+        "itemId": [1537, "item-id"],
+        "organizationVariables": [1537, "organization-variables"],
+        "solutionVariables": [1537, "solution-variables"],
+        "varsOpen": [1540, "vars-open"],
+        "_translations": [32],
+        "value": [32]
+    }, undefined, {
+        "itemId": ["itemIdWatchHandler"]
+    }]);
+function defineCustomElement() {
+    if (typeof customElements === "undefined") {
+        return;
+    }
+    const components = ["solution-template-data", "calcite-action", "calcite-action-menu", "calcite-button", "calcite-icon", "calcite-loader", "calcite-panel", "calcite-popover", "calcite-scrim", "calcite-shell", "calcite-shell-panel", "calcite-tree", "calcite-tree-item", "json-editor", "solution-item-icon", "solution-organization-variables", "solution-variables"];
+    components.forEach(tagName => { switch (tagName) {
+        case "solution-template-data":
+            if (!customElements.get(tagName)) {
+                customElements.define(tagName, SolutionTemplateData);
+            }
+            break;
+        case "calcite-action":
+            if (!customElements.get(tagName)) {
+                defineCustomElement$g();
+            }
+            break;
+        case "calcite-action-menu":
+            if (!customElements.get(tagName)) {
+                defineCustomElement$f();
+            }
+            break;
+        case "calcite-button":
+            if (!customElements.get(tagName)) {
+                defineCustomElement$e();
+            }
+            break;
+        case "calcite-icon":
+            if (!customElements.get(tagName)) {
+                defineCustomElement$d();
+            }
+            break;
+        case "calcite-loader":
+            if (!customElements.get(tagName)) {
+                defineCustomElement$c();
+            }
+            break;
+        case "calcite-panel":
+            if (!customElements.get(tagName)) {
+                defineCustomElement$b();
+            }
+            break;
+        case "calcite-popover":
+            if (!customElements.get(tagName)) {
+                defineCustomElement$a();
+            }
+            break;
+        case "calcite-scrim":
+            if (!customElements.get(tagName)) {
+                defineCustomElement$9();
+            }
+            break;
+        case "calcite-shell":
+            if (!customElements.get(tagName)) {
+                defineCustomElement$8();
+            }
+            break;
+        case "calcite-shell-panel":
+            if (!customElements.get(tagName)) {
+                defineCustomElement$7();
+            }
+            break;
+        case "calcite-tree":
+            if (!customElements.get(tagName)) {
+                defineCustomElement$6();
+            }
+            break;
+        case "calcite-tree-item":
+            if (!customElements.get(tagName)) {
+                defineCustomElement$5();
+            }
+            break;
+        case "json-editor":
+            if (!customElements.get(tagName)) {
+                defineCustomElement$4();
+            }
+            break;
+        case "solution-item-icon":
+            if (!customElements.get(tagName)) {
+                defineCustomElement$3();
+            }
+            break;
+        case "solution-organization-variables":
+            if (!customElements.get(tagName)) {
+                defineCustomElement$2();
+            }
+            break;
+        case "solution-variables":
+            if (!customElements.get(tagName)) {
+                defineCustomElement$1();
+            }
+            break;
+    } });
+}
+defineCustomElement();
+
+export { SolutionTemplateData as S, defineCustomElement as d };

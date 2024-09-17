@@ -1,0 +1,21 @@
+:host {
+  display: block;
+}
+
+.buttons-container{
+  align-items: center;
+  display: flex;
+  padding: 4px;
+  color: var(--calcite-color-text-1) !important;
+  background-color: var(--calcite-color-foreground-1) !important;
+  border-block-start: 1px solid var(--calcite-color-border-3);
+  border-block-end: 1px solid var(--calcite-color-border-3);
+}
+
+.comment-btn{
+  display: flex;
+  gap: 10px;
+  font-size: var(--calcite-font-size--1);
+  align-items: center;
+  padding: 7px 0.75rem;
+}

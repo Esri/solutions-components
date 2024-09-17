@@ -1,0 +1,16 @@
+{
+  "listName": "Naam lijst",
+  "listNamePlaceholder": "Naam hier invoeren",
+  "searchDistance": "Zoekafstand",
+  "select": "Laag",
+  "selectedFeatures": "{{n}} geselecteerde objecten",
+  "selectionLoading": "De selectie wordt geladen",
+  "sketch": "Schetsen",
+  "bufferLayer": "Bufferlaag",
+  "sketchLayer": "Tekenlaag",
+  "useLayerFeatures": "Laagobjecten gebruiken",
+  "inputLayer": "Invoerlaag",
+  "useLayerFeaturesTooltip": "Kies een laag en gebruik de schetstool om objecten aan te wijzen die als een grens kunnen worden gebruikt voor het selecteren van kruisende objecten uit de invoerlaag.",
+  "useSearchDistanceTootip": "Definieer een afstand voor een zoekbuffer die invoerobjecten zal selecteren die met de buffer kruisen.",
+  "placeholder": "Adres of plaats zoeken"
+}

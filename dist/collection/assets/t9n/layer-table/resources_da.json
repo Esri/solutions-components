@@ -1,0 +1,19 @@
+{
+  "clearSelection": "Ryd markering",
+  "exportCSV": "Eksportér til CSV",
+  "filter": "Filter: {{title}}",
+  "filters": "Filtre",
+  "hideField": "Skjul felt",
+  "more": "Mere",
+  "selectAll": "Vælg alle",
+  "share": "Del",
+  "showSelected": "Vis valgte",
+  "switchSelected": "Skift valgte",
+  "zoom": "Zoom",
+  "fetchingData": "Henter data",
+  "refresh": "Opdatér",
+  "showAll": "Vis alle",
+  "recordsSelected": "I alt: {{total}} | Markering: {{selected}}",
+  "moreOptions": "Flere tabelindstillinger",
+  "showHideColumns": "Vis/skjul kolonner"
+}

@@ -1,0 +1,5 @@
+{
+  "enableSpatialReference": "Activer le paramètre de référence spatiale",
+  "enableDefaultSpatialReference": "Activer la référence spatiale par défaut (Web Mercator 3857)",
+  "featureServicesHeading": "Appliquez la sélection de références spatiales à ces services d'entités (sélectionnez-en au moins un) :"
+}

@@ -1,0 +1,30 @@
+{
+  "mapShortcuts": {
+    "arrowKeys": "Smerne tipke",
+    "nudge": "Pomakni na levo, desno, gor ali dol",
+    "N": "Prilagodi, da kaže na sever",
+    "A": "Zasuči v nasprotni smeri urinega kazalca",
+    "D": "Zasuči v smeri urinega kazalca",
+    "plus": "Približaj na sredini",
+    "minus": "Oddalji na sredini"
+  },
+  "sceneShortcuts": {
+    "P": "Premakni kamero. da gleda pravokotno na podatke, ki so prikazani na karti",
+    "N": "Prilagodi karto, da kaže na sever",
+    "W": "Nagni kamero navzgor",
+    "A": "Zasuči kamero v nasprotni smeri urinega kazalca",
+    "D": "Zasuči kamero v smeri urinega kazalca",
+    "S": "Nagni kamero navzdol",
+    "globalCommands": {
+      "J": "Premakni navzdol, bližje karti",
+      "U": "Premakni navzgor, višje od karte"
+    }
+  },
+  "generalShortcuts": {
+    "menu": "Meni z bližnjicami",
+    "shortcut": "Bližnjica",
+    "action": "Dejanje",
+    "title": "Izberi karto",
+    "label": "Bližnjice na tipkovnici"
+  }
+}

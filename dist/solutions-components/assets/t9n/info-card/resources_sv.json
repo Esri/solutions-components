@@ -1,0 +1,10 @@
+{
+  "fetchingData": "Hämtar data",
+  "edit": "Redigera",
+  "enableEditing": "Uppdateringsfunktionen måste vara aktiverad på lagret.",
+  "editDisabled": "Redigering inaktiverat",
+  "next": "Nästa",
+  "back": "Bakåt",
+  "indexOfTotal": "{{index}} av {{total}}",
+  "delete": "Ta bort"
+}

@@ -1,0 +1,9 @@
+{
+  "add": "Tambahkan",
+  "remove": "Hapus",
+  "featuresAdded": "Fitur ditambahkan: {{n}}",
+  "featuresRemoved": "Fitur dihapus: {{n}}",
+  "totalSelected": "Total yang dipilih: {{n}}",
+  "inputLayer": "Layer input",
+  "inputLayerTip": "Pilih layer input untuk meninjau fitur yang dipilih, perbarui fitur yang dipilih dari satu layer input pada satu waktu."
+}

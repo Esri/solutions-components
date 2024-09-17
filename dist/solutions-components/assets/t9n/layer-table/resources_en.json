@@ -1,0 +1,20 @@
+{
+  "clearSelection": "Clear selection",
+  "exportCSV": "Export to CSV",
+  "filter": "Filter: {{title}}",
+  "filters": "Filters",
+  "hideField": "Hide field",
+  "more": "More",
+  "selectAll": "Select all",
+  "share": "Share",
+  "showSelected": "Show selected",
+  "switchSelected": "Switch selected",
+  "zoom": "Zoom",
+  "editMultiple": "Edit multiple",
+  "fetchingData": "Fetching Data",
+  "refresh": "Refresh",
+  "showAll": "Show all",
+  "recordsSelected": "Total: {{total}} | Selection: {{selected}}",
+  "moreOptions": "More table options",
+  "showHideColumns": "Show/hide columns"
+}

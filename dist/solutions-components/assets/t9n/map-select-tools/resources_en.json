@@ -1,0 +1,16 @@
+{
+    "listName": "List name",
+    "listNamePlaceholder": "Enter name here",
+    "searchDistance": "Search distance",
+    "select": "Layer",
+    "selectedFeatures": "{{n}} selected features",
+    "selectionLoading": "Selection loading",
+    "sketch": "Sketch",
+    "bufferLayer": "Buffer Layer",
+    "sketchLayer": "Sketch Layer",
+    "useLayerFeatures": "Use layer features",
+    "inputLayer": "Input layer",
+    "useLayerFeaturesTooltip": "Choose a layer and use the sketch tools to point to features that can be used as a boundary to select intersecting features from the input layer.",
+    "useSearchDistanceTootip": "Define a distance for a search buffer that will select input features that intersect the buffer.",
+    "placeholder": "Find address or place"
+}

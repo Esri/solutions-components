@@ -1,0 +1,16 @@
+{
+  "listName": "Nazwa listy",
+  "listNamePlaceholder": "Wprowadź tutaj nazwę",
+  "searchDistance": "Odległość wyszukiwania",
+  "select": "Warstwa",
+  "selectedFeatures": "Wybrane obiekty: {{n}}",
+  "selectionLoading": "Wczytywanie wyboru",
+  "sketch": "Szkic",
+  "bufferLayer": "Warstwa bufora",
+  "sketchLayer": "Warstwa szkicu",
+  "useLayerFeatures": "Użyj obiektów warstwy",
+  "inputLayer": "Warstwa wejściowa",
+  "useLayerFeaturesTooltip": "Wybierz warstwę i za pomocą narzędzi do szkicowania wskaż obiekty, których można użyć jako granicy w celu wybrania przecinających się obiektów z warstwy wejściowej.",
+  "useSearchDistanceTootip": "Zdefiniuj odległość dla bufora wyszukiwania, który posłuży do wybrania obiektów wejściowych przecinających ten bufor.",
+  "placeholder": "Znajdź adres lub miejsce"
+}

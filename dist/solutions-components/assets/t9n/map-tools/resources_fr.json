@@ -1,0 +1,10 @@
+{
+  "legend": "Légende",
+  "search": "Rechercher",
+  "expand": "Développer",
+  "basemap": "Fond de carte",
+  "collapse": "Réduire",
+  "enterFullscreen": "Passer en mode Plein écran",
+  "exitFullscreen": "Quitter le mode Plein écran",
+  "floorFilter": "Filtre des étages"
+}

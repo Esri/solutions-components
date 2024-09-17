@@ -1,0 +1,8 @@
+{
+  "cancel": "Cancel·la",
+  "confirmMultiple": "Aquestes entitats s'eliminaran permanentment.",
+  "confirmSingle": "Aquesta entitat s'eliminarà permanentment.",
+  "delete": "Suprimeix",
+  "deleteCount": "Suprimeix ({{n}})",
+  "deleteFeature": "Suprimeix l'entitat"
+}

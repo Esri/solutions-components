@@ -1,0 +1,108 @@
+/** @license
+ * Copyright 2022 Esri
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+:host {
+  display: block;
+  --calcite-label-margin-bottom: 0;
+}
+
+.padding-1-2 {
+  padding: 0.5rem;
+}
+
+.display-none {
+  display: none !important;
+}
+
+.display-flex {
+  display: flex;
+}
+
+.position-absolute {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow: auto;
+}
+
+.feature-node {
+  position: relative !important;
+}
+
+.feature-node .esri-features__footer {
+  display: none !important;
+}
+
+.button-container {
+  justify-content: center;
+  align-items: center;
+}
+
+.top-border {
+  border-top: 1px solid var(--calcite-color-border-1);
+}
+
+.width-100 {
+  width: 100%;
+}
+
+.esri-features__container {
+  padding: 0.5rem !important;
+  background-color: var(--calcite-color-foreground-1) !important;
+  height: 100% !important;
+}
+
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.height-40 {
+  height: 40px;
+}
+
+.end-border {
+  border-inline-end: 1px solid var(--calcite-color-border-1);
+}
+
+.font-bold {
+  font-weight: bold;
+}
+
+.visibility-hidden {
+  visibility: hidden;
+  height: 0px;
+}
+
+.padding-inline-start-1 {
+  padding-inline-start: 1rem;
+}
+
+.border-width-0 {
+  border-width: 0px;
+}
+
+.pagination-action {
+  position: relative;
+  left: 3px;
+}
+
+.pagination-count {
+  color: var(--calcite-color-brand);
+  border-bottom: 1px solid var(--calcite-color-brand);
+  font-weight: bold;
+}

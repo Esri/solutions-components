@@ -1,0 +1,15 @@
+{
+  "noLegend": "אין מקרא.",
+  "loading": "טעינת מקרא אינטראקטיבי",
+  "open": "פתוח",
+  "close": "סגירה",
+  "expand": "הרחב",
+  "collapse": "צמצם",
+  "totalFeatureCount": "מספר ישויות כולל",
+  "showAll": "הצג הכול",
+  "zoomTo": "התמקד אל",
+  "relationship": {
+    "instructionalText": "לחץ על הריבועים הצבעוניים לסינון המפה",
+    "notSupported": "סגנון שרטוט הקשרים אינו נתמך כרגע"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "mapShortcuts": {
+    "arrowKeys": "Nooleklahvid",
+    "nudge": "Nihuta vasakule, paremale, üles või alla",
+    "N": "Kohanda, et see osutaks põhja",
+    "A": "Pööra vastupäeva",
+    "D": "Pööra päripäeva",
+    "plus": "Suurenda keskosa",
+    "minus": "Vähenda keskosa"
+  },
+  "sceneShortcuts": {
+    "P": "Liigutage kaamerat, et vaadata kaardil kuvatavate andmetega risti",
+    "N": "Kohanda kaarti, et see osutaks põhja",
+    "W": "Kalluta kaamerat ülespoole",
+    "A": "Pööra kaamerat vastupäeva",
+    "D": "Pööra kaamerat päripäeva",
+    "S": "Kalluta kaamerat allapoole",
+    "globalCommands": {
+      "J": "Liigu allapoole kaardile lähemnale",
+      "U": "Liigu ülespoole kaardilt eemale"
+    }
+  },
+  "generalShortcuts": {
+    "menu": "otseteede menüü",
+    "shortcut": "Otsetee",
+    "action": "Toiming",
+    "title": "Valige kaart",
+    "label": "Kiirklahvid"
+  }
+}

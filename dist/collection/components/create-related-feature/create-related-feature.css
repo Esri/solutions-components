@@ -1,0 +1,12 @@
+:host {
+  display: block;
+}
+
+/* Override to hide Editor settings panel collapsible */
+.esri-editor__panel-toolbar {
+  display: none !important;
+}
+
+.display-none {
+  display: none !important;
+}

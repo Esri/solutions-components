@@ -1,0 +1,30 @@
+{
+  "mapShortcuts": {
+    "arrowKeys": "Nuolinäppäimet",
+    "nudge": "Säädä vasemmalle, oikealle, ylös tai alas",
+    "N": "Säädä osoittamaan pohjoiseen",
+    "A": "Kierrä vastapäivään",
+    "D": "Kierrä myötäpäivään",
+    "plus": "Tarkenna keskikohtaan",
+    "minus": "Loitonna keskikohdasta"
+  },
+  "sceneShortcuts": {
+    "P": "Siirrä kameraa siten, että se on kohtisuorassa kartassa näytettävään aineistoon nähden",
+    "N": "Säädä kartta osoittamaan pohjoiseen",
+    "W": "Kallista kameraa ylöspäin",
+    "A": "Kierrä kameraa vastapäivään",
+    "D": "Kierrä kameraa myötäpäivään",
+    "S": "Kallista kameraa alaspäin",
+    "globalCommands": {
+      "J": "Siirrä alaspäin lähemmäs karttaa",
+      "U": "Siirrä ylöspäin etäämmälle kartasta"
+    }
+  },
+  "generalShortcuts": {
+    "menu": "pikavalikko",
+    "shortcut": "Pikavalinta",
+    "action": "Toiminto",
+    "title": "Valitse kartta",
+    "label": "Pikanäppäimet"
+  }
+}

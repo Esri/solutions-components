@@ -1,0 +1,16 @@
+{
+  "listName": "Navedi naziv",
+  "listNamePlaceholder": "Ovdje unesite naziv",
+  "searchDistance": "Pretraži udaljenost",
+  "select": "Sloj",
+  "selectedFeatures": "{{n}} odabrani geoobjekti",
+  "selectionLoading": "Učitavanje odabira",
+  "sketch": "Skica",
+  "bufferLayer": "Sloj pojasa",
+  "sketchLayer": "Sloj skice",
+  "useLayerFeatures": "Upotrijebi geoobjekte sloja",
+  "inputLayer": "Unesi sloj",
+  "useLayerFeaturesTooltip": "Odaberite sloj i pomoću alata za skiciranje pokažite na geoobjekte koji se mogu koristiti kao granice za odabir geoobjekata koji se presijecaju iz ulaznog sloja.",
+  "useSearchDistanceTootip": "Definirajte udaljenost za pojas pretraživanja koji će odabrati ulazne geoobjekte koji sijeku pojas.",
+  "placeholder": "Pronađi adresu ili mjesto"
+}

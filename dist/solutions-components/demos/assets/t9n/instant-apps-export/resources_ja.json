@@ -1,0 +1,11 @@
+{
+  "export": "エクスポート",
+  "exportPopover": "エクスポート ポップオーバー",
+  "includeExtraContent": "結果を含める",
+  "includeHeaderTheme": "ヘッダー テーマを含める",
+  "includeLegend": "凡例を含める",
+  "includeMap": "マップを含める",
+  "includePopup": "ポップアップを含める",
+  "title": "タイトル",
+  "toggleExport": "エクスポートの切り替え"
+}
