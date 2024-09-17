@@ -367,7 +367,7 @@ export class CreateFeature {
      */
     async startCreate() {
         console.log('create-feature startCreate');
-        return new Promise((resolve) => {
+        return new Promise((resolve, reject) => {
             if (this._editor.viewModel.featureTemplatesViewModel.items?.length) {
                 const items = this._editor.viewModel.featureTemplatesViewModel.items[0].get("items");
                 //once the feature template is selected handle the event for formSubmit and sketch complete
@@ -375,14 +375,14 @@ export class CreateFeature {
                 this._editor.viewModel.featureTemplatesViewModel.on('select', () => {
                     console.log('create-feature select');
                     // this.progressStatus.emit(0.75);
-                    // setTimeout(() => {
-                    //   //on form submit
-                    //   this._editor.viewModel.featureFormViewModel.on('submit', this.submitted.bind(this));
-                    //   //hides the header and footer elements in editor widget
-                    //   this.hideEditorsElements().then(() => {
-                    //     resolve({});
-                    //   }, e => reject(e));
-                    // }, 700);
+                    setTimeout(() => {
+                        //on form submit
+                        this._editor.viewModel.featureFormViewModel.on('submit', this.submitted.bind(this));
+                        //hides the header and footer elements in editor widget
+                        this.hideEditorsElements().then(() => {
+                            resolve({});
+                        }, e => reject(e));
+                    }, 700);
                 });
                 //if only one feature template then directly start geometry creation for that
                 //else allow feature template selection to user
@@ -569,6 +569,7 @@ export class CreateFeature {
      */
     async submitted(evt) {
         console.log("===================submitted===========================");
+        console.log(evt);
         //return if any attribute is invalid , focus will be shifted to the invalid attribute in feature form
         if (evt.invalid.length) {
             this._isSubmitBtnClicked = false;
