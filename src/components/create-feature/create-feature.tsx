@@ -490,14 +490,14 @@ export class CreateFeature {
     console.log('create-feature select')
 
           // this.progressStatus.emit(0.75);
-          // setTimeout(() => {
+          setTimeout(() => {
           //   //on form submit
              this._editor.viewModel.featureFormViewModel.on('submit', this.submitted.bind(this));
           //   //hides the header and footer elements in editor widget
           //   this.hideEditorsElements().then(() => {
           //     resolve({});
           //   }, e => reject(e));
-          // }, 700);
+          }, 700);
         });
         //if only one feature template then directly start geometry creation for that
         //else allow feature template selection to user
