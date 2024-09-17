@@ -107,7 +107,7 @@ export class CreateFeature {
    * The ExpressionInfo constructor
    */
   protected ExpressionInfo: typeof import("esri/form/ExpressionInfo");
-  
+
   /**
    * esri/form/elements/FieldElement: https://developers.arcgis.com/javascript/latest/api-reference/esri-form-elements-FieldElement.html
    * The FieldElement constructor
@@ -446,6 +446,7 @@ export class CreateFeature {
     const attachmentHandle = this.reactiveUtils.watch(
       () =>  this._editor.viewModel.state,
       (state) => {
+        console.log('create-feature attachmentHandle')
         if (state === 'adding-attachment' || state === 'editing-attachment') {
           this._addingAttachment = true;
           this.editingAttachment.emit(true);
@@ -462,6 +463,8 @@ export class CreateFeature {
     const handle = this.reactiveUtils.watch(
       () =>  this._editor.viewModel.featureTemplatesViewModel.state,
       (state) => {
+        console.log('create-feature featureTemplatesViewModel.state')
+
         if(state === 'ready') {
           this.progressStatus.emit(0.5);
           this._editorLoading = true;
@@ -473,6 +476,8 @@ export class CreateFeature {
     const formHandle = this.reactiveUtils.watch(
       () => this._editor.viewModel.featureFormViewModel?.state,
       (state) => {
+        console.log('create-feature featureFormViewModel.state')
+
         if (state === 'ready') {
           this._mapViewContainer?.classList?.replace("show-map", "hide-map");
           void this._setFloorLevel(this.floorLevel);
@@ -487,6 +492,8 @@ export class CreateFeature {
     const createFeatureHandle = this.reactiveUtils.watch(
       () => this._editor.viewModel.state,
       (state) => {
+        console.log('create-feature viewModel.state')
+
         if (state === 'creating-features') {
           this._mapViewContainer?.classList?.replace("hide-map", "show-map");
           this._editorLoading = true;
@@ -501,7 +508,9 @@ export class CreateFeature {
    * @protected
    */
   protected async startCreate(): Promise<void> {
-    // hides the header elements on template picker page 
+    console.log('create-feature startCreate')
+
+    // hides the header elements on template picker page
     await this.hideEditorsElements();
     return new Promise<any>((resolve, reject) => {
       if (this._editor.viewModel.featureTemplatesViewModel.items?.length) {
@@ -509,6 +518,8 @@ export class CreateFeature {
         //once the feature template is selected handle the event for formSubmit and sketch complete
         //also, hide the headers and footer in the editor as we will be showing our own submit and cancel button
         this._editor.viewModel.featureTemplatesViewModel.on('select', () => {
+    console.log('create-feature select')
+
           this.progressStatus.emit(0.75);
           setTimeout(() => {
             //on form submit
@@ -526,6 +537,8 @@ export class CreateFeature {
         }
         const resolvePromise = items.length > 1;
         this.hideEditorsElements().then(() => {
+    console.log('create-feature hideEditorsElements')
+
           if (resolvePromise) {
             resolve({});
           }
@@ -639,7 +652,7 @@ export class CreateFeature {
   /**
    * Add the floor level value to form
    * @param level selected floor level
-   * 
+   *
    * @protected
    */
   protected async _setFloorLevel(level: string): Promise<void> {

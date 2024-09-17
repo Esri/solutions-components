@@ -267,6 +267,8 @@ export class CreateRelatedFeature {
     const handle = this.reactiveUtils.watch(
       () => this._editor.viewModel.featureTemplatesViewModel.state,
       (state) => {
+    console.log('create-related-feature featureTemplatesViewModel.state')
+
         if (state === 'ready') {
           this._editorLoading = true;
         }
@@ -277,6 +279,8 @@ export class CreateRelatedFeature {
     const attachmentHandle = this.reactiveUtils.watch(
       () => this._editor.viewModel.state,
       (state) => {
+    console.log('create-related-feature viewModel.state')
+
         if (state === 'adding-attachment' || state === 'editing-attachment') {
           this._addingAttachment = true;
           this.isActionPending.emit(true);
@@ -293,6 +297,8 @@ export class CreateRelatedFeature {
     const formHandle = this.reactiveUtils.watch(
       () => this._editor.viewModel.featureFormViewModel?.state,
       (state) => {
+    console.log('create-related-feature featureFormViewModel?.state')
+
         if (state === 'ready') {
           this.formReady.emit();
         }
@@ -305,6 +311,8 @@ export class CreateRelatedFeature {
    * @protected
    */
   protected async startCreate(): Promise<void> {
+    console.log('create-related-feature startCreate')
+
     const parentLayer = this.selectedFeature.layer as __esri.FeatureLayer;
     const childTable = this.table;
     const parentRelationship = parentLayer.relationships[0];

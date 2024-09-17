@@ -251,6 +251,7 @@ export class EditCard {
         this._layerEditHandle.remove();
       }
       this._layerEditHandle = this._layer.on("edits", () => {
+        console.log("IN _layerEditHandle")
         this.editsComplete.emit();
       });
     }
@@ -356,6 +357,7 @@ export class EditCard {
           this._editor.viewModel.state === "editing-attachment" ||
           this._editor.viewModel.state === "creating-features",
         () => {
+          console.log("IN _attachmentHandle")
           this._shouldClose = false;
         }
       );
@@ -363,6 +365,8 @@ export class EditCard {
       this._activeWorkflowHandle = this.reactiveUtils.watch(
         () => (this._editor.viewModel.activeWorkflow as any)?.activeWorkflow,
         (activeWorkflow) => {
+          console.log("IN _activeWorkflowHandle")
+
           if (activeWorkflow?.type === "update-table-record" || activeWorkflow?.type === "create-features") {
             this._shouldClose = false;
           }
@@ -386,8 +390,11 @@ export class EditCard {
   protected async _closeEdit(
     destroyOnClose: boolean
   ): Promise<void> {
+    console.log("_closeEdit")
     this._shouldClose = true;
     if (destroyOnClose && this._editor?.activeWorkflow) {
+    console.log("_closeEdit destroyOnClose")
+
       if ((this._editor.activeWorkflow as any)?.activeWorkflow?.hasPendingEdits) {
         await this._editor.activeWorkflow.reset();
         await this._editor.cancelWorkflow();
@@ -407,6 +414,7 @@ export class EditCard {
    * Start the update workflow for the editor widget
    */
   protected async _startUpdate(): Promise<void> {
+    console.log("startUpdateWorkflowAtFeatureEdit")
     await this._editor.startUpdateWorkflowAtFeatureEdit(this.graphics[this.graphicIndex]);
     this._shouldClose = true;
   }
