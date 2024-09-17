@@ -489,7 +489,7 @@ export class CreateFeature {
         this._editor.viewModel.featureTemplatesViewModel.on('select', () => {
     console.log('create-feature select')
 
-          // this.progressStatus.emit(0.75);
+          //this.progressStatus.emit(0.75);
           setTimeout(() => {
           //   //on form submit
              this._editor.viewModel.featureFormViewModel.on('submit', this.submitted.bind(this));
@@ -509,9 +509,13 @@ export class CreateFeature {
     // console.log('create-feature hideEditorsElements')
 
           if (resolvePromise) {
+            console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
             resolve({});
+          } else {
+            console.log("NOPE")
           }
     //     }, e => resolvePromise && reject(e));
+    console.log(items.length)
     //resolve({});
       }
     });
