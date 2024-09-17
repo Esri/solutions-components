@@ -44,7 +44,7 @@ export class CrowdsourceManager {
    * AppLayout: The type of layout the application should use.
    * Valid values: "mapView" or "tableView" or "splitView"
    */
-  @Prop({mutable: true}) appLayout: AppLayout = 'splitView';
+  @Prop({mutable: true}) appLayout: AppLayout;
 
   /**
    * Array of objects containing proxy information for premium platform services.
@@ -525,8 +525,10 @@ export class CrowdsourceManager {
   async componentDidLoad(): Promise<void> {
     this._resizeObserver.observe(this.el);
     // for backward compatibility if hidemaponload is true then render table layout as default
-    if (this.hideMapOnLoad) {
+    if (this.hideMapOnLoad && !this.appLayout) {
       this.appLayout = 'tableView';
+    } else if (!this.appLayout) {
+      this.appLayout = 'splitView';
     }
     this._isMapViewOnLoad = this.appLayout === 'mapView';
     this._setActiveLayout(this.appLayout);
