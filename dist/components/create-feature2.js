@@ -344,28 +344,29 @@ const CreateFeature = /*@__PURE__*/ proxyCustomElement(class CreateFeature exten
         //   });
         // this._editor.viewModel.addHandles(attachmentHandle);
         //Add handle to watch featureTemplatesViewModel ready state and then start the creation
-        // const handle = this.reactiveUtils.watch(
-        //   () =>  this._editor.viewModel.featureTemplatesViewModel.state,
-        //   (state) => {
-        //     console.log('create-feature featureTemplatesViewModel.state')
-        //     if(state === 'ready') {
-        //       this.progressStatus.emit(0.5);
-        //       this._editorLoading = true;
-        //     }
-        //   });
-        // this._editor.viewModel.addHandles(handle);
-        //Add handle to watch featureFormViewModel ready state
-        const formHandle = this.reactiveUtils.watch(() => this._editor.viewModel.featureFormViewModel?.state, (state) => {
-            console.log('create-feature featureFormViewModel.state');
+        // THIS MAKES IT NOT WORK AT ALL
+        const handle = this.reactiveUtils.watch(() => this._editor.viewModel.featureTemplatesViewModel.state, (state) => {
+            console.log('create-feature featureTemplatesViewModel.state');
             if (state === 'ready') {
-                this._mapViewContainer?.classList?.replace("show-map", "hide-map");
-                void this._setFloorLevel(this.floorLevel);
-                this._showSearchWidget = false;
-                this.progressStatus.emit(1);
-                this.drawComplete.emit();
+                this.progressStatus.emit(0.5);
+                this._editorLoading = true;
             }
         });
-        this._editor.viewModel.addHandles(formHandle);
+        this._editor.viewModel.addHandles(handle);
+        //Add handle to watch featureFormViewModel ready state
+        // const formHandle = this.reactiveUtils.watch(
+        //   () => this._editor.viewModel.featureFormViewModel?.state,
+        //   (state) => {
+        //     console.log('create-feature featureFormViewModel.state')
+        //     if (state === 'ready') {
+        //       this._mapViewContainer?.classList?.replace("show-map", "hide-map");
+        //       void this._setFloorLevel(this.floorLevel);
+        //       this._showSearchWidget = false;
+        //       this.progressStatus.emit(1);
+        //       this.drawComplete.emit();
+        //     }
+        //   });
+        // this._editor.viewModel.addHandles(formHandle);
         //Add handle to watch editor viewmodel state and then show the search widget
         const createFeatureHandle = this.reactiveUtils.watch(() => this._editor.viewModel.state, (state) => {
             console.log('create-feature viewModel.state');
