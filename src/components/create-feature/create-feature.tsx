@@ -492,7 +492,7 @@ export class CreateFeature {
           // this.progressStatus.emit(0.75);
           // setTimeout(() => {
           //   //on form submit
-          //   this._editor.viewModel.featureFormViewModel.on('submit', this.submitted.bind(this));
+             this._editor.viewModel.featureFormViewModel.on('submit', this.submitted.bind(this));
           //   //hides the header and footer elements in editor widget
           //   this.hideEditorsElements().then(() => {
           //     resolve({});
