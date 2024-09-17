@@ -710,15 +710,17 @@ const CreateFeature = class {
         //   });
         // this._editor.viewModel.addHandles(formHandle);
         //Add handle to watch editor viewmodel state and then show the search widget
-        const createFeatureHandle = this.reactiveUtils.watch(() => this._editor.viewModel.state, (state) => {
-            console.log('create-feature viewModel.state');
-            if (state === 'creating-features') {
-                this._mapViewContainer?.classList?.replace("hide-map", "show-map");
-                this._editorLoading = true;
-                this._showSearchWidget = true;
-            }
-        });
-        this._editor.viewModel.addHandles(createFeatureHandle);
+        // const createFeatureHandle = this.reactiveUtils.watch(
+        //   () => this._editor.viewModel.state,
+        //   (state) => {
+        //     console.log('create-feature viewModel.state')
+        //     if (state === 'creating-features') {
+        //       this._mapViewContainer?.classList?.replace("hide-map", "show-map");
+        //       this._editorLoading = true;
+        //       this._showSearchWidget = true;
+        //     }
+        //   });
+        // this._editor.viewModel.addHandles(createFeatureHandle);
     }
     /**
      * Start creating the feature
