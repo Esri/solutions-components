@@ -107,7 +107,7 @@ export class CreateFeature {
    * The ExpressionInfo constructor
    */
   protected ExpressionInfo: typeof import("esri/form/ExpressionInfo");
-  
+
   /**
    * esri/form/elements/FieldElement: https://developers.arcgis.com/javascript/latest/api-reference/esri-form-elements-FieldElement.html
    * The FieldElement constructor
@@ -462,7 +462,7 @@ export class CreateFeature {
     const handle = this.reactiveUtils.watch(
       () =>  this._editor.viewModel.featureTemplatesViewModel.state,
       (state) => {
-        if(state === 'ready') {
+        if(state === 'ready' && this._editor.viewModel?.activeWorkflow?.type !== "create-features") {
           this.progressStatus.emit(0.5);
           this._editorLoading = true;
         }
@@ -501,7 +501,7 @@ export class CreateFeature {
    * @protected
    */
   protected async startCreate(): Promise<void> {
-    // hides the header elements on template picker page 
+    // hides the header elements on template picker page
     await this.hideEditorsElements();
     return new Promise<any>((resolve, reject) => {
       if (this._editor.viewModel.featureTemplatesViewModel.items?.length) {
@@ -639,7 +639,7 @@ export class CreateFeature {
   /**
    * Add the floor level value to form
    * @param level selected floor level
-   * 
+   *
    * @protected
    */
   protected async _setFloorLevel(level: string): Promise<void> {

@@ -73,7 +73,7 @@
           top: calc(100% - 100px);
           height: 100px;
         }
-      
+
         .map-collapsed {
           height: 100%;
           top: 0;
@@ -83,12 +83,12 @@
       }
     </style>
 
-    <link rel="stylesheet" href="https://jsdev.arcgis.com/4.29/esri/themes/light/main.css"/>
+    <link rel="stylesheet" href="https://jsdev.arcgis.com/4.31/esri/themes/light/main.css"/>
     <link rel="stylesheet" href="https://webapps-cdn.esri.com/CDN/fonts/v1.4.1/fonts.css" />
     <link rel="stylesheet" href="../solutions-components.css" type="text/css">
     <link rel="stylesheet" type="text/css" href="https://js.arcgis.com/calcite-components/2.8.2/calcite.css" />
 
-    <script src="https://jsdev.arcgis.com/4.29/"></script>
+    <script src="https://jsdev.arcgis.com/4.31/"></script>
     <script type="module" src="../solutions-components.esm.js"></script>
 
     <script>
@@ -136,7 +136,7 @@
         // Set the locale before the JSAPI loads
         esriConfig.locale = locale;
         demo.lang = locale;
-        
+
         //update the portalUrl if found in urlParams
         //esriConfig.portalUrl = "https://solutions.mapsdevext.arcgis.com";
         if (portal) {
@@ -182,14 +182,14 @@
         demo.enableNewReports = true;
         demo.theme = "light";
         demo.reportSubmittedMessage = "Thank you! Your request was successfully submitted";
-        
+
         //Set the zoomScale to be used when zooming to single point feature
         //demo.zoomToScale = 139596221; //World
         //demo.zoomToScale = 33800278;//Country
         //demo.zoomToScale = 4291772;//States
         demo.zoomToScale = 96610;//City
         //demo.zoomToScale = 3495; //Building
-        
+
         //Set filter config
         demo.layerExpressions = [
           {
@@ -227,7 +227,7 @@
           }
         ];
         //Set the reporting layer options, layers from this object with reporting set to true will only be shown in layer list
-        //if all the layers from map should be considered for reporting then pass true for each layer 
+        //if all the layers from map should be considered for reporting then pass true for each layer
         demo.reportingOptions = {
           "Requests_681":{
             reporting: true,
