@@ -119,49 +119,8 @@ export namespace Components {
         "portal": __esri.Portal;
     }
     interface CreateFeature {
-        /**
-          * Destroy the Editor widget instance
-          * @returns Promise that resolves when the operation is complete
-         */
-        "close": () => Promise<void>;
-        /**
-          * boolean: Set this to true when have a custom submit button in the app. This will hide the header and footer elements of the editor and user needs to execute the submit method manually.
-         */
-        "customizeSubmit"?: boolean;
-        /**
-          * string: selected floor level
-         */
-        "floorLevel": string;
-        /**
-          * string: selected floor level
-         */
-        "formElements": any;
-        /**
-          * boolean: When true the application will be in mobile mode, controls the mobile or desktop view
-         */
-        "isMobile": boolean;
-        /**
-          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
-         */
         "mapView": __esri.MapView;
-        /**
-          * refresh the feature form
-          * @returns Promise that resolves when the operation is complete
-         */
-        "refresh": (floorLevel: string) => Promise<void>;
-        /**
-          * ISearchConfiguration: Configuration details for the Search widget
-         */
-        "searchConfiguration": ISearchConfiguration;
-        /**
-          * string: Layer id of the feature layer in which the new feature is to be created
-         */
         "selectedLayerId": string;
-        /**
-          * Submit the created feature
-          * @returns Promise that resolves when the operation is complete
-         */
-        "submit": () => Promise<void>;
     }
     interface CreateRelatedFeature {
         /**
@@ -1703,10 +1662,6 @@ export interface ConsentManagerCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLConsentManagerElement;
 }
-export interface CreateFeatureCustomEvent<T> extends CustomEvent<T> {
-    detail: T;
-    target: HTMLCreateFeatureElement;
-}
 export interface CreateRelatedFeatureCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLCreateRelatedFeatureElement;
@@ -1870,23 +1825,7 @@ declare global {
         prototype: HTMLConsentManagerElement;
         new (): HTMLConsentManagerElement;
     };
-    interface HTMLCreateFeatureElementEventMap {
-        "success": void;
-        "fail": Error;
-        "drawComplete": void;
-        "editingAttachment": boolean;
-        "progressStatus": number;
-        "modeChanged": void;
-    }
     interface HTMLCreateFeatureElement extends Components.CreateFeature, HTMLStencilElement {
-        addEventListener<K extends keyof HTMLCreateFeatureElementEventMap>(type: K, listener: (this: HTMLCreateFeatureElement, ev: CreateFeatureCustomEvent<HTMLCreateFeatureElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLCreateFeatureElementEventMap>(type: K, listener: (this: HTMLCreateFeatureElement, ev: CreateFeatureCustomEvent<HTMLCreateFeatureElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLCreateFeatureElement: {
         prototype: HTMLCreateFeatureElement;
@@ -2663,57 +2602,7 @@ declare namespace LocalJSX {
         "portal": __esri.Portal;
     }
     interface CreateFeature {
-        /**
-          * boolean: Set this to true when have a custom submit button in the app. This will hide the header and footer elements of the editor and user needs to execute the submit method manually.
-         */
-        "customizeSubmit"?: boolean;
-        /**
-          * string: selected floor level
-         */
-        "floorLevel"?: string;
-        /**
-          * string: selected floor level
-         */
-        "formElements"?: any;
-        /**
-          * boolean: When true the application will be in mobile mode, controls the mobile or desktop view
-         */
-        "isMobile"?: boolean;
-        /**
-          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
-         */
         "mapView"?: __esri.MapView;
-        /**
-          * Emitted on demand when drawing is completed
-         */
-        "onDrawComplete"?: (event: CreateFeatureCustomEvent<void>) => void;
-        /**
-          * Emitted on demand when editing attachments
-         */
-        "onEditingAttachment"?: (event: CreateFeatureCustomEvent<boolean>) => void;
-        /**
-          * Emitted on demand when the feature creation is failed
-         */
-        "onFail"?: (event: CreateFeatureCustomEvent<Error>) => void;
-        /**
-          * Emitted on switched form mobile to desktop or vice versa
-         */
-        "onModeChanged"?: (event: CreateFeatureCustomEvent<void>) => void;
-        /**
-          * Emitted on demand when editor panel changes
-         */
-        "onProgressStatus"?: (event: CreateFeatureCustomEvent<number>) => void;
-        /**
-          * Emitted on demand when the feature is created successfully
-         */
-        "onSuccess"?: (event: CreateFeatureCustomEvent<void>) => void;
-        /**
-          * ISearchConfiguration: Configuration details for the Search widget
-         */
-        "searchConfiguration"?: ISearchConfiguration;
-        /**
-          * string: Layer id of the feature layer in which the new feature is to be created
-         */
         "selectedLayerId"?: string;
     }
     interface CreateRelatedFeature {

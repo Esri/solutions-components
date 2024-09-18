@@ -88,7 +88,7 @@ const MapFullscreen = /*@__PURE__*/ proxyCustomElement(class MapFullscreen exten
      * Renders the component.
      */
     render() {
-        return (h(Host, { key: '57cf43d121435c4db3c4847bb909ee77986d2f39' }, h("div", { key: 'e748dbb1924d588d3aa3cef1cfc7d9524a08ff1e', class: "fullscreen-widget", ref: (el) => { this._fullscreenElement = el; } })));
+        return (h(Host, { key: 'f003ce9ba7180a5ff185946b4d63b179668ec7df' }, h("div", { key: 'b481e12d1ae6a3ca15e0f631d37c94ee6ad38621', class: "fullscreen-widget", ref: (el) => { this._fullscreenElement = el; } })));
     }
     /**
      * StencilJS: Called just after the component updates.

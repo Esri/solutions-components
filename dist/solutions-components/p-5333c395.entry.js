@@ -1335,7 +1335,7 @@ const MapLayerPicker = class {
         const id = "map-layer-picker";
         let style = this.height > 0 ? { "height": `${this.height.toString()}px` } : {};
         style = { ...style, "display": this.display };
-        return (h(Host, { key: 'd575e7f5ef535d37466d8dc7b0c3d3de35e9b3fd' }, h("div", { key: '18010837a120b62adce243097d428ca424180c2c', class: "map-layer-picker-container", style: style }, h("div", { key: 'e9b625ab31cd069c2442f24ad81d747902a72ded', class: "map-layer-picker", style: style }, !this._hasValidLayers ? this._getInvalidPlaceholder() :
+        return (h(Host, { key: '6bd9676490aafa65af126b9cd8ed78e20040d90d' }, h("div", { key: '7664ab6c8631f32632120cc9fc2a75a5677ce808', class: "map-layer-picker-container", style: style }, h("div", { key: 'ddf7ba679279c436448d9a29a21e17e32ea24e58', class: "map-layer-picker", style: style }, !this._hasValidLayers ? this._getInvalidPlaceholder() :
             !this._hasMultipleLayers && this.showSingleLayerAsLabel ? this._getSingleLayerPlaceholder() :
                 this.type === "combobox" ? this._getCombobox(id) :
                     this.type === "select" ? this._getSelect(id) : this._getDropdown(id)))));

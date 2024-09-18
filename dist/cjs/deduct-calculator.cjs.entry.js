@@ -80,7 +80,7 @@ const DeductCalculator = class {
      * Renders the component.
      */
     render() {
-        return (index.h(index.Host, { key: '6a017676a4d4cce0ac332906e62630c93d673dd1' }, index.h("div", { key: '4411f75b59666e2bd268446a3e91558c803cbab6', class: "label-display" }, index.h("calcite-label", { key: '764e02dfc4e8224a2e7bab3ad0e90d611ff68911', class: "label-display" }, "Density %", this._getDensityInput()), index.h("calcite-label", { key: 'b939b06882ef6a14325f327644096d7a7a814ed5', class: "label-display" }, "Type", this._getTypeInput()), index.h("calcite-label", { key: 'a4b9801ca974b3ac8525080b8e1bcd4906ab4944', class: "label-display" }, "Severity", this._getSeverityInput())), index.h("div", { key: 'b47be60c381513f386569ca5a80525cbfdeaa0af' }, this._getCalculateInput())));
+        return (index.h(index.Host, { key: '91c8f30ddfe8352072d500ba7d5fde8e798d0334' }, index.h("div", { key: '14e8ba737c9e11266d44696a231237fdb3e8c136', class: "label-display" }, index.h("calcite-label", { key: 'ea886f5642ea3788833ee1c802c9ecb581fe19be', class: "label-display" }, "Density %", this._getDensityInput()), index.h("calcite-label", { key: '512f01b622c0e05d6a725a3abf63b94954509617', class: "label-display" }, "Type", this._getTypeInput()), index.h("calcite-label", { key: '74d99dca77cc01174bd115cf8a149c01c3b61000', class: "label-display" }, "Severity", this._getSeverityInput())), index.h("div", { key: 'd3a43fd6a2ecffa7e2b2a24df7257b11e7c3024e' }, this._getCalculateInput())));
     }
     //--------------------------------------------------------------------------
     //

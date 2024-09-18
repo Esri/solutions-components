@@ -46,7 +46,7 @@ const SolutionContents = class {
      * Renders the component.
      */
     render() {
-        return (index.h(index.Host, { key: '98ca82042eb168779c0c373c9bf5136ae620ff70' }, index.h("calcite-tree", { key: 'c1c634c98e1a69c88c118a8f61036e04ea1b6b42' }, this.renderHierarchy(this.templateHierarchy))));
+        return (index.h(index.Host, { key: '200d61d2f9211532be1dd4bdb49ac734e1c5ac2e' }, index.h("calcite-tree", { key: 'ab16d9e44e222909b533fbbf2bd3a0765757fdcc' }, this.renderHierarchy(this.templateHierarchy))));
     }
     renderHierarchy(objs) {
         return objs.map((obj) => {
@@ -143,7 +143,7 @@ const SolutionItem = class {
      * Renders the component.
      */
     render() {
-        return (index.h(index.Host, { key: 'acd5fdfcaef04991d44f87ea756a1951b3f0642d' }, index.h("div", { key: 'f5574d3bb9a015353abb66bb82e5266b5ac109ab', class: "configuration-container" }, index.h("div", { key: 'fa07547d46a264400a85998a16a6a10eeb76d39e', class: "configuration" }, this._showGroupTabs(this.itemType === "Group"), this._showItemTabs(this.itemType !== "Group")))));
+        return (index.h(index.Host, { key: '8b5f7a24442a44ebc954194c2e2c0bf06e526564' }, index.h("div", { key: 'd0a1c3a23db0ffb2190fb5359e698a99972bb2ad', class: "configuration-container" }, index.h("div", { key: 'd6cb91c8b1db4ee0d93cd62218acae1161f3be12', class: "configuration" }, this._showGroupTabs(this.itemType === "Group"), this._showItemTabs(this.itemType !== "Group")))));
     }
     //--------------------------------------------------------------------------
     //
@@ -235,7 +235,7 @@ const SolutionSpatialRef = class {
     }
     render() {
         this._updateUIFromStore();
-        return (index.h(index.Host, { key: 'f2c603befdfe68e8786ad9ecf4372c3e30a0d7c9' }, index.h("label", { key: '5bcd7df8edb0732f030c9b5a79070b8edfe41c93', class: "switch-label" }, index.h("calcite-switch", { key: '2474efeeded9c8a5caac71cab1ebd5cbe0177607', checked: this.enabled, class: "spatial-ref-switch", onCalciteSwitchChange: (event) => this.enabled = event.target.checked, scale: "m" }), this._translations.enableSpatialReference), index.h("br", { key: 'c6ba57097163af5d2a77240a980b3399320fd406' }), index.h("div", { key: '1dc102993f8c6d5f7f1c88e1d034afe2e287caa2', class: "spatial-ref-component", id: "spatialRefDefn" }, this._renderFeatureServicesList(this.featureServices)), index.h("label", { key: 'a08457ccda613337c88c48e718919315c2c6392d', class: "switch-label spatial-ref-component" }, index.h("calcite-switch", { key: '5e32b27b06b5a073c40b7f0f2fa254444b5bd3c4', checked: this.enableDefault, class: "spatial-ref-switch", disabled: !this.enabled, onCalciteSwitchChange: (event) => this.enableDefault = event.target.checked, scale: "m" }), this._translations.enableDefaultSpatialReference)));
+        return (index.h(index.Host, { key: '835e6d8b70668d9d2c7766bb7753a3db7ea60a12' }, index.h("label", { key: '51c330a8a763f2d9f2b89a4d0bae07b0f83822be', class: "switch-label" }, index.h("calcite-switch", { key: 'a955d4823778a1f566c50fcab8cfcb6ab455aede', checked: this.enabled, class: "spatial-ref-switch", onCalciteSwitchChange: (event) => this.enabled = event.target.checked, scale: "m" }), this._translations.enableSpatialReference), index.h("br", { key: '4f93908066350e19971555dd5f8b0523099891a9' }), index.h("div", { key: '5ce90b808f7d8d48180cae9401563162667fbacd', class: "spatial-ref-component", id: "spatialRefDefn" }, this._renderFeatureServicesList(this.featureServices)), index.h("label", { key: '41ce5fbba44389c4251a860c5cfbad776175546a', class: "switch-label spatial-ref-component" }, index.h("calcite-switch", { key: '5b425d78d1d257ac724f949132ae59de661e4cd4', checked: this.enableDefault, class: "spatial-ref-switch", disabled: !this.enabled, onCalciteSwitchChange: (event) => this.enableDefault = event.target.checked, scale: "m" }), this._translations.enableDefaultSpatialReference)));
     }
     //--------------------------------------------------------------------------
     //

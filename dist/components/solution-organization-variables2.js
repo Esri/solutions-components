@@ -41,7 +41,7 @@ const SolutionOrganizationVariables = /*@__PURE__*/ proxyCustomElement(class Sol
      * Renders the component.
      */
     render() {
-        return (h(Host, { key: 'e84690899c2e378ddc30676d53c0199c52bcdbef' }, h("div", { key: '41599319f26d5348d3766e8208fcc22bd97741c5' }, h("h4", { key: 'ee898a64a72159101ab89b946679f7ada661a2ef', class: "org-var-header" }, this._translations.orgVariables)), h("div", { key: '091a202b8c710ff9bb7c03e868a00f79e756d201', class: "container-border" }, h("calcite-tree", { key: '6ff1bb7fe8f286852d01ccecf19d35c3e85fb5f6', id: "variable-label" }, this._renderHierarchy(this._organizationVariables)))));
+        return (h(Host, { key: '587896d0bc46f7af3414d51eca75626deb25c128' }, h("div", { key: '8377fc249d3769106f11666649cf7e70e6388553' }, h("h4", { key: 'c21c1242a68809f10a3c3297957a3767ef57d69f', class: "org-var-header" }, this._translations.orgVariables)), h("div", { key: '1d53770ddf75cf7a2475c3584092599103c2148d', class: "container-border" }, h("calcite-tree", { key: '48857da7785529abd0a8574e8f08964199313c81', id: "variable-label" }, this._renderHierarchy(this._organizationVariables)))));
     }
     //--------------------------------------------------------------------------
     //

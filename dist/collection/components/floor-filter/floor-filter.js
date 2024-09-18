@@ -127,7 +127,7 @@ export class FloorFilter {
      * Renders the component.
      */
     render() {
-        return (h(Host, { key: '8c59ed98841f476670392c6ebd9dc764d72f4733' }, h("div", { key: 'b2400febc768a595dbcc6933af1565da173d97f5', ref: (el) => { this._floorFilterElement = el; } })));
+        return (h(Host, { key: '58ea8b42e8d90df3f7748241c0e5a48d29c42070' }, h("div", { key: '29eaa9555b67d6deadee5438afd93694ba810f45', ref: (el) => { this._floorFilterElement = el; } })));
     }
     /**
      * StencilJS: Called once just after the component is first loaded.

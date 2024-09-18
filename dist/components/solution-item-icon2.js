@@ -26,7 +26,7 @@ const SolutionItemIcon = /*@__PURE__*/ proxyCustomElement(class SolutionItemIcon
      * Renders the component.
      */
     render() {
-        return h("div", { key: 'e14a2bed4b4c74b5959d7b12f73f9c8a1b374e6d', title: this.type }, h("img", { key: 'd7a7eccc3361946b2641e8499af21b199792a223', class: "item-type-icon item-type-icon-margin", height: "16", src: this._getIconUrl(this.type, this.typeKeywords), width: "16" }));
+        return h("div", { key: 'cec4024779fdca31fe170a0aa469094024aa040d', title: this.type }, h("img", { key: '6a70335c018a04592e47b58dbd10737a8771fb87', class: "item-type-icon item-type-icon-margin", height: "16", src: this._getIconUrl(this.type, this.typeKeywords), width: "16" }));
     }
     //--------------------------------------------------------------------------
     //

@@ -73,7 +73,7 @@ const SolutionItem = /*@__PURE__*/ proxyCustomElement(class SolutionItem extends
      * Renders the component.
      */
     render() {
-        return (h(Host, { key: 'acd5fdfcaef04991d44f87ea756a1951b3f0642d' }, h("div", { key: 'f5574d3bb9a015353abb66bb82e5266b5ac109ab', class: "configuration-container" }, h("div", { key: 'fa07547d46a264400a85998a16a6a10eeb76d39e', class: "configuration" }, this._showGroupTabs(this.itemType === "Group"), this._showItemTabs(this.itemType !== "Group")))));
+        return (h(Host, { key: '8b5f7a24442a44ebc954194c2e2c0bf06e526564' }, h("div", { key: 'd0a1c3a23db0ffb2190fb5359e698a99972bb2ad', class: "configuration-container" }, h("div", { key: 'd6cb91c8b1db4ee0d93cd62218acae1161f3be12', class: "configuration" }, this._showGroupTabs(this.itemType === "Group"), this._showItemTabs(this.itemType !== "Group")))));
     }
     //--------------------------------------------------------------------------
     //

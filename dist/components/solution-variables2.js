@@ -42,7 +42,7 @@ const SolutionVariables = /*@__PURE__*/ proxyCustomElement(class SolutionVariabl
      * Renders the component.
      */
     render() {
-        return (h(Host, { key: '51a1c5b70a98964bc4ffe33a94dc3555a959c82b' }, h("div", { key: '0dfa406bacb18becccc9a78bb191972d1c40141d' }, h("h4", { key: 'b0b8dcfd320cf44464c07fadf08121ee45f78ab5', class: "org-var-header" }, this._translations.solVariables)), h("div", { key: '01421759487d2a79a24fff4fbae2077ee00e0cd1', class: "container-border" }, h("calcite-tree", { key: 'a8952b2a7035122914cf62044d67f00261054548', id: "variable-label" }, this._renderHierarchy(this._solutionVariables)))));
+        return (h(Host, { key: '4e92cbf7b038e47064d115fa3acedc7c97740b74' }, h("div", { key: '0286eccf36b633f9136d41c91d294a08d9f422a9' }, h("h4", { key: 'c11b186149971f39226f5698cbd3655c410a2432', class: "org-var-header" }, this._translations.solVariables)), h("div", { key: '6396b897a2fca64b80c10e3fa4c199487173e6b0', class: "container-border" }, h("calcite-tree", { key: 'f041b9c84e8f73b6549c4668bef11c1c0633b38b', id: "variable-label" }, this._renderHierarchy(this._solutionVariables)))));
     }
     //--------------------------------------------------------------------------
     //

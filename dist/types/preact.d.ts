@@ -546,14 +546,7 @@ declare module "preact/src/jsx" {
         "onconsentGranted"?: (event: CustomEvent<any>) => void;
       }
 
-      "create-feature": Omit<JSX.SolutionsCreateFeature, "onSuccess" | "onFail" | "onDrawComplete" | "onEditingAttachment" | "onProgressStatus" | "onModeChanged"> & JSXInternal.HTMLAttributes<HTMLSolutionsCreateFeatureElement> & {
-        "onsuccess"?: (event: CustomEvent<any>) => void;
-        "onfail"?: (event: CustomEvent<any>) => void;
-        "ondrawComplete"?: (event: CustomEvent<any>) => void;
-        "oneditingAttachment"?: (event: CustomEvent<any>) => void;
-        "onprogressStatus"?: (event: CustomEvent<any>) => void;
-        "onmodeChanged"?: (event: CustomEvent<any>) => void;
-      }
+      "create-feature": JSX.SolutionsCreateFeature & JSXInternal.HTMLAttributes<HTMLSolutionsCreateFeatureElement>
 
       "create-related-feature": Omit<JSX.SolutionsCreateRelatedFeature, "onSuccess" | "onFail" | "onIsActionPending" | "onFormReady"> & JSXInternal.HTMLAttributes<HTMLSolutionsCreateRelatedFeatureElement> & {
         "onsuccess"?: (event: CustomEvent<any>) => void;

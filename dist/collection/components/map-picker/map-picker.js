@@ -120,7 +120,7 @@ export class MapPicker {
      * Renders the component.
      */
     render() {
-        return (h(Host, { key: 'd9ee2182be2b3fbec5235e814d4929fa4d23a234' }, this._getToolbar(), this._getMapNameList(this._mapListExpanded)));
+        return (h(Host, { key: '9ac9f64b29fe9b9c4a4b2236c1a07e1ef4e845ce' }, this._getToolbar(), this._getMapNameList(this._mapListExpanded)));
     }
     /**
      * Called once after the component has loaded

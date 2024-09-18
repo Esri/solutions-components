@@ -52,7 +52,7 @@ export class SolutionItemSharing {
      * Renders the component.
      */
     render() {
-        return (h(Host, { key: '8e4b35f389636c179685f0447e536d0eeabdd7ec' }, h("div", { key: 'a87684b15a96e580f9a203bba479f4d3d2c8db45', class: "container-border" }, h("calcite-label", { key: 'b1b62e4887674de5b572c457a1adf2c2a1f977eb' }, this._translations.groupInfo), this._renderItems(this.sharing))));
+        return (h(Host, { key: '211d5e7096e178ab077f63e7ee9289e1d286a4aa' }, h("div", { key: '191aad2e7c72134349364fbf1020aaf2b104be09', class: "container-border" }, h("calcite-label", { key: '590768adecc53b99c73293a118c8f7d7e63b4acb' }, this._translations.groupInfo), this._renderItems(this.sharing))));
     }
     //--------------------------------------------------------------------------
     //

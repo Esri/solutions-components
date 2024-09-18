@@ -62,7 +62,7 @@ export class ShareItem {
     //
     //--------------------------------------------------------------------------
     render() {
-        return (h(Host, { key: 'a8d200d4f119571b482fa8c9f87d759458157fe3' }, h("slot", { key: '4132e6115646706d66d9648fad26050233045754' })));
+        return (h(Host, { key: '17019e6a85cc0c41c221808b0d5a694215493f98' }, h("slot", { key: 'bd4613b9fe970e8e6d1b67a707f31525d6dfde19' })));
     }
     static get is() { return "share-item"; }
     static get encapsulation() { return "shadow"; }

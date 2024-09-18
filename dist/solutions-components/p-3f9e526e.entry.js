@@ -5,10 +5,10 @@
  */
 import { r as registerInstance, g as getElement, h, H as Host } from './p-6eb37ed2.js';
 
-const featureFormFlowItemCss = ":host{display:block}";
-const FeatureFormFlowItemStyle0 = featureFormFlowItemCss;
+const shareItemCss = ":host{display:block}";
+const ShareItemStyle0 = shareItemCss;
 
-const FeatureFormFlowItem = class {
+const ShareItem = class {
     constructor(hostRef) {
         registerInstance(this, hostRef);
     }
@@ -49,9 +49,9 @@ const FeatureFormFlowItem = class {
     //
     //--------------------------------------------------------------------------
     render() {
-        return (h(Host, { key: 'e4cd5ed27b476b7f5ed699ed13422b54b84be2e5' }, h("slot", { key: 'b73e8f8b52ac166b0e85f3114ed0fb0d57a7fec9' })));
+        return (h(Host, { key: '17019e6a85cc0c41c221808b0d5a694215493f98' }, h("slot", { key: 'bd4613b9fe970e8e6d1b67a707f31525d6dfde19' })));
     }
 };
-FeatureFormFlowItem.style = FeatureFormFlowItemStyle0;
+ShareItem.style = ShareItemStyle0;
 
-export { FeatureFormFlowItem as feature_form_flow_item };
+export { ShareItem as share_item };

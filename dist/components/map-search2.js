@@ -101,7 +101,7 @@ const MapSearch = /*@__PURE__*/ proxyCustomElement(class MapSearch extends HTMLE
      * Renders the component.
      */
     render() {
-        return (h(Host, { key: '0c34af04212bf27998363a55afbfe76f57124a93' }, h("div", { key: '2bec13054279a3ca132056269a71356c542354ef', class: "search-widget", ref: (el) => { this._searchElement = el; } })));
+        return (h(Host, { key: 'ca7aaf64d344eab526149d4086eb14c7a2cf6c29' }, h("div", { key: '722593cd44042118e738f86084e0faa29140773e', class: "search-widget", ref: (el) => { this._searchElement = el; } })));
     }
     //--------------------------------------------------------------------------
     //

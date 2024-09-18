@@ -291,7 +291,7 @@ const PdfDownload = /*@__PURE__*/ proxyCustomElement(class PdfDownload extends H
      * Renders the component.
      */
     render() {
-        return (h(Host, { key: 'a2a528f3bb24b8ea11bac5e4e7bfcc87ba81a794' }, h("calcite-select", { key: '65188bbe9f8c18e5fde98a2f2dd96961a2354d61', disabled: this.disabled, label: "", ref: (el) => { this._labelInfoElement = el; } })));
+        return (h(Host, { key: 'a419c7cae9b09d545b027c3e2f0a30c40c7882b7' }, h("calcite-select", { key: '2da2a45b186f8338950d2bfa9b517248318bb7be', disabled: this.disabled, label: "", ref: (el) => { this._labelInfoElement = el; } })));
     }
     componentDidLoad() {
         // Render the options outside of Stencil's rendering so that it doesn't mangle RTL text with embedded LTR

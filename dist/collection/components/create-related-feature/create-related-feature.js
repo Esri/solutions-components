@@ -167,7 +167,7 @@ export class CreateRelatedFeature {
     }
     render() {
         const loaderClass = this._editorLoading ? "" : "display-none";
-        return (h("calcite-loader", { key: 'f78b296f74ee01aadc0443abd0bb78b68a7d9f3e', class: loaderClass, label: "", scale: "s" }));
+        return (h("calcite-loader", { key: '58e20b0723d76b27652f655c598628b43dde70e3', class: loaderClass, label: "", scale: "s" }));
     }
     /**
      * StencilJS: Called once just after the component is fully loaded and the first render() occurs.

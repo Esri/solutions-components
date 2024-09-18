@@ -5,10 +5,10 @@
  */
 import { r as registerInstance, g as getElement, h, H as Host } from './p-6eb37ed2.js';
 
-const listFlowItemCss = ":host{display:block}";
-const ListFlowItemStyle0 = listFlowItemCss;
+const featureFormFlowItemCss = ":host{display:block}";
+const FeatureFormFlowItemStyle0 = featureFormFlowItemCss;
 
-const ListFlowItem = class {
+const FeatureFormFlowItem = class {
     constructor(hostRef) {
         registerInstance(this, hostRef);
     }
@@ -49,9 +49,9 @@ const ListFlowItem = class {
     //
     //--------------------------------------------------------------------------
     render() {
-        return (h(Host, { key: 'de2fbee0068872b2eed39cb528169156a4f69615' }, h("slot", { key: '2fe9659669fe24fd4921c64548dcca0ed57111b9' })));
+        return (h(Host, { key: '9745847efb7d9c8401c46e9fb39bbc3e504d4226' }, h("slot", { key: '4dd37d4b0152928c5557c5a69e04f95782f310b3' })));
     }
 };
-ListFlowItem.style = ListFlowItemStyle0;
+FeatureFormFlowItem.style = FeatureFormFlowItemStyle0;
 
-export { ListFlowItem as list_flow_item };
+export { FeatureFormFlowItem as feature_form_flow_item };

@@ -5,10 +5,10 @@
  */
 import { r as registerInstance, g as getElement, h, H as Host } from './p-6eb37ed2.js';
 
-const refineResultsFlowItemCss = ":host{display:block}";
-const RefineResultsFlowItemStyle0 = refineResultsFlowItemCss;
+const featuresFlowItemCss = ":host{display:block}";
+const FeaturesFlowItemStyle0 = featuresFlowItemCss;
 
-const RefineResultsFlowItem = class {
+const FeaturesFlowItem = class {
     constructor(hostRef) {
         registerInstance(this, hostRef);
     }
@@ -49,9 +49,9 @@ const RefineResultsFlowItem = class {
     //
     //--------------------------------------------------------------------------
     render() {
-        return (h(Host, { key: '80b7f73a51e599fecc98483da51aa24ebbd0efed' }, h("slot", { key: '0824e1e1a33659e6161aab76449a6df39538398a' })));
+        return (h(Host, { key: '8835038a1450d5a22a80e5820091ef16aaab1209' }, h("slot", { key: '03b83a05ba2e928e7b1cc963ab6a3f133fca184e' })));
     }
 };
-RefineResultsFlowItem.style = RefineResultsFlowItemStyle0;
+FeaturesFlowItem.style = FeaturesFlowItemStyle0;
 
-export { RefineResultsFlowItem as refine_results_flow_item };
+export { FeaturesFlowItem as features_flow_item };

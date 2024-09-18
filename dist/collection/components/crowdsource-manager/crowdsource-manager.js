@@ -229,7 +229,7 @@ export class CrowdsourceManager {
     render() {
         // only avoid border when we have a header color that is not white
         const borderClass = this.popupHeaderColor && this.popupHeaderColor !== "#FFFFFF" ? "border-width-0" : "";
-        return (h(Host, { key: '0abfec918880517059451fe7a8c1a321dd4a4136' }, h("calcite-shell", { key: '3be18a3470f15539a74b7b0d3359ebed9d0e56b4', class: "position-relative" }, h("calcite-panel", { key: '8d5df3c949d140945f39bea9bc2a02b06b6ba41c', class: `width-full height-full ${borderClass}` }, this._getBody(this._layoutMode, this._panelOpen, this._hideTable)), this._getFooter()), this._filterModal()));
+        return (h(Host, { key: '2d340c7f7ed907d3ff3cb33b90c86db4b077f242' }, h("calcite-shell", { key: '055ab55766cd9b1649a051a3b18fdfd5ad2f62ac', class: "position-relative" }, h("calcite-panel", { key: '5400d40b43288946f08bc3846b4d60cff6e4a03d', class: `width-full height-full ${borderClass}` }, this._getBody(this._layoutMode, this._panelOpen, this._hideTable)), this._getFooter()), this._filterModal()));
     }
     /**
      * Called after each render

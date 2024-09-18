@@ -73,7 +73,7 @@ const MapLegend = /*@__PURE__*/ proxyCustomElement(class MapLegend extends HTMLE
      * StencilJS: Renders the component.
      */
     render() {
-        return (h(Host, { key: '32e729a3a7b4989ced535b78b5ca4aa38b9dcc71' }, h("div", { key: '87a583eaad85b2b163a6f7349e65f00d5a29d0b7', ref: (el) => { this._legendElement = el; } })));
+        return (h(Host, { key: '0f3f0f99502cf78d90b13cc33a809ffea7871e6b' }, h("div", { key: '2de68eac9fd318d2dc3f87fdee8eca3387273c3b', ref: (el) => { this._legendElement = el; } })));
     }
     /**
      * StencilJS: Called once just after the component is fully loaded and the first render() occurs.

@@ -38,7 +38,7 @@ const SolutionContents = /*@__PURE__*/ proxyCustomElement(class SolutionContents
      * Renders the component.
      */
     render() {
-        return (h(Host, { key: '98ca82042eb168779c0c373c9bf5136ae620ff70' }, h("calcite-tree", { key: 'c1c634c98e1a69c88c118a8f61036e04ea1b6b42' }, this.renderHierarchy(this.templateHierarchy))));
+        return (h(Host, { key: '200d61d2f9211532be1dd4bdb49ac734e1c5ac2e' }, h("calcite-tree", { key: 'ab16d9e44e222909b533fbbf2bd3a0765757fdcc' }, this.renderHierarchy(this.templateHierarchy))));
     }
     renderHierarchy(objs) {
         return objs.map((obj) => {

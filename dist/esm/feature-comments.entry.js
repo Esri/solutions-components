@@ -49,7 +49,7 @@ const FeatureComments = class {
     //
     //--------------------------------------------------------------------------
     render() {
-        return (h(Host, { key: '0d331b7c201854181dcf80f6192de2c00218b50c' }, h("slot", { key: '4b602b73d1b6d773eb49eace91df6613117e974d' })));
+        return (h(Host, { key: '780210a9c941efcb5f4e3b787f5c8f755047839c' }, h("slot", { key: '7ddfe4c00b1512c2f66aaf997c54c82e3059d8e5' })));
     }
 };
 FeatureComments.style = FeatureCommentsStyle0;

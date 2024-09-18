@@ -62,7 +62,7 @@ export class RefineResultsFlowItem {
     //
     //--------------------------------------------------------------------------
     render() {
-        return (h(Host, { key: '80b7f73a51e599fecc98483da51aa24ebbd0efed' }, h("slot", { key: '0824e1e1a33659e6161aab76449a6df39538398a' })));
+        return (h(Host, { key: 'd1f952cad2e50fe212a22537865d655f6b9d50c2' }, h("slot", { key: '3b1f2d38c8f21bb92868be92a370d6e175e9b52d' })));
     }
     static get is() { return "refine-results-flow-item"; }
     static get encapsulation() { return "shadow"; }

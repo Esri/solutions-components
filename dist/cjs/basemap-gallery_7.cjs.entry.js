@@ -253,7 +253,7 @@ const FloorFilter = class {
      * Renders the component.
      */
     render() {
-        return (index.h(index.Host, { key: '8c59ed98841f476670392c6ebd9dc764d72f4733' }, index.h("div", { key: 'b2400febc768a595dbcc6933af1565da173d97f5', ref: (el) => { this._floorFilterElement = el; } })));
+        return (index.h(index.Host, { key: '58ea8b42e8d90df3f7748241c0e5a48d29c42070' }, index.h("div", { key: '29eaa9555b67d6deadee5438afd93694ba810f45', ref: (el) => { this._floorFilterElement = el; } })));
     }
     /**
      * StencilJS: Called once just after the component is first loaded.
@@ -420,7 +420,7 @@ const MapFullscreen = class {
      * Renders the component.
      */
     render() {
-        return (index.h(index.Host, { key: '57cf43d121435c4db3c4847bb909ee77986d2f39' }, index.h("div", { key: 'e748dbb1924d588d3aa3cef1cfc7d9524a08ff1e', class: "fullscreen-widget", ref: (el) => { this._fullscreenElement = el; } })));
+        return (index.h(index.Host, { key: 'f003ce9ba7180a5ff185946b4d63b179668ec7df' }, index.h("div", { key: 'b481e12d1ae6a3ca15e0f631d37c94ee6ad38621', class: "fullscreen-widget", ref: (el) => { this._fullscreenElement = el; } })));
     }
     /**
      * StencilJS: Called just after the component updates.
@@ -547,7 +547,7 @@ const MapLegend = class {
      * StencilJS: Renders the component.
      */
     render() {
-        return (index.h(index.Host, { key: '32e729a3a7b4989ced535b78b5ca4aa38b9dcc71' }, index.h("div", { key: '87a583eaad85b2b163a6f7349e65f00d5a29d0b7', ref: (el) => { this._legendElement = el; } })));
+        return (index.h(index.Host, { key: '0f3f0f99502cf78d90b13cc33a809ffea7871e6b' }, index.h("div", { key: '2de68eac9fd318d2dc3f87fdee8eca3387273c3b', ref: (el) => { this._legendElement = el; } })));
     }
     /**
      * StencilJS: Called once just after the component is fully loaded and the first render() occurs.
@@ -697,7 +697,7 @@ const MapPicker = class {
      * Renders the component.
      */
     render() {
-        return (index.h(index.Host, { key: 'd9ee2182be2b3fbec5235e814d4929fa4d23a234' }, this._getToolbar(), this._getMapNameList(this._mapListExpanded)));
+        return (index.h(index.Host, { key: '9ac9f64b29fe9b9c4a4b2236c1a07e1ef4e845ce' }, this._getToolbar(), this._getMapNameList(this._mapListExpanded)));
     }
     /**
      * Called once after the component has loaded
@@ -881,7 +881,7 @@ const MapSearch = class {
      * Renders the component.
      */
     render() {
-        return (index.h(index.Host, { key: '0c34af04212bf27998363a55afbfe76f57124a93' }, index.h("div", { key: '2bec13054279a3ca132056269a71356c542354ef', class: "search-widget", ref: (el) => { this._searchElement = el; } })));
+        return (index.h(index.Host, { key: 'ca7aaf64d344eab526149d4086eb14c7a2cf6c29' }, index.h("div", { key: '722593cd44042118e738f86084e0faa29140773e', class: "search-widget", ref: (el) => { this._searchElement = el; } })));
     }
     //--------------------------------------------------------------------------
     //
@@ -1179,7 +1179,7 @@ const MapTools = class {
         const toolMarginClass = this.enableSingleExpand ? "margin-top-1-2" : "";
         const toolOrder = this.toolOrder ? this.toolOrder : ["legend", "search", "fullscreen", "floorfilter"];
         const shadowClass = this.stackTools ? "box-shadow" : "";
-        return (index.h(index.Host, { key: 'd4774c7ae6c327804d092b4b81f7e3523820726d' }, index.h("div", { key: '35363080c21040b94276b4362632dc2d46c8eb58', class: containerClass }, this.enableSingleExpand ? (index.h("div", { class: "box-shadow" }, this._getActionGroup(toggleIcon, false, expandTip, () => this._toggleTools()))) : undefined, index.h("div", { key: 'd7e547203dfd373e031f424499af9b15193ee76c', class: `${toolMarginClass} ${shadowClass} ${toolsClass}` }, this._getMapWidgets(toolOrder))), index.h("basemap-gallery", { key: '7518c0e1378bf2343f681677d849535a2ae363ab', basemapConfig: this.basemapConfig, class: basemapClass, mapView: this.mapView, ref: (el) => { this._basemapElement = el; } }), index.h("map-search", { key: '0c0d5497546a8ab8afd4169134c7689f964bcf65', class: searchClass, mapView: this.mapView, ref: (el) => { this._searchElement = el; }, resultGraphicEnabled: true, searchConfiguration: this.searchConfiguration }), index.h("map-legend", { key: 'cf29e237446037731a2b4214634cb7aa3102f6d1', class: legendClass, mapView: this.mapView, ref: (el) => { this._legendElement = el; } }), index.h("map-fullscreen", { key: '3dbc331ed548e13e86cfbc916439b7cf09bb5f10', class: fullscreenClass, mapView: this.mapView, onFullscreenStateChange: (evt) => this._fullscreenStateChange(evt.detail), ref: (el) => { this._fullscreenElement = el; } }), index.h("floor-filter", { key: '2738d4f1dda01ffb4f71708fdac76be82f36e037', class: floorFilterClass, enabled: this.enableFloorFilter, mapView: this.mapView, ref: (el) => { this._floorFilterElement = el; } })));
+        return (index.h(index.Host, { key: 'e0995a03a8fb9cb887f8815f97c74aa9ba559df5' }, index.h("div", { key: 'e915bd8b78b67a59607c2deb6061d13225fa840a', class: containerClass }, this.enableSingleExpand ? (index.h("div", { class: "box-shadow" }, this._getActionGroup(toggleIcon, false, expandTip, () => this._toggleTools()))) : undefined, index.h("div", { key: '000ebbb0b2de46b441998158fc6d69e0a2320f79', class: `${toolMarginClass} ${shadowClass} ${toolsClass}` }, this._getMapWidgets(toolOrder))), index.h("basemap-gallery", { key: '3c503c3d7947fc803f3991ccf51f87e433597259', basemapConfig: this.basemapConfig, class: basemapClass, mapView: this.mapView, ref: (el) => { this._basemapElement = el; } }), index.h("map-search", { key: '96ba814dc1f86584e87836c5e494daade397e2d1', class: searchClass, mapView: this.mapView, ref: (el) => { this._searchElement = el; }, resultGraphicEnabled: true, searchConfiguration: this.searchConfiguration }), index.h("map-legend", { key: '0d05fb6d15c26f8b7158c6d2ee64170609b5a9d4', class: legendClass, mapView: this.mapView, ref: (el) => { this._legendElement = el; } }), index.h("map-fullscreen", { key: '92e9c07ed0961572e4305c62706fbac34e231b89', class: fullscreenClass, mapView: this.mapView, onFullscreenStateChange: (evt) => this._fullscreenStateChange(evt.detail), ref: (el) => { this._fullscreenElement = el; } }), index.h("floor-filter", { key: 'ac614a82eeeecdfb9dc04f6621553000681b3e68', class: floorFilterClass, enabled: this.enableFloorFilter, mapView: this.mapView, ref: (el) => { this._floorFilterElement = el; } })));
     }
     //--------------------------------------------------------------------------
     //

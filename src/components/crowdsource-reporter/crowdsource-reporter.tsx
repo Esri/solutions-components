@@ -503,9 +503,7 @@ export class CrowdsourceReporter {
     if (this._featureList) {
       void this._featureList.refresh();
     }
-    if (this._createFeature) {
-      void this._createFeature.refresh(this.floorLevel);
-    }
+
   }
 
   //--------------------------------------------------------------------------
@@ -773,7 +771,7 @@ export class CrowdsourceReporter {
 
   /**
    * Restores the applied filters
-   * @protected 
+   * @protected
    */
   protected _restoreFilters(): void {
     // call the restore function when instant-apps-filter-list is ready
@@ -923,19 +921,8 @@ export class CrowdsourceReporter {
             <div slot="message">{this._translations.featureEditFormInfoMsg}</div>
           </calcite-notice>
           <create-feature
-            customizeSubmit
-            floorLevel={this.floorLevel}
-            formElements={this._formElements.find(elm => elm.id === this._selectedLayerId)}
-            isMobile={this.isMobile}
             mapView={this.mapView}
-            onDrawComplete={this.onFormReady.bind(this)}
-            onEditingAttachment={this.showSubmitCancelButton.bind(this)}
-            onFail={this.createFeatureFailed.bind(this)}
-            onModeChanged={this.backFromCreateFeaturePanel.bind(this)}
-            onProgressStatus={this.updatedProgressStatus.bind(this)}
-            onSuccess={this.onReportSubmitted.bind(this)}
             ref={el => this._createFeature = el}
-            searchConfiguration={this.searchConfiguration}
             selectedLayerId={this._selectedLayerId}
           />
         </calcite-panel>
@@ -973,7 +960,7 @@ export class CrowdsourceReporter {
    */
   protected onCreateFeatureSubmitButtonClick(): void {
     if (this._createFeature) {
-      void this._createFeature.submit();
+
     }
   }
 
@@ -983,7 +970,7 @@ export class CrowdsourceReporter {
    */
   protected backFromCreateFeaturePanel(): void {
     if (this._createFeature) {
-      void this._createFeature.close();
+
     }
     //on back form will be closed, so update the form state
     this.backFromSelectedPanel();
@@ -1067,7 +1054,7 @@ export class CrowdsourceReporter {
    */
   protected async navigateToHomePage(): Promise<void> {
     if (this._createFeature) {
-      void this._createFeature.close();
+
     }
     if (this._layerList) {
       void this._layerList.refresh();
@@ -1778,7 +1765,7 @@ export class CrowdsourceReporter {
   }
 
   /**
-   * Gets the form template elements 
+   * Gets the form template elements
    * @protected
    */
   protected _getFormElements(): void {
@@ -1794,7 +1781,7 @@ export class CrowdsourceReporter {
         });
       }
     }
-  }  
+  }
 
   /**
    * Returns the ids of all OR configured layers that support edits with the update capability
@@ -1807,7 +1794,7 @@ export class CrowdsourceReporter {
   ): string[] {
     return Object.keys(hash).reduce((prev, cur) => {
       // check if reporting options exists consider the visible prop if else just check the supports Add
-      const showLayer = this.reportingOptions ? this._getLayersConfig(cur)?.visible 
+      const showLayer = this.reportingOptions ? this._getLayersConfig(cur)?.visible
         : hash[cur].supportsAdd;
       if (showLayer) {
         prev.push(cur);

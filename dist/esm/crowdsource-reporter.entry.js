@@ -240,9 +240,6 @@ const CrowdsourceReporter = class {
         if (this._featureList) {
             void this._featureList.refresh();
         }
-        if (this._createFeature) {
-            void this._createFeature.refresh(this.floorLevel);
-        }
     }
     //--------------------------------------------------------------------------
     //
@@ -285,7 +282,7 @@ const CrowdsourceReporter = class {
      */
     render() {
         const themeClass = this.theme === "dark" ? "calcite-mode-dark" : "calcite-mode-light";
-        return (h(Host, { key: '57ea463ae2d3eac3a23e63ed8702f5fde3743e09' }, this._reportSubmitted && h("calcite-alert", { key: '4082ad71fa4d6c3a01ec0ac6477e81b3d3bc40e1', "auto-close": true, class: themeClass + " report-submitted-msg", icon: "check-circle", kind: "success", label: "", onCalciteAlertClose: () => { this._reportSubmitted = false; }, open: true, placement: "top" }, h("div", { key: '9e042989b10a7d68347b7f34b9f31957ede3ca37', slot: "message" }, this.reportSubmittedMessage ? this.reportSubmittedMessage : this._translations.submitMsg)), this._featureCreationFailedErrorMsg && h("calcite-alert", { key: '573dc6a472b00191a1822c95ba0ee2192c486612', "auto-close": true, class: themeClass, icon: "x-octagon", kind: "danger", label: "", onCalciteAlertClose: () => { this._featureCreationFailedErrorMsg = ""; }, open: true, placement: "top" }, h("div", { key: 'f3799e01a09ccbeec651762833783d3200729f1b', slot: "title" }, this._translations.error), h("div", { key: 'cd80f9a2c8df9a4c7b5b517a9e98ce4622e230c2', slot: "message" }, this._featureCreationFailedErrorMsg)), this._commentSubmitted && h("calcite-alert", { key: '1137ce7794f36419d20a5b5d2d1f390e72713155', "auto-close": true, class: 'report-submitted ' + themeClass, icon: "check-circle", kind: "success", label: "", onCalciteAlertClose: () => { this._commentSubmitted = false; }, open: true, placement: "top" }, h("div", { key: '24a0604c3be1cab965c48ab46435c349a7d67f65', slot: "message" }, this._translations.commentSubmittedMsg)), this._addingCommentFailed && h("calcite-alert", { key: '86112e4c449e1061fa436822670dc93cb3bfe949', "auto-close": true, class: themeClass, icon: "x-octagon", kind: "danger", label: "", onCalciteAlertClose: () => { this._addingCommentFailed = false; }, open: true, placement: "top" }, h("div", { key: '94be8a14c1bf22127f8018dfe3a92304870ce70d', slot: "title" }, this._translations.error), h("div", { key: '6b30463e2ee941834fcad93e4cbe32e5a65d592d', slot: "message" }, this._translations.addingCommentFailedMsg)), h("div", { key: '9b928eab61af6ed84a0059dbc04c633c131f879b' }, h("calcite-shell", { key: 'e07ac5d7d6d8e8c8fd0001586448ab13733e2ed5', "content-behind": true }, this._getReporter()))));
+        return (h(Host, { key: '19f101c9528b57020239bb58ca68e6342948c753' }, this._reportSubmitted && h("calcite-alert", { key: 'e67c67c3dd8e125845a3c03142eb2cd898dda06d', "auto-close": true, class: themeClass + " report-submitted-msg", icon: "check-circle", kind: "success", label: "", onCalciteAlertClose: () => { this._reportSubmitted = false; }, open: true, placement: "top" }, h("div", { key: '5c5a46635f75aecd66c308272bbd906aa852b787', slot: "message" }, this.reportSubmittedMessage ? this.reportSubmittedMessage : this._translations.submitMsg)), this._featureCreationFailedErrorMsg && h("calcite-alert", { key: '54e5f763587e5e2af5b2ad7655f6214367c3948b', "auto-close": true, class: themeClass, icon: "x-octagon", kind: "danger", label: "", onCalciteAlertClose: () => { this._featureCreationFailedErrorMsg = ""; }, open: true, placement: "top" }, h("div", { key: 'a5d85b1906df763dad176cf43c1b9cb1f844bd0c', slot: "title" }, this._translations.error), h("div", { key: 'b8b29d8f517a21b9dcd3f762daa19e16182eb17d', slot: "message" }, this._featureCreationFailedErrorMsg)), this._commentSubmitted && h("calcite-alert", { key: '9b145bb3d14dd4f3a0c42fa1471e94a3d48662e3', "auto-close": true, class: 'report-submitted ' + themeClass, icon: "check-circle", kind: "success", label: "", onCalciteAlertClose: () => { this._commentSubmitted = false; }, open: true, placement: "top" }, h("div", { key: '6521601364864d6ae04d5165f784bcb8a51d4e07', slot: "message" }, this._translations.commentSubmittedMsg)), this._addingCommentFailed && h("calcite-alert", { key: '33f5503ae9829974be54d141513cedfee67648f4', "auto-close": true, class: themeClass, icon: "x-octagon", kind: "danger", label: "", onCalciteAlertClose: () => { this._addingCommentFailed = false; }, open: true, placement: "top" }, h("div", { key: '4800252ca2eca61601353dccbe2b710fed08671d', slot: "title" }, this._translations.error), h("div", { key: '38b2edc164a3a2bb197903fdb2c64440886e530c', slot: "message" }, this._translations.addingCommentFailedMsg)), h("div", { key: 'e8950bc3733837550b56073090cf618f2eeea605' }, h("calcite-shell", { key: '1fc2d22bad79beac75441c8d10920818d28058f4', "content-behind": true }, this._getReporter()))));
     }
     //--------------------------------------------------------------------------
     //
@@ -452,7 +449,7 @@ const CrowdsourceReporter = class {
      * @protected
      */
     getFeatureCreateFlowItem() {
-        return (h("calcite-flow-item", { collapsed: this.isMobile && this._sidePanelCollapsed, heading: this._selectedLayerName, onCalciteFlowItemBack: this.backFromCreateFeaturePanel.bind(this) }, this._showSubmitCancelButton && h("div", { class: "width-full", slot: "footer" }, h("calcite-button", { appearance: "solid", class: "footer-top-button footer-button", onClick: this.onCreateFeatureSubmitButtonClick.bind(this), width: "full" }, this._translations.submit), h("calcite-button", { appearance: "outline", class: "footer-button", onClick: this.backFromCreateFeaturePanel.bind(this), width: "full" }, this._translations.cancel)), h("calcite-panel", { "full-height": true, "full-width": true }, h("div", { class: "progress-bar" }, h("calcite-progress", { type: "determinate", value: this._updatedProgressBarStatus })), h("calcite-notice", { class: "notice-msg", icon: "lightbulb", kind: "success", open: true }, h("div", { slot: "message" }, this._translations.featureEditFormInfoMsg)), h("create-feature", { customizeSubmit: true, floorLevel: this.floorLevel, formElements: this._formElements.find(elm => elm.id === this._selectedLayerId), isMobile: this.isMobile, mapView: this.mapView, onDrawComplete: this.onFormReady.bind(this), onEditingAttachment: this.showSubmitCancelButton.bind(this), onFail: this.createFeatureFailed.bind(this), onModeChanged: this.backFromCreateFeaturePanel.bind(this), onProgressStatus: this.updatedProgressStatus.bind(this), onSuccess: this.onReportSubmitted.bind(this), ref: el => this._createFeature = el, searchConfiguration: this.searchConfiguration, selectedLayerId: this._selectedLayerId }))));
+        return (h("calcite-flow-item", { collapsed: this.isMobile && this._sidePanelCollapsed, heading: this._selectedLayerName, onCalciteFlowItemBack: this.backFromCreateFeaturePanel.bind(this) }, this._showSubmitCancelButton && h("div", { class: "width-full", slot: "footer" }, h("calcite-button", { appearance: "solid", class: "footer-top-button footer-button", onClick: this.onCreateFeatureSubmitButtonClick.bind(this), width: "full" }, this._translations.submit), h("calcite-button", { appearance: "outline", class: "footer-button", onClick: this.backFromCreateFeaturePanel.bind(this), width: "full" }, this._translations.cancel)), h("calcite-panel", { "full-height": true, "full-width": true }, h("div", { class: "progress-bar" }, h("calcite-progress", { type: "determinate", value: this._updatedProgressBarStatus })), h("calcite-notice", { class: "notice-msg", icon: "lightbulb", kind: "success", open: true }, h("div", { slot: "message" }, this._translations.featureEditFormInfoMsg)), h("create-feature", { mapView: this.mapView, ref: el => this._createFeature = el, selectedLayerId: this._selectedLayerId }))));
     }
     /**
      * Update the progress bar status when editor panel changes
@@ -481,18 +478,12 @@ const CrowdsourceReporter = class {
      * @protected
      */
     onCreateFeatureSubmitButtonClick() {
-        if (this._createFeature) {
-            void this._createFeature.submit();
-        }
     }
     /**
      * On back from create feature, call close editor to destroy the Editor widget instance
      * @protected
      */
     backFromCreateFeaturePanel() {
-        if (this._createFeature) {
-            void this._createFeature.close();
-        }
         //on back form will be closed, so update the form state
         this.backFromSelectedPanel();
     }
@@ -567,9 +558,6 @@ const CrowdsourceReporter = class {
      * @protected
      */
     async navigateToHomePage() {
-        if (this._createFeature) {
-            void this._createFeature.close();
-        }
         if (this._layerList) {
             void this._layerList.refresh();
         }

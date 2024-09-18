@@ -70,7 +70,7 @@ export class SpatialRef {
      * Renders the component.
      */
     render() {
-        return (h(Host, { key: 'f4e114cda6d1b8276569d4e67f415aeaa2e75ffe' }, h("div", { key: '0a88406f59a89fc83b946b8eaf2f950a4969147a' }, h("calcite-input", { key: '541839acb00cb6fbfcca0edd0f2de80010f9261c', disabled: this.disabled, id: "calcite-sr-search", onKeyUp: (evt) => this._searchInputKeyDown(evt), placeholder: this._translations.spatialReferencePlaceholder }), h("calcite-tree", { key: '5ef8183cec669a8aefb9d3bbb72f10766b0fb6ca', id: "calcite-sr-tree", slot: "children" }, this._getTreeContent()))));
+        return (h(Host, { key: '27a61b1cda7cc8137d1ec3a9d827292b62efc5eb' }, h("div", { key: '94ff017bc871c67753598ce1c76f0a4bcf804faf' }, h("calcite-input", { key: 'b45dce7defc94d27e100103effc1dcc5c7020b1f', disabled: this.disabled, id: "calcite-sr-search", onKeyUp: (evt) => this._searchInputKeyDown(evt), placeholder: this._translations.spatialReferencePlaceholder }), h("calcite-tree", { key: 'c23e9b041f81e5b49784e20a6d25e19ff8c4a135', id: "calcite-sr-tree", slot: "children" }, this._getTreeContent()))));
     }
     _lastHighlightedSref;
     //--------------------------------------------------------------------------

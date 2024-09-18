@@ -5,10 +5,10 @@
  */
 import { r as registerInstance, g as getElement, h, H as Host } from './p-6eb37ed2.js';
 
-const shareItemCss = ":host{display:block}";
-const ShareItemStyle0 = shareItemCss;
+const locationFlowItemCss = ":host{display:block}";
+const LocationFlowItemStyle0 = locationFlowItemCss;
 
-const ShareItem = class {
+const LocationFlowItem = class {
     constructor(hostRef) {
         registerInstance(this, hostRef);
     }
@@ -49,9 +49,9 @@ const ShareItem = class {
     //
     //--------------------------------------------------------------------------
     render() {
-        return (h(Host, { key: 'a8d200d4f119571b482fa8c9f87d759458157fe3' }, h("slot", { key: '4132e6115646706d66d9648fad26050233045754' })));
+        return (h(Host, { key: '44f15dad4893959dd570a66bdaa6e2e60d9e785b' }, h("slot", { key: '7ed13d492b7e7f2890e1c1347a6d804acd4ecdd2' })));
     }
 };
-ShareItem.style = ShareItemStyle0;
+LocationFlowItem.style = LocationFlowItemStyle0;
 
-export { ShareItem as share_item };
+export { LocationFlowItem as location_flow_item };

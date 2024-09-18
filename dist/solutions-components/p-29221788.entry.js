@@ -5,10 +5,10 @@
  */
 import { r as registerInstance, g as getElement, h, H as Host } from './p-6eb37ed2.js';
 
-const locationFlowItemCss = ":host{display:block}";
-const LocationFlowItemStyle0 = locationFlowItemCss;
+const refineResultsFlowItemCss = ":host{display:block}";
+const RefineResultsFlowItemStyle0 = refineResultsFlowItemCss;
 
-const LocationFlowItem = class {
+const RefineResultsFlowItem = class {
     constructor(hostRef) {
         registerInstance(this, hostRef);
     }
@@ -49,9 +49,9 @@ const LocationFlowItem = class {
     //
     //--------------------------------------------------------------------------
     render() {
-        return (h(Host, { key: '48471224a5b2cf54e0f88ad58938d716a2388873' }, h("slot", { key: '4a438911cbc255d9be3d3ebe523ac971b58bbbbd' })));
+        return (h(Host, { key: 'd1f952cad2e50fe212a22537865d655f6b9d50c2' }, h("slot", { key: '3b1f2d38c8f21bb92868be92a370d6e175e9b52d' })));
     }
 };
-LocationFlowItem.style = LocationFlowItemStyle0;
+RefineResultsFlowItem.style = RefineResultsFlowItemStyle0;
 
-export { LocationFlowItem as location_flow_item };
+export { RefineResultsFlowItem as refine_results_flow_item };

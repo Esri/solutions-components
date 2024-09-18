@@ -292,7 +292,7 @@ const PublicNotification$1 = /*@__PURE__*/ proxyCustomElement(class PublicNotifi
      */
     render() {
         const headerSlot = this._isMobile ? "footer" : "header";
-        return (h(Host, { key: '6566efb322c1eebdae473c81dd897e67d287074e' }, h("calcite-shell", { key: 'a367e97f0eaec3c8cba2d02ddf27c45b7385839b' }, h("calcite-action-bar", { key: '9fa26481d990cfac05be11394e95b386038f6398', class: "border-bottom-1 action-bar-size", "expand-disabled": true, layout: "horizontal", slot: headerSlot }, this._getActionGroup("list-check", EPageType.LIST, this._translations.myLists), this.showRefineSelection ? this._getActionGroup("test-data", EPageType.REFINE, this._translations.refineSelection) : null, this._getActionGroup("export", EPageType.EXPORT, this._translations.export)), this._getPage(this._pageType))));
+        return (h(Host, { key: 'fca8516bad668916b9fa1799a201ea61c032fdbc' }, h("calcite-shell", { key: 'aa43348a1f769eb0adf600b2bf130a6707ffd349' }, h("calcite-action-bar", { key: 'e3b6df1189a0bca8f7303465e08e03c633645b8d', class: "border-bottom-1 action-bar-size", "expand-disabled": true, layout: "horizontal", slot: headerSlot }, this._getActionGroup("list-check", EPageType.LIST, this._translations.myLists), this.showRefineSelection ? this._getActionGroup("test-data", EPageType.REFINE, this._translations.refineSelection) : null, this._getActionGroup("export", EPageType.EXPORT, this._translations.export)), this._getPage(this._pageType))));
     }
     /**
      * StencilJS: Called once just after the component is first loaded.
