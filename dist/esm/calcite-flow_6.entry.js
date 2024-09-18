@@ -711,7 +711,7 @@ const CreateFeature = class {
                         this._editor.viewModel.featureFormViewModel.on('submit', this.submitted.bind(this));
                         //   //hides the header and footer elements in editor widget
                         //   this.hideEditorsElements().then(() => {
-                        //     resolve({});
+                        resolve({});
                         //   }, e => reject(e));
                     }, 700);
                 });
@@ -721,7 +721,7 @@ const CreateFeature = class {
                     this._editor.viewModel.featureTemplatesViewModel.select(items[0]);
                 }
                 const resolvePromise = items.length > 1;
-                //     this.hideEditorsElements().then(() => {
+                // this.hideEditorsElements().then(() => {
                 // console.log('create-feature hideEditorsElements')
                 if (resolvePromise) {
                     console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
@@ -730,7 +730,7 @@ const CreateFeature = class {
                 else {
                     console.log("NOPE");
                 }
-                //     }, e => resolvePromise && reject(e));
+                // }, e => resolvePromise && reject(e));
                 console.log(items.length);
                 //resolve({});
             }
