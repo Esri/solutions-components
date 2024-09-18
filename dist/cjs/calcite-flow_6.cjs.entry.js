@@ -472,6 +472,7 @@ const CreateFeature = class {
      * When _editorLoading is true the container node will be hidden while starting the create workflow
      */
     async _editorLoadingWatchHandler(v) {
+        console.log(`_editorLoadingWatchHandler: ${v}`);
         if (v) {
             this._container?.classList.add("display-none");
             await this.startCreate();
@@ -567,7 +568,7 @@ const CreateFeature = class {
         const loaderClass = this._editorLoading ? "" : "display-none";
         const featureFormClass = this._editorLoading ? "display-none" : "";
         const mobileMapClass = this.isMobile ? "show-map" : "display-none";
-        return (index.h(index.Fragment, { key: 'aac8fd8fe4ba5d7fb67a2b74a86147e053c1b0b8' }, index.h("calcite-loader", { key: 'e440bd2e0f4cf5acf4fd6941ada508c8ac5a0380', class: loaderClass, label: "", scale: "s" }), index.h("div", { key: '055a4e4b30b1fe24e0735257fa54fa9845cbaf2f', class: featureFormClass, id: "feature-form" }), index.h("div", { key: '342847f06ba99ad3c9693026bc83a8ac18b6c05f', class: `search-widget ${showSearchWidget} ${featureFormClass}`, id: "search-widget-ref" }), index.h("div", { key: '0acb837b4604d8d590bbfbcd738a3e09a099c362', class: `${mobileMapClass}`, ref: (el) => { this._mapViewContainer = el; } })));
+        return (index.h(index.Fragment, { key: 'da025a8babd54d7c61f1ad77599e576ae736d37c' }, index.h("calcite-loader", { key: 'aa0e7e2f71653a94e0285ff8b14cd28639ea2fc5', class: loaderClass, label: "", scale: "s" }), index.h("div", { key: '3764ab557d3bd6165d3d5ffcb8b4d940aa1bcd7b', class: featureFormClass, id: "feature-form" }), index.h("div", { key: '9f03128d6a14287ad54987d8dfbf940abd52f9ac', class: `search-widget ${showSearchWidget} ${featureFormClass}`, id: "search-widget-ref" }), index.h("div", { key: '276cdf6ae53ed0ad4f4f94d3be887cf869e8097a', class: `${mobileMapClass}`, ref: (el) => { this._mapViewContainer = el; } })));
     }
     //--------------------------------------------------------------------------
     //
@@ -688,7 +689,7 @@ const CreateFeature = class {
         //Add handle to watch featureTemplatesViewModel ready state and then start the creation
         // THIS MAKES IT NOT WORK AT ALL
         const handle = this.reactiveUtils.watch(() => this._editor.viewModel.featureTemplatesViewModel.state, (state) => {
-            console.log('create-feature featureTemplatesViewModel.state');
+            console.log(`create-feature featureTemplatesViewModel.state: ${state}`);
             if (state === 'ready') {
                 this.progressStatus.emit(0.5);
                 this._editorLoading = true;
@@ -712,7 +713,7 @@ const CreateFeature = class {
                     //this.progressStatus.emit(0.75);
                     setTimeout(() => {
                         //   //on form submit
-                        this._editor.viewModel.featureFormViewModel.on('submit', this.submitted.bind(this));
+                        //this._editor.viewModel.featureFormViewModel.on('submit', this.submitted.bind(this));
                         //   //hides the header and footer elements in editor widget
                         //   this.hideEditorsElements().then(() => {
                         resolve({});

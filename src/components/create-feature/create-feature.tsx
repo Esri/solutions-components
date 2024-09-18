@@ -209,6 +209,7 @@ export class CreateFeature {
    */
   @Watch("_editorLoading")
   async _editorLoadingWatchHandler(v: boolean): Promise<void> {
+    console.log(`_editorLoadingWatchHandler: ${v}`)
     if (v) {
       this._container?.classList.add("display-none");
       await this.startCreate();
@@ -465,7 +466,7 @@ export class CreateFeature {
     const handle = this.reactiveUtils.watch(
       () =>  this._editor.viewModel.featureTemplatesViewModel.state,
       (state) => {
-        console.log('create-feature featureTemplatesViewModel.state')
+        console.log(`create-feature featureTemplatesViewModel.state: ${state}`)
 
         if(state === 'ready') {
           this.progressStatus.emit(0.5);
@@ -492,7 +493,7 @@ export class CreateFeature {
           //this.progressStatus.emit(0.75);
           setTimeout(() => {
           //   //on form submit
-             this._editor.viewModel.featureFormViewModel.on('submit', this.submitted.bind(this));
+             //this._editor.viewModel.featureFormViewModel.on('submit', this.submitted.bind(this));
           //   //hides the header and footer elements in editor widget
           //   this.hideEditorsElements().then(() => {
                resolve({});
