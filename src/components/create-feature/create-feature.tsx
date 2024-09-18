@@ -489,7 +489,6 @@ export class CreateFeature {
       (state) => {
         if (state === 'creating-features') {
           this._mapViewContainer?.classList?.replace("hide-map", "show-map");
-          this._editorLoading = true;
           this._showSearchWidget = true;
         }
       });
