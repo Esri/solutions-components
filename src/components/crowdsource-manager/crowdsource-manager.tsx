@@ -162,11 +162,6 @@ export class CrowdsourceManager {
   @Prop() enableZoom = true;
 
   /**
-   * boolean: when true the map will be hidden on load
-   */
-  @Prop() hideMapOnLoad = false;
-
-  /**
    * IMapInfo[]: array of map infos (name and id)
    */
   @Prop() mapInfos: IMapInfo[] = [];
@@ -317,11 +312,6 @@ export class CrowdsourceManager {
   protected _defaultLevelHonored = false;
 
   /**
-   * boolean: When true hideMapOnLoad was honored for the current map
-   */
-  protected _hideMapOnLoadHonored = false;
-
-  /**
    * HTMLLayerTableElement: The layer table element
    */
   protected _layerTable: HTMLLayerTableElement;
@@ -369,14 +359,6 @@ export class CrowdsourceManager {
   @Watch("enableZoom")
   enableZoomWatchHandler(): void {
     this._initMapZoom();
-  }
-
-  /**
-   * When true the map will be hidden on load
-   */
-  @Watch("hideMapOnLoad")
-  hideMapOnLoadWatchHandler(): void {
-    this.showHideMapPopupAndTable(this.hideMapOnLoad && !this._isMobile);
   }
 
   //--------------------------------------------------------------------------
@@ -459,15 +441,6 @@ export class CrowdsourceManager {
     });
   }
 
-  /**
-   * Update the state expandPopup when mapInfoChange event occurs
-   */
-  @Listen("mapInfoChange", { target: "window" })
-  async mapInfoChange(
-  ): Promise<void> {
-    this._hideMapOnLoadHonored = false;
-  }
-
   //--------------------------------------------------------------------------
   //
   //  Functions (lifecycle)
@@ -524,10 +497,6 @@ export class CrowdsourceManager {
    */
   async componentDidLoad(): Promise<void> {
     this._resizeObserver.observe(this.el);
-    // for backward compatibility if hidemaponload is true then render table layout as default
-    if (this.hideMapOnLoad) {
-      this.appLayout = 'tableView';
-    }
     this._isMapViewOnLoad = this.appLayout === 'mapView';
     this._setActiveLayout(this.appLayout);
   }
@@ -1140,8 +1109,8 @@ export class CrowdsourceManager {
     if (forceOpen) {
       this._panelOpen = true;
     }
-    if ((this.hideMapOnLoad && !this._hideMapOnLoadHonored) || this._isMobile) {
-      this.hideMapOnLoadWatchHandler();
+    if (this._isMobile) {
+      this.showHideMapPopupAndTable(!this._isMobile);
     }
   }
 
