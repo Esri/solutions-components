@@ -345,6 +345,14 @@ export namespace Components {
          */
         "center": string;
         /**
+          * string: User configurable text to display for the comment button
+         */
+        "commentButtonText": string;
+        /**
+          * string: User configurable nessage to display when a comment is submitted
+         */
+        "commentSubmittedMessage": string;
+        /**
           * string: Item ID of the web map that should be selected by default
          */
         "defaultWebmap": string;
@@ -2929,6 +2937,14 @@ declare namespace LocalJSX {
           * string: Semicolon delimited numbers that will be used as the maps center point from URL params
          */
         "center"?: string;
+        /**
+          * string: User configurable text to display for the comment button
+         */
+        "commentButtonText"?: string;
+        /**
+          * string: User configurable nessage to display when a comment is submitted
+         */
+        "commentSubmittedMessage"?: string;
         /**
           * string: Item ID of the web map that should be selected by default
          */

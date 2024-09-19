@@ -50,6 +50,16 @@ export class CrowdsourceReporter {
   @Prop() center: string;
 
   /**
+   * string: User configurable text to display for the comment button
+   */
+  @Prop() commentButtonText: string;
+
+  /**
+   * string: User configurable nessage to display when a comment is submitted
+   */
+  @Prop() commentSubmittedMessage: string;
+
+  /**
    * string: Item ID of the web map that should be selected by default
    */
   @Prop() defaultWebmap = "";
@@ -588,7 +598,7 @@ export class CrowdsourceReporter {
           onCalciteAlertClose={() => { this._commentSubmitted = false }}
           open
           placement={"top"}>
-          <div slot="message">{this._translations.commentSubmittedMsg}</div>
+          <div slot="message">{this.commentSubmittedMessage || this._translations.commentSubmittedMsg}</div>
         </calcite-alert>}
         {this._addingCommentFailed && <calcite-alert
           auto-close
@@ -773,7 +783,7 @@ export class CrowdsourceReporter {
 
   /**
    * Restores the applied filters
-   * @protected 
+   * @protected
    */
   protected _restoreFilters(): void {
     // call the restore function when instant-apps-filter-list is ready
@@ -1434,7 +1444,7 @@ export class CrowdsourceReporter {
               slot="footer"
               width="full"
             >
-              {this._translations.comment}
+              {this.commentButtonText || this._translations.comment}
             </calcite-button>}
         </calcite-panel>
       </calcite-flow-item>
@@ -1778,7 +1788,7 @@ export class CrowdsourceReporter {
   }
 
   /**
-   * Gets the form template elements 
+   * Gets the form template elements
    * @protected
    */
   protected _getFormElements(): void {
@@ -1794,7 +1804,7 @@ export class CrowdsourceReporter {
         });
       }
     }
-  }  
+  }
 
   /**
    * Returns the ids of all OR configured layers that support edits with the update capability
@@ -1807,7 +1817,7 @@ export class CrowdsourceReporter {
   ): string[] {
     return Object.keys(hash).reduce((prev, cur) => {
       // check if reporting options exists consider the visible prop if else just check the supports Add
-      const showLayer = this.reportingOptions ? this._getLayersConfig(cur)?.visible 
+      const showLayer = this.reportingOptions ? this._getLayersConfig(cur)?.visible
         : hash[cur].supportsAdd;
       if (showLayer) {
         prev.push(cur);
