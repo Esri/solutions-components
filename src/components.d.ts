@@ -1210,9 +1210,17 @@ export namespace Components {
          */
         "enableLayerFeatures": boolean;
         /**
+          * boolean: When true the use features from a layer options will be enabled when the component loads
+         */
+        "enableLayerFeaturesOnLoad": boolean;
+        /**
           * boolean: When true users will be allowed to optionally create a buffer around the selection geometry
          */
         "enableSearchDistance": boolean;
+        /**
+          * boolean: When true the serach distance options will be enabled when the component loads
+         */
+        "enableSearchDistanceOnLoad": boolean;
         /**
           * boolean: When true sketch tools will be provided to allow users to draw a selection geometry
          */
@@ -1414,9 +1422,17 @@ export namespace Components {
          */
         "enableLayerFeatures": boolean;
         /**
+          * boolean: When true the use features from a layer options will be enabled when the component loads
+         */
+        "enableLayerFeaturesOnLoad": boolean;
+        /**
           * boolean: When true users will be allowed to optionally create a buffer around the selection geometry
          */
         "enableSearchDistance": boolean;
+        /**
+          * boolean: When true the serach distance options will be enabled when the component loads
+         */
+        "enableSearchDistanceOnLoad": boolean;
         /**
           * boolean: When true sketch tools will be provided to allow users to draw a selection geometry
          */
@@ -3786,9 +3802,17 @@ declare namespace LocalJSX {
          */
         "enableLayerFeatures"?: boolean;
         /**
+          * boolean: When true the use features from a layer options will be enabled when the component loads
+         */
+        "enableLayerFeaturesOnLoad"?: boolean;
+        /**
           * boolean: When true users will be allowed to optionally create a buffer around the selection geometry
          */
         "enableSearchDistance"?: boolean;
+        /**
+          * boolean: When true the serach distance options will be enabled when the component loads
+         */
+        "enableSearchDistanceOnLoad"?: boolean;
         /**
           * boolean: When true sketch tools will be provided to allow users to draw a selection geometry
          */
@@ -3970,9 +3994,17 @@ declare namespace LocalJSX {
          */
         "enableLayerFeatures"?: boolean;
         /**
+          * boolean: When true the use features from a layer options will be enabled when the component loads
+         */
+        "enableLayerFeaturesOnLoad"?: boolean;
+        /**
           * boolean: When true users will be allowed to optionally create a buffer around the selection geometry
          */
         "enableSearchDistance"?: boolean;
+        /**
+          * boolean: When true the serach distance options will be enabled when the component loads
+         */
+        "enableSearchDistanceOnLoad"?: boolean;
         /**
           * boolean: When true sketch tools will be provided to allow users to draw a selection geometry
          */
