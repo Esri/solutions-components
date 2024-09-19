@@ -89,9 +89,19 @@ export class PublicNotification {
   @Prop() enableLayerFeatures = true;
 
   /**
+   * boolean: When true the use features from a layer options will be enabled when the component loads
+   */
+  @Prop() enableLayerFeaturesOnLoad = true;
+
+  /**
    * boolean: When true users will be allowed to optionally create a buffer around the selection geometry
    */
   @Prop() enableSearchDistance = true;
+
+  /**
+   * boolean: When true the serach distance options will be enabled when the component loads
+   */
+  @Prop() enableSearchDistanceOnLoad = true;
 
   /**
    * boolean: When true sketch tools will be provided to allow users to draw a selection geometry
@@ -959,7 +969,9 @@ export class PublicNotification {
             defaultBufferDistance={this.defaultBufferDistance}
             defaultBufferUnit={this.defaultBufferUnit}
             enableLayerFeatures={this.enableLayerFeatures}
+            enableLayerFeaturesOnLoad={this.enableLayerFeaturesOnLoad}
             enableSearchDistance={this.enableSearchDistance}
+            enableSearchDistanceOnLoad={this.enableSearchDistanceOnLoad}
             enableSketchTools={this.enableSketchTools}
             enabledLayerIds={this.addresseeLayerIds}
             isUpdate={!!this._activeSelection}

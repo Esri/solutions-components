@@ -10,6 +10,8 @@
 | Property                      | Attribute                          | Description                                                                                               | Type                   | Default     |
 | ----------------------------- | ---------------------------------- | --------------------------------------------------------------------------------------------------------- | ---------------------- | ----------- |
 | `center`                      | `center`                           | string: Semicolon delimited numbers that will be used as the maps center point from URL params            | `string`               | `undefined` |
+| `commentButtonText`           | `comment-button-text`              | string: User configurable text to display for the comment button                                          | `string`               | `undefined` |
+| `commentSubmittedMessage`     | `comment-submitted-message`        | string: User configurable nessage to display when a comment is submitted                                  | `string`               | `undefined` |
 | `defaultWebmap`               | `default-webmap`                   | string: Item ID of the web map that should be selected by default                                         | `string`               | `""`        |
 | `description`                 | `description`                      | string: The text that will display under the title on the landing page                                    | `string`               | `undefined` |
 | `enableAnonymousAccess`       | `enable-anonymous-access`          | boolean: When true the anonymous users will be allowed to submit reports and comments                     | `boolean`              | `undefined` |

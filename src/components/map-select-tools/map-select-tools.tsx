@@ -69,9 +69,19 @@ export class MapSelectTools {
   @Prop() enableLayerFeatures = true;
 
   /**
+   * boolean: When true the use features from a layer options will be enabled when the component loads
+   */
+  @Prop() enableLayerFeaturesOnLoad = false;
+
+  /**
    * boolean: When true users will be allowed to optionally create a buffer around the selection geometry
    */
   @Prop() enableSearchDistance = true;
+
+  /**
+   * boolean: When true the serach distance options will be enabled when the component loads
+   */
+  @Prop() enableSearchDistanceOnLoad = false;
 
   /**
    * boolean: When true sketch tools will be provided to allow users to draw a selection geometry
@@ -517,6 +527,10 @@ export class MapSelectTools {
    * Renders the buffer tools component.
    */
   protected _getBufferOptions(): VNode {
+    if (this.enableSearchDistanceOnLoad) {
+      this._searchDistanceEnabled = true;
+      this.enableSearchDistanceOnLoad = false;
+    }
     const showBufferToolsClass = this._searchDistanceEnabled ? "search-distance" : "div-not-visible";
     const bufferDistance = typeof this.selectionSet?.distance === "number" ? this.selectionSet.distance : this.defaultBufferDistance;
     return (
@@ -567,6 +581,10 @@ export class MapSelectTools {
    * Renders the map layer picker component.
    */
   protected _getUseLayerFeaturesOptions(): VNode {
+    if (this.enableLayerFeaturesOnLoad) {
+      this._useLayerFeaturesEnabled = true;
+      this.enableLayerFeaturesOnLoad = false;
+    }
     const useLayerFeaturesClass = this._useLayerFeaturesEnabled ? "div-visible" : "div-not-visible";
     return (
       <div>
