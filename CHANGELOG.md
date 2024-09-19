@@ -6,6 +6,10 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.10.16] - September 19th 2024
+Add enableLayerFeaturesOnLoad and enableSearchDistanceOnLoad to PN
+Add commentButtonText and commentSubmittedMessage to Reporter
+
 ## [0.10.15] - September 18th 2024
 Discard Edits message issue
 
@@ -778,4 +782,5 @@ Recover from test releases
 [0.10.13]: https://github.com/Esri/solution.js/compare/v0.10.12...v0.10.13 "v0.10.13"
 [0.10.14]: https://github.com/Esri/solution.js/compare/v0.10.13...v0.10.14 "v0.10.14"
 [0.10.15]: https://github.com/Esri/solution.js/compare/v0.10.14...v0.10.15 "v0.10.15"
-[Unreleased]: https://github.com/Esri/solution.js/compare/v0.10.15...HEAD "Unreleased Changes"
+[0.10.16]: https://github.com/Esri/solution.js/compare/v0.10.15...v0.10.16 "v0.10.16"
+[Unreleased]: https://github.com/Esri/solution.js/compare/v0.10.16...HEAD "Unreleased Changes"
