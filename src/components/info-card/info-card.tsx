@@ -403,6 +403,7 @@ export class InfoCard {
                 <calcite-button
                   appearance='transparent'
                   disabled={nextBackDisabled}
+                  iconFlipRtl="both"
                   iconStart="chevron-left"
                   id="solutions-back"
                   onClick={() => this._back()}
@@ -417,6 +418,7 @@ export class InfoCard {
               </div>
               <calcite-action
                 class='pagination-action'
+                iconFlipRtl
                 onClick={() => this._toggleListView()}
                 scale="s"
                 text=""
@@ -427,6 +429,7 @@ export class InfoCard {
                 <calcite-button
                   appearance="transparent"
                   disabled={nextBackDisabled}
+                  iconFlipRtl="both"
                   iconStart="chevron-right"
                   id="solutions-next"
                   onClick={() => this._next()}

@@ -4,5 +4,9 @@
   "information": "Informazioni",
   "expandPopup": "Espandi popup",
   "collapsePopup": "Comprimi popup",
-  "view": "Visualizza ({{n}})"
+  "view": "Visualizza ({{n}})",
+  "splitView": "é_Split view_____________________È",
+  "tableView": "é_Table view_____________________È",
+  "mapView": "é_Map view_________________È",
+  "filter": "é_Filter: {{title}}__________________È"
 }

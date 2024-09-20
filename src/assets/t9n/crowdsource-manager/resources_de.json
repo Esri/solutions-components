@@ -4,5 +4,9 @@
   "information": "Informationen",
   "expandPopup": "Pop-up einblenden",
   "collapsePopup": "Pop-up ausblenden",
-  "view": "Anzeigen ({{n}})"
+  "view": "Anzeigen ({{n}})",
+  "splitView": "ä_Split view_____________________Ü",
+  "tableView": "ä_Table view_____________________Ü",
+  "mapView": "ä_Map view_________________Ü",
+  "filter": "ä_Filter: {{title}}__________________Ü"
 }

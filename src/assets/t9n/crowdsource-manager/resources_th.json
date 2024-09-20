@@ -4,5 +4,9 @@
   "information": "ข้อมูล",
   "expandPopup": "ขยายป็อปอัพ",
   "collapsePopup": "ย่อป็อปอัพ",
-  "view": "มุมมอง ({{n}})"
+  "view": "มุมมอง ({{n}})",
+  "splitView": "ก้_Split view_____________________ษฺ",
+  "tableView": "ก้_Table view_____________________ษฺ",
+  "mapView": "ก้_Map view_________________ษฺ",
+  "filter": "ก้_Filter: {{title}}__________________ษฺ"
 }

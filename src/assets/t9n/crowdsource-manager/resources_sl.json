@@ -4,5 +4,9 @@
   "information": "Informacije",
   "expandPopup": "Razširi pojavno okno",
   "collapsePopup": "Strni pojavno okno",
-  "view": "Ogled ({{n}})"
+  "view": "Ogled ({{n}})",
+  "splitView": "Š_Split view_____________________č",
+  "tableView": "Š_Table view_____________________č",
+  "mapView": "Š_Map view_________________č",
+  "filter": "Š_Filter: {{title}}__________________č"
 }

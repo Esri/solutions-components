@@ -4,5 +4,9 @@
   "information": "מידע",
   "expandPopup": "הרחב חלון קופץ",
   "collapsePopup": "כווץ חלון קופץ",
-  "view": "תצוגה ({{n}})"
+  "view": "תצוגה ({{n}})",
+  "splitView": "כן_Split view_____________________ש",
+  "tableView": "כן_Table view_____________________ש",
+  "mapView": "כן_Map view_________________ש",
+  "filter": "כן_Filter: {{title}}__________________ש"
 }

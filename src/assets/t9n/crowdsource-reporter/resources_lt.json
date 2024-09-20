@@ -25,5 +25,7 @@
   "sortNewest": "Naujausius",
   "sortOldest": "Seniausius",
   "sortHighestVoted": "Daugiausiai balsų",
-  "sortLowestVoted": "Mažiausiai balsų"
+  "sortLowestVoted": "Mažiausiai balsų",
+  "resetFilter": "Į_Reset filter_____________š",
+  "close": "Į_Close___________š"
 }

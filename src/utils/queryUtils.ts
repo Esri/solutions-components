@@ -160,6 +160,9 @@ export async function queryObjectIds(
  * @param ids array of ObjectIDs to be used to query for features in a layer
  * @param layer the layer to retrieve features from
  * @param graphics the result graphics array
+ * @param returnGeometry returns the geometry 
+ * @param outSpatialReference out spatial reference of the geometries
+ * @param fields out fields
  *
  * @returns Promise with the featureSet from the layer that match the provided ids
  */

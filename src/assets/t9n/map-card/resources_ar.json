@@ -1,3 +1,8 @@
 {
-  "mapName": "اسم الخريطة"
+  "mapName": "اسم الخريطة",
+  "more": "بيت_More_________لاحقة",
+  "filters": "بيت_Filters_______________لاحقة",
+  "zoom": "بيت_Zoom_________لاحقة",
+  "refresh": "بيت_Refresh_______________لاحقة",
+  "editMultiple": "بيت_Edit multiple______________لاحقة"
 }

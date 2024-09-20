@@ -1,3 +1,6 @@
 {
-  "selectFeaturesToStart": "Select a record to get started. Click while pressing the Ctrl key to select multiple records in the table."
+  "selectFeaturesToStart": "Select a record to get started. Click while pressing the Ctrl key to select multiple records in the table.",
+  "createFeature": "Create feature",
+  "createRecord": "Create record",
+  "create": "Create"
 }

@@ -4,5 +4,9 @@
   "information": "信息",
   "expandPopup": "展开弹出窗口",
   "collapsePopup": "折叠弹出窗口",
-  "view": "视图 ({{n}})"
+  "view": "视图 ({{n}})",
+  "splitView": "试_Split view_____________________验",
+  "tableView": "试_Table view_____________________验",
+  "mapView": "试_Map view_________________验",
+  "filter": "试_Filter: {{title}}__________________验"
 }

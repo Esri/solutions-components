@@ -1,4 +1,6 @@
 {
   "error": "Fel",
-  "featureErrorMsg": "Inga poster hittades."
+  "featureErrorMsg": "Inga poster hittades.",
+  "thousandsAbbreviation": "Å_{{abbreviated_value}}k_______________________ö",
+  "millionsAbbreviation": "Å_{{abbreviated_value}}M_______________________ö"
 }

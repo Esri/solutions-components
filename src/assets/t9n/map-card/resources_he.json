@@ -1,3 +1,8 @@
 {
-  "mapName": "שם מפה"
+  "mapName": "שם מפה",
+  "more": "כן_More_________ש",
+  "filters": "כן_Filters_______________ש",
+  "zoom": "כן_Zoom_________ש",
+  "refresh": "כן_Refresh_______________ש",
+  "editMultiple": "כן_Edit multiple______________ש"
 }

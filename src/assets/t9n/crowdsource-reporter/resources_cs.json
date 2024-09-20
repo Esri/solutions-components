@@ -25,5 +25,7 @@
   "sortNewest": "Nejnovější",
   "sortOldest": "Nejstarší",
   "sortHighestVoted": "S nejvyšším počtem hlasů",
-  "sortLowestVoted": "S nejnižším počtem hlasů"
+  "sortLowestVoted": "S nejnižším počtem hlasů",
+  "resetFilter": "Ř_Reset filter_____________ů",
+  "close": "Ř_Close___________ů"
 }

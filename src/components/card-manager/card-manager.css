@@ -54,6 +54,14 @@
   height: 100%;
 }
 
+.position-static {
+  position: static !important;
+}
+
+.z-index-500 {
+  z-index: 500 !important;
+}
+
 card-manager {
   display: block;
 }

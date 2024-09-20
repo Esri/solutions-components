@@ -1,3 +1,8 @@
 {
-  "mapName": "Ім'я карти"
+  "mapName": "Ім'я карти",
+  "more": "ґ_More_________Ї",
+  "filters": "ґ_Filters_______________Ї",
+  "zoom": "ґ_Zoom_________Ї",
+  "refresh": "ґ_Refresh_______________Ї",
+  "editMultiple": "ґ_Edit multiple______________Ї"
 }

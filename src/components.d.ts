@@ -76,6 +76,10 @@ export namespace Components {
          */
         "customInfoText": string;
         /**
+          * boolean: when true the users can have the option to create features
+         */
+        "enableCreateFeatures": boolean;
+        /**
           * When true the geometry of the current feature will be editable
          */
         "enableEditGeometry": boolean;
@@ -128,6 +132,10 @@ export namespace Components {
           * boolean: Set this to true when have a custom submit button in the app. This will hide the header and footer elements of the editor and user needs to execute the submit method manually.
          */
         "customizeSubmit"?: boolean;
+        /**
+          * boolean: When true the Search box will be displayed
+         */
+        "enableSearch"?: boolean;
         /**
           * string: selected floor level
          */
@@ -278,10 +286,6 @@ export namespace Components {
           * boolean: when true the zoom widget will be available
          */
         "enableZoom": boolean;
-        /**
-          * boolean: when true the map will be hidden on load
-         */
-        "hideMapOnLoad": boolean;
         /**
           * boolean: When true a introduction window has been enabled in the consuming application. Also when true a floating button will be shown in the lower right of the window that will emit an event when clicked that the consuming application can respond to that will open the introduction window.
          */
@@ -1723,6 +1727,10 @@ export interface BufferToolsCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLBufferToolsElement;
 }
+export interface CardManagerCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLCardManagerElement;
+}
 export interface ConsentManagerCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLConsentManagerElement;
@@ -1871,7 +1879,20 @@ declare global {
         prototype: HTMLBufferToolsElement;
         new (): HTMLBufferToolsElement;
     };
+    interface HTMLCardManagerElementEventMap {
+        "createWorkFlowStarted": void;
+        "backFromCreateWorkFlow": void;
+        "featureOrRecordSubmitted": void;
+    }
     interface HTMLCardManagerElement extends Components.CardManager, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLCardManagerElementEventMap>(type: K, listener: (this: HTMLCardManagerElement, ev: CardManagerCustomEvent<HTMLCardManagerElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLCardManagerElementEventMap>(type: K, listener: (this: HTMLCardManagerElement, ev: CardManagerCustomEvent<HTMLCardManagerElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLCardManagerElement: {
         prototype: HTMLCardManagerElement;
@@ -2644,6 +2665,10 @@ declare namespace LocalJSX {
          */
         "customInfoText"?: string;
         /**
+          * boolean: when true the users can have the option to create features
+         */
+        "enableCreateFeatures"?: boolean;
+        /**
           * When true the geometry of the current feature will be editable
          */
         "enableEditGeometry"?: boolean;
@@ -2659,6 +2684,18 @@ declare namespace LocalJSX {
           * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
+        /**
+          * Emits when back from create work flow
+         */
+        "onBackFromCreateWorkFlow"?: (event: CardManagerCustomEvent<void>) => void;
+        /**
+          * Emits when create work flow started
+         */
+        "onCreateWorkFlowStarted"?: (event: CardManagerCustomEvent<void>) => void;
+        /**
+          * Emits when feature/record is submitted
+         */
+        "onFeatureOrRecordSubmitted"?: (event: CardManagerCustomEvent<void>) => void;
         /**
           * A list of ids that are currently selected
          */
@@ -2691,6 +2728,10 @@ declare namespace LocalJSX {
           * boolean: Set this to true when have a custom submit button in the app. This will hide the header and footer elements of the editor and user needs to execute the submit method manually.
          */
         "customizeSubmit"?: boolean;
+        /**
+          * boolean: When true the Search box will be displayed
+         */
+        "enableSearch"?: boolean;
         /**
           * string: selected floor level
          */
@@ -2863,10 +2904,6 @@ declare namespace LocalJSX {
           * boolean: when true the zoom widget will be available
          */
         "enableZoom"?: boolean;
-        /**
-          * boolean: when true the map will be hidden on load
-         */
-        "hideMapOnLoad"?: boolean;
         /**
           * boolean: When true a introduction window has been enabled in the consuming application. Also when true a floating button will be shown in the lower right of the window that will emit an event when clicked that the consuming application can respond to that will open the introduction window.
          */

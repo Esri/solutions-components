@@ -1,4 +1,6 @@
 {
   "error": "Kļūda",
-  "featureErrorMsg": "Nav atrasts neviens ieraksts."
+  "featureErrorMsg": "Nav atrasts neviens ieraksts.",
+  "thousandsAbbreviation": "ķ_{{abbreviated_value}}k_______________________ū",
+  "millionsAbbreviation": "ķ_{{abbreviated_value}}M_______________________ū"
 }

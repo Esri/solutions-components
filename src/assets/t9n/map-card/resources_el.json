@@ -1,3 +1,8 @@
 {
-  "mapName": "Όνομα Χάρτη"
+  "mapName": "Όνομα Χάρτη",
+  "more": "Đ_More_________ớ",
+  "filters": "Đ_Filters_______________ớ",
+  "zoom": "Đ_Zoom_________ớ",
+  "refresh": "Đ_Refresh_______________ớ",
+  "editMultiple": "Đ_Edit multiple______________ớ"
 }

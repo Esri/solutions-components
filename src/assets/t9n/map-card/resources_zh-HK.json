@@ -1,3 +1,8 @@
 {
-  "mapName": "地圖名稱"
+  "mapName": "地圖名稱",
+  "more": "試_More_________驗",
+  "filters": "試_Filters_______________驗",
+  "zoom": "試_Zoom_________驗",
+  "refresh": "試_Refresh_______________驗",
+  "editMultiple": "試_Edit multiple______________驗"
 }

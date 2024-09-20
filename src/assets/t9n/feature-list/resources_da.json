@@ -1,4 +1,6 @@
 {
   "error": "Fejl",
-  "featureErrorMsg": "Ingen poster fundet."
+  "featureErrorMsg": "Ingen poster fundet.",
+  "thousandsAbbreviation": "ø_{{abbreviated_value}}k_______________________å",
+  "millionsAbbreviation": "ø_{{abbreviated_value}}M_______________________å"
 }

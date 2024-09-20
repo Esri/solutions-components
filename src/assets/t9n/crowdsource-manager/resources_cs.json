@@ -4,5 +4,9 @@
   "information": "Informace",
   "expandPopup": "Rozbalit vyskakovací okno",
   "collapsePopup": "Sbalit vyskakovací okno",
-  "view": "Zobrazení ({{n}})"
+  "view": "Zobrazení ({{n}})",
+  "splitView": "Ř_Split view_____________________ů",
+  "tableView": "Ř_Table view_____________________ů",
+  "mapView": "Ř_Map view_________________ů",
+  "filter": "Ř_Filter: {{title}}__________________ů"
 }

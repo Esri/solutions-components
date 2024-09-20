@@ -1,4 +1,6 @@
 {
   "error": "Hiba",
-  "featureErrorMsg": "Nincsenek rekordok."
+  "featureErrorMsg": "Nincsenek rekordok.",
+  "thousandsAbbreviation": "í_{{abbreviated_value}}k_______________________ő",
+  "millionsAbbreviation": "í_{{abbreviated_value}}M_______________________ő"
 }
