@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="en">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
@@ -24,9 +25,9 @@
   <link rel="stylesheet" href="../solutions-components.css" type="text/css">
   <link rel="stylesheet" type="text/css" href="https://js.arcgis.com/calcite-components/2.0.0/calcite.css" />
   <style>
-  .full-height {
-    height: 100%;
-  }
+    .full-height {
+      height: 100%;
+    }
   </style>
 
   <script type="module" src="../solutions-components.esm.js"></script>
@@ -34,9 +35,12 @@
 
 <body>
   <span class="floating-title">Demo JSON Editor 1
-    <button id="getValue" class="floating-title-button" onclick="hGetValue()" style="visibility:hidden">Get Value</button>
-    <button id="getEditorContents" class="floating-title-button" onclick="hGetEditorContents()" style="visibility:hidden">Get Editor Contents</button>
-    <button id="setValue" class="floating-title-button" onclick="hSetValue()" style="visibility:hidden">Insert/replace selection</button>
+    <button id="getValue" class="floating-title-button" onclick="hGetValue()" style="visibility:hidden">Get
+      Value</button>
+    <button id="getEditorContents" class="floating-title-button" onclick="hGetEditorContents()"
+      style="visibility:hidden">Get Editor Contents</button>
+    <button id="setValue" class="floating-title-button" onclick="hSetValue()" style="visibility:hidden">Insert/replace
+      selection</button>
   </span>
   <main id="appContainer">
     <div class="content full-height">
@@ -57,48 +61,49 @@
       }
     });
     require(["vs/editor/editor.main"],
-    function () {
-      // Initialize the configuration content
-      const editor1 = document.getElementById("editor1");
+      function () {
+        // Initialize the configuration content
+        const editor1 = document.getElementById("editor1");
 
-      // set the data
-      fetch("./data/election-outreach.json")
-        .then(response => response.json())
-        .then(data => {
-          const template = data.templates[0];
+        // set the data
+        fetch("./data/election-outreach.json")
+          .then(response => response.json())
+          .then(data => {
+            const template = data.templates[0];
 
-          editor1.value = JSON.stringify(template, null, "\t");
-          document.getElementById("appContainer").style.opacity = "1";
+            editor1.value = JSON.stringify(template, null, "\t");
+            document.getElementById("appContainer").style.opacity = "1";
 
-          // Set up the "Get Value" button
-          hGetValue = () => {
-            console.log(editor1.value);
-          }
-          document.getElementById("getValue").style.visibility = "visible";
+            // Set up the "Get Value" button
+            hGetValue = () => {
+              console.log(editor1.value);
+            }
+            document.getElementById("getValue").style.visibility = "visible";
 
-          // Set up the "Get Editor Contents" button
-          hGetEditorContents = () => {
-            editor1.getEditorContents()
-            .then((value) => {
-              console.log(value);
-            })
-            .catch((e) => {
-              console.error(e);
-            });
-          }
-          document.getElementById("getEditorContents").style.visibility = "visible";
+            // Set up the "Get Editor Contents" button
+            hGetEditorContents = () => {
+              editor1.getEditorContents()
+                .then((value) => {
+                  console.log(value);
+                })
+                .catch((e) => {
+                  console.error(e);
+                });
+            }
+            document.getElementById("getEditorContents").style.visibility = "visible";
 
-          // Set up the "Insert/replace using clipboard" button
-          hSetValue = () => {
-            const replacement = "I AM A REPLACEMENT";
-            editor1.replaceCurrentSelection(replacement)
-            .catch((e) => {
-              console.error(e);
-            });
-          }
-          document.getElementById("setValue").style.visibility = "visible";
-        });
-    });
+            // Set up the "Insert/replace using clipboard" button
+            hSetValue = () => {
+              const replacement = "I AM A REPLACEMENT";
+              editor1.replaceCurrentSelection(replacement)
+                .catch((e) => {
+                  console.error(e);
+                });
+            }
+            document.getElementById("setValue").style.visibility = "visible";
+          });
+      });
   </script>
 </body>
+
 </html>

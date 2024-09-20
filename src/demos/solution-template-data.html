@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="en">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
@@ -24,12 +25,13 @@
   <link rel="stylesheet" href="https://webapps-cdn.esri.com/CDN/fonts/v1.4.1/fonts.css" />
   <link rel="stylesheet" href="../solutions-components.css" type="text/css">
   <style>
-  .content {
-    padding: 20px;
-  }
-  .full-height {
-    height: 100%;
-  }
+    .content {
+      padding: 20px;
+    }
+
+    .full-height {
+      height: 100%;
+    }
   </style>
 
   <script type="module" src="https://js.arcgis.com/calcite-components/2.0.0/calcite.esm.js"></script>
@@ -40,8 +42,9 @@
   <h1>Demo Solution Template Data</h1>
   <main id="appContainer">
     <div id="template-data" class="content full-height">
-      <store-manager id="helper"/>
-      <solution-template-data id="demo" instanceId="data" itemid="2d2d176f5f3e43a985a31649e213aaf4"></solution-template-data>
+      <store-manager id="helper" />
+      <solution-template-data id="demo" instanceId="data"
+        itemid="2d2d176f5f3e43a985a31649e213aaf4"></solution-template-data>
     </div>
   </main>
 
@@ -55,29 +58,30 @@
       }
     });
     require(["vs/editor/editor.main"],
-    function () {
-      const demo = document.getElementById("demo");
-      const helper = document.getElementById("helper");
+      function () {
+        const demo = document.getElementById("demo");
+        const helper = document.getElementById("helper");
 
-      // set the data
-      Promise.all([
-        fetch("./data/solution-template-data-data.json"),
-        fetch("./data/solution-variables-data.json"),
-        fetch("./data/solution-organization-variables-data.json"),
-        fetch("./data/election-outreach.json")
-      ])
-        .then(results => Promise.all(results.map(r => r.json())))
-        .then(jsonResults => {
-          helper.value = JSON.stringify(jsonResults[3]);
+        // set the data
+        Promise.all([
+          fetch("./data/solution-template-data-data.json"),
+          fetch("./data/solution-variables-data.json"),
+          fetch("./data/solution-organization-variables-data.json"),
+          fetch("./data/election-outreach.json")
+        ])
+          .then(results => Promise.all(results.map(r => r.json())))
+          .then(jsonResults => {
+            helper.value = JSON.stringify(jsonResults[3]);
 
-          demo.value = { value: jsonResults[0].value };
-          demo.itemid = "2d2d176f5f3e43a985a31649e213aaf4";
-          demo.solutionVariables = jsonResults[1].value;
-          demo.organizationVariables = jsonResults[2].value;
+            demo.value = { value: jsonResults[0].value };
+            demo.itemid = "2d2d176f5f3e43a985a31649e213aaf4";
+            demo.solutionVariables = jsonResults[1].value;
+            demo.organizationVariables = jsonResults[2].value;
 
-          document.getElementById("appContainer").style.opacity = "1";
-        });
-    });
+            document.getElementById("appContainer").style.opacity = "1";
+          });
+      });
   </script>
 </body>
+
 </html>

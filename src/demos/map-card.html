@@ -1,12 +1,10 @@
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="initial-scale=1,maximum-scale=1,user-scalable=no"
-    />
-    <title>Map Card</title>
-    <!--
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <title>Map Card</title>
+  <!--
     | Copyright 2022 Esri
     |
     | Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,48 +19,48 @@
     | See the License for the specific language governing permissions and
     | limitations under the License.
     -->
-    <style>
-      .over-map {
-        position: absolute;
-        right: 0px;
-        background-color: var(--calcite-color-foreground-1);
-      }
-      .column {
-        width: 100%;
-        height: 100%;
-        border: 1px solid var(--calcite-color-border-2);
-      }
-      .column[dir="rtl"] {
-        float: left;
-      }
-    </style>
+  <style>
+    .over-map {
+      position: absolute;
+      right: 0px;
+      background-color: var(--calcite-color-foreground-1);
+    }
 
-    <link
-      rel="stylesheet"
-      href="https://js.arcgis.com/4.27/esri/themes/light/main.css"
-    />
-    <link rel="stylesheet" href="https://webapps-cdn.esri.com/CDN/fonts/v1.4.1/fonts.css" />
-    <link rel="stylesheet" href="../solutions-components.css" type="text/css">
-    <link rel="stylesheet" type="text/css" href="https://js.arcgis.com/calcite-components/2.0.0/calcite.css" />
+    .column {
+      width: 100%;
+      height: 100%;
+      border: 1px solid var(--calcite-color-border-2);
+    }
 
-    <script src="https://js.arcgis.com/4.27/"></script>
-    <script type="module" src="../solutions-components.esm.js"></script>
+    .column[dir="rtl"] {
+      float: left;
+    }
+  </style>
 
-    <script>
-      function addValues() {
-        const demo = document.getElementById("demo");
-        demo.mapInfos = [{
-          id: "863e4f6f2a7840db896cc1b1606d552d",
-          name: "Name of map 1"
-        }, {
-          id: "3715f4899bea4b2a948347c5c2357e58",
-          name: "Name of map 2"
-        }];
-      }
-    </script>
-  </head>
+  <link rel="stylesheet" href="https://js.arcgis.com/4.27/esri/themes/light/main.css" />
+  <link rel="stylesheet" href="https://webapps-cdn.esri.com/CDN/fonts/v1.4.1/fonts.css" />
+  <link rel="stylesheet" href="../solutions-components.css" type="text/css">
+  <link rel="stylesheet" type="text/css" href="https://js.arcgis.com/calcite-components/2.0.0/calcite.css" />
 
-  <body onload="addValues()">
-    <map-card id="demo" class="over-map column"/>
-  </body>
+  <script src="https://js.arcgis.com/4.27/"></script>
+  <script type="module" src="../solutions-components.esm.js"></script>
+
+  <script>
+    function addValues() {
+      const demo = document.getElementById("demo");
+      demo.mapInfos = [{
+        id: "863e4f6f2a7840db896cc1b1606d552d",
+        name: "Name of map 1"
+      }, {
+        id: "3715f4899bea4b2a948347c5c2357e58",
+        name: "Name of map 2"
+      }];
+    }
+  </script>
+</head>
+
+<body onload="addValues()">
+  <map-card id="demo" class="over-map column" />
+</body>
+
 </html>

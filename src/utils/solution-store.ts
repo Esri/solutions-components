@@ -105,8 +105,7 @@ const EmptySolutionStore: ISolutionStoreData = {
   }
 }
 
-class SolutionStore
-{
+class SolutionStore {
   protected static _instance: SolutionStore;
 
   protected _store: any;
@@ -317,7 +316,7 @@ class SolutionStore
   ): void {
     this._store.set(propName, value);
     this._flagStoreHasChanges(true);
-}
+  }
 
   //------------------------------------------------------------------------------------------------------------------//
 
@@ -662,7 +661,7 @@ class SolutionStore
         switch (path.updateType) {
 
           case EUpdateType.Add:
-            const {prefix, suffix } = this._splitFilename(storageName);
+            const { prefix, suffix } = this._splitFilename(storageName);
             t.resources.push(storageName);
             resourceAdds.push({
               itemId: t.itemId,
@@ -708,12 +707,12 @@ class SolutionStore
 
     // Update the resources
     return Promise.all(pendingTasks)
-    .then(async () => {
-      if (resourceAdds.length > 0) {
-        await copyFilesToStorageItem(resourceAdds, solutionItemId, authentication);
-      }
-      return Promise.resolve();
-    });
+      .then(async () => {
+        if (resourceAdds.length > 0) {
+          await copyFilesToStorageItem(resourceAdds, solutionItemId, authentication);
+        }
+        return Promise.resolve();
+      });
   }
 
   /**

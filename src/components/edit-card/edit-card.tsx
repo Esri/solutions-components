@@ -47,7 +47,7 @@ export class EditCard {
   /**
    * esri/Graphic[]: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
    */
-  @Prop({mutable: true}) graphics: __esri.Graphic[];
+  @Prop({ mutable: true }) graphics: __esri.Graphic[];
 
   /**
    * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
@@ -87,15 +87,15 @@ export class EditCard {
   //
   //--------------------------------------------------------------------------
 
- /**
-   * esri/core/Accessor: https://developers.arcgis.com/javascript/latest/api-reference/esri-core-Accessor.html#WatchHandle
-   */
- protected _activeWorkflowHandle: __esri.WatchHandle;
+  /**
+    * esri/core/Accessor: https://developers.arcgis.com/javascript/latest/api-reference/esri-core-Accessor.html#WatchHandle
+    */
+  protected _activeWorkflowHandle: __esri.WatchHandle;
 
- /**
-   * esri/core/Accessor: https://developers.arcgis.com/javascript/latest/api-reference/esri-core-Accessor.html#WatchHandle
-   */
- protected _addRelatedRecordHandle: __esri.WatchHandle;
+  /**
+    * esri/core/Accessor: https://developers.arcgis.com/javascript/latest/api-reference/esri-core-Accessor.html#WatchHandle
+    */
+  protected _addRelatedRecordHandle: __esri.WatchHandle;
 
   /**
    * esri/core/Accessor: https://developers.arcgis.com/javascript/latest/api-reference/esri-core-Accessor.html#WatchHandle
@@ -264,8 +264,8 @@ export class EditCard {
     // when you use MULTI edit mode...is fine in SINGLE
     const editDisabled = this.graphics?.length > 0 && this.graphics[0] ?
       !(this.graphics[0].layer as __esri.FeatureLayer).editingEnabled : true;
-      const tableNodeClass = this._editorLoading ? "display-none" : "position-absolute";
-      const loadingClass = this._editorLoading ? "" : "display-none";
+    const tableNodeClass = this._editorLoading ? "display-none" : "position-absolute";
+    const loadingClass = this._editorLoading ? "" : "display-none";
     return (
       <Host>
         <div class="position-absolute">

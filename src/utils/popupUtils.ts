@@ -83,7 +83,7 @@ export class PopupUtils {
 				attributes[`{${field.name.toUpperCase()}}`] = formattedAttributeValue ?? attributeValue;
 			})
 		}
-		
+
 		return popupTitle?.replace(/{.*?}/g, (placeholder: string) => {
 			return attributes[placeholder.toUpperCase()] != null ? (attributes[placeholder.toUpperCase()] as string) : "";
 		});

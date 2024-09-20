@@ -203,7 +203,7 @@
 .floating-container .floating-button {
   box-shadow: 0 10px 25px rgb(92 93 94 / 60%);
   -webkit-transform: translatey(5px);
-          transform: translatey(5px);
+  transform: translatey(5px);
   -webkit-transition: all 0.3s;
   transition: all 0.3s;
 }

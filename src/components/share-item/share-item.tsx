@@ -75,7 +75,7 @@ export class ShareItem {
   render() {
     return (
       <Host>
-        <slot/>
+        <slot />
       </Host>
     );
   }

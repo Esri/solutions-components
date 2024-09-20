@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, EventEmitter, Prop, Fragment, h, Event, Watch, Method, State} from "@stencil/core";
+import { Component, Element, EventEmitter, Prop, Fragment, h, Event, Watch, Method, State } from "@stencil/core";
 import { loadModules } from "../../utils/loadModules";
 import { getAllLayers, getLayerOrTable } from "../../utils/mapViewUtils";
 import { ILayerSourceConfigItem, ILocatorSourceConfigItem, ISearchConfiguration } from "../../utils/interfaces";
@@ -350,7 +350,7 @@ export class CreateFeature {
           label=""
           scale="s"
         />
-        <div class={featureFormClass} id="feature-form"/>
+        <div class={featureFormClass} id="feature-form" />
         {this.enableSearch && <div class={`search-widget ${showSearchWidget} ${featureFormClass}`} id="search-widget-ref" />}
         <div class={`${mobileMapClass}`} ref={(el) => { this._mapViewContainer = el }} />
       </Fragment>
@@ -472,7 +472,7 @@ export class CreateFeature {
 
     //Add handle to watch if attachments are added/edited
     const attachmentHandle = this.reactiveUtils.watch(
-      () =>  this._editor.viewModel.state,
+      () => this._editor.viewModel.state,
       (state) => {
         if (state === 'adding-attachment' || state === 'editing-attachment') {
           this._addingAttachment = true;
@@ -488,9 +488,9 @@ export class CreateFeature {
 
     //Add handle to watch featureTemplatesViewModel ready state and then start the creation
     const handle = this.reactiveUtils.watch(
-      () =>  this._editor.viewModel.featureTemplatesViewModel.state,
+      () => this._editor.viewModel.featureTemplatesViewModel.state,
       (state) => {
-        if(state === 'ready' && this._editor.viewModel?.activeWorkflow?.type !== "create-features") {
+        if (state === 'ready' && this._editor.viewModel?.activeWorkflow?.type !== "create-features") {
           this.progressStatus.emit(0.5);
           this._editorLoading = true;
         }
@@ -718,18 +718,18 @@ export class CreateFeature {
    * @protected
    */
   protected async hideEditorsElements(): Promise<void> {
-      if (!this.customizeSubmit) {
-        return;
-      }
-      await this.timeout(700);
-      //hides the header and footer on the featureForm
-      this.el.querySelector('.esri-editor')?.querySelectorAll('calcite-flow-item')?.forEach((flowItem) => {
-        const article = flowItem.shadowRoot?.querySelector('calcite-panel')?.shadowRoot?.querySelector('article');
-        //hide the header
-        article?.querySelector('header')?.setAttribute('style', 'display: none');
-        //hide the footer
-        article?.querySelector('footer')?.setAttribute('style', 'display: none');
-      });
+    if (!this.customizeSubmit) {
+      return;
+    }
+    await this.timeout(700);
+    //hides the header and footer on the featureForm
+    this.el.querySelector('.esri-editor')?.querySelectorAll('calcite-flow-item')?.forEach((flowItem) => {
+      const article = flowItem.shadowRoot?.querySelector('calcite-panel')?.shadowRoot?.querySelector('article');
+      //hide the header
+      article?.querySelector('header')?.setAttribute('style', 'display: none');
+      //hide the footer
+      article?.querySelector('footer')?.setAttribute('style', 'display: none');
+    });
   }
 
   /**

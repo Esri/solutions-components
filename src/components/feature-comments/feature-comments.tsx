@@ -75,7 +75,7 @@ export class FeatureComments {
   render() {
     return (
       <Host>
-        <slot/>
+        <slot />
       </Host>
     );
   }

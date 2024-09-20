@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="en">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
@@ -24,52 +25,65 @@
   <link rel="stylesheet" href="https://webapps-cdn.esri.com/CDN/fonts/v1.4.1/fonts.css" />
   <link rel="stylesheet" href="../solutions-components.css" type="text/css">
   <style>
-  .full-height {
-    height: 100%;
-  }
-  .app-container {
-    height: calc(100% - 30px);
-    overflow: auto;
-  }
-  .demo-button {
-    position: relative;
-    align-self: center;
-  }
-  .list {
-    padding-inline-end: 100px;
-  }
-  .flex {
-    display: flex;
-  }
-  .combo-list {
-    width: 330px;
-  }
-  .section-title {
-    margin-bottom: 12px;
-  }
-  .align-baseline {
-    align-items: baseline;
-  }
-  .labeled-item {
-    display: inline-flex;
-    margin-inline-end: 8px;
-  }
-  .loginLabel {
-    min-width: unset;
-  }
-  .margin-top-1 {
-    margin-top: 1rem;
-  }
-  .margin-bottom-1 {
-    margin-bottom: 1rem;
-  }
-  .margin-side-1 {
-    margin-inline-end: 1rem;
-    margin-inline-start: 1rem;
-  }
-  .not-visible {
-    visibility: hidden;
-  }
+    .full-height {
+      height: 100%;
+    }
+
+    .app-container {
+      height: calc(100% - 30px);
+      overflow: auto;
+    }
+
+    .demo-button {
+      position: relative;
+      align-self: center;
+    }
+
+    .list {
+      padding-inline-end: 100px;
+    }
+
+    .flex {
+      display: flex;
+    }
+
+    .combo-list {
+      width: 330px;
+    }
+
+    .section-title {
+      margin-bottom: 12px;
+    }
+
+    .align-baseline {
+      align-items: baseline;
+    }
+
+    .labeled-item {
+      display: inline-flex;
+      margin-inline-end: 8px;
+    }
+
+    .loginLabel {
+      min-width: unset;
+    }
+
+    .margin-top-1 {
+      margin-top: 1rem;
+    }
+
+    .margin-bottom-1 {
+      margin-bottom: 1rem;
+    }
+
+    .margin-side-1 {
+      margin-inline-end: 1rem;
+      margin-inline-start: 1rem;
+    }
+
+    .not-visible {
+      visibility: hidden;
+    }
   </style>
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es5%2Cfetch%2CPromise"></script>
   <script src="https://unpkg.com/@esri/arcgis-rest-request@3.1.1/dist/umd/request.umd.js"></script>
@@ -102,11 +116,7 @@
       <button id="connectBtn fader" onclick="connectFcn()">Connect</button>
     </div>
     <div class="list flex not-visible margin-bottom-1 margin-side-1" id="componentContainer">
-      <calcite-select
-        id="solution-ids"
-        label="demo combobox"
-        placeholder="Select Solution ID"
-        scale="m"
+      <calcite-select id="solution-ids" label="demo combobox" placeholder="Select Solution ID" scale="m"
         class="combo-list labeled-item">
       </calcite-select>
     </div>
@@ -127,80 +137,80 @@
       }
     });
     require(['vs/editor/editor.main'],
-    function () {
+      function () {
 
 
-      connectFcn = getSolutions;
+        connectFcn = getSolutions;
 
-      authentication = null;
+        authentication = null;
 
-      function getSolutions() {
-        const portal = (document.getElementById("portal").value || "https://www.arcgis.com") + "/sharing/rest";
-        authentication = new arcgisRest.UserSession({
-          username: document.getElementById("username").value || undefined,
-          password: document.getElementById("password").value || undefined,
-          portal
-        });
-
-        // Initialize the configuration content
-        let demo = document.getElementById("demo");
-        demo.authentication = authentication;
-
-        // DO NOT USE REAL SOLUTION ITEMS WHILE SAVE EDITS WORK IS IN PROGRESS...CAN DESTROY THE SOLUTION ITEM
-        const groupId = document.getElementById("group").value;
-
-        const q = "type:Solution typekeywords:Solution,Template ";
-        const params = {
-          sortField:"relevance",
-          sortOrder:"desc",
-          num: 100
-        };
-
-        const opts = {
-          groupId,
-          q,
-          params,
-          authentication,
-          portal
-        };
-
-        // set the data
-        arcgisRest.searchGroupContent(opts)
-          .then(jsonResults => {
-            const idList = document.getElementById("solution-ids");
-
-            let value = undefined;
-            jsonResults.results.forEach(result => {
-              const i = document.createElement("calcite-option");
-              i.setAttribute("value", result.id);
-              i.setAttribute("label", result.title);
-              i.setAttribute("dir", "ltr");
-              i.setAttribute("scale", "m");
-              idList.appendChild(i);
-              if (!value) {
-                value = result.id
-              }
-            });
-
-            idList.addEventListener("calciteSelectChange", (event) => this.itemChanged(event, authentication, portal, idList));
-
-            // select the first one
-            if (value) {
-              this.itemChanged({}, authentication, portal, {
-                selectedOption: { value }
-              });
-            }
-
-            // show the components
-            const componentContainer = document.getElementById("componentContainer");
-            componentContainer.classList.remove("not-visible");
-
-            const appContainer = document.getElementById("appContainer");
-            appContainer.style.opacity = "1";
-            appContainer.classList.remove("not-visible")
+        function getSolutions() {
+          const portal = (document.getElementById("portal").value || "https://www.arcgis.com") + "/sharing/rest";
+          authentication = new arcgisRest.UserSession({
+            username: document.getElementById("username").value || undefined,
+            password: document.getElementById("password").value || undefined,
+            portal
           });
-      }
-    });
+
+          // Initialize the configuration content
+          let demo = document.getElementById("demo");
+          demo.authentication = authentication;
+
+          // DO NOT USE REAL SOLUTION ITEMS WHILE SAVE EDITS WORK IS IN PROGRESS...CAN DESTROY THE SOLUTION ITEM
+          const groupId = document.getElementById("group").value;
+
+          const q = "type:Solution typekeywords:Solution,Template ";
+          const params = {
+            sortField: "relevance",
+            sortOrder: "desc",
+            num: 100
+          };
+
+          const opts = {
+            groupId,
+            q,
+            params,
+            authentication,
+            portal
+          };
+
+          // set the data
+          arcgisRest.searchGroupContent(opts)
+            .then(jsonResults => {
+              const idList = document.getElementById("solution-ids");
+
+              let value = undefined;
+              jsonResults.results.forEach(result => {
+                const i = document.createElement("calcite-option");
+                i.setAttribute("value", result.id);
+                i.setAttribute("label", result.title);
+                i.setAttribute("dir", "ltr");
+                i.setAttribute("scale", "m");
+                idList.appendChild(i);
+                if (!value) {
+                  value = result.id
+                }
+              });
+
+              idList.addEventListener("calciteSelectChange", (event) => this.itemChanged(event, authentication, portal, idList));
+
+              // select the first one
+              if (value) {
+                this.itemChanged({}, authentication, portal, {
+                  selectedOption: { value }
+                });
+              }
+
+              // show the components
+              const componentContainer = document.getElementById("componentContainer");
+              componentContainer.classList.remove("not-visible");
+
+              const appContainer = document.getElementById("appContainer");
+              appContainer.style.opacity = "1";
+              appContainer.classList.remove("not-visible")
+            });
+        }
+      });
 
     function itemChanged(event, authentication, portal, self) {
       const demo = document.getElementById("demo");
@@ -208,4 +218,5 @@
     }
   </script>
 </body>
+
 </html>

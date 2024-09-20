@@ -571,7 +571,7 @@ export class PublicNotification {
   protected _initSearchConfiguration(
     v: ISearchConfiguration
   ): void {
-    if (this.searchConfiguration && !this._searchConfiguration  && this.mapView) {
+    if (this.searchConfiguration && !this._searchConfiguration && this.mapView) {
       this._searchConfiguration = v;
       this.searchConfigurationChange.emit(this._searchConfiguration);
       // force back to list page before we create Search
@@ -852,7 +852,7 @@ export class PublicNotification {
    */
   protected _getSelectionSetIds(
     selectionSet: ISelectionSet
-  ): number [] {
+  ): number[] {
     return selectionSet.workflowType !== EWorkflowType.REFINE ? selectionSet.selectedIds :
       Object.keys(selectionSet.refineInfos).reduce((p, c) => [...p, ...selectionSet.refineInfos[c].addIds], []);
   }
@@ -1201,19 +1201,19 @@ export class PublicNotification {
             {this._translations.listGraphics}
           </calcite-label>
           <calcite-icon
-              class="padding-start-1-2 icon"
-              flipRtl={!(this.locale?.toLowerCase() === "he")}
-              icon="question"
-              id="list-graphics-icon"
-              scale="s"
-            />
-            <calcite-popover
-              closable={true}
-              label=""
-              referenceElement="list-graphics-icon"
-            >
-              <span class="tooltip-message">{this._translations.listGraphicsTip}</span>
-            </calcite-popover>
+            class="padding-start-1-2 icon"
+            flipRtl={!(this.locale?.toLowerCase() === "he")}
+            icon="question"
+            id="list-graphics-icon"
+            scale="s"
+          />
+          <calcite-popover
+            closable={true}
+            label=""
+            referenceElement="list-graphics-icon"
+          >
+            <span class="tooltip-message">{this._translations.listGraphicsTip}</span>
+          </calcite-popover>
         </div>
       </div>
     );
@@ -1303,29 +1303,29 @@ export class PublicNotification {
   protected _addExportGraphics(): void {
     const sketchLayer: __esri.GraphicsLayer = this._getManagedLayer("sketch");
     const bufferLayer: __esri.GraphicsLayer = this._getManagedLayer("buffer");
-      this._selectionSets.forEach(ss => {
-        if (ss.download) {
-          if (sketchLayer) {
-            sketchLayer.graphics.add(ss.sketchGraphic);
-          }
-          if (bufferLayer) {
-            const symbol = {
-              type: "simple-fill",
-              color: this.bufferColor,
-              outline: {
-                color: this.bufferOutlineColor,
-                width: 1
-              }
-            };
-            const bufferGraphic = new this.Graphic({
-              geometry: ss.buffer,
-              symbol
-            });
-
-            bufferLayer.graphics.add(bufferGraphic);
-          }
+    this._selectionSets.forEach(ss => {
+      if (ss.download) {
+        if (sketchLayer) {
+          sketchLayer.graphics.add(ss.sketchGraphic);
         }
-      });
+        if (bufferLayer) {
+          const symbol = {
+            type: "simple-fill",
+            color: this.bufferColor,
+            outline: {
+              color: this.bufferOutlineColor,
+              width: 1
+            }
+          };
+          const bufferGraphic = new this.Graphic({
+            geometry: ss.buffer,
+            symbol
+          });
+
+          bufferLayer.graphics.add(bufferGraphic);
+        }
+      }
+    });
   }
 
   /**

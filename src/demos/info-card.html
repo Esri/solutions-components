@@ -1,12 +1,10 @@
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="initial-scale=1,maximum-scale=1,user-scalable=no"
-    />
-    <title>Info Card</title>
-    <!--
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <title>Info Card</title>
+  <!--
     | Copyright 2022 Esri
     |
     | Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,40 +19,42 @@
     | See the License for the specific language governing permissions and
     | limitations under the License.
     -->
-    <style>
-      .main {
-        background-color: var(--calcite-color-foreground-1);
-        display: grid;
-        align-self: center;
-      }
-      .column {
-        min-width: 300px;
-        padding: 1rem;
-        border: 1px solid var(--calcite-color-border-2);
-      }
-    </style>
+  <style>
+    .main {
+      background-color: var(--calcite-color-foreground-1);
+      display: grid;
+      align-self: center;
+    }
 
-    <link rel="stylesheet" type="text/css" href="https://js.arcgis.com/calcite-components/2.0.0/calcite.css" />
-    <link rel="stylesheet" href="https://webapps-cdn.esri.com/CDN/fonts/v1.4.1/fonts.css" />
-    <link rel="stylesheet" href="../solutions-components.css" type="text/css">
+    .column {
+      min-width: 300px;
+      padding: 1rem;
+      border: 1px solid var(--calcite-color-border-2);
+    }
+  </style>
 
-    <script type="module" src="../solutions-components.esm.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://js.arcgis.com/calcite-components/2.0.0/calcite.css" />
+  <link rel="stylesheet" href="https://webapps-cdn.esri.com/CDN/fonts/v1.4.1/fonts.css" />
+  <link rel="stylesheet" href="../solutions-components.css" type="text/css">
 
-    <script>
-        function addValues() {
-          const demo = document.getElementById("demo");
-          demo.values = {
-            "Details": "Details info goes here",
-            "Name": "Name here",
-            "Phone": "(000) 000-0000",
-            "Email": "example@gmail.com",
-            "Date": "May 11, 2022"
-          };
-        }
-    </script>
-  </head>
+  <script type="module" src="../solutions-components.esm.js"></script>
 
-  <body onload="addValues()">
-    <info-card id="demo" card-title="Title" class="main column"></info-card>
-  </body>
+  <script>
+    function addValues() {
+      const demo = document.getElementById("demo");
+      demo.values = {
+        "Details": "Details info goes here",
+        "Name": "Name here",
+        "Phone": "(000) 000-0000",
+        "Email": "example@gmail.com",
+        "Date": "May 11, 2022"
+      };
+    }
+  </script>
+</head>
+
+<body onload="addValues()">
+  <info-card id="demo" card-title="Title" class="main column"></info-card>
+</body>
+
 </html>

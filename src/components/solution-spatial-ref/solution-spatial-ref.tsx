@@ -99,9 +99,9 @@ export class SolutionSpatialRef {
           <calcite-switch
             checked={this.enabled}
             class="spatial-ref-switch"
-            onCalciteSwitchChange={ (event) => this.enabled = event.target.checked }
+            onCalciteSwitchChange={(event) => this.enabled = event.target.checked}
             scale="m"
-           />
+          />
           {this._translations.enableSpatialReference}
         </label>
         <br />
@@ -113,9 +113,9 @@ export class SolutionSpatialRef {
             checked={this.enableDefault}
             class="spatial-ref-switch"
             disabled={!this.enabled}
-            onCalciteSwitchChange={ (event) => this.enableDefault = event.target.checked }
+            onCalciteSwitchChange={(event) => this.enableDefault = event.target.checked}
             scale="m"
-           />
+          />
           {this._translations.enableDefaultSpatialReference}
         </label>
       </Host>
@@ -205,7 +205,7 @@ export class SolutionSpatialRef {
     // switch all spatial-ref-item-switch
     const fsNodes = nodeListToArray(this.el.getElementsByClassName("spatial-ref-item-switch"));
     fsNodes.forEach((node: any) => node.checked = false);
-    featureServices.forEach(service => this._updateEnabledServices({detail: { switched: false }}, service));
+    featureServices.forEach(service => this._updateEnabledServices({ detail: { switched: false } }, service));
   }
 
   /**

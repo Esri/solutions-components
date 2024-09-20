@@ -75,7 +75,7 @@ export class FeaturesFlowItem {
   render() {
     return (
       <Host>
-        <slot/>
+        <slot />
       </Host>
     );
   }

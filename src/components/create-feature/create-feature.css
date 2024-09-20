@@ -65,6 +65,7 @@
   width: calc(100% - 22px);
   height: 50%;
 }
+
 /* override the padding of the feature form */
 .esri-editor__panel-content {
   padding-block: 10px !important;
