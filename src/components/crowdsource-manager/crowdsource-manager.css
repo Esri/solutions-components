@@ -94,6 +94,10 @@
   position: relative;
 }
 
+.position-absolute {
+  position: absolute;
+}
+
 .height-50 {
   height: 50%;
 }

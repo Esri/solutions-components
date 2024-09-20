@@ -664,7 +664,7 @@ export class CrowdsourceManager {
     const contentClass = layoutMode === ELayoutMode.HORIZONTAL ? "" : "display-flex";
     const themeClass = this.theme === "dark" ? "calcite-mode-dark" : "calcite-mode-light";
     return (
-      <calcite-panel class={"width-full height-full"}>
+      <calcite-panel class={"width-full height-full position-absolute"}>
         <div class={`width-full height-full overflow-hidden ${contentClass}`}>
           {this._getMapAndCard(layoutMode, panelOpen, hideTable)}
           {this._getTable(layoutMode, panelOpen, hideTable)}
