@@ -172,16 +172,16 @@ export class SolutionConfiguration {
               {
                 hasServices
                   ? <calcite-tab class="config-tab">
-                      <div class="config-solution">
-                        <solution-spatial-ref
-                          enableDefault={!!spatialReferenceInfo.default}
-                          enabled={spatialReferenceInfo?.enabled}
-                          featureServices={state.getStoreInfo("featureServices").map(fs => fs.name)}
-                          id="configure-solution-spatial-ref"
-                          key={`${this.solutionItemId}-spatial-ref`}
-                        />
-                      </div>
-                    </calcite-tab>
+                    <div class="config-solution">
+                      <solution-spatial-ref
+                        enableDefault={!!spatialReferenceInfo.default}
+                        enabled={spatialReferenceInfo?.enabled}
+                        featureServices={state.getStoreInfo("featureServices").map(fs => fs.name)}
+                        id="configure-solution-spatial-ref"
+                        key={`${this.solutionItemId}-spatial-ref`}
+                      />
+                    </div>
+                  </calcite-tab>
                   : null
               }
             </calcite-tabs>

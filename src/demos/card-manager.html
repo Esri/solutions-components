@@ -1,12 +1,10 @@
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="initial-scale=1,maximum-scale=1,user-scalable=no"
-    />
-    <title>Card Manager</title>
-    <!--
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <title>Card Manager</title>
+  <!--
     | Copyright 2022 Esri
     |
     | Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,97 +19,99 @@
     | See the License for the specific language governing permissions and
     | limitations under the License.
     -->
-    <style>
-      .main {
-        background-color: var(--calcite-color-foreground-1);
-        display: grid;
-        align-self: center;
-      }
-      .column {
-        width: 360px;
-        height: 340px;
-        padding: 1rem;
-        border: 1px solid var(--calcite-color-border-2);
-      }
-    </style>
+  <style>
+    .main {
+      background-color: var(--calcite-color-foreground-1);
+      display: grid;
+      align-self: center;
+    }
 
-    <link rel="stylesheet" type="text/css" href="https://js.arcgis.com/calcite-components/2.0.0/calcite.css" />
-    <link rel="stylesheet" href="https://webapps-cdn.esri.com/CDN/fonts/v1.4.1/fonts.css" />
-    <link rel="stylesheet" href="../solutions-components.css" type="text/css">
+    .column {
+      width: 360px;
+      height: 340px;
+      padding: 1rem;
+      border: 1px solid var(--calcite-color-border-2);
+    }
+  </style>
 
-    <script type="module" src="../solutions-components.esm.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://js.arcgis.com/calcite-components/2.0.0/calcite.css" />
+  <link rel="stylesheet" href="https://webapps-cdn.esri.com/CDN/fonts/v1.4.1/fonts.css" />
+  <link rel="stylesheet" href="../solutions-components.css" type="text/css">
 
-    <script>
-      function addValues() {
-        const href = window.location.href;
-        const url = href.substring(0, href.lastIndexOf('/'));
-        const img = `${url}/data/generic.png`;
+  <script type="module" src="../solutions-components.esm.js"></script>
 
-        const demo = document.getElementById("demo");
+  <script>
+    function addValues() {
+      const href = window.location.href;
+      const url = href.substring(0, href.lastIndexOf('/'));
+      const img = `${url}/data/generic.png`;
 
-        demo.mediaCardValues = [{
-          name: "Filename.png",
-          description: "This is an example of what a media description looks like.",
-          url: img
-        }, {
-          name: "Filename2.png",
-          description: "Another example of what a media description looks like.",
-          url: img
-        }, {
-          name: "Filename3.png",
-          description: "And another example of a media description.",
-          url: img
-        }, {
-          name: "Filename.png",
-          description: "This is an example of what a media description looks like.",
-          url: img
-        }, {
-          name: "Filename2.png",
-          description: "Another example of what a media description looks like.",
-          url: img
-        }, {
-          name: "Filename3.png",
-          description: "And another example of a media description.",
-          url: img
-        }, {
-          name: "Filename.png",
-          description: "This is an example of what a media description looks like.",
-          url: img
-        }, {
-          name: "Filename2.png",
-          description: "Another example of what a media description looks like.",
-          url: img
-        }, {
-          name: "Filename3.png",
-          description: "And another example of a media description.",
-          url: img
-        },{
-          name: "Filename.png",
-          description: "This is an example of what a media description looks like.",
-          url: img
-        }, {
-          name: "Filename2.png",
-          description: "Another example of what a media description looks like.",
-          url: img
-        }, {
-          name: "Filename3.png",
-          description: "And another example of a media description.",
-          url: img
-        }];
+      const demo = document.getElementById("demo");
 
-        demo.infoCardValues = {
-          "Details": "Details info goes here",
-          "Name": "Name here",
-          "Phone": "(000) 000-0000",
-          "Email": "example@gmail.com",
-          "Date": "May 11, 2022"
-        };
+      demo.mediaCardValues = [{
+        name: "Filename.png",
+        description: "This is an example of what a media description looks like.",
+        url: img
+      }, {
+        name: "Filename2.png",
+        description: "Another example of what a media description looks like.",
+        url: img
+      }, {
+        name: "Filename3.png",
+        description: "And another example of a media description.",
+        url: img
+      }, {
+        name: "Filename.png",
+        description: "This is an example of what a media description looks like.",
+        url: img
+      }, {
+        name: "Filename2.png",
+        description: "Another example of what a media description looks like.",
+        url: img
+      }, {
+        name: "Filename3.png",
+        description: "And another example of a media description.",
+        url: img
+      }, {
+        name: "Filename.png",
+        description: "This is an example of what a media description looks like.",
+        url: img
+      }, {
+        name: "Filename2.png",
+        description: "Another example of what a media description looks like.",
+        url: img
+      }, {
+        name: "Filename3.png",
+        description: "And another example of a media description.",
+        url: img
+      }, {
+        name: "Filename.png",
+        description: "This is an example of what a media description looks like.",
+        url: img
+      }, {
+        name: "Filename2.png",
+        description: "Another example of what a media description looks like.",
+        url: img
+      }, {
+        name: "Filename3.png",
+        description: "And another example of a media description.",
+        url: img
+      }];
 
-      }
+      demo.infoCardValues = {
+        "Details": "Details info goes here",
+        "Name": "Name here",
+        "Phone": "(000) 000-0000",
+        "Email": "example@gmail.com",
+        "Date": "May 11, 2022"
+      };
+
+    }
   </script>
-  </head>
+</head>
 
-  <body onload="addValues()">
-    <card-manager id="demo" class="main column"/>
-  </body>
+<body onload="addValues()">
+  <card-manager id="demo" class="main column" />
+</body>
+
 </html>

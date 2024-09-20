@@ -117,7 +117,7 @@ export class BufferTools {
   /**
    * Key Value pair: Lookup hash for translated units
    */
-  protected _units: {[key: string]: string};
+  protected _units: { [key: string]: string };
 
   //--------------------------------------------------------------------------
   //

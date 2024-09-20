@@ -20,8 +20,8 @@ import {
 } from '@esri/solution-common';
 
 export enum EImageDisplayType {
-  GRID="GRID",
-  GALLERY="GALLERY"
+  GRID = "GRID",
+  GALLERY = "GALLERY"
 }
 
 export enum ELayoutMode {
@@ -49,32 +49,32 @@ export enum EPageType {
 }
 
 export enum ESelectionMode {
-  ADD="ADD",
-  REMOVE="REMOVE"
+  ADD = "ADD",
+  REMOVE = "REMOVE"
 }
 
 export enum ESelectionType {
-  POINT="POINT",
-  LINE="LINE",
-  POLY="POLY",
-  RECT="RECT"
+  POINT = "POINT",
+  LINE = "LINE",
+  POLY = "POLY",
+  RECT = "RECT"
 }
 
 export enum EWorkflowType {
-  SEARCH="SEARCH",
-  SELECT="SELECT",
-  SKETCH="SKETCH",
-  REFINE="REFINE"
+  SEARCH = "SEARCH",
+  SELECT = "SELECT",
+  SKETCH = "SKETCH",
+  REFINE = "REFINE"
 }
 
 export enum EExportType {
-  CSV="CSV",
-  PDF="PDF"
+  CSV = "CSV",
+  PDF = "PDF"
 }
 
 export enum EDrawMode {
-  SKETCH="SKETCH",
-  REFINE="REFINE"
+  SKETCH = "SKETCH",
+  REFINE = "REFINE"
 }
 
 export const CSpatialRefCustomizingPrefix = "{{params.wkid||";
@@ -82,9 +82,9 @@ export const CSpatialRefCustomizingSuffix = "}}";
 
 /* eslint-enable no-unused-vars */
 
-export type ValidSize = 6|10|14|20|30|60|80;
+export type ValidSize = 6 | 10 | 14 | 20 | 30 | 60 | 80;
 
-export type DistanceUnit = "feet"|"meters"|"miles"|"kilometers";
+export type DistanceUnit = "feet" | "meters" | "miles" | "kilometers";
 
 export type theme = "light" | "dark";
 

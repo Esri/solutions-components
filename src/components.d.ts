@@ -1976,7 +1976,7 @@ declare global {
         new (): HTMLCrowdsourceManagerElement;
     };
     interface HTMLCrowdsourceReporterElementEventMap {
-        "togglePanel": {panelState: boolean, isFormOpen: boolean};
+        "togglePanel": { panelState: boolean, isFormOpen: boolean };
     }
     interface HTMLCrowdsourceReporterElement extends Components.CrowdsourceReporter, HTMLStencilElement {
         addEventListener<K extends keyof HTMLCrowdsourceReporterElementEventMap>(type: K, listener: (this: HTMLCrowdsourceReporterElement, ev: CrowdsourceReporterCustomEvent<HTMLCrowdsourceReporterElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -3061,7 +3061,7 @@ declare namespace LocalJSX {
         /**
           * Emitted when toggle panel button is clicked in reporter
          */
-        "onTogglePanel"?: (event: CrowdsourceReporterCustomEvent<{panelState: boolean, isFormOpen: boolean}>) => void;
+        "onTogglePanel"?: (event: CrowdsourceReporterCustomEvent<{ panelState: boolean, isFormOpen: boolean }>) => void;
         /**
           * string: The word(s) to display in the reports submit button
          */

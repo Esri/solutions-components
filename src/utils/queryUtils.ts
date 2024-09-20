@@ -160,7 +160,7 @@ export async function queryObjectIds(
  * @param ids array of ObjectIDs to be used to query for features in a layer
  * @param layer the layer to retrieve features from
  * @param graphics the result graphics array
- * @param returnGeometry returns the geometry 
+ * @param returnGeometry returns the geometry
  * @param outSpatialReference out spatial reference of the geometries
  * @param fields out fields
  *
@@ -244,8 +244,8 @@ export async function queryFeaturesByGeometry(
   start: number,
   layer: __esri.FeatureLayer,
   geometry: __esri.Geometry,
-  featuresCollection: {[key: string]: __esri.Graphic[]}
-): Promise<{[key: string]: __esri.Graphic[]}> {
+  featuresCollection: { [key: string]: __esri.Graphic[] }
+): Promise<{ [key: string]: __esri.Graphic[] }> {
   const num = layer.capabilities.query.maxRecordCount;
   const query = layer.createQuery();
   query.start = start;
@@ -291,7 +291,7 @@ export async function queryFeatureIds(
  *
  * @returns Promise with the Extent of all features that match the provided ids
  */
- export async function queryExtent(
+export async function queryExtent(
   ids: number[],
   layer: __esri.FeatureLayer
 ): Promise<IQueryExtentResponse> {
@@ -329,7 +329,7 @@ export function getQueryGeoms(
  *
  * @returns Array of single unioned geometry for the provided geometry type
  */
- function _unionGeoms(
+function _unionGeoms(
   geometries: __esri.Geometry[],
   type: string,
   geometryEngine: __esri.geometryEngine

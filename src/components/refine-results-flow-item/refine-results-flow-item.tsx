@@ -75,7 +75,7 @@ export class RefineResultsFlowItem {
   render() {
     return (
       <Host>
-        <slot/>
+        <slot />
       </Host>
     );
   }

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="en">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
@@ -24,23 +25,26 @@
   <link rel="stylesheet" href="https://webapps-cdn.esri.com/CDN/fonts/v1.4.1/fonts.css" />
   <link rel="stylesheet" href="../solutions-components.css" type="text/css">
   <style>
-  .full-height {
-    height: 100%
-  }
-  .column {
-    width: 250px;
-    position: relative;
-    float: left;
-    margin: 1rem;
-    padding: 1rem;
-    border: 1px solid;
-  }
-  .column[dir="rtl"] {
-    float: right;
-  }
-  .bg {
-    background-color: white;
-  }
+    .full-height {
+      height: 100%
+    }
+
+    .column {
+      width: 250px;
+      position: relative;
+      float: left;
+      margin: 1rem;
+      padding: 1rem;
+      border: 1px solid;
+    }
+
+    .column[dir="rtl"] {
+      float: right;
+    }
+
+    .bg {
+      background-color: white;
+    }
   </style>
 
   <script type="module" src="https://js.arcgis.com/calcite-components/2.0.0/calcite.esm.js"></script>
@@ -57,7 +61,7 @@
       </div>
       <div class="column">
         <h3>Event</h3>
-        <textarea id="demo-event" ></textarea>
+        <textarea id="demo-event"></textarea>
       </div>
     </div>
   </main>
@@ -66,22 +70,23 @@
   <script src="./libs/setLocale.js"></script>
   <script>
     require([],
-    function () {
-      // Initialize the configuration content
-      const demo = document.getElementById("demo");
+      function () {
+        // Initialize the configuration content
+        const demo = document.getElementById("demo");
 
-      // set the data
-      fetch("./data/solution-variables-data.json")
-        .then(response => response.json())
-        .then(data => {
-          demo.value = data.value;
-          document.getElementById("appContainer").style.opacity = "1";
+        // set the data
+        fetch("./data/solution-variables-data.json")
+          .then(response => response.json())
+          .then(data => {
+            demo.value = data.value;
+            document.getElementById("appContainer").style.opacity = "1";
 
-          demo.addEventListener("solutionVariableSelected", (event) => {
-            document.getElementById("demo-event").innerText += event.detail.value;
+            demo.addEventListener("solutionVariableSelected", (event) => {
+              document.getElementById("demo-event").innerText += event.detail.value;
+            });
           });
-        });
-    });
+      });
   </script>
 </body>
+
 </html>

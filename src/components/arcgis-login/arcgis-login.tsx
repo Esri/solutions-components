@@ -75,7 +75,7 @@ export class ArcgisLogin {
   render() {
     return (
       <Host>
-        <slot/>
+        <slot />
       </Host>
     );
   }

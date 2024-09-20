@@ -201,7 +201,7 @@ export class CardManager {
    */
   async componentWillLoad(): Promise<void> {
     await this._getTranslations();
-    if(this.selectedFeaturesIds?.length > 0) {
+    if (this.selectedFeaturesIds?.length > 0) {
       this._graphics = await this._getFeaturesByIds(this.selectedFeaturesIds);
     }
   }
@@ -277,30 +277,30 @@ export class CardManager {
     );
   }
 
-    /**
-   * Returns the editor component for adding feature
-   * @returns Node
-   */
-    protected getEditorComponent(): Node {
-      return (
-        <div>
-          {this._showCreateFeatureComponent && <create-feature
-            customizeSubmit
-            mapView={this.mapView}
-            onDrawComplete={() => { this._showSubmitBtn = true }}
-            onEditingAttachment={(evt) => { this._showSubmitBtn = !evt.detail }}
-            onProgressStatus={() => {
-                setTimeout(() => {
-                  this._isFeatureCreated = false;
-                }, 2000)
-            }}
-            onSuccess={this._featureCreated.bind(this)}
-            ref={el => this._createFeature = el}
-            selectedLayerId={this.layer?.id}
-          />}
-        </div>
-      )
-    }
+  /**
+ * Returns the editor component for adding feature
+ * @returns Node
+ */
+  protected getEditorComponent(): Node {
+    return (
+      <div>
+        {this._showCreateFeatureComponent && <create-feature
+          customizeSubmit
+          mapView={this.mapView}
+          onDrawComplete={() => { this._showSubmitBtn = true }}
+          onEditingAttachment={(evt) => { this._showSubmitBtn = !evt.detail }}
+          onProgressStatus={() => {
+            setTimeout(() => {
+              this._isFeatureCreated = false;
+            }, 2000)
+          }}
+          onSuccess={this._featureCreated.bind(this)}
+          ref={el => this._createFeature = el}
+          selectedLayerId={this.layer?.id}
+        />}
+      </div>
+    )
+  }
 
   //--------------------------------------------------------------------------
   //

@@ -250,10 +250,10 @@ export class CrowdsourceReporter {
    */
   @State() _reportSubmitted = false;
 
-   /**
-   * string: The selected feature layer's name from the layer's list
-   */
-   @State() _selectedLayerName: string;
+  /**
+  * string: The selected feature layer's name from the layer's list
+  */
+  @State() _selectedLayerName: string;
 
   /**
    * boolean: When true show the submit and cancel button
@@ -456,7 +456,7 @@ export class CrowdsourceReporter {
   /**
    * _esri.Element: form elements of the selected layer
    */
-  protected _formElements =  [];
+  protected _formElements = [];
 
   /**
    * string[]: URL params set by using filters.
@@ -530,10 +530,10 @@ export class CrowdsourceReporter {
   //
   //--------------------------------------------------------------------------
 
-   /**
-   * Emitted when toggle panel button is clicked in reporter
-   */
-   @Event() togglePanel: EventEmitter<{panelState: boolean, isFormOpen: boolean}>;
+  /**
+  * Emitted when toggle panel button is clicked in reporter
+  */
+  @Event() togglePanel: EventEmitter<{ panelState: boolean, isFormOpen: boolean }>;
 
   //--------------------------------------------------------------------------
   //
@@ -553,8 +553,8 @@ export class CrowdsourceReporter {
     await this.mapView?.when(async () => {
       //set configured layers array which are enabled for data collection
       this._layers = this.reportingOptions ? Object.keys(this.reportingOptions).filter((layerId: string) => {
-          return this.reportingOptions[layerId].visible;
-        }) : [];
+        return this.reportingOptions[layerId].visible;
+      }) : [];
       await this.setMapView();
     });
   }
@@ -591,7 +591,7 @@ export class CrowdsourceReporter {
         </calcite-alert>}
         {this._commentSubmitted && <calcite-alert
           auto-close
-          class={'report-submitted '+ themeClass}
+          class={'report-submitted ' + themeClass}
           icon="check-circle"
           kind="success"
           label=""
@@ -1133,7 +1133,7 @@ export class CrowdsourceReporter {
       if (layersListed.includes(eachLayer.id)) {
         this._validLayers.push(eachLayer);
         //create list of reporting enabled layers
-        if(this._getLayersConfig(eachLayer.id)?.reporting && this._layerItemsHash[eachLayer.id] && this._layerItemsHash[eachLayer.id].supportsAdd){
+        if (this._getLayersConfig(eachLayer.id)?.reporting && this._layerItemsHash[eachLayer.id] && this._layerItemsHash[eachLayer.id].supportsAdd) {
           reportingEnabledLayerIds.push(eachLayer.id);
         }
       }
@@ -1193,7 +1193,7 @@ export class CrowdsourceReporter {
       this.updatePanelState(this._sidePanelCollapsed, false);
     }
     // Coming back from feature details refresh the feature list to update the like count
-    if(this.reportingOptions && this.reportingOptions[this._selectedLayerId]?.like && updatedFlowItems[updatedFlowItems.length - 1] === 'feature-details') {
+    if (this.reportingOptions && this.reportingOptions[this._selectedLayerId]?.like && updatedFlowItems[updatedFlowItems.length - 1] === 'feature-details') {
       void this._featureList.refresh();
     }
     updatedFlowItems.pop();
@@ -1310,7 +1310,7 @@ export class CrowdsourceReporter {
         {showFilterIcon && <calcite-action
           icon="filter"
           indicator={this._filterActive}
-          onClick={() => {this._flowItems = [...this._flowItems, "filter-panel"]}}
+          onClick={() => { this._flowItems = [...this._flowItems, "filter-panel"] }}
           slot={"header-actions-end"}
           text={this._translations.filter}
           title={this._translations.filter} />}
@@ -1332,7 +1332,7 @@ export class CrowdsourceReporter {
             noFeaturesFoundMsg={this._translations.featureErrorMsg}
             onFeatureSelect={this.onFeatureSelectFromList.bind(this)}
             pageSize={30}
-            ref={el => this._featureList = el }
+            ref={el => this._featureList = el}
             reportingOptions={this.reportingOptions}
             selectedLayerId={layerId}
             showFeatureSymbol={this.showFeatureSymbol}
@@ -1431,7 +1431,7 @@ export class CrowdsourceReporter {
             onCommentSelect={this.onCommentSelectFromList.bind(this)}
             onFeatureSelectionChange={this.selectionChanged.bind(this)}
             onLoadingStatus={(evt) => void this.updatingFeatureDetails(evt.detail)}
-            ref={el => this._featureDetails = el }
+            ref={el => this._featureDetails = el}
             reportingOptions={this.reportingOptions}
             showUserImageInCommentsList={this.showUserImageInCommentsList}
           />
@@ -1575,7 +1575,7 @@ export class CrowdsourceReporter {
    */
   protected async setSelectedFeatures(features: __esri.Graphic[]): Promise<void> {
     this._selectedFeature = features;
-   await this.setCurrentFeature(this._selectedFeature.length ? this._selectedFeature[0] : null);
+    await this.setCurrentFeature(this._selectedFeature.length ? this._selectedFeature[0] : null);
   }
 
   /**
@@ -1629,11 +1629,11 @@ export class CrowdsourceReporter {
    * Clears the highlight
    * @protected
    */
-  protected clearHighlights():void {
+  protected clearHighlights(): void {
     //if a feature is already highlighted, then remove the highlight
-    if(this._highlightHandle) {
+    if (this._highlightHandle) {
       this._highlightHandle.remove();
-     }
+    }
   }
 
   /**
@@ -1745,19 +1745,19 @@ export class CrowdsourceReporter {
     }
   }
 
-    /**
-   * Get the current index of total string
-   *
-   * @returns the index of total string
-   * @protected
-   */
-    protected _getCount(): string {
-      const index = (this._selectedFeatureIndex + 1).toString();
-      const total = this._selectedFeature.length.toString();
-      return this._translations.indexOfTotal
-        .replace("{{index}}", index)
-        .replace("{{total}}", total);
-    }
+  /**
+ * Get the current index of total string
+ *
+ * @returns the index of total string
+ * @protected
+ */
+  protected _getCount(): string {
+    const index = (this._selectedFeatureIndex + 1).toString();
+    const total = this._selectedFeature.length.toString();
+    return this._translations.indexOfTotal
+      .replace("{{index}}", index)
+      .replace("{{total}}", total);
+  }
 
   /**
    * Fetches the component's translations
@@ -1771,7 +1771,7 @@ export class CrowdsourceReporter {
 
   /**
    * Applies a definition expression when floor field and level are available
-   * @param layer FeatureLayer on which the definitionExpression should be updated 
+   * @param layer FeatureLayer on which the definitionExpression should be updated
    * @protected
    */
   protected _updateFloorDefinitionExpression(layer: __esri.FeatureLayer): void {
@@ -1779,9 +1779,9 @@ export class CrowdsourceReporter {
     // update the layer definition expression
     const floorExp = `${floorField} = '${this.floorLevel}'`;
     const defExp = layer.definitionExpression;
-      layer.definitionExpression = defExp?.indexOf(this._floorExpression) > -1 ?
-        defExp.replace(this._floorExpression, floorExp) : floorExp;
-      this._floorExpression = floorExp;
+    layer.definitionExpression = defExp?.indexOf(this._floorExpression) > -1 ?
+      defExp.replace(this._floorExpression, floorExp) : floorExp;
+    this._floorExpression = floorExp;
   }
 
   /**
@@ -1846,13 +1846,13 @@ export class CrowdsourceReporter {
    * @protected
    */
   protected async _showMyFeaturesOnly(featureLayerView: __esri.FeatureLayerView): Promise<void> {
-      const loggedInUserName = (this.mapView.map as any).portalItem.portal?.credential?.userId;
-      if (loggedInUserName) {
-        const creatorField = featureLayerView.layer.editFieldsInfo?.creatorField.toLowerCase();
-        featureLayerView.filter = this.showMyReportsOnly && creatorField ? new this.FeatureFilter({
-          where: creatorField + "='" + loggedInUserName + "'"
-        }) : null;
-      }
+    const loggedInUserName = (this.mapView.map as any).portalItem.portal?.credential?.userId;
+    if (loggedInUserName) {
+      const creatorField = featureLayerView.layer.editFieldsInfo?.creatorField.toLowerCase();
+      featureLayerView.filter = this.showMyReportsOnly && creatorField ? new this.FeatureFilter({
+        where: creatorField + "='" + loggedInUserName + "'"
+      }) : null;
+    }
   }
 
   /**
@@ -1888,7 +1888,7 @@ export class CrowdsourceReporter {
    * Updates the share url for current selected feature
    * @protected
    */
-   protected _updateShareURL(): void {
+  protected _updateShareURL(): void {
     const url = this._shareNode?.shareUrl;
     if (!url) {
       return;

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, h, Element, Prop, State, Method, Event, EventEmitter, Watch} from '@stencil/core';
+import { Component, h, Element, Prop, State, Method, Event, EventEmitter, Watch } from '@stencil/core';
 import { loadModules } from "../../utils/loadModules";
 import { getAllTables } from '../../utils/mapViewUtils';
 import { IReportingOptions } from '../../components';
@@ -438,7 +438,7 @@ export class FeatureDetails {
       }
       //Check if selected layer have the configured like and dislike field and it is of integer types
       selectedLayer.fields.forEach((eachField: __esri.Field) => {
-        if (this._validFieldTypes.indexOf(eachField.type) > -1  && this.layerItemsHash[selectedLayer.id].supportsUpdate) {
+        if (this._validFieldTypes.indexOf(eachField.type) > -1 && this.layerItemsHash[selectedLayer.id].supportsUpdate) {
           if (eachField.name === likeField && this.reportingOptions[selectedLayer.id].like) {
             likeFieldAvailable = true;
           } else if (eachField.name === dislikeField && this.reportingOptions[selectedLayer.id].dislike) {

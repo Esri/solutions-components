@@ -93,10 +93,10 @@ export class FeatureList {
   @Prop() showInitialLoading?: boolean = true;
 
   /**
-   * boolean: If true will show error msg when features are not present 
+   * boolean: If true will show error msg when features are not present
    */
   @Prop() showErrorWhenNoFeatures?: boolean = true;
-  
+
   /**
    * boolean: If true display's profile img on each feature item
    */
@@ -108,7 +108,7 @@ export class FeatureList {
   @Prop() showFeatureSymbol?: boolean = false;
 
   /**
-   * boolean: If true will consider the FeatureFilter applied on the layerview 
+   * boolean: If true will consider the FeatureFilter applied on the layerview
    */
   @Prop() applyLayerViewFilter?: boolean = false;
 
@@ -116,7 +116,7 @@ export class FeatureList {
    * IReportingOptions: Key options for reporting
    */
   @Prop() reportingOptions: IReportingOptions;
-  
+
   //--------------------------------------------------------------------------
   //
   //  State (internal)
@@ -225,7 +225,7 @@ export class FeatureList {
   async sortingInfoWatchHandler(): Promise<void> {
     await this.initializeFeatureItems();
   }
-  
+
   /**
    * Watch for whereclause change and update the features list
    */
@@ -340,19 +340,19 @@ export class FeatureList {
    * @returns Promise resolving when function is done
    * @protected
    */
-    protected async initModules(): Promise<void> {
-      const [Color, esriConfig, symbolUtils] = await loadModules([
-        "esri/Color",
-        "esri/config",
-        "esri/symbols/support/symbolUtils"
-      ]);
-      this.Color = Color;
-      this.esriConfig = esriConfig;
-      this.symbolUtils = symbolUtils;
-    }
+  protected async initModules(): Promise<void> {
+    const [Color, esriConfig, symbolUtils] = await loadModules([
+      "esri/Color",
+      "esri/config",
+      "esri/symbols/support/symbolUtils"
+    ]);
+    this.Color = Color;
+    this.esriConfig = esriConfig;
+    this.symbolUtils = symbolUtils;
+  }
 
   /**
-   * Return the where condition string considering the defined where clause and layer's definition expression 
+   * Return the where condition string considering the defined where clause and layer's definition expression
    * @protected
    */
   protected async getWhereCondition(): Promise<string> {
@@ -410,12 +410,12 @@ export class FeatureList {
     this._isLoading = false;
   }
 
- /**
-  * On feature click in feature list highlight the feature on the map
-  * @param event feature clicked event
-  * @param selectedFeature selected feature graphic
-  * @protected
-  */
+  /**
+   * On feature click in feature list highlight the feature on the map
+   * @param event feature clicked event
+   * @param selectedFeature selected feature graphic
+   * @protected
+   */
   protected async featureClicked(event: any, selectedFeature: __esri.Graphic): Promise<void> {
     //clear previous highlight and remove the highlightHandle
     this.clearHighlights();
@@ -433,14 +433,14 @@ export class FeatureList {
    * @param graphic selected feature graphic
    * @protected
    */
-    protected async emitSelectedFeature(graphic: __esri.Graphic): Promise<void> {
-      const layer = graphic.layer as __esri.FeatureLayer;
-      const query = layer.createQuery();
-      query.returnGeometry = true;
-      query.objectIds = [graphic.getObjectId()];
-      const completeGraphic = await layer.queryFeatures(query);
-      this.featureSelect.emit(completeGraphic.features[0]);
-    }
+  protected async emitSelectedFeature(graphic: __esri.Graphic): Promise<void> {
+    const layer = graphic.layer as __esri.FeatureLayer;
+    const query = layer.createQuery();
+    query.returnGeometry = true;
+    query.objectIds = [graphic.getObjectId()];
+    const completeGraphic = await layer.queryFeatures(query);
+    this.featureSelect.emit(completeGraphic.features[0]);
+  }
 
   /**
    * On feature hover in feature list highlight the feature on the map
@@ -453,7 +453,7 @@ export class FeatureList {
     if (this.highlightOnHover) {
       const oId = selectedFeature.getObjectId();
       const selectedLayerView = await getFeatureLayerView(this.mapView, this.selectedLayerId);
-      selectedLayerView.highlightOptions = {color: new this.Color("#FFFF00")};
+      selectedLayerView.highlightOptions = { color: new this.Color("#FFFF00") };
       this._highlightHandle = selectedLayerView.highlight([oId]);
     }
   }
@@ -462,12 +462,12 @@ export class FeatureList {
    * Clears the highlight
    * @protected
    */
-    protected clearHighlights():void {
-      //if a feature is already highlighted, then remove the highlight
-      if(this._highlightHandle) {
-        this._highlightHandle.remove();
-       }
+  protected clearHighlights(): void {
+    //if a feature is already highlighted, then remove the highlight
+    if (this._highlightHandle) {
+      this._highlightHandle.remove();
     }
+  }
 
   /**
    * Query the selected feature layer, in descending order of object id's
@@ -492,7 +492,7 @@ export class FeatureList {
     if (sortField && sortOrder) {
       query.orderByFields = [sortField.toString() + " " + sortOrder];
     }
-    const featureSet =  await featureLayer.queryFeatures(query);
+    const featureSet = await featureLayer.queryFeatures(query);
     return await this.createFeatureItem(featureSet);
   }
 
@@ -549,7 +549,7 @@ export class FeatureList {
       }
     });
   }
-    
+
   /**
    * Get each feature item
    * @param selectedFeature Each individual feature instance to be listed
@@ -565,7 +565,7 @@ export class FeatureList {
     // get the formatted like count
     const formattedLikeCount = Number(selectedFeature.attributes[this.reportingOptions?.[this._selectedLayer.id].likeField]).toLocaleString();
     const popupTitleClass = this.textSize === 'small' ? 'feature-list-popup-title-small' : 'feature-list-popup-title'
-    const popupTitlePaddingClass = this.showUserImageInList || this.showFeatureSymbol ? 'feature-list-popup-title-padding-reduced': 'feature-list-popup-title-padding'
+    const popupTitlePaddingClass = this.showUserImageInList || this.showFeatureSymbol ? 'feature-list-popup-title-padding-reduced' : 'feature-list-popup-title-padding'
     return (
       <calcite-list-item
         onCalciteListItemSelect={(e) => { void this.featureClicked(e, selectedFeature) }}
@@ -614,7 +614,7 @@ export class FeatureList {
   }
 
   /**
-   * 
+   *
    * @param feature Each individual feature instance to be listed
    * @param creatorField Feature's creator field from the layer
    * @returns user information

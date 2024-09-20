@@ -58,7 +58,7 @@ html[dir="rtl"] .main-label {
   box-sizing: border-box;
   color: #323232;
   font-size: 14px;
-  font-family: "Avenir Next","Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
   line-height: 1.3em;
   background-color: var(--calcite-color-foreground-1);
 }
@@ -69,11 +69,13 @@ html[dir="rtl"] .main-label {
   display: flex;
   flex-flow: row nowrap;
   padding: 0;
-} */
+}
+
+*/
 
 /* DIV CHILD CHILD */
 .esri-sketch__tool-section {
-  border-right: 1px solid rgba(110,110,110,.3);
+  border-right: 1px solid rgba(110, 110, 110, .3);
 }
 
 .esri-sketch__section {
@@ -82,7 +84,7 @@ html[dir="rtl"] .main-label {
   flex-flow: row nowrap;
   padding: 0 7px;
   margin: 6px 0;
-  border-right: 1px solid rgba(110,110,110,.3);
+  border-right: 1px solid rgba(110, 110, 110, .3);
 }
 
 .display-flex {

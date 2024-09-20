@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, h, Prop, Element, Event, EventEmitter, Method, Watch, State} from '@stencil/core';
+import { Component, h, Prop, Element, Event, EventEmitter, Method, Watch, State } from '@stencil/core';
 import { loadModules } from "../../utils/loadModules";
 
 @Component({
@@ -113,9 +113,9 @@ export class CreateRelatedFeature {
   //  Watch handlers
   //
   //--------------------------------------------------------------------------
-   /**
-   * Called each time the mapView prop is changed.
-   */
+  /**
+  * Called each time the mapView prop is changed.
+  */
   @Watch("mapView")
   async mapViewWatchHandler(): Promise<void> {
     await this.mapView.when(async () => {
@@ -126,15 +126,15 @@ export class CreateRelatedFeature {
   /**
    * When _editorLoading is true the container node will be hidden while starting the create workflow
    */
-    @Watch("_editorLoading")
-    async _editorLoadingWatchHandler(v: boolean): Promise<void> {
-      if (v) {
-        this._container?.classList.add("display-none");
-        await this.startCreate();
-        this._container?.classList.remove("display-none");
-        this._editorLoading = false;
-      }
+  @Watch("_editorLoading")
+  async _editorLoadingWatchHandler(v: boolean): Promise<void> {
+    if (v) {
+      this._container?.classList.add("display-none");
+      await this.startCreate();
+      this._container?.classList.remove("display-none");
+      this._editorLoading = false;
     }
+  }
   //--------------------------------------------------------------------------
   //
   //  Methods (public)
@@ -186,7 +186,7 @@ export class CreateRelatedFeature {
   /**
    * Emitted on demand when form is ready
    */
-    @Event() formReady: EventEmitter<void>;
+  @Event() formReady: EventEmitter<void>;
 
   //--------------------------------------------------------------------------
   //
@@ -228,11 +228,11 @@ export class CreateRelatedFeature {
   render() {
     const loaderClass = this._editorLoading ? "" : "display-none";
     return (
-       <calcite-loader
-          class={loaderClass}
-          label=""
-          scale="s"
-        />
+      <calcite-loader
+        class={loaderClass}
+        label=""
+        scale="s"
+      />
     );
   }
 
@@ -383,7 +383,7 @@ export class CreateRelatedFeature {
    * @param evt feature submit event
    * @protected
    */
-   protected async submitted(evt: any): Promise<void> {
+  protected async submitted(evt: any): Promise<void> {
     //return if any attribute is invalid , focus will be shifted to the invalid attribute in feature form
     if (evt.invalid.length) {
       this._isSubmitBtnClicked = false;

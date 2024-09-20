@@ -537,7 +537,7 @@ export class MapDrawTools {
     const type = graphic.geometry.type;
     const symbol = type === "point" ? this.pointSymbol :
       type === "polyline" ? this.polylineSymbol :
-      type === "polygon" ? this.polygonSymbol : undefined;
+        type === "polygon" ? this.polygonSymbol : undefined;
     if (symbol) {
       graphics.forEach(g => g.symbol = symbol);
     }

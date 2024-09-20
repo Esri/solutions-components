@@ -44,7 +44,7 @@
   border: 1px solid var(--calcite-color-border-3);
 }
 
-.notice-msg{
+.notice-msg {
   padding: 10px;
   width: calc(100% - 20px);
 }

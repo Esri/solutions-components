@@ -72,7 +72,7 @@ export class LayerList {
   @Prop() showNextIcon?: boolean = false;
 
   /**
-   * boolean: If true will consider the FeatureFilter applied on the layerview 
+   * boolean: If true will consider the FeatureFilter applied on the layerview
    */
   @Prop() applyLayerViewFilter?: boolean = false;
 
@@ -331,7 +331,7 @@ export class LayerList {
    * @protected
    */
   protected onLayerItemSelected(layerId: string): void {
-    this.layerSelect.emit({layerId, layerName: this._layerItemsHash[layerId].name});
+    this.layerSelect.emit({ layerId, layerName: this._layerItemsHash[layerId].name });
   }
 
   /**

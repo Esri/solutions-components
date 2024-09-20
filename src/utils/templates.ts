@@ -60,7 +60,7 @@ export function getFeatureServices(
       prev.indexOf(name) < 0
     ) {
       const wkid = getProp(cur, "properties.service.spatialReference.wkid");
-      prev.push({ id: cur.itemId, name, enabled: wkid.toString().startsWith(CSpatialRefCustomizingPrefix), wkid});
+      prev.push({ id: cur.itemId, name, enabled: wkid.toString().startsWith(CSpatialRefCustomizingPrefix), wkid });
     }
     return prev;
   }, []);
@@ -170,7 +170,7 @@ export function getItemHierarchy(
 export function getModels(templates: any[]): ISolutionModels {
   const ids: string[] = [];
   const models: ISolutionModels = {};
-  const monacoDefined = typeof(monaco) !== "undefined";
+  const monacoDefined = typeof (monaco) !== "undefined";
   templates.forEach(t => {
     if (ids.indexOf(t.itemId) < 0) {
       ids.push(t.itemId);
@@ -307,14 +307,14 @@ export function getSpatialReferenceInfo(
   const enabled = getPropWithDefault(data, "params.wkid.attributes.required", false);
   return wkid
     ? {
-        enabled,
-        default: wkid,
-        services: defaultServices
-      }
+      enabled,
+      default: wkid,
+      services: defaultServices
+    }
     : {
-        enabled,
-        services: defaultServices
-      };
+      enabled,
+      services: defaultServices
+    };
 }
 
 //--------------------------------------------------------------------------

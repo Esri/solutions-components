@@ -10,12 +10,22 @@
 | Property                  | Attribute                     | Description                                                                                                                 | Type           | Default     |
 | ------------------------- | ----------------------------- | --------------------------------------------------------------------------------------------------------------------------- | -------------- | ----------- |
 | `customInfoText`          | `custom-info-text`            | string: custom notice text to display                                                                                       | `string`       | `undefined` |
+| `enableCreateFeatures`    | `enable-create-features`      | boolean: when true the users can have the option to create features                                                         | `boolean`      | `true`      |
 | `enableEditGeometry`      | `enable-edit-geometry`        | When true the geometry of the current feature will be editable                                                              | `boolean`      | `false`     |
 | `isMobile`                | `is-mobile`                   | When true the component will render an optimized view for mobile devices                                                    | `boolean`      | `undefined` |
 | `layer`                   | --                            | esri/views/layers/FeatureLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html | `FeatureLayer` | `undefined` |
 | `mapView`                 | --                            | esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html                   | `MapView`      | `undefined` |
 | `selectedFeaturesIds`     | --                            | A list of ids that are currently selected                                                                                   | `number[]`     | `undefined` |
 | `zoomAndScrollToSelected` | `zoom-and-scroll-to-selected` | boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table          | `boolean`      | `undefined` |
+
+
+## Events
+
+| Event                      | Description                            | Type                |
+| -------------------------- | -------------------------------------- | ------------------- |
+| `backFromCreateWorkFlow`   | Emits when back from create work flow  | `CustomEvent<void>` |
+| `createWorkFlowStarted`    | Emits when create work flow started    | `CustomEvent<void>` |
+| `featureOrRecordSubmitted` | Emits when feature/record is submitted | `CustomEvent<void>` |
 
 
 ## Dependencies
@@ -28,14 +38,24 @@
 
 - calcite-shell
 - [info-card](../info-card)
+- calcite-flow-item
+- calcite-panel
 - calcite-notice
+- calcite-button
+- calcite-action
+- [create-feature](../create-feature)
 
 ### Graph
 ```mermaid
 graph TD;
   card-manager --> calcite-shell
   card-manager --> info-card
+  card-manager --> calcite-flow-item
+  card-manager --> calcite-panel
   card-manager --> calcite-notice
+  card-manager --> calcite-button
+  card-manager --> calcite-action
+  card-manager --> create-feature
   info-card --> calcite-shell
   info-card --> calcite-loader
   info-card --> calcite-button
@@ -68,6 +88,9 @@ graph TD;
   calcite-action-menu --> calcite-popover
   calcite-popover --> calcite-action
   calcite-popover --> calcite-icon
+  calcite-flow-item --> calcite-action
+  calcite-flow-item --> calcite-panel
+  create-feature --> calcite-loader
   crowdsource-manager --> card-manager
   style card-manager fill:#f9f,stroke:#333,stroke-width:4px
 ```

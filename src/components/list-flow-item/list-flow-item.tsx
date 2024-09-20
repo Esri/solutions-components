@@ -75,7 +75,7 @@ export class ListFlowItem {
   render() {
     return (
       <Host>
-        <slot/>
+        <slot />
       </Host>
     );
   }

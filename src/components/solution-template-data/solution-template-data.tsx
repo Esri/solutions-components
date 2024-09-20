@@ -65,8 +65,8 @@ export class SolutionTemplateData {
     this._initializing = true;
     this.value = JSON.stringify(
       this.instanceid === "data"
-      ? state.getItemInfo(this.itemId).data
-      : state.getItemInfo(this.itemId).properties
+        ? state.getItemInfo(this.itemId).data
+        : state.getItemInfo(this.itemId).properties
       , null, 2);
   }
 
@@ -98,7 +98,7 @@ export class SolutionTemplateData {
           const { id, contents } = (evt as any).detail;
           const [itemId, instanceId] = id.split("|");
           if (itemId == this.itemId && instanceId === this.instanceid) {
-            if(!this._initializing && contents.length > 0) {
+            if (!this._initializing && contents.length > 0) {
               const itemEdit = state.getItemInfo(itemId);
               if (instanceId === "data") {
                 itemEdit.data = JSON.parse(contents);
@@ -131,11 +131,11 @@ export class SolutionTemplateData {
           <calcite-shell class="light var-container" dir="ltr">
             <calcite-panel class="json-editor">
               <div class="solution-data-child-container calcite-match-height">
-                  <json-editor
-                    class="solution-data-editor-container"
-                    instanceid={this.itemId + "|" + this.instanceid}
-                    value={this.value}
-                  />
+                <json-editor
+                  class="solution-data-editor-container"
+                  instanceid={this.itemId + "|" + this.instanceid}
+                  value={this.value}
+                />
               </div>
             </calcite-panel>
 
