@@ -1,3 +1,8 @@
 {
-  "mapName": "Nome mappa"
+  "mapName": "Nome mappa",
+  "more": "é_More_________È",
+  "filters": "é_Filters_______________È",
+  "zoom": "é_Zoom_________È",
+  "refresh": "é_Refresh_______________È",
+  "editMultiple": "é_Edit multiple______________È"
 }

@@ -1,4 +1,6 @@
 {
   "error": "Lỗi",
-  "featureErrorMsg": "Không tìm thấy bản ghi nào."
+  "featureErrorMsg": "Không tìm thấy bản ghi nào.",
+  "thousandsAbbreviation": "Đ_{{abbreviated_value}}k_______________________ớ",
+  "millionsAbbreviation": "Đ_{{abbreviated_value}}M_______________________ớ"
 }

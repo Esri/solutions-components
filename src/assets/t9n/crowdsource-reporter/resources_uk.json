@@ -25,5 +25,7 @@
   "sortNewest": "Найновіший",
   "sortOldest": "Найстаріший",
   "sortHighestVoted": "Найбільше голосів",
-  "sortLowestVoted": "Найменше голосів"
+  "sortLowestVoted": "Найменше голосів",
+  "resetFilter": "ґ_Reset filter_____________Ї",
+  "close": "ґ_Close___________Ї"
 }

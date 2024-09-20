@@ -1,3 +1,8 @@
 {
-  "mapName": "Název mapy"
+  "mapName": "Název mapy",
+  "more": "Ř_More_________ů",
+  "filters": "Ř_Filters_______________ů",
+  "zoom": "Ř_Zoom_________ů",
+  "refresh": "Ř_Refresh_______________ů",
+  "editMultiple": "Ř_Edit multiple______________ů"
 }

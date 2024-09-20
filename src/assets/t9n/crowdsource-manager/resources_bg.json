@@ -4,5 +4,9 @@
   "information": "Информация",
   "expandPopup": "Разгъване на изскачащ прозорец",
   "collapsePopup": "Свиване на изскачащ прозорец",
-  "view": "Изглед ({{n}})"
+  "view": "Изглед ({{n}})",
+  "splitView": "й_Split view_____________________й",
+  "tableView": "й_Table view_____________________й",
+  "mapView": "й_Map view_________________й",
+  "filter": "й_Filter: {{title}}__________________й"
 }

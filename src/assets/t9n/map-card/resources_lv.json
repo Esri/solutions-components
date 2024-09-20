@@ -1,3 +1,8 @@
 {
-  "mapName": "Kartes nosaukums"
+  "mapName": "Kartes nosaukums",
+  "more": "ķ_More_________ū",
+  "filters": "ķ_Filters_______________ū",
+  "zoom": "ķ_Zoom_________ū",
+  "refresh": "ķ_Refresh_______________ū",
+  "editMultiple": "ķ_Edit multiple______________ū"
 }

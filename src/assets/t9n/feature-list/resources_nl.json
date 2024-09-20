@@ -1,4 +1,6 @@
 {
   "error": "Fout",
-  "featureErrorMsg": "Kan geen records vinden"
+  "featureErrorMsg": "Kan geen records vinden",
+  "thousandsAbbreviation": "Ĳ_{{abbreviated_value}}k_______________________ä",
+  "millionsAbbreviation": "Ĳ_{{abbreviated_value}}M_______________________ä"
 }

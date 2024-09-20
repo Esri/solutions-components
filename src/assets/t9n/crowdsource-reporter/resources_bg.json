@@ -25,5 +25,7 @@
   "sortNewest": "Най-нови",
   "sortOldest": "Най-стари",
   "sortHighestVoted": "Най-високо оценени",
-  "sortLowestVoted": "Най-ниско оценени"
+  "sortLowestVoted": "Най-ниско оценени",
+  "resetFilter": "й_Reset filter_____________й",
+  "close": "й_Close___________й"
 }

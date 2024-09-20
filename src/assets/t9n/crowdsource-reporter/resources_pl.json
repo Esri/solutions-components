@@ -25,5 +25,7 @@
   "sortNewest": "Najnowsze",
   "sortOldest": "Najstarsze",
   "sortHighestVoted": "Największa liczba głosów",
-  "sortLowestVoted": "Najmniejsza liczba głosów"
+  "sortLowestVoted": "Najmniejsza liczba głosów",
+  "resetFilter": "ł_Reset filter_____________ą",
+  "close": "ł_Close___________ą"
 }

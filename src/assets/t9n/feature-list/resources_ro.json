@@ -1,4 +1,6 @@
 {
   "error": "Eroare",
-  "featureErrorMsg": "Nu s-au găsit înregistrări."
+  "featureErrorMsg": "Nu s-au găsit înregistrări.",
+  "thousandsAbbreviation": "Ă_{{abbreviated_value}}k_______________________ș",
+  "millionsAbbreviation": "Ă_{{abbreviated_value}}M_______________________ș"
 }

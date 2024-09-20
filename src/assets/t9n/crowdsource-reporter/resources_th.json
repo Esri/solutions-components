@@ -25,5 +25,7 @@
   "sortNewest": "ใหม่ที่สุด",
   "sortOldest": "เก่าที่สุด",
   "sortHighestVoted": "คะแนนโหวตสูงสุด",
-  "sortLowestVoted": "คะแนนโหวตต่ำสุด"
+  "sortLowestVoted": "คะแนนโหวตต่ำสุด",
+  "resetFilter": "ก้_Reset filter_____________ษฺ",
+  "close": "ก้_Close___________ษฺ"
 }

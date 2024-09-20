@@ -4,5 +4,9 @@
   "information": "정보",
   "expandPopup": "팝업 확장",
   "collapsePopup": "팝업 축소",
-  "view": "뷰({{n}})"
+  "view": "뷰({{n}})",
+  "splitView": "한_Split view_____________________빠",
+  "tableView": "한_Table view_____________________빠",
+  "mapView": "한_Map view_________________빠",
+  "filter": "한_Filter: {{title}}__________________빠"
 }

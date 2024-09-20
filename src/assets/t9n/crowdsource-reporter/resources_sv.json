@@ -25,5 +25,7 @@
   "sortNewest": "Senaste",
   "sortOldest": "Äldsta",
   "sortHighestVoted": "Med flest röster",
-  "sortLowestVoted": "Med lägst röster"
+  "sortLowestVoted": "Med lägst röster",
+  "resetFilter": "Å_Reset filter_____________ö",
+  "close": "Å_Close___________ö"
 }

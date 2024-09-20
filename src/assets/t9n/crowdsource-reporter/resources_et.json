@@ -25,5 +25,7 @@
   "sortNewest": "Uusim",
   "sortOldest": "Vanim",
   "sortHighestVoted": "Suurima häälte arvuga",
-  "sortLowestVoted": "Väikseima häälte arvuga"
+  "sortLowestVoted": "Väikseima häälte arvuga",
+  "resetFilter": "Š_Reset filter_____________ä",
+  "close": "Š_Close___________ä"
 }

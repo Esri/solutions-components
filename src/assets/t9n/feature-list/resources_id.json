@@ -1,4 +1,6 @@
 {
   "error": "Kesalahan",
-  "featureErrorMsg": "Tidak ada catatan ditemukan."
+  "featureErrorMsg": "Tidak ada catatan ditemukan.",
+  "thousandsAbbreviation": "ng_{{abbreviated_value}}k_______________________ny",
+  "millionsAbbreviation": "ng_{{abbreviated_value}}M_______________________ny"
 }

@@ -25,5 +25,7 @@
   "sortNewest": "Najnovšie",
   "sortOldest": "Najstaršie",
   "sortHighestVoted": "Najvyššie hodnotené",
-  "sortLowestVoted": "Najnižšie hodnotené"
+  "sortLowestVoted": "Najnižšie hodnotené",
+  "resetFilter": "ĺ_Reset filter_____________ľ",
+  "close": "ĺ_Close___________ľ"
 }

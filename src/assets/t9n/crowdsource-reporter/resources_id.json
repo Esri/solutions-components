@@ -25,5 +25,7 @@
   "sortNewest": "Terbaru",
   "sortOldest": "Terlama",
   "sortHighestVoted": "Suara tertinggi",
-  "sortLowestVoted": "Suara terendah"
+  "sortLowestVoted": "Suara terendah",
+  "resetFilter": "ng_Reset filter_____________ny",
+  "close": "ng_Close___________ny"
 }

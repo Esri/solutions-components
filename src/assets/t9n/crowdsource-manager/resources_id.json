@@ -4,5 +4,9 @@
   "information": "Informasi",
   "expandPopup": "Perluas pop-up",
   "collapsePopup": "Perkecil pop-up",
-  "view": "Lihat: ({{n}})"
+  "view": "Lihat: ({{n}})",
+  "splitView": "ng_Split view_____________________ny",
+  "tableView": "ng_Table view_____________________ny",
+  "mapView": "ng_Map view_________________ny",
+  "filter": "ng_Filter: {{title}}__________________ny"
 }

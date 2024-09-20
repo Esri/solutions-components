@@ -25,5 +25,7 @@
   "sortNewest": "Jaunākais",
   "sortOldest": "Vecākais",
   "sortHighestVoted": "Ar vislielāko balsojumu",
-  "sortLowestVoted": "Ar vismazāko balsojumu"
+  "sortLowestVoted": "Ar vismazāko balsojumu",
+  "resetFilter": "ķ_Reset filter_____________ū",
+  "close": "ķ_Close___________ū"
 }
