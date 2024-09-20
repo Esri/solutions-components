@@ -1,3 +1,8 @@
 {
-  "mapName": "地图名称"
+  "mapName": "地图名称",
+  "more": "试_More_________验",
+  "filters": "试_Filters_______________验",
+  "zoom": "试_Zoom_________验",
+  "refresh": "试_Refresh_______________验",
+  "editMultiple": "试_Edit multiple______________验"
 }

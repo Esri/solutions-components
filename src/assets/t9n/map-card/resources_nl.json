@@ -1,3 +1,8 @@
 {
-  "mapName": "Naam kaart"
+  "mapName": "Naam kaart",
+  "more": "Ĳ_More_________ä",
+  "filters": "Ĳ_Filters_______________ä",
+  "zoom": "Ĳ_Zoom_________ä",
+  "refresh": "Ĳ_Refresh_______________ä",
+  "editMultiple": "Ĳ_Edit multiple______________ä"
 }

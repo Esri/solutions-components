@@ -4,5 +4,9 @@
   "information": "Informacija",
   "expandPopup": "Išskleisti iškylantįjį langą",
   "collapsePopup": "Suskleisti iškylantįjį langą",
-  "view": "Peržiūrėti ({{n}})"
+  "view": "Peržiūrėti ({{n}})",
+  "splitView": "Į_Split view_____________________š",
+  "tableView": "Į_Table view_____________________š",
+  "mapView": "Į_Map view_________________š",
+  "filter": "Į_Filter: {{title}}__________________š"
 }

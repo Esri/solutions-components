@@ -4,5 +4,9 @@
   "information": "معلومات",
   "expandPopup": "توسيع النافذة المنبثقة",
   "collapsePopup": "طي النافذة المنبثقة",
-  "view": "عرض ({{n}})"
+  "view": "عرض ({{n}})",
+  "splitView": "بيت_Split view_____________________لاحقة",
+  "tableView": "بيت_Table view_____________________لاحقة",
+  "mapView": "بيت_Map view_________________لاحقة",
+  "filter": "بيت_Filter: {{title}}__________________لاحقة"
 }

@@ -4,5 +4,9 @@
   "information": "Informations",
   "expandPopup": "Développer la fenêtre contextuelle",
   "collapsePopup": "Réduire la fenêtre contextuelle",
-  "view": "Afficher ({{n}})"
+  "view": "Afficher ({{n}})",
+  "splitView": "æ_Split view_____________________Â",
+  "tableView": "æ_Table view_____________________Â",
+  "mapView": "æ_Map view_________________Â",
+  "filter": "æ_Filter: {{title}}__________________Â"
 }

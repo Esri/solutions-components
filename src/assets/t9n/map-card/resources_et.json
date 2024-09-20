@@ -1,3 +1,8 @@
 {
-  "mapName": "Kaardi nimi"
+  "mapName": "Kaardi nimi",
+  "more": "Š_More_________ä",
+  "filters": "Š_Filters_______________ä",
+  "zoom": "Š_Zoom_________ä",
+  "refresh": "Š_Refresh_______________ä",
+  "editMultiple": "Š_Edit multiple______________ä"
 }

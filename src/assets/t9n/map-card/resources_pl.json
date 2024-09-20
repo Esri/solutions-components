@@ -1,3 +1,8 @@
 {
-  "mapName": "Nazwa mapy"
+  "mapName": "Nazwa mapy",
+  "more": "ł_More_________ą",
+  "filters": "ł_Filters_______________ą",
+  "zoom": "ł_Zoom_________ą",
+  "refresh": "ł_Refresh_______________ą",
+  "editMultiple": "ł_Edit multiple______________ą"
 }

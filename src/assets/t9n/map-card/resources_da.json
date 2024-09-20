@@ -1,3 +1,8 @@
 {
-  "mapName": "Kortnavn"
+  "mapName": "Kortnavn",
+  "more": "ø_More_________å",
+  "filters": "ø_Filters_______________å",
+  "zoom": "ø_Zoom_________å",
+  "refresh": "ø_Refresh_______________å",
+  "editMultiple": "ø_Edit multiple______________å"
 }

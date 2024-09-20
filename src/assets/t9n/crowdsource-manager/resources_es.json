@@ -4,5 +4,9 @@
   "information": "Información",
   "expandPopup": "Expandir elemento emergente",
   "collapsePopup": "Contraer elemento emergente",
-  "view": "Ver ({{n}})"
+  "view": "Ver ({{n}})",
+  "splitView": "á_Split view_____________________Ó",
+  "tableView": "á_Table view_____________________Ó",
+  "mapView": "á_Map view_________________Ó",
+  "filter": "á_Filter: {{title}}__________________Ó"
 }

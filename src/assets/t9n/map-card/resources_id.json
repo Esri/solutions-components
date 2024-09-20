@@ -1,3 +1,8 @@
 {
-  "mapName": "Nama Peta"
+  "mapName": "Nama Peta",
+  "more": "ng_More_________ny",
+  "filters": "ng_Filters_______________ny",
+  "zoom": "ng_Zoom_________ny",
+  "refresh": "ng_Refresh_______________ny",
+  "editMultiple": "ng_Edit multiple______________ny"
 }

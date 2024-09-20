@@ -1,3 +1,8 @@
 {
-  "mapName": "Térkép neve"
+  "mapName": "Térkép neve",
+  "more": "í_More_________ő",
+  "filters": "í_Filters_______________ő",
+  "zoom": "í_Zoom_________ő",
+  "refresh": "í_Refresh_______________ő",
+  "editMultiple": "í_Edit multiple______________ő"
 }
