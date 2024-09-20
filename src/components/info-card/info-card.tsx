@@ -161,7 +161,7 @@ export class InfoCard {
   /**
    * string: unique id for the features node
    */
-  protected _featuresNodeId: string = 'features-node'+ new Date().getMilliseconds().toString();
+  protected _featuresNodeId: string = 'features-node' + new Date().getMilliseconds().toString();
 
   /**
    * esri/core/reactiveUtils: https://developers.arcgis.com/javascript/latest/api-reference/esri-core-reactiveUtils.html
@@ -355,7 +355,7 @@ export class InfoCard {
     const deleteEnabled = this._layer?.editingEnabled && this._layer?.capabilities?.operations?.supportsDelete;
     return (
       <Host>
-        <calcite-shell style={{position: this.position}}>
+        <calcite-shell style={{ position: this.position }}>
           {this._getHeader()}
           <calcite-loader
             class={loadingClass}
@@ -408,7 +408,7 @@ export class InfoCard {
                   id="solutions-back"
                   onClick={() => this._back()}
                   width="full"
-                 />
+                />
                 <calcite-tooltip
                   placement="top"
                   reference-element="solutions-back"
@@ -434,7 +434,7 @@ export class InfoCard {
                   id="solutions-next"
                   onClick={() => this._next()}
                   width="full"
-                 />
+                />
                 <calcite-tooltip
                   placement="top"
                   reference-element="solutions-next"

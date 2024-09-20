@@ -163,7 +163,12 @@ graph TD;
   map-tools --> calcite-tooltip
   card-manager --> calcite-shell
   card-manager --> info-card
+  card-manager --> calcite-flow-item
+  card-manager --> calcite-panel
   card-manager --> calcite-notice
+  card-manager --> calcite-button
+  card-manager --> calcite-action
+  card-manager --> create-feature
   info-card --> calcite-shell
   info-card --> calcite-loader
   info-card --> calcite-button
@@ -177,8 +182,12 @@ graph TD;
   edit-card --> calcite-loader
   calcite-alert --> calcite-icon
   calcite-alert --> calcite-chip
+  calcite-flow-item --> calcite-action
+  calcite-flow-item --> calcite-panel
+  create-feature --> calcite-loader
   layer-table --> calcite-shell
   layer-table --> calcite-panel
+  layer-table --> calcite-input
   layer-table --> calcite-loader
   layer-table --> calcite-action-bar
   layer-table --> map-layer-picker

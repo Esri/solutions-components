@@ -205,7 +205,7 @@ export class ConsentManager {
                 >
                   {this._translations.cookiePolicy}&nbsp;
                 </calcite-link>
-                  {this._translations.andOur}&nbsp;
+                {this._translations.andOur}&nbsp;
                 <calcite-link
                   class="link-text"
                   href="https://www.arcgis.com/"

@@ -2,7 +2,7 @@
   display: block;
 }
 
-.buttons-container{
+.buttons-container {
   align-items: center;
   display: flex;
   padding: 4px;
@@ -12,7 +12,7 @@
   border-block-end: 1px solid var(--calcite-color-border-3);
 }
 
-.comment-btn{
+.comment-btn {
   display: flex;
   gap: 10px;
   font-size: var(--calcite-font-size--1);

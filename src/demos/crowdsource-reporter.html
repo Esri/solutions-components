@@ -1,12 +1,10 @@
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="initial-scale=1,maximum-scale=1,user-scalable=no"
-    />
-    <title>Crowdsource Reporter</title>
-    <!--
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <title>Crowdsource Reporter</title>
+  <!--
     | Copyright 2022 Esri
     |
     | Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,288 +19,295 @@
     | See the License for the specific language governing permissions and
     | limitations under the License.
     -->
-    <style>
+  <style>
+    #viewDiv {
+      position: absolute;
+      top: 0px;
+      right: 0px;
+      bottom: 0px;
+      left: 361px;
+    }
+
+    #viewDiv[dir="rtl"] {
+      right: 361px;
+      left: 0px;
+    }
+
+    .over-map {
+      position: absolute;
+      left: 0px;
+      background-color: var(--calcite-color-foreground-1);
+    }
+
+    .over-map[dir="rtl"] {
+      right: 0px;
+      left: auto;
+    }
+
+    .column {
+      width: 360px;
+      border: 1px solid var(--calcite-color-border-2);
+      height: -webkit-fill-available;
+      height: 100%;
+    }
+
+    .column[dir="rtl"] {
+      float: right;
+    }
+
+    @media screen and (max-width: 600px) {
       #viewDiv {
-        position: absolute;
-        top: 0px;
-        right: 0px;
-        bottom: 0px;
-        left: 361px;
+        left: 0;
+        height: 50%;
+        width: 100%;
       }
-      #viewDiv[dir="rtl"] {
-        right: 361px;
-        left: 0px;
-      }
-      .over-map {
-        position: absolute;
-        left: 0px;
-        background-color: var(--calcite-color-foreground-1);
-      }
-      .over-map[dir="rtl"] {
-        right: 0px;
-        left: auto;
-      }
+
       .column {
-        width: 360px;
-        border: 1px solid var(--calcite-color-border-2);
-        height: -webkit-fill-available;
+        height: 50%;
+        top: 50%;
+        width: calc(100% - 2px);
+      }
+
+      .map-with-panel-collapsed {
+        height: calc(100% - 100px) !important;
+      }
+
+      .column-collapsed {
+        top: calc(100% - 100px);
+        height: 100px;
+      }
+
+      .map-collapsed {
         height: 100%;
+        top: 0;
+        width: 100%;
+        z-index: 1000;
       }
-      .column[dir="rtl"] {
-        float: right;
+    }
+  </style>
+
+  <link rel="stylesheet" href="https://jsdev.arcgis.com/4.31/esri/themes/light/main.css" />
+  <link rel="stylesheet" href="https://webapps-cdn.esri.com/CDN/fonts/v1.4.1/fonts.css" />
+  <link rel="stylesheet" href="../solutions-components.css" type="text/css">
+  <link rel="stylesheet" type="text/css" href="https://js.arcgis.com/calcite-components/2.8.2/calcite.css" />
+
+  <script src="https://jsdev.arcgis.com/4.31/"></script>
+  <script type="module" src="../solutions-components.esm.js"></script>
+
+  <script>
+    require(["esri/WebMap", "esri/views/MapView", "esri/widgets/Legend", "esri/config", "esri/portal/Portal"], (
+      WebMap,
+      MapView,
+      Legend,
+      esriConfig,
+      Portal
+    ) => {
+      const demo = document.getElementById("demo");
+      let custom = null;
+      let portal;
+      let locale = 'en'
+      //Support webmap, portal and locale URL parameter
+      //Also, set search params to reporter component - layerId, objectId, center, level etc.
+      let urlObj = new URL(window.location)
+      for (const [key, value] of urlObj.searchParams.entries()) {
+        switch (key) {
+          case "webmap":
+            custom = {
+              id: value
+            };
+            break;
+          case "portal":
+            portal = value;
+            break;
+          case "locale":
+            locale = value;
+            break;
+          case 'layerid':
+            demo.layerId = value;
+            break;
+          case 'oid':
+            demo.objectId = value;
+          case 'center':
+            demo.center = value;
+            break;
+          case 'level':
+            demo.level = value;
+            break;
+        }
       }
 
-      @media screen and (max-width: 600px) {
-        #viewDiv {
-          left: 0;
-          height: 50%;
-          width: 100%;
-        }
+      // Set the locale before the JSAPI loads
+      esriConfig.locale = locale;
+      demo.lang = locale;
 
-        .column {
-          height: 50%;
-          top: 50%;
-          width: calc(100% - 2px);
-        }
-
-        .map-with-panel-collapsed {
-          height: calc(100% - 100px) !important;
-        }
-
-        .column-collapsed {
-          top: calc(100% - 100px);
-          height: 100px;
-        }
-
-        .map-collapsed {
-          height: 100%;
-          top: 0;
-          width: 100%;
-          z-index: 1000;
-        }
+      //update the portalUrl if found in urlParams
+      //esriConfig.portalUrl = "https://solutions.mapsdevext.arcgis.com";
+      if (portal) {
+        esriConfig.portalUrl = portal;
       }
-    </style>
 
-    <link rel="stylesheet" href="https://jsdev.arcgis.com/4.31/esri/themes/light/main.css"/>
-    <link rel="stylesheet" href="https://webapps-cdn.esri.com/CDN/fonts/v1.4.1/fonts.css" />
-    <link rel="stylesheet" href="../solutions-components.css" type="text/css">
-    <link rel="stylesheet" type="text/css" href="https://js.arcgis.com/calcite-components/2.8.2/calcite.css" />
+      let portalItem = {
+        //id: "f8c4d99deb3c483cac296cc261e18a25", //blank no layers
+        //id: "a7e880f7afbb471991d43c8c4f1438ac" // Se mapping
+        //id: "c720e337ff814fe4a83bc244c46f8e43" //15 Layers
+        //id: "f5186c798b9e40dab1078658ddbc28cf" // 30K features
+        //id: "dda88d905a6748a5ab46bea5be795f33" // screening layers
+        //id: "b5bdcb1e5d684dd3b21a2d44b8e4f928" //Popup content + like dislike
+        //id: "d399ec39959a4aac8617ae4f05dd6785" //Arcade
+        id: "4bb6641b18e94cfb9d895ed37b13418a" //Attachments
+        //id: "ae6d5d1936e84ce7adde44c7a7908846" //like dislike
+        // id: "ce3dec81bf714d3bb71da9691ab686d1" //Filter
+      }
+      const webMap = new WebMap({
+        portalItem: custom ?? portalItem
+      });
+      //To show the sign in dialog
+      portal = new Portal({
+        url: esriConfig.portalUrl,
+        portalItem: portalItem,
+        authMode: "immediate"
+      });
+      portal.load();
 
-    <script src="https://jsdev.arcgis.com/4.31/"></script>
-    <script type="module" src="../solutions-components.esm.js"></script>
-
-    <script>
-      require(["esri/WebMap", "esri/views/MapView", "esri/widgets/Legend", "esri/config", "esri/portal/Portal"], (
-        WebMap,
-        MapView,
-        Legend,
-        esriConfig,
-        Portal
-      ) => {
-        const demo = document.getElementById("demo");
-        let custom = null;
-        let portal;
-        let locale = 'en'
-        //Support webmap, portal and locale URL parameter
-        //Also, set search params to reporter component - layerId, objectId, center, level etc.
-        let urlObj = new URL(window.location)
-        for (const [key, value] of urlObj.searchParams.entries()) {
-          switch (key) {
-            case "webmap":
-              custom = {
-                id: value
-              };
-              break;
-            case "portal":
-              portal = value;
-              break;
-            case "locale":
-              locale = value;
-              break;
-            case 'layerid':
-              demo.layerId = value;
-              break;
-            case 'oid':
-              demo.objectId = value;
-            case 'center':
-              demo.center = value;
-              break;
-            case 'level':
-              demo.level = value;
-              break;
-          }
-        }
-
-        // Set the locale before the JSAPI loads
-        esriConfig.locale = locale;
-        demo.lang = locale;
-
-        //update the portalUrl if found in urlParams
-        //esriConfig.portalUrl = "https://solutions.mapsdevext.arcgis.com";
-        if (portal) {
-          esriConfig.portalUrl = portal;
-        }
-
-        let portalItem = {
-          //id: "f8c4d99deb3c483cac296cc261e18a25", //blank no layers
-          //id: "a7e880f7afbb471991d43c8c4f1438ac" // Se mapping
-          //id: "c720e337ff814fe4a83bc244c46f8e43" //15 Layers
-          //id: "f5186c798b9e40dab1078658ddbc28cf" // 30K features
-          //id: "dda88d905a6748a5ab46bea5be795f33" // screening layers
-          //id: "b5bdcb1e5d684dd3b21a2d44b8e4f928" //Popup content + like dislike
-          //id: "d399ec39959a4aac8617ae4f05dd6785" //Arcade
-          id: "4bb6641b18e94cfb9d895ed37b13418a" //Attachments
-          //id: "ae6d5d1936e84ce7adde44c7a7908846" //like dislike
-          // id: "ce3dec81bf714d3bb71da9691ab686d1" //Filter
-        }
-        const webMap = new WebMap({
-          portalItem: custom ?? portalItem
-        });
-        //To show the sign in dialog
-        portal = new Portal({
-          url: esriConfig.portalUrl,
-          portalItem: portalItem,
-          authMode: "immediate"
-        });
-        portal.load();
-
-        demo.mapView = new MapView({
-          container: "viewDiv",
-          map: webMap
-        });
-
-        demo.mapView.when(() => {
-          // const legend = new Legend({
-          //   view: demo.mapView
-          // });
-          // demo.mapView.ui.add(legend, "top-left");
-        });
-        demo.reportsHeader = "Reports";
-        demo.reportButtonText = "Report an incident";
-        demo.enableNewReports = true;
-        demo.theme = "light";
-        demo.reportSubmittedMessage = "Thank you! Your request was successfully submitted";
-
-        //Set the zoomScale to be used when zooming to single point feature
-        //demo.zoomToScale = 139596221; //World
-        //demo.zoomToScale = 33800278;//Country
-        //demo.zoomToScale = 4291772;//States
-        demo.zoomToScale = 96610;//City
-        //demo.zoomToScale = 3495; //Building
-
-        //Set filter config
-        // demo.layerExpressions = [
-        //   {
-        //     id: "Requests_681",
-        //     title: "Requests",
-        //     operator: " AND ",
-        //     expressions: [
-        //       {
-        //         definitionExpression: "OBJECTID > 690",
-        //         id: 1701793260225,
-        //         index: 0,
-        //         name: "greater than 690",
-        //         active: false
-        //       },
-        //       {
-        //         id: 1654881457794,
-        //         name: 'status',
-        //         type: 'string',
-        //         field: 'status'
-        //       }
-        //     ]
-        //   },{
-        //     id: "18f056682a4-layer-12",
-        //     title: "PopUp with date in title",
-        //     operator: " AND ",
-        //     expressions: [
-        //       {
-        //         definitionExpression: "shrt > 0",
-        //         id: 1901793260225,
-        //         index: 0,
-        //         name: "Like greater than 0",
-        //         active: false
-        //       }
-        //     ]
-        //   }
-        // ];
-        //Set the reporting layer options, layers from this object with reporting set to true will only be shown in layer list
-        //if all the layers from map should be considered for reporting then pass true for each layer
-        demo.reportingOptions = {
-          "19055a4633a-layer-11": {
-            "visible": true,
-            "reporting": true,
-            "comment": true,
-            "like": false,
-            "dislike": false
-          },
-          "19055a2a831-layer-7": {
-            "visible": true,
-            "reporting": true,
-            "comment": false,
-            "like": false,
-            "dislike": false
-          },
-          "19055a2a735-layer-3": {
-            "visible": true,
-            "reporting": true,
-            "comment": false,
-            "like": false,
-            "dislike": false
-          }
-        };
-        //Select reporting layers -
-        //demo.layers = ['SE_field_mapping_9688', 'SE_field_mapping_5784', 'SE_field_mapping_1853']; //Se mapping
-        //demo.layers = ['Three_Layers_nested_4042', 'SE_sort_2889', 'SE_sort_756']; //screening layers
-
-        //Update isMobile property of the reporter component
-        const mediaQueryList = window.matchMedia("screen and (max-width: 600px)");
-        demo.isMobile = mediaQueryList.matches;
-        //on change update the prop for is mobile
-        mediaQueryList.onchange = (e) => {
-          demo.isMobile = e.matches;
-        }
-        //listen to togglePanel event
-        demo.addEventListener('togglePanel', togglePanel);
-        demo.showUserImageInCommentsList = true;
-        demo.showFeatureSymbol = true;
-        demo.showMyReportsOnly = false;
+      demo.mapView = new MapView({
+        container: "viewDiv",
+        map: webMap
       });
 
+      demo.mapView.when(() => {
+        // const legend = new Legend({
+        //   view: demo.mapView
+        // });
+        // demo.mapView.ui.add(legend, "top-left");
+      });
+      demo.reportsHeader = "Reports";
+      demo.reportButtonText = "Report an incident";
+      demo.enableNewReports = true;
+      demo.theme = "light";
+      demo.reportSubmittedMessage = "Thank you! Your request was successfully submitted";
+
+      //Set the zoomScale to be used when zooming to single point feature
+      //demo.zoomToScale = 139596221; //World
+      //demo.zoomToScale = 33800278;//Country
+      //demo.zoomToScale = 4291772;//States
+      demo.zoomToScale = 96610;//City
+      //demo.zoomToScale = 3495; //Building
+
+      //Set filter config
+      // demo.layerExpressions = [
+      //   {
+      //     id: "Requests_681",
+      //     title: "Requests",
+      //     operator: " AND ",
+      //     expressions: [
+      //       {
+      //         definitionExpression: "OBJECTID > 690",
+      //         id: 1701793260225,
+      //         index: 0,
+      //         name: "greater than 690",
+      //         active: false
+      //       },
+      //       {
+      //         id: 1654881457794,
+      //         name: 'status',
+      //         type: 'string',
+      //         field: 'status'
+      //       }
+      //     ]
+      //   },{
+      //     id: "18f056682a4-layer-12",
+      //     title: "PopUp with date in title",
+      //     operator: " AND ",
+      //     expressions: [
+      //       {
+      //         definitionExpression: "shrt > 0",
+      //         id: 1901793260225,
+      //         index: 0,
+      //         name: "Like greater than 0",
+      //         active: false
+      //       }
+      //     ]
+      //   }
+      // ];
+      //Set the reporting layer options, layers from this object with reporting set to true will only be shown in layer list
+      //if all the layers from map should be considered for reporting then pass true for each layer
+      demo.reportingOptions = {
+        "19055a4633a-layer-11": {
+          "visible": true,
+          "reporting": true,
+          "comment": true,
+          "like": false,
+          "dislike": false
+        },
+        "19055a2a831-layer-7": {
+          "visible": true,
+          "reporting": true,
+          "comment": false,
+          "like": false,
+          "dislike": false
+        },
+        "19055a2a735-layer-3": {
+          "visible": true,
+          "reporting": true,
+          "comment": false,
+          "like": false,
+          "dislike": false
+        }
+      };
+      //Select reporting layers -
+      //demo.layers = ['SE_field_mapping_9688', 'SE_field_mapping_5784', 'SE_field_mapping_1853']; //Se mapping
+      //demo.layers = ['Three_Layers_nested_4042', 'SE_sort_2889', 'SE_sort_756']; //screening layers
+
+      //Update isMobile property of the reporter component
+      const mediaQueryList = window.matchMedia("screen and (max-width: 600px)");
+      demo.isMobile = mediaQueryList.matches;
+      //on change update the prop for is mobile
+      mediaQueryList.onchange = (e) => {
+        demo.isMobile = e.matches;
+      }
+      //listen to togglePanel event
+      demo.addEventListener('togglePanel', togglePanel);
+      demo.showUserImageInCommentsList = true;
+      demo.showFeatureSymbol = true;
+      demo.showMyReportsOnly = false;
+    });
+
     function togglePanel(evt) {
-        const panelState = evt.detail.panelState;
-        const hideMap = evt.detail.isFormOpen;
-        const viewDiv = document.getElementById("viewDiv");
-        const demo = document.getElementById("demo");
-        // in case of form is open then collapse the map
-        if (hideMap) {
-          if (panelState) {
-            demo.classList.remove("map-collapsed");
-            demo.classList.add("column-collapsed");
-            viewDiv.classList.add("map-with-panel-collapsed");
-          } else {
-            demo.classList.add("map-collapsed");
-            demo.classList.remove("column-collapsed");
-            viewDiv.classList.remove("map-with-panel-collapsed");
-          }
+      const panelState = evt.detail.panelState;
+      const hideMap = evt.detail.isFormOpen;
+      const viewDiv = document.getElementById("viewDiv");
+      const demo = document.getElementById("demo");
+      // in case of form is open then collapse the map
+      if (hideMap) {
+        if (panelState) {
+          demo.classList.remove("map-collapsed");
+          demo.classList.add("column-collapsed");
+          viewDiv.classList.add("map-with-panel-collapsed");
         } else {
-          if (panelState) {
-            demo.classList.add("column-collapsed");
-            viewDiv.classList.add("map-with-panel-collapsed");
-            demo.classList.remove("map-collapsed");
-          } else {
-            demo.classList.remove("column-collapsed");
-            viewDiv.classList.remove("map-with-panel-collapsed");
-            demo.classList.remove("map-collapsed");
-          }
+          demo.classList.add("map-collapsed");
+          demo.classList.remove("column-collapsed");
+          viewDiv.classList.remove("map-with-panel-collapsed");
+        }
+      } else {
+        if (panelState) {
+          demo.classList.add("column-collapsed");
+          viewDiv.classList.add("map-with-panel-collapsed");
+          demo.classList.remove("map-collapsed");
+        } else {
+          demo.classList.remove("column-collapsed");
+          viewDiv.classList.remove("map-with-panel-collapsed");
+          demo.classList.remove("map-collapsed");
         }
       }
-    </script>
-  </head>
+    }
+  </script>
+</head>
 
-  <!-- <body class="calcite-mode-dark"> -->
-  <body>
-    <div id="viewDiv"></div>
-    <crowdsource-reporter id="demo" class="over-map column"></crowdsource-reporter>
-  </body>
+<!-- <body class="calcite-mode-dark"> -->
+
+<body>
+  <div id="viewDiv"></div>
+  <crowdsource-reporter id="demo" class="over-map column"></crowdsource-reporter>
+</body>
+
 </html>

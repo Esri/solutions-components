@@ -15,7 +15,7 @@
  */
 
 import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, State, Watch, Fragment, Method } from "@stencil/core";
-import MapCard_T9n from  "../../assets/t9n/map-card/resources.json"
+import MapCard_T9n from "../../assets/t9n/map-card/resources.json"
 import { loadModules } from "../../utils/loadModules";
 import { IBasemapConfig, IMapChange, IMapInfo, ISearchConfiguration, theme } from "../../utils/interfaces";
 import { joinAppProxies } from "templates-common-library-esm/functionality/proxy";
@@ -205,7 +205,7 @@ export class MapCard {
    * IMapInfo: key configuration details about the current map
    */
   @Prop() mapInfo: IMapInfo;
-  
+
   //--------------------------------------------------------------------------
   //
   //  State (internal)
@@ -326,12 +326,12 @@ export class MapCard {
   /**
    * watch for changes in layer view and verify if it has editing enabled
    */
-    @Watch("selectedLayer")
-    async selectedLayerWatchHandler(): Promise<void> {
-      await this.selectedLayer?.when(async () => {
-        this._definitionExpression = this.selectedLayer.definitionExpression;
-      })
-    }
+  @Watch("selectedLayer")
+  async selectedLayerWatchHandler(): Promise<void> {
+    await this.selectedLayer?.when(async () => {
+      this._definitionExpression = this.selectedLayer.definitionExpression;
+    })
+  }
 
   //--------------------------------------------------------------------------
   //
@@ -342,18 +342,18 @@ export class MapCard {
   /**
    * Reset the filter
    */
-    @Method()
-    async filterReset(): Promise<void> {
-      this._filterActive = false;
-    }
+  @Method()
+  async filterReset(): Promise<void> {
+    this._filterActive = false;
+  }
 
   /**
    * updates the filter
    */
-    @Method()
-    async updateFilter(): Promise<void> {
-      this._filterActive = this._definitionExpression !== this.selectedLayer.definitionExpression;
-    }
+  @Method()
+  async updateFilter(): Promise<void> {
+    this._filterActive = this._definitionExpression !== this.selectedLayer.definitionExpression;
+  }
 
   //--------------------------------------------------------------------------
   //
@@ -389,11 +389,11 @@ export class MapCard {
   /**
    * Listen for change when mapview doesn't contain any layer
    */
-    @Listen("noLayersFound", { target: "window" })
-    noLayersFound(): void {
-      this.selectedLayer = undefined;
-      this.selectedFeaturesIds = [];
-    }
+  @Listen("noLayersFound", { target: "window" })
+  noLayersFound(): void {
+    this.selectedLayer = undefined;
+    this.selectedFeaturesIds = [];
+  }
 
   //--------------------------------------------------------------------------
   //
@@ -448,9 +448,9 @@ export class MapCard {
                 showTables={true}
                 type="dropdown"
               />}
-              </div>
-              {this._getDropDownItem()}
             </div>
+            {this._getDropDownItem()}
+          </div>
         </div>
         <div class={`${mapHeightClass} ${mapClass}`} ref={(el) => (this._mapDiv = el)} />
         <map-tools
@@ -479,9 +479,9 @@ export class MapCard {
   /**
    * Called each time after the component is loaded
    */
-    async componentDidRender(): Promise<void> {
-      document.onclick = (e) => this._handleDocumentClick(e);
-    }
+  async componentDidRender(): Promise<void> {
+    document.onclick = (e) => this._handleDocumentClick(e);
+  }
 
   //--------------------------------------------------------------------------
   //
@@ -552,7 +552,7 @@ export class MapCard {
 
       await this.mapView.when(() => {
         this._initHome();
-        this.mapView.ui.add(this._mapTools, { position: this.mapWidgetsPosition, index: this.mapWidgetsIndex});
+        this.mapView.ui.add(this._mapTools, { position: this.mapWidgetsPosition, index: this.mapWidgetsIndex });
         this._defaultWebmapHonored = isDefaultMap ? true : this._defaultWebmapHonored;
         this.mapChanged.emit({
           id: id,
@@ -587,7 +587,7 @@ export class MapCard {
       const size = this.homeZoomToolsSize === "s" ? "32px" : this.homeZoomToolsSize === "m" ? "40px" : "48px";
       (this._homeWidget as any).domNode.style.height = size;
       (this._homeWidget as any).domNode.style.width = size;
-    } else if (this._homeWidget){
+    } else if (this._homeWidget) {
       this.mapView.ui.remove(this._homeWidget);
     }
   }
@@ -615,7 +615,7 @@ export class MapCard {
     e: MouseEvent
   ): void {
     const id = (e.target as any)?.id;
-    if (this._showHideOpen && id !== "solutions-subset-list" && id !== "solutions-more" && id !== "chevron-down"){
+    if (this._showHideOpen && id !== "solutions-subset-list" && id !== "solutions-more" && id !== "chevron-down") {
       if (this._moreDropdown) {
         this._showHideOpen = false;
         this._moreDropdown.open = false;
@@ -632,22 +632,22 @@ export class MapCard {
       void this._mapPicker.close();
     }
   }
-  
-    /**
-   * Zoom to all selected features
-   *
-   * @returns a promise that will resolve when the operation is complete
-   */
-    protected async _zoom(): Promise<void> {
-      if (this.selectedLayer) {
-        const selectedLayerView = await getFeatureLayerView(this.mapView, this.selectedLayer.id);
-        await goToSelection(this.selectedFeaturesIds, selectedLayerView, this.mapView, true, undefined, this.zoomToScale);
-      }
-    }
 
-    protected async _toggleFilter(): Promise<void> {
-      this.toggleFilter.emit();
+  /**
+ * Zoom to all selected features
+ *
+ * @returns a promise that will resolve when the operation is complete
+ */
+  protected async _zoom(): Promise<void> {
+    if (this.selectedLayer) {
+      const selectedLayerView = await getFeatureLayerView(this.mapView, this.selectedLayer.id);
+      await goToSelection(this.selectedFeaturesIds, selectedLayerView, this.mapView, true, undefined, this.zoomToScale);
     }
+  }
+
+  protected async _toggleFilter(): Promise<void> {
+    this.toggleFilter.emit();
+  }
 
   /**
    * Return true when we have at least 1 layer expression for the current layer
@@ -694,14 +694,14 @@ export class MapCard {
           </calcite-button>
         </calcite-action>
         <calcite-dropdown-group
-        selectionMode="none"
+          selectionMode="none"
         >
           {this._getDropDownItems()}
         </calcite-dropdown-group>
       </calcite-dropdown>
     )
   }
-  
+
   /**
    * Gets the dropdown items
    * @returns dropdown items
@@ -760,15 +760,15 @@ export class MapCard {
     )
   }
 
-    /**
-   * Fetches the component's translations
-   *
-   * @returns Promise when complete
-   * @protected
-   */
-    protected async _getTranslations(): Promise<void> {
-      const messages = await getLocaleComponentStrings(this.el);
-      this._translations = messages[0] as typeof MapCard_T9n;
-    }
+  /**
+ * Fetches the component's translations
+ *
+ * @returns Promise when complete
+ * @protected
+ */
+  protected async _getTranslations(): Promise<void> {
+    const messages = await getLocaleComponentStrings(this.el);
+    this._translations = messages[0] as typeof MapCard_T9n;
+  }
 
 }

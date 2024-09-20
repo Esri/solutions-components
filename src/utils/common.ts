@@ -126,7 +126,7 @@ export async function _updateResources(
     if (promises.length > 0) {
       Promise.all(promises).then(resolve, reject);
     } else {
-      resolve({success: true})
+      resolve({ success: true })
     }
   })
 }
@@ -180,7 +180,7 @@ function _updateThumbnailResource(
         _add(solutionId, model, data, resourceFilePath, authentication, true).then(resolve, reject);
       }
     } else {
-      resolve({success: true});
+      resolve({ success: true });
     }
   });
 }

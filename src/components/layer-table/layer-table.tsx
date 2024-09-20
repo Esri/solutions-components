@@ -216,10 +216,10 @@ export class LayerTable {
    */
   @State() _fullTextSearchInfo: any[];
 
-   /**
-   * string Placeholder string to show fields included in full text search
-   */
-   @State() _searchPlaceHolder: string = '';
+  /**
+  * string Placeholder string to show fields included in full text search
+  */
+  @State() _searchPlaceHolder: string = '';
 
   //--------------------------------------------------------------------------
   //
@@ -792,7 +792,7 @@ export class LayerTable {
                   title={this._searchPlaceHolder}
                   type="search" />
               }
-              
+
               <calcite-loader
                 class={loadingClass}
                 label={this._translations.fetchingData}
@@ -885,7 +885,7 @@ export class LayerTable {
    */
   protected async _searchFullText(): Promise<void> {
     //always clear previous search definition
-    if(this._searchExpression){
+    if (this._searchExpression) {
       this._clearSearchDefinitionExpression();
     }
     if (this._fullTextSearchInfo.length) {
@@ -900,7 +900,7 @@ export class LayerTable {
 
   /**
    * Clears the applied search expression on the layer
-   * 
+   *
    */
   protected _clearSearchDefinitionExpression(): void {
     const defExp = this._layer.definitionExpression;
@@ -918,7 +918,7 @@ export class LayerTable {
 
   /**
    * Update the search expression in layer
-   * @param searchedIds 
+   * @param searchedIds
    */
   protected _updateSearchDefinitionExpression(searchedIds: number[]): void {
     const defExp = this._layer.definitionExpression;
@@ -947,7 +947,7 @@ export class LayerTable {
   protected _getFullTextSearchInfo(): void {
     this._fullTextSearchInfo = []
     //combine all the fullText index
-    if((((this._layer as any)?.capabilities)?.query)?.supportsFullTextSearch){
+    if ((((this._layer as any)?.capabilities)?.query)?.supportsFullTextSearch) {
       const fullTextIndexes = (this._layer as any).indexes?.filter(i => i.indexType == 'FullText')
       if (fullTextIndexes?.length) {
         //create the search placeholder text
@@ -1075,7 +1075,7 @@ export class LayerTable {
                 {this._showHideOpen ? this._getFieldlist() : undefined}
               </calcite-dropdown>
             ) :
-            this._getAction(cur.active, cur.icon, cur.indicator, cur.label, cur.func, cur.disabled, cur.loading)
+              this._getAction(cur.active, cur.icon, cur.indicator, cur.label, cur.func, cur.disabled, cur.loading)
         )
       }
       return prev;
@@ -1476,54 +1476,54 @@ export class LayerTable {
         onCalciteDropdownBeforeClose={() => this._forceShowHide()}
         ref={(el) => this._moreDropdown = el}
       >
-      <calcite-action
-        appearance="solid"
-        id={id}
-        label=""
-        onClick={() => this._closeShowHide()}
-        slot="trigger"
-        text=""
-      >
-        <calcite-button
-          appearance="transparent"
-          iconEnd="chevron-down"
-          kind="neutral"
+        <calcite-action
+          appearance="solid"
+          id={id}
+          label=""
+          onClick={() => this._closeShowHide()}
+          slot="trigger"
+          text=""
         >
-          {this._translations.more}
-        </calcite-button>
-      </calcite-action>
-      <calcite-dropdown-group selection-mode="none">
-        {
-          dropdownItems.map(item => {
-            return (
-              <calcite-dropdown-group
-                class={item.disabled ? "disabled" : ""}
-                selectionMode={item.disabled ? "none" : "single"}
-              >
-                <calcite-dropdown-item
-                  disabled={item.loading}
-                  iconStart={item.isSublist && this._showHideOpen ? "chevron-down" : item.loading ? "" : item.icon}
-                  id="solutions-subset-list"
-                  onClick={item.func}
+          <calcite-button
+            appearance="transparent"
+            iconEnd="chevron-down"
+            kind="neutral"
+          >
+            {this._translations.more}
+          </calcite-button>
+        </calcite-action>
+        <calcite-dropdown-group selection-mode="none">
+          {
+            dropdownItems.map(item => {
+              return (
+                <calcite-dropdown-group
+                  class={item.disabled ? "disabled" : ""}
+                  selectionMode={item.disabled ? "none" : "single"}
                 >
-                  {item.loading ? (
-                    <div class={"display-flex"}>
-                      <calcite-loader
-                        inline={true}
-                        label={item.label}
-                        scale="m"
-                      />
-                      {item.label}
-                    </div>
-                  ) : item.label}
-                </calcite-dropdown-item>
-              </calcite-dropdown-group>
-            )
-          })
-        }
-      </calcite-dropdown-group>
-      {this._showHideOpen ? this._getFieldlist() : undefined}
-    </calcite-dropdown>
+                  <calcite-dropdown-item
+                    disabled={item.loading}
+                    iconStart={item.isSublist && this._showHideOpen ? "chevron-down" : item.loading ? "" : item.icon}
+                    id="solutions-subset-list"
+                    onClick={item.func}
+                  >
+                    {item.loading ? (
+                      <div class={"display-flex"}>
+                        <calcite-loader
+                          inline={true}
+                          label={item.label}
+                          scale="m"
+                        />
+                        {item.label}
+                      </div>
+                    ) : item.label}
+                  </calcite-dropdown-item>
+                </calcite-dropdown-group>
+              )
+            })
+          }
+        </calcite-dropdown-group>
+        {this._showHideOpen ? this._getFieldlist() : undefined}
+      </calcite-dropdown>
     ) : undefined;
   }
 
@@ -2080,10 +2080,10 @@ export class LayerTable {
    * Open show/hide dropdown
    */
   protected _forceShowHide(): void {
-    if(this._showHideDropdown) {
+    if (this._showHideDropdown) {
       this._showHideDropdown.open = this._showHideOpen;
     }
-    if(this._moreDropdown) {
+    if (this._moreDropdown) {
       this._moreDropdown.open = this._showHideOpen;
     }
   }
@@ -2111,7 +2111,7 @@ export class LayerTable {
     e: MouseEvent
   ): void {
     const id = (e.target as any)?.id;
-    if (this._showHideOpen && Object.keys(this._columnsInfo).indexOf(id) < 0 && id !== "solutions-subset-list" && id !== "chevron-right"){
+    if (this._showHideOpen && Object.keys(this._columnsInfo).indexOf(id) < 0 && id !== "solutions-subset-list" && id !== "chevron-right") {
       this._closeShowHide();
       if (this._moreDropdown) {
         this._moreDropdown.open = false;
@@ -2203,7 +2203,7 @@ export class LayerTable {
       const regEx = new RegExp(`${this._floorField} = ['].+[']`, "gm");
       this._layer.definitionExpression = defExp && this._floorField && defExp.indexOf(`${this._floorField} = '`) > -1 ?
         defExp.replace(regEx, this._floorExpression) : defExp ?
-        `${defExp} AND (${this._floorExpression})` : this._floorExpression;
+          `${defExp} AND (${this._floorExpression})` : this._floorExpression;
     }
 
     this._filterActive = this._definitionExpression !== this._layer.definitionExpression &&
@@ -2329,7 +2329,7 @@ export class LayerTable {
         prev.push(_cur);
       }
       return prev;
-    }, []).sort((a,b) => a - b);
+    }, []).sort((a, b) => a - b);
     this._skipOnChange = true;
     this._table.highlightIds.addMany(ids);
     this.selectedIds = ids;
@@ -2464,25 +2464,25 @@ export class LayerTable {
     if (fieldInfos) {
       columnTemplates = layerOption && layerOption?.fields
         ? fieldInfos.reduce((prev, cur) => {
-        if (layerOption.fields.indexOf(cur.name) > -1) {
-          const template = {
+          if (layerOption.fields.indexOf(cur.name) > -1) {
+            const template = {
+              type: "field",
+              fieldName: cur.name,
+              label: cur.alias,
+              menuConfig: this._getMenuConfig(cur.name)
+            } as __esri.FieldColumnTemplate;
+            prev.push(template);
+          }
+          return prev;
+        }, []).sort(this._sortFields.bind(this, layerOption?.fieldOrder))
+        : fieldInfos.map(fieldInfo => {
+          return {
             type: "field",
-            fieldName: cur.name,
-            label: cur.alias,
-            menuConfig: this._getMenuConfig(cur.name)
+            fieldName: fieldInfo.name,
+            label: fieldInfo.alias,
+            menuConfig: this._getMenuConfig(fieldInfo.name)
           } as __esri.FieldColumnTemplate;
-          prev.push(template);
-        }
-        return prev;
-      }, []).sort(this._sortFields.bind(this, layerOption?.fieldOrder))
-      : fieldInfos.map(fieldInfo => {
-        return {
-          type: "field",
-          fieldName: fieldInfo.name,
-          label: fieldInfo.alias,
-          menuConfig: this._getMenuConfig(fieldInfo.name)
-        } as __esri.FieldColumnTemplate;
-      });
+        });
     }
 
     return fieldOrder ?

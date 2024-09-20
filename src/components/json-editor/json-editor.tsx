@@ -131,7 +131,7 @@ export class JsonEditor {
       // Intercept the monaco function call that shows error markers to see if our content has errors
       const setModelMarkers = monaco.editor.setModelMarkers;
       const self = this;
-      monaco.editor.setModelMarkers = function(model, owner, markers) {
+      monaco.editor.setModelMarkers = function (model, owner, markers) {
         // If this call was for our model, it acts like an onEditorChange event
         // but gives us access to the error state as well
         if (model.id === self._currentModel.id) {
@@ -354,7 +354,7 @@ export class JsonEditor {
   ): Promise<any> {
     const currentSelection = this._editor.getSelection();
     this._editor.executeEdits("", [
-     { range: currentSelection, text: replacement }
+      { range: currentSelection, text: replacement }
     ]);
   }
 
@@ -388,7 +388,7 @@ export class JsonEditor {
    *
     * @protected
    */
-   protected _disableButton(buttonId: string): void {
+  protected _disableButton(buttonId: string): void {
     document.getElementById(buttonId)?.setAttribute("disabled", "");
   }
 
@@ -480,7 +480,7 @@ export class JsonEditor {
    *
    * @protected
    */
-   protected _initValueObserver(): void {
+  protected _initValueObserver(): void {
     this._valueObserver = new MutationObserver(ml => {
       ml.forEach(mutation => {
         if (mutation.type === 'attributes' && mutation.attributeName === "value") {
@@ -511,7 +511,7 @@ export class JsonEditor {
    *
    * @protected
    */
-   protected _redo(): void {
+  protected _redo(): void {
     if (this._currentModel?.canRedo()) {
       this._currentModel.redo();
       this._toggleUndoRedo();
@@ -523,7 +523,7 @@ export class JsonEditor {
    *
    * @protected
    */
-   protected _reset(): void {
+  protected _reset(): void {
     // Restore the original value
     this._currentModel.setValue(this.value);
 
@@ -536,7 +536,7 @@ export class JsonEditor {
    *
    * @protected
    */
-   protected _search(): void {
+  protected _search(): void {
     this._editor.trigger('toggleFind', 'actions.find');
   }
 
@@ -545,7 +545,7 @@ export class JsonEditor {
    *
    * @protected
    */
-   protected _setDiffModel(): void {
+  protected _setDiffModel(): void {
     if (this._diffEditor) {
       this._diffEditor.setModel({
         original: monaco.editor.createModel(this.value, "json"),
@@ -559,7 +559,7 @@ export class JsonEditor {
    *
    * @protected
    */
-   protected _toggleEditor(): void {
+  protected _toggleEditor(): void {
     this._useDiffEditor = !this._useDiffEditor;
     let diffContainer = document.getElementById(`${this.instanceid}-diff-container`);
     let container = document.getElementById(`${this.instanceid}-container`);
@@ -578,7 +578,7 @@ export class JsonEditor {
    *
    * @protected
    */
-   protected _toggleUndoRedo(): void {
+  protected _toggleUndoRedo(): void {
     if (this._currentModel?.canUndo()) {
       this._enableButton(`${this.instanceid}-undo`);
     } else {
@@ -603,7 +603,7 @@ export class JsonEditor {
    *
    * @protected
    */
-   protected _undo(): void {
+  protected _undo(): void {
     if (this._currentModel?.canUndo()) {
       this._currentModel.undo();
       this._toggleUndoRedo();

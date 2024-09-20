@@ -44,7 +44,7 @@ export class CrowdsourceManager {
    * AppLayout: The type of layout the application should use.
    * Valid values: "mapView" or "tableView" or "splitView"
    */
-  @Prop({mutable: true}) appLayout: AppLayout = 'splitView';
+  @Prop({ mutable: true }) appLayout: AppLayout = 'splitView';
 
   /**
    * Array of objects containing proxy information for premium platform services.
@@ -440,7 +440,7 @@ export class CrowdsourceManager {
   ): Promise<void> {
     const id: string = evt.detail[0];
     const layer = await getLayerOrTable(this._mapView, id);
-   layer && await layer.when(() => {
+    layer && await layer.when(() => {
       this._layer = layer;
       this._initLayerExpressions();
     });
@@ -553,7 +553,7 @@ export class CrowdsourceManager {
    */
   protected _setActiveLayout(appLayout: AppLayout): void {
     //When going to splitView layout the panel should be open
-    if(appLayout === 'splitView' && !this._panelOpen){
+    if (appLayout === 'splitView' && !this._panelOpen) {
       this._toggleLayout();
     }
     //Move the map node based on the selected layout
@@ -853,7 +853,7 @@ export class CrowdsourceManager {
       <div class={`width-50 height-full ${themeClass}`}>
         <card-manager
           class={`${cardManagerHeight} width-full`}
-	  customInfoText={this.customInfoText}
+          customInfoText={this.customInfoText}
           enableCreateFeatures={this._enableCreateFeatures}
           enableEditGeometry={this?._mapInfo?.enableEditGeometry}
           isMobile={this._isMobile}
@@ -895,12 +895,12 @@ export class CrowdsourceManager {
     const mapClass = isMapLayout ? "height-full width-full z-index-0" : "display-none";
     const tableSizeClass = this._getTableSizeClass(layoutMode, panelOpen)
     const toggleLayout = layoutMode === ELayoutMode.HORIZONTAL ? "horizontal" : "vertical";
-    const toggleSlot = layoutMode === ELayoutMode.HORIZONTAL  ? "header" : "panel-start";
+    const toggleSlot = layoutMode === ELayoutMode.HORIZONTAL ? "header" : "panel-start";
     const hasMapAndLayer = this.defaultWebmap && this.defaultLayer;
     const globalId = !this.defaultGlobalId ? undefined :
       this.defaultGlobalId?.indexOf(",") > -1 ? this.defaultGlobalId.split(",") : [this.defaultGlobalId];
     const defaultOid = !this.defaultOid ? undefined :
-      this.defaultOid?.indexOf(",") > -1 ? this.defaultOid.split(",").map(o=> parseInt(o, 10)) : [parseInt(this.defaultOid, 10)];
+      this.defaultOid?.indexOf(",") > -1 ? this.defaultOid.split(",").map(o => parseInt(o, 10)) : [parseInt(this.defaultOid, 10)];
     return (
       <calcite-shell class={`${tableSizeClass} border-bottom`}>
         {
@@ -916,29 +916,29 @@ export class CrowdsourceManager {
           ) : undefined
         }
         <div class={`width-full height-full position-relative z-index-0 ${tableClass}`}>
-            <layer-table
-              createFilterModal={false}
-              defaultGlobalId={hasMapAndLayer ? globalId : undefined}
-              defaultLayerId={hasMapAndLayer ? this.defaultLayer : ""}
-              defaultOid={hasMapAndLayer && !globalId ? defaultOid : undefined}
-              enableAutoRefresh={this.enableAutoRefresh}
-              enableCSV={this.enableCSV}
-              enableColumnReorder={this.enableColumnReorder}
-              enableInlineEdit={this?._mapInfo?.enableInlineEdit}
-              enableShare={this.enableShare}
-              isMobile={this._isMobile}
-              mapHidden={isTableLayout}
-              mapInfo={this._mapInfo}
-              mapView={this?._mapView}
-              onToggleFilter={this._toggleFilter.bind(this)}
-              onlyShowUpdatableLayers={this.onlyShowUpdatableLayers}
-              ref={(el) => this._layerTable = el}
-              shareIncludeEmbed={this.shareIncludeEmbed}
-              shareIncludeSocial={this.shareIncludeSocial}
-              showNewestFirst={this.showNewestFirst}
-              zoomAndScrollToSelected={this.zoomAndScrollToSelected}
-              zoomToScale={this.zoomToScale}
-            />
+          <layer-table
+            createFilterModal={false}
+            defaultGlobalId={hasMapAndLayer ? globalId : undefined}
+            defaultLayerId={hasMapAndLayer ? this.defaultLayer : ""}
+            defaultOid={hasMapAndLayer && !globalId ? defaultOid : undefined}
+            enableAutoRefresh={this.enableAutoRefresh}
+            enableCSV={this.enableCSV}
+            enableColumnReorder={this.enableColumnReorder}
+            enableInlineEdit={this?._mapInfo?.enableInlineEdit}
+            enableShare={this.enableShare}
+            isMobile={this._isMobile}
+            mapHidden={isTableLayout}
+            mapInfo={this._mapInfo}
+            mapView={this?._mapView}
+            onToggleFilter={this._toggleFilter.bind(this)}
+            onlyShowUpdatableLayers={this.onlyShowUpdatableLayers}
+            ref={(el) => this._layerTable = el}
+            shareIncludeEmbed={this.shareIncludeEmbed}
+            shareIncludeSocial={this.shareIncludeSocial}
+            showNewestFirst={this.showNewestFirst}
+            zoomAndScrollToSelected={this.zoomAndScrollToSelected}
+            zoomToScale={this.zoomToScale}
+          />
         </div>
         <div class={mapClass} id="full-map-view" />
       </calcite-shell>
@@ -1030,40 +1030,40 @@ export class CrowdsourceManager {
    * @returns node to interact with any configured filters for the current layer
    * @protected
    */
-   protected _filterModal(): VNode {
-      return (
-        <calcite-modal
-          aria-labelledby="modal-title"
-          class="modal"
-          kind="brand"
-          onCalciteModalClose={() => void this._closeFilter()}
-          open={this._filterOpen}
-          widthScale="s"
+  protected _filterModal(): VNode {
+    return (
+      <calcite-modal
+        aria-labelledby="modal-title"
+        class="modal"
+        kind="brand"
+        onCalciteModalClose={() => void this._closeFilter()}
+        open={this._filterOpen}
+        widthScale="s"
+      >
+        <div
+          class="display-flex align-center"
+          id="modal-title"
+          slot="header"
         >
-          <div
-            class="display-flex align-center"
-            id="modal-title"
-            slot="header"
-          >
-            {this._translations?.filter?.replace("{{title}}", this._layer?.title)}
-          </div>
-          <div slot="content">
-            <instant-apps-filter-list
-              autoUpdateUrl={false}
-              closeBtn={true}
-              closeBtnOnClick={async () => this._closeFilter()}
-              comboboxOverlayPositioning="fixed"
-              layerExpressions={this._layerExpressions}
-              onFilterListReset={() => this._handleFilterListReset()}
-              onFilterUpdate={() => void this._layerTable?.filterUpdate()}
-              ref={(el) => this._filterList = el}
-              view={this._mapView}
-              zoomBtn={false}
-            />
-          </div>
-        </calcite-modal>
-      );
-    }
+          {this._translations?.filter?.replace("{{title}}", this._layer?.title)}
+        </div>
+        <div slot="content">
+          <instant-apps-filter-list
+            autoUpdateUrl={false}
+            closeBtn={true}
+            closeBtnOnClick={async () => this._closeFilter()}
+            comboboxOverlayPositioning="fixed"
+            layerExpressions={this._layerExpressions}
+            onFilterListReset={() => this._handleFilterListReset()}
+            onFilterUpdate={() => void this._layerTable?.filterUpdate()}
+            ref={(el) => this._filterList = el}
+            view={this._mapView}
+            zoomBtn={false}
+          />
+        </div>
+      </calcite-modal>
+    );
+  }
 
   /**
    * Store any filters for the current layer.
@@ -1214,7 +1214,7 @@ export class CrowdsourceManager {
         return true;
       }
     })
-    return {...mapInfo};
+    return { ...mapInfo };
   }
 
   /**

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="en">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
@@ -30,14 +31,17 @@
       width: unset;
       overflow-y: auto;
     }
+
     h1 {
       margin: 0 0 12px 0;
       padding-left: 0;
     }
+
     .fadeIn {
       opacity: 0;
       transition: 1s;
     }
+
     .content {
       padding: 20px;
     }
@@ -51,13 +55,14 @@
   <h1>Demo Solution Spatial Reference</h1>
   <main id="main" class="fadeIn">
     <div>
-      <store-manager id="state"/>
-      <solution-spatial-ref/>
+      <store-manager id="state" />
+      <solution-spatial-ref />
     </div>
   </main>
 
   <!-- Feedback from store -->
-  <br/><hr/>
+  <br />
+  <hr />
   <div id="storeContents" class="fadeIn" dir="ltr">
     <h3>Store</h3>
     <h4>spatialReferenceInfo</h4>
@@ -72,37 +77,38 @@
     // Activate Stencil component
     const state = document.getElementById("state");
     state.getStoreInfo("spatialReferenceInfo")
-    .then(() => {
-      const spatialReferenceInfo = document.getElementById("spatialReferenceInfo");
-      const featureServices = document.getElementById("featureServices");
+      .then(() => {
+        const spatialReferenceInfo = document.getElementById("spatialReferenceInfo");
+        const featureServices = document.getElementById("featureServices");
 
-      // Set the data
-      fetch("./data/election-outreach.json").then(result => {
-        result.json().then(data => {
-          state.value = JSON.stringify(data);
+        // Set the data
+        fetch("./data/election-outreach.json").then(result => {
+          result.json().then(data => {
+            state.value = JSON.stringify(data);
 
-          // Echo store values
-          setTimeout(updateStoreDisplay, 1000);
-          window.addEventListener("solutionStoreHasChanges",
-            () => { updateStoreDisplay(); }
-          );
+            // Echo store values
+            setTimeout(updateStoreDisplay, 1000);
+            window.addEventListener("solutionStoreHasChanges",
+              () => { updateStoreDisplay(); }
+            );
 
-          // Show the UI
-          document.getElementById("main").style.opacity = "1";
-          document.getElementById("storeContents").style.opacity = "1";
+            // Show the UI
+            document.getElementById("main").style.opacity = "1";
+            document.getElementById("storeContents").style.opacity = "1";
+          });
         });
+
+        let getStoreInfo = async (propName) => {
+          const value = await state.getStoreInfo(propName);
+          return Promise.resolve(JSON.stringify(value, null, 2));
+        }
+
+        let updateStoreDisplay = async () => {
+          spatialReferenceInfo.innerHTML = await getStoreInfo("spatialReferenceInfo");
+          featureServices.innerHTML = await getStoreInfo("featureServices");
+        }
       });
-
-      let getStoreInfo = async (propName) => {
-        const value = await state.getStoreInfo(propName);
-        return Promise.resolve(JSON.stringify(value, null, 2));
-      }
-
-      let updateStoreDisplay = async () => {
-        spatialReferenceInfo.innerHTML = await getStoreInfo("spatialReferenceInfo");
-        featureServices.innerHTML = await getStoreInfo("featureServices");
-      }
-    });
   </script>
 </body>
+
 </html>

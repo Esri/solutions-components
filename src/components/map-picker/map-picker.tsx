@@ -274,7 +274,7 @@ export class MapPicker {
   protected _getMapNameList(
     show: boolean
   ): VNode {
-    const width = this.isMapLayout ? "width-25" : "width-full";  
+    const width = this.isMapLayout ? "width-25" : "width-full";
     const listClass = show ? `map-list border-bottom-1 ${width}` : "display-none";
     return (
       <div class={listClass}>

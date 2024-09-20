@@ -75,7 +75,7 @@ export class LocationFlowItem {
   render() {
     return (
       <Host>
-        <slot/>
+        <slot />
       </Host>
     );
   }

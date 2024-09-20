@@ -266,8 +266,8 @@ export class MapLayerPicker {
    */
   render(): VNode {
     const id = "map-layer-picker";
-    let style: any = this.height > 0 ? {"height": `${this.height.toString()}px`} : {};
-    style = {...style, "display": this.display}
+    let style: any = this.height > 0 ? { "height": `${this.height.toString()}px` } : {};
+    style = { ...style, "display": this.display }
     return (
       <Host>
         <div class="map-layer-picker-container" style={style}>
@@ -275,8 +275,8 @@ export class MapLayerPicker {
             {
               !this._hasValidLayers ? this._getInvalidPlaceholder() :
                 !this._hasMultipleLayers && this.showSingleLayerAsLabel ? this._getSingleLayerPlaceholder() :
-                this.type === "combobox" ? this._getCombobox(id) :
-                this.type === "select" ? this._getSelect(id) : this._getDropdown(id)
+                  this.type === "combobox" ? this._getCombobox(id) :
+                    this.type === "select" ? this._getSelect(id) : this._getDropdown(id)
             }
           </div>
         </div>
@@ -342,7 +342,7 @@ export class MapLayerPicker {
   protected _getSingleLayerPlaceholder(): VNode {
     return (
       <div class="layer-picker-label-container cursor-default">
-        <calcite-icon icon="layers" scale="s"/>
+        <calcite-icon icon="layers" scale="s" />
         <calcite-label class="no-bottom-margin padding-start-1">
           {this.selectedName}
         </calcite-label>
@@ -512,18 +512,18 @@ export class MapLayerPicker {
           value={id}
         />
       ) : (
-          <calcite-dropdown-group
-            class={disabled ? "disabled" : ""}
-            selectionMode={disabled ? "none" : "single"}
+        <calcite-dropdown-group
+          class={disabled ? "disabled" : ""}
+          selectionMode={disabled ? "none" : "single"}
+        >
+          <calcite-dropdown-item
+            icon-start={itemType}
+            onClick={disabled ? undefined : () => void this._setSelectedLayer(id)}
+            selected={selected}
           >
-            <calcite-dropdown-item
-              icon-start={itemType}
-              onClick={disabled ? undefined : () => void this._setSelectedLayer(id)}
-              selected={selected}
-            >
-              {name}
-            </calcite-dropdown-item>
-          </calcite-dropdown-group>
+            {name}
+          </calcite-dropdown-item>
+        </calcite-dropdown-group>
       );
   }
 

@@ -223,8 +223,8 @@ export async function downloadPDF(
   labels =
     // Remove empty lines in labels
     labels.map(labelLines => labelLines.filter(line => line.length > 0))
-    // Remove empty labels
-    .filter(label => label.length > 0);
+      // Remove empty labels
+      .filter(label => label.length > 0);
 
   labels = removeDuplicates ? removeDuplicateLabels(labels) : labels;
 
@@ -451,17 +451,17 @@ async function _createArcadeExecutors(
 
   const promises = Object.values(createArcadeExecutorPromises);
   return Promise.all(promises)
-  .then(
-    executors => {
-      const expressionNames = Object.keys(createArcadeExecutorPromises);
+    .then(
+      executors => {
+        const expressionNames = Object.keys(createArcadeExecutorPromises);
 
-      for (let i = 0; i < expressionNames.length; ++i) {
-        arcadeExecutors[expressionNames[i]] = executors[i].valueOf() as __esri.ArcadeExecutor;
+        for (let i = 0; i < expressionNames.length; ++i) {
+          arcadeExecutors[expressionNames[i]] = executors[i].valueOf() as __esri.ArcadeExecutor;
+        }
+
+        return arcadeExecutors;
       }
-
-      return arcadeExecutors;
-    }
-  );
+    );
 }
 
 /**
@@ -576,16 +576,16 @@ export function _getFeatureServiceRelatedRecordsTranche(
       resultOffset
     }
   } as IQueryRelatedOptionsOffset)
-  .then(
-    (response: IQueryRelatedResponseOffset) => {
-      relationships.push(...response.relatedRecordGroups);
+    .then(
+      (response: IQueryRelatedResponseOffset) => {
+        relationships.push(...response.relatedRecordGroups);
 
-      // If exceededTransferLimit is true, then there are more records to retrieve and the feature service
-      // supports the resultOffset parameter
-      return response.exceededTransferLimit ? _getFeatureServiceRelatedRecordsTranche(
+        // If exceededTransferLimit is true, then there are more records to retrieve and the feature service
+        // supports the resultOffset parameter
+        return response.exceededTransferLimit ? _getFeatureServiceRelatedRecordsTranche(
           options, relationships, resultOffset + response.relatedRecordGroups.length) : Promise.resolve(relationships);
-    }
-  );
+      }
+    );
 }
 
 /**
@@ -678,7 +678,7 @@ export async function _getLabelFormat(
 
         // Get related layer
         const layerRelationship = layer.relationships.find(relationship => relationship.id === relationshipId);
-        let webmapLayers = webmap.layers.toArray().concat(webmap.tables.toArray()) as  __esri.FeatureLayer[];
+        let webmapLayers = webmap.layers.toArray().concat(webmap.tables.toArray()) as __esri.FeatureLayer[];
         webmapLayers = webmapLayers.filter(
           (webmapLayer: __esri.FeatureLayer) =>
             webmapLayer.type === "feature" && webmapLayer.layerId === layerRelationship.relatedTableId
@@ -690,7 +690,7 @@ export async function _getLabelFormat(
 
         } else {
           // Related layer info is not in webmap; get the label info from the related layer
-          webmapLayers = webmap.layers.toArray().concat(webmap.tables.toArray()) as  __esri.FeatureLayer[];
+          webmapLayers = webmap.layers.toArray().concat(webmap.tables.toArray()) as __esri.FeatureLayer[];
 
           // Keep only feature layers and tables that have the type "feature" and whose layerId doesn't
           // match the one we entered this function with and who have a URL that we can query
@@ -750,15 +750,15 @@ export async function _getLabelFormat(
             _convertPopupFieldsToLabelSpec(layer.popupTemplate.fieldInfos, true);
         }
 
-      // Example text: '<p>{name} {age} years &nbsp;</p><p>started: {start}</p>'
+        // Example text: '<p>{name} {age} years &nbsp;</p><p>started: {start}</p>'
       } else if (labelFormatType === "text") {
         labelFormatProps.labelFormat = _convertPopupTextToLabelSpec(layer.popupTemplate.content[0].text);
 
-      // Example expression: 'var feat = $feature\nvar label = `\n\t${feat["name"]} ${feat["age"]} years <br>\n\tstarted: ${feat["start"]}\n`\n\nreturn { \n  type : \'text\', \n  text : label\n}',
+        // Example expression: 'var feat = $feature\nvar label = `\n\t${feat["name"]} ${feat["age"]} years <br>\n\tstarted: ${feat["start"]}\n`\n\nreturn { \n  type : \'text\', \n  text : label\n}',
       } else if (labelFormatType === "expression") {
         labelFormatProps.labelFormat = await _convertPopupArcadeToLabelSpec(layer.popupTemplate.content[0].expressionInfo);
 
-      // Fallback to all fields
+        // Fallback to all fields
       } else {
         labelFormatProps.labelFormat = _convertPopupFieldsToLabelSpec(layer.popupTemplate.fieldInfos);
       }
@@ -898,7 +898,7 @@ export async function _prepareLabels(
   const featureLayer = labelFormatProps.layer;
 
   let featureSet: __esri.Graphic[] = [];
-  if (typeof(labelFormatProps.relationshipId) !== "undefined") {
+  if (typeof (labelFormatProps.relationshipId) !== "undefined") {
     // Get the related items for each id; we're asking for the full item
     const relatedRecordGroups = await _getFeatureServiceRelatedRecords(
       layer.url, layer.layerId, labelFormatProps.relationshipId, ids);
@@ -950,7 +950,7 @@ export async function _prepareLabels(
       }
     );
 
-    featureSet = relatedFeatures.filter((feature, i) => i === 0 ? true : feature[objectIdField] !== relatedFeatures[i-1][objectIdField]);
+    featureSet = relatedFeatures.filter((feature, i) => i === 0 ? true : feature[objectIdField] !== relatedFeatures[i - 1][objectIdField]);
 
     // Handle the special case where no related records were found for the set of features
     if (featureSet.length === 0) {
@@ -993,17 +993,17 @@ export async function _prepareLabels(
   // Apply the label format
   const labels
     = labelFormatProps.labelFormat.type === "pattern" ?
-    // Export attributes in format
-    await _prepareLabelsFromPattern(layer, featureSet, attributeOrigNames, attributeTypes, attributeDomains,
-      labelFormatProps.attributeFormats, labelFormatProps.labelFormat.format as string, includeHeaderNames)
+      // Export attributes in format
+      await _prepareLabelsFromPattern(layer, featureSet, attributeOrigNames, attributeTypes, attributeDomains,
+        labelFormatProps.attributeFormats, labelFormatProps.labelFormat.format as string, includeHeaderNames)
 
-    : labelFormatProps.labelFormat.type === "executor" ?
-    // Export attributes in expression
-    await _prepareLabelsUsingExecutor(featureSet, labelFormatProps.labelFormat.format as __esri.ArcadeExecutor)
+      : labelFormatProps.labelFormat.type === "executor" ?
+        // Export attributes in expression
+        await _prepareLabelsUsingExecutor(featureSet, labelFormatProps.labelFormat.format as __esri.ArcadeExecutor)
 
-    :
-    // Export all attributes
-    await _prepareLabelsFromAll(featureSet, attributeTypes, attributeDomains, includeHeaderNames, useFieldAliasNames);
+        :
+        // Export all attributes
+        await _prepareLabelsFromAll(featureSet, attributeTypes, attributeDomains, includeHeaderNames, useFieldAliasNames);
 
   return Promise.resolve(labels);
 }
@@ -1101,7 +1101,7 @@ export async function _prepareLabelsFromPattern(
       for (let i = 0; i < arcadeExpressionMatches.length; i++) {
         const match: string = arcadeExpressionMatches[i];
         const expressionName = match.substring(match.indexOf("/") + 1, match.length - 1);
-        const value = await arcadeExecutors[expressionName].executeAsync({"$feature": feature, "$layer": layer});
+        const value = await arcadeExecutors[expressionName].executeAsync({ "$feature": feature, "$layer": layer });
         labelPrep = labelPrep.replace(match, value).replace(/\n/gi, "|");
       }
 
@@ -1150,7 +1150,7 @@ export async function _prepareLabelsUsingExecutor(
   // Convert feature attributes into an array of labels
   const execResults = await Promise.all(featureSet.map(
     async feature => {
-      return labelFormat.executeAsync({"$feature": feature});
+      return labelFormat.executeAsync({ "$feature": feature });
     }
   ));
 

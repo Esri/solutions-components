@@ -1,12 +1,10 @@
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="initial-scale=1,maximum-scale=1,user-scalable=no"
-    />
-    <title>New Public Notification</title>
-    <!--
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <title>New Public Notification</title>
+  <!--
     | Copyright 2022 Esri
     |
     | Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,120 +19,124 @@
     | See the License for the specific language governing permissions and
     | limitations under the License.
     -->
-    <style>
-      #viewDiv {
-        position: absolute;
-        top: 0px;
-        left: 0px;
-        bottom: 0px;
-        right: 354px;
-      }
-      #viewDiv[dir="rtl"] {
-        left: 354px;
-        right: 0px;
-      }
-      .over-map {
-        position: absolute;
-        right: 0px;
-        background-color: var(--calcite-color-foreground-1);
-      }
-      .over-map[dir="rtl"] {
-        left: 0px;
-      }
-      .column {
-        width: 320px;
-        padding: 1rem;
-        border: 1px solid var(--calcite-color-border-2);
-        height: -webkit-fill-available;
-        height: 100%;
-      }
-      .column[dir="rtl"] {
-        float: left;
-      }
-    </style>
+  <style>
+    #viewDiv {
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      bottom: 0px;
+      right: 354px;
+    }
 
-    <link
-      rel="stylesheet"
-      href="https://jsdev.arcgis.com/4.29/esri/themes/light/main.css"
-    />
-    <!-- <link
+    #viewDiv[dir="rtl"] {
+      left: 354px;
+      right: 0px;
+    }
+
+    .over-map {
+      position: absolute;
+      right: 0px;
+      background-color: var(--calcite-color-foreground-1);
+    }
+
+    .over-map[dir="rtl"] {
+      left: 0px;
+    }
+
+    .column {
+      width: 320px;
+      padding: 1rem;
+      border: 1px solid var(--calcite-color-border-2);
+      height: -webkit-fill-available;
+      height: 100%;
+    }
+
+    .column[dir="rtl"] {
+      float: left;
+    }
+  </style>
+
+  <link rel="stylesheet" href="https://jsdev.arcgis.com/4.29/esri/themes/light/main.css" />
+  <!-- <link
       rel="stylesheet"
       href="https://jsdev.arcgis.com/4.29/esri/themes/dark/main.css"
     /> -->
-    <link rel="stylesheet" href="https://webapps-cdn.esri.com/CDN/fonts/v1.4.1/fonts.css" />
-    <link rel="stylesheet" href="../solutions-components.css" type="text/css">
-    <link rel="stylesheet" type="text/css" href="https://js.arcgis.com/calcite-components/2.0.0/calcite.css" />
+  <link rel="stylesheet" href="https://webapps-cdn.esri.com/CDN/fonts/v1.4.1/fonts.css" />
+  <link rel="stylesheet" href="../solutions-components.css" type="text/css">
+  <link rel="stylesheet" type="text/css" href="https://js.arcgis.com/calcite-components/2.0.0/calcite.css" />
 
-    <script src="https://jsdev.arcgis.com/4.29/"></script>
-    <script type="module" src="../solutions-components.esm.js"></script>
+  <script src="https://jsdev.arcgis.com/4.29/"></script>
+  <script type="module" src="../solutions-components.esm.js"></script>
 
-    <script>
-      require(["esri/WebMap", "esri/views/MapView", "esri/widgets/Legend", "esri/config"], (
-        WebMap,
-        MapView,
-        Legend,
-        esriConfig
-      ) => {
-        let itemId;
-        var vars = window.location.search.substring(1).split('&');
-        vars.forEach((param) => {
-          let vals = param.split('=');
-          const v = vals[1];
-          switch (vals[0]) {
-            case "id":
-              itemId = v;
-              break;
-            default:
-              break;
-          }
-        });
-
-        //esriConfig.portalUrl = "https://solutions.mapsdevext.arcgis.com";
-        var webMap = new WebMap({
-          portalItem: {
-            // solutions
-            id: itemId ? itemId : "3715f4899bea4b2a948347c5c2357e58"
-            // InstantApps
-            //id: itemId ? itemId : "863e4f6f2a7840db896cc1b1606d552d"
-          }
-        });
-
-        const demo = document.getElementById("demo");
-        demo.mapView = new MapView({
-          container: "viewDiv",
-          map: webMap
-        });
-
-        demo.mapView.when(() => {
-          const legend = new Legend({
-            view: demo.mapView
-          });
-          demo.mapView.ui.add(legend, "top-left");
-        });
-        // solutions layer id
-        //demo.addresseeLayerIds = ["TaxParcels_3419"];
-        //demo.defaultBufferDistance = 100;
-        //demo.defaultBufferUnit = "kilometers";
-        demo.featureEffect = {
-          includedEffect: "invert(100%)",
-          excludedEffect: "blur(5px)"
-        };
-        demo.featureHighlightEnabled = true;
-        demo.noResultText = "No results found";
-        // solutions layer id
-        //demo.selectionLayerIds = ["SiteAddresses_8878"];
-        demo.showSearchSettings = true;
-        demo.customLabelEnabled = true;
-        // demo.bufferColor = [227, 0, 0, 0.8];
-        // demo.bufferOutlineColor = [0, 255, 0];
-        demo.showRefineSelection = true;
+  <script>
+    require(["esri/WebMap", "esri/views/MapView", "esri/widgets/Legend", "esri/config"], (
+      WebMap,
+      MapView,
+      Legend,
+      esriConfig
+    ) => {
+      let itemId;
+      var vars = window.location.search.substring(1).split('&');
+      vars.forEach((param) => {
+        let vals = param.split('=');
+        const v = vals[1];
+        switch (vals[0]) {
+          case "id":
+            itemId = v;
+            break;
+          default:
+            break;
+        }
       });
-    </script>
-  </head>
 
-  <!-- <body class="calcite-mode-dark"> -->
-  <body>
-    <div id="viewDiv"></div>
-    <public-notification id="demo" class="over-map column"></public-notification>
-  </body>
+      //esriConfig.portalUrl = "https://solutions.mapsdevext.arcgis.com";
+      var webMap = new WebMap({
+        portalItem: {
+          // solutions
+          id: itemId ? itemId : "3715f4899bea4b2a948347c5c2357e58"
+          // InstantApps
+          //id: itemId ? itemId : "863e4f6f2a7840db896cc1b1606d552d"
+        }
+      });
+
+      const demo = document.getElementById("demo");
+      demo.mapView = new MapView({
+        container: "viewDiv",
+        map: webMap
+      });
+
+      demo.mapView.when(() => {
+        const legend = new Legend({
+          view: demo.mapView
+        });
+        demo.mapView.ui.add(legend, "top-left");
+      });
+      // solutions layer id
+      //demo.addresseeLayerIds = ["TaxParcels_3419"];
+      //demo.defaultBufferDistance = 100;
+      //demo.defaultBufferUnit = "kilometers";
+      demo.featureEffect = {
+        includedEffect: "invert(100%)",
+        excludedEffect: "blur(5px)"
+      };
+      demo.featureHighlightEnabled = true;
+      demo.noResultText = "No results found";
+      // solutions layer id
+      //demo.selectionLayerIds = ["SiteAddresses_8878"];
+      demo.showSearchSettings = true;
+      demo.customLabelEnabled = true;
+      // demo.bufferColor = [227, 0, 0, 0.8];
+      // demo.bufferOutlineColor = [0, 255, 0];
+      demo.showRefineSelection = true;
+    });
+  </script>
+</head>
+
+<!-- <body class="calcite-mode-dark"> -->
+
+<body>
+  <div id="viewDiv"></div>
+  <public-notification id="demo" class="over-map column"></public-notification>
+</body>
+
 </html>

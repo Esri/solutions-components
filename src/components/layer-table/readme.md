@@ -92,6 +92,7 @@ Type: `Promise<void>`
 
 - calcite-shell
 - calcite-panel
+- calcite-input
 - calcite-loader
 - calcite-action-bar
 - [map-layer-picker](../map-layer-picker)
@@ -111,6 +112,7 @@ Type: `Promise<void>`
 graph TD;
   layer-table --> calcite-shell
   layer-table --> calcite-panel
+  layer-table --> calcite-input
   layer-table --> calcite-loader
   layer-table --> calcite-action-bar
   layer-table --> map-layer-picker
@@ -134,6 +136,8 @@ graph TD;
   calcite-popover --> calcite-action
   calcite-popover --> calcite-icon
   calcite-scrim --> calcite-loader
+  calcite-input --> calcite-progress
+  calcite-input --> calcite-icon
   calcite-action-bar --> calcite-action-group
   calcite-action-group --> calcite-action-menu
   calcite-action-group --> calcite-action

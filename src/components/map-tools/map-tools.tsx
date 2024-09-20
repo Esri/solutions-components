@@ -378,7 +378,7 @@ export class MapTools {
           basemapConfig={this.basemapConfig}
           class={basemapClass}
           mapView={this.mapView}
-          ref={(el) => {this._basemapElement = el}}
+          ref={(el) => { this._basemapElement = el }}
         />
         <map-search
           class={searchClass}
@@ -390,19 +390,19 @@ export class MapTools {
         <map-legend
           class={legendClass}
           mapView={this.mapView}
-          ref={(el) => {this._legendElement = el}}
+          ref={(el) => { this._legendElement = el }}
         />
         <map-fullscreen
           class={fullscreenClass}
           mapView={this.mapView}
           onFullscreenStateChange={(evt) => this._fullscreenStateChange(evt.detail)}
-          ref={(el) => {this._fullscreenElement = el}}
+          ref={(el) => { this._fullscreenElement = el }}
         />
         <floor-filter
           class={floorFilterClass}
           enabled={this.enableFloorFilter}
           mapView={this.mapView}
-          ref={(el) => {this._floorFilterElement = el}}
+          ref={(el) => { this._floorFilterElement = el }}
         />
       </Host>
     );

@@ -19,9 +19,9 @@ import { languageMap } from "./languageUtil";
 import { getAssetPath } from "@stencil/core";
 
 export function getComponentClosestLanguage(element: HTMLElement): string | undefined {
-  const closestElement = (element.closest("[lang]") ) ?? element.shadowRoot?.ownerDocument?.documentElement as any;
+  const closestElement = (element.closest("[lang]")) ?? element.shadowRoot?.ownerDocument?.documentElement as any;
   // language set by the calling application or browser. defaults to english.
-  const lang = (closestElement?.lang || navigator?.language || "en").toLowerCase() ;
+  const lang = (closestElement?.lang || navigator?.language || "en").toLowerCase();
   if (languageMap.has(lang)) {
     return languageMap.get(lang);
   } else {
@@ -40,8 +40,8 @@ function fetchLocaleStringsForComponent<T extends StringBundle = StringBundle>(c
   return new Promise((resolve, reject): void => {
     fetch(getAssetPath(`assets/t9n/${componentName}/resources_${locale}.json`)).then(
       result => {
-        if (result.ok) {resolve(result.json());}
-        else {reject();}
+        if (result.ok) { resolve(result.json()); }
+        else { reject(); }
       },
       () => reject(),
     );

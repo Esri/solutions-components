@@ -339,7 +339,7 @@ function _getThreeSeverityCaseUpdates(
     console.log("low med high pci2");
     console.log(lmhPCI2.pci);
   }
-  const pcis  = [lmPCI2, mhPCI2, lhPCI2, lmhPCI2];
+  const pcis = [lmPCI2, mhPCI2, lhPCI2, lmhPCI2];
 
   const highest = pcis.reduce((prev, cur) => {
     return cur.pci > pci1 && (!prev || cur.pci > prev.pci) ? cur : prev;
@@ -473,7 +473,7 @@ function _getFinalDeductValues(
       skipAdditionalTypes.push(type);
       prev.push(...updates[type]);
       delete (updates[type]);
-    } else if(skipAdditionalTypes.indexOf(type) < 0) {
+    } else if (skipAdditionalTypes.indexOf(type) < 0) {
       prev.push(deductValue);
     }
     return prev;
@@ -918,7 +918,7 @@ function _getMaxCDV(
     // Determine the allowable number of deducts, m (section 9.5.3 in ASTM doc)
     const highestDV = sortedDVs[0];
     // m = allowable number of deducts including fractions (must be less than or equal to ten)
-    const m = 1 + (9/98) * (100 - highestDV);
+    const m = 1 + (9 / 98) * (100 - highestDV);
 
     if (showDebugging) {
       console.log(`Deduct values sorted in descending order: ${sortedDVs}`);

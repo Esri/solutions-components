@@ -191,7 +191,7 @@ export class SolutionResourceItem {
         label={fullname}
         nonInteractive={true}
         value={resource.url}
-        >
+      >
         <calcite-action-group expand-disabled="true" layout="horizontal" slot="actions-end">
           <calcite-action
             disabled={resettable}
@@ -227,7 +227,7 @@ export class SolutionResourceItem {
             scale="m"
             text={this._translations.reset}
             title={this._translations.reset}
-          /> : <div class="display-none"/>}
+          /> : <div class="display-none" />}
         </calcite-action-group>
       </calcite-value-list-item>
     );
@@ -325,7 +325,7 @@ export class SolutionResourceItem {
    *
    * @returns true if we have data resources and false if only thumbnail
    */
-  _hasValidResources() : boolean {
+  _hasValidResources(): boolean {
     return this.resourceFilePaths.some(r => r.url.indexOf("_info_thumbnail") < 0);
   }
 

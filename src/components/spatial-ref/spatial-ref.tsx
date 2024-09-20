@@ -292,7 +292,7 @@ export class SpatialRef {
       // Save the projection in case it's selected a second time
       this._lastHighlightedSref = highlightedSref;
     }
-}
+  }
 
   /**
    * Clear any selected items in the elements tree.
