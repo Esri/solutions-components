@@ -25,5 +25,7 @@
   "sortNewest": "新しい順",
   "sortOldest": "古い順",
   "sortHighestVoted": "投票数の多い順",
-  "sortLowestVoted": "投票数の少ない順"
+  "sortLowestVoted": "投票数の少ない順",
+  "resetFilter": "須_Reset filter_____________鷗",
+  "close": "須_Close___________鷗"
 }

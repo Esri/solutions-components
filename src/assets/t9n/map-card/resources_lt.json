@@ -1,3 +1,8 @@
 {
-  "mapName": "Žemėlapio pavadinimas"
+  "mapName": "Žemėlapio pavadinimas",
+  "more": "Į_More_________š",
+  "filters": "Į_Filters_______________š",
+  "zoom": "Į_Zoom_________š",
+  "refresh": "Į_Refresh_______________š",
+  "editMultiple": "Į_Edit multiple______________š"
 }

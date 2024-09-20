@@ -1,4 +1,6 @@
 {
   "error": "Virhe",
-  "featureErrorMsg": "Tietueita ei löytynyt."
+  "featureErrorMsg": "Tietueita ei löytynyt.",
+  "thousandsAbbreviation": "Å_{{abbreviated_value}}k_______________________ö",
+  "millionsAbbreviation": "Å_{{abbreviated_value}}M_______________________ö"
 }

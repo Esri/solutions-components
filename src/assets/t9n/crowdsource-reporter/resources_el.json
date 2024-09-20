@@ -25,5 +25,7 @@
   "sortNewest": "Νεότερα",
   "sortOldest": "Παλαιότερα",
   "sortHighestVoted": "Με τις περισσότερες ψήφους",
-  "sortLowestVoted": "Με τις λιγότερες ψήφους"
+  "sortLowestVoted": "Με τις λιγότερες ψήφους",
+  "resetFilter": "Đ_Reset filter_____________ớ",
+  "close": "Đ_Close___________ớ"
 }

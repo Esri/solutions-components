@@ -25,5 +25,7 @@
   "sortNewest": "החדש ביותר",
   "sortOldest": "הישן ביותר",
   "sortHighestVoted": "ההצבעה הגבוהה ביותר",
-  "sortLowestVoted": "ההצבעה הנמוכה ביותר"
+  "sortLowestVoted": "ההצבעה הנמוכה ביותר",
+  "resetFilter": "כן_Reset filter_____________ש",
+  "close": "כן_Close___________ש"
 }

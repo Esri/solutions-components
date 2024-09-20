@@ -25,5 +25,7 @@
   "sortNewest": "最新",
   "sortOldest": "最旧",
   "sortHighestVoted": "得票最高",
-  "sortLowestVoted": "得票最低"
+  "sortLowestVoted": "得票最低",
+  "resetFilter": "试_Reset filter_____________验",
+  "close": "试_Close___________验"
 }

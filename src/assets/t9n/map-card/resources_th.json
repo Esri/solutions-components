@@ -1,3 +1,8 @@
 {
-  "mapName": "ชื่อแผนที่"
+  "mapName": "ชื่อแผนที่",
+  "more": "ก้_More_________ษฺ",
+  "filters": "ก้_Filters_______________ษฺ",
+  "zoom": "ก้_Zoom_________ษฺ",
+  "refresh": "ก้_Refresh_______________ษฺ",
+  "editMultiple": "ก้_Edit multiple______________ษฺ"
 }

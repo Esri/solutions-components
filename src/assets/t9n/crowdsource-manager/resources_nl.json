@@ -4,5 +4,9 @@
   "information": "Informatie",
   "expandPopup": "Pop-up uitvouwen",
   "collapsePopup": "Pop-up samenvouwen",
-  "view": "Weergeven ({{n}})"
+  "view": "Weergeven ({{n}})",
+  "splitView": "Ĳ_Split view_____________________ä",
+  "tableView": "Ĳ_Table view_____________________ä",
+  "mapView": "Ĳ_Map view_________________ä",
+  "filter": "Ĳ_Filter: {{title}}__________________ä"
 }

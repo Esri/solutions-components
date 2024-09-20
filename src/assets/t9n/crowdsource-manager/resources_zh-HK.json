@@ -4,5 +4,9 @@
   "information": "資訊",
   "expandPopup": "展開快顯視窗",
   "collapsePopup": "折疊快顯視窗",
-  "view": "檢視 ({{n}})"
+  "view": "檢視 ({{n}})",
+  "splitView": "試_Split view_____________________驗",
+  "tableView": "試_Table view_____________________驗",
+  "mapView": "試_Map view_________________驗",
+  "filter": "試_Filter: {{title}}__________________驗"
 }

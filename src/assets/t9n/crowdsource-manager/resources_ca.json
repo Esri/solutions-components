@@ -4,5 +4,9 @@
   "information": "Informació",
   "expandPopup": "Amplia la finestra emergent",
   "collapsePopup": "Contrau la finestra emergent",
-  "view": "Mostra ({{n}})"
+  "view": "Mostra ({{n}})",
+  "splitView": "ó_Split view_____________________à",
+  "tableView": "ó_Table view_____________________à",
+  "mapView": "ó_Map view_________________à",
+  "filter": "ó_Filter: {{title}}__________________à"
 }

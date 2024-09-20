@@ -1,4 +1,6 @@
 {
   "error": "エラー",
-  "featureErrorMsg": "レコードが見つかりませんでした。"
+  "featureErrorMsg": "レコードが見つかりませんでした。",
+  "thousandsAbbreviation": "須_{{abbreviated_value}}k_______________________鷗",
+  "millionsAbbreviation": "須_{{abbreviated_value}}M_______________________鷗"
 }

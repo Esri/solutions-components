@@ -25,5 +25,7 @@
   "sortNewest": "Najnovije",
   "sortOldest": "Najstarije",
   "sortHighestVoted": "Najviše glasova",
-  "sortLowestVoted": "Najmanje glasova"
+  "sortLowestVoted": "Najmanje glasova",
+  "resetFilter": "Č_Reset filter_____________ž",
+  "close": "Č_Close___________ž"
 }

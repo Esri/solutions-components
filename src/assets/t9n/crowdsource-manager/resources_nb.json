@@ -4,5 +4,9 @@
   "information": "Informasjon",
   "expandPopup": "Utvid popup",
   "collapsePopup": "Skjul popup",
-  "view": "Vis ({{n}})"
+  "view": "Vis ({{n}})",
+  "splitView": "å_Split view_____________________ø",
+  "tableView": "å_Table view_____________________ø",
+  "mapView": "å_Map view_________________ø",
+  "filter": "å_Filter: {{title}}__________________ø"
 }

@@ -4,5 +4,9 @@
   "information": "Informácie",
   "expandPopup": "Rozbaliť kontextové okno",
   "collapsePopup": "Zbaliť kontextové okno",
-  "view": "Zobraziť ({{n}})"
+  "view": "Zobraziť ({{n}})",
+  "splitView": "ĺ_Split view_____________________ľ",
+  "tableView": "ĺ_Table view_____________________ľ",
+  "mapView": "ĺ_Map view_________________ľ",
+  "filter": "ĺ_Filter: {{title}}__________________ľ"
 }
