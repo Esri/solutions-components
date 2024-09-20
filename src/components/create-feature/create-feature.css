@@ -23,11 +23,6 @@
   display: none !important;
 }
 
-/* Override to hide the Select section from Editor template */
-.esri-editor__update-actions {
-  display: none !important;
-}
-
 /* Override to reduce the padding of panel content*/
 .esri-editor__panel-content {
   padding-block: 0px !important;
@@ -69,4 +64,8 @@
   bottom: 0;
   width: calc(100% - 22px);
   height: 50%;
+}
+/* override the padding of the feature form */
+.esri-editor__panel-content {
+  padding-block: 10px !important;
 }

@@ -992,7 +992,7 @@ export class LayerTable {
     const id = "more-table-options";
     return (
       <div
-        class="display-flex border-bottom height-51"
+        class="display-flex border-bottom height-51-px"
         ref={(el) => this._toolbar = el}
         slot={slot}
       >
@@ -1177,19 +1177,19 @@ export class LayerTable {
     const hasFilterExpressions = this._hasFilterExpressions();
     if (this._translations) {
       this._toolInfos = [
-      !this.mapHidden ? {
-        active: false,
-        icon: "zoom-to-object",
-        indicator: false,
-        label: this._translations.zoom,
-        func: () => this._zoom(),
-        disabled: !featuresSelected,
-        isOverflow: false
-      } : undefined,
-      hasFilterExpressions ? {
-        active: false,
-        icon: "filter",
-        indicator: false,
+        !this.mapHidden ? {
+          active: false,
+          icon: "zoom-to-object",
+          indicator: false,
+          label: this._translations.zoom,
+          func: () => this._zoom(),
+          disabled: !featuresSelected,
+          isOverflow: false
+        } : undefined,
+        hasFilterExpressions ? {
+          active: false,
+          icon: "filter",
+          indicator: false,
           label: this._translations.filters,
           func: () => this.createFilterModal ? this._toggleFilter() : this.toggleFilter.emit(),
           disabled: false,
@@ -1203,7 +1203,6 @@ export class LayerTable {
           func: () => alert(this._translations.editMultiple),
           disabled: !showMultipleEdits,
           isOverflow: false,
-          isSublist: false
         } : undefined,
         this._deleteEnabled ? {
           active: undefined,
@@ -1214,66 +1213,66 @@ export class LayerTable {
           disabled: !featuresSelected,
           isDanger: true,
           isOverflow: false
-      } : undefined, {
-        active: false,
-        icon: "erase",
-        indicator: false,
-        label: this._translations.clearSelection,
-        func: () => this._clearSelection(),
-        disabled: !featuresSelected,
-        isOverflow: false
-      }, {
-        active: false,
-        icon: "selected-items-filter",
-        indicator: false,
-        label: this._showOnlySelected ? this._translations.showAll : this._translations.showSelected,
-        func: () => this._toggleShowSelected(),
-        disabled: !featuresSelected,
-        isOverflow: false
-      }, {
-        active: false,
-        icon: "list-check-all",
-        indicator: false,
-        func: () => this._selectAll(),
-        label: this._translations.selectAll,
-        disabled: featuresEmpty,
-        isOverflow: false
-      }, {
-        active: false,
-        icon: "compare",
-        indicator: false,
-        func: () => this._switchSelected(),
-        label: this._translations.switchSelected,
-        disabled: featuresEmpty,
-        isOverflow: false
-      }, {
-        active: false,
-        icon: "refresh",
-        indicator: false,
-        func: () => this._refresh(),
-        label: this._translations.refresh,
-        disabled: false,
-        isOverflow: false
-      },
-      this.enableCSV ? {
-        active: false,
-        icon: "export",
-        indicator: false,
-        func: () => void this._exportToCSV(),
-        label: this._translations.exportCSV,
-        loading: this._csvExporting,
-        disabled: featuresEmpty,
-        isOverflow: false
-      } : undefined, {
-        active: false,
-        icon: this._showHideOpen ? "chevron-down" : "chevron-right",
-        indicator: false,
-        func: () => this._toggleShowHide(),
-        label: this._translations.showHideColumns,
-        disabled: false,
-        isOverflow: false,
-        isSublist: true
-      }];
+        } : undefined, {
+          active: false,
+          icon: "erase",
+          indicator: false,
+          label: this._translations.clearSelection,
+          func: () => this._clearSelection(),
+          disabled: !featuresSelected,
+          isOverflow: false
+        }, {
+          active: false,
+          icon: "selected-items-filter",
+          indicator: false,
+          label: this._showOnlySelected ? this._translations.showAll : this._translations.showSelected,
+          func: () => this._toggleShowSelected(),
+          disabled: !featuresSelected,
+          isOverflow: false
+        }, {
+          active: false,
+          icon: "list-check-all",
+          indicator: false,
+          func: () => this._selectAll(),
+          label: this._translations.selectAll,
+          disabled: featuresEmpty,
+          isOverflow: false
+        }, {
+          active: false,
+          icon: "compare",
+          indicator: false,
+          func: () => this._switchSelected(),
+          label: this._translations.switchSelected,
+          disabled: featuresEmpty,
+          isOverflow: false
+        }, {
+          active: false,
+          icon: "refresh",
+          indicator: false,
+          func: () => this._refresh(),
+          label: this._translations.refresh,
+          disabled: false,
+          isOverflow: false
+        },
+        this.enableCSV ? {
+          active: false,
+          icon: "export",
+          indicator: false,
+          func: () => void this._exportToCSV(),
+          label: this._translations.exportCSV,
+          loading: this._csvExporting,
+          disabled: featuresEmpty,
+          isOverflow: false
+        } : undefined, {
+          active: false,
+          icon: this._showHideOpen ? "chevron-down" : "chevron-right",
+          indicator: false,
+          func: () => this._toggleShowHide(),
+          label: this._translations.showHideColumns,
+          disabled: false,
+          isOverflow: false,
+          isSublist: true
+        }];
 
       this._defaultVisibleToolSizeInfos = undefined;
     }
@@ -2398,6 +2397,7 @@ export class LayerTable {
    */
   protected async _refresh(): Promise<void> {
     await this._table.refresh();
+    this._allIds = await queryAllIds(this._layer);
     this.featureSelectionChange.emit(this.selectedIds);
   }
 

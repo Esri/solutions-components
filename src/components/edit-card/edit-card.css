@@ -68,3 +68,8 @@
   left: 0;
   overflow: auto;
 }
+
+/* override the padding of the feature form */
+.esri-editor__panel-content {
+  padding-block: 10px !important;
+}

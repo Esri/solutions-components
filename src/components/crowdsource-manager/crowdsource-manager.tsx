@@ -293,6 +293,11 @@ export class CrowdsourceManager {
    */
   @State() _filterOpen = false;
 
+  /**
+   * boolean: When true information header will be displayed
+   */
+  @State() _showInformationHeader = true;
+
   //--------------------------------------------------------------------------
   //
   //  Properties (protected)
@@ -435,7 +440,7 @@ export class CrowdsourceManager {
   ): Promise<void> {
     const id: string = evt.detail[0];
     const layer = await getLayerOrTable(this._mapView, id);
-    await layer.when(() => {
+   layer && await layer.when(() => {
       this._layer = layer;
       this._initLayerExpressions();
     });
@@ -802,7 +807,7 @@ export class CrowdsourceManager {
    */
   protected _getPopupExpandNode(): VNode {
     const popupNodeClass = "height-full"
-    const headerClass = this._isMobile ? "display-none height-0" : "";
+    const headerClass = this._isMobile && this._showInformationHeader ? "display-none height-0" : "";
     const headerTheme = this.popupHeaderColor ? "" : !this._isMobile ? "calcite-mode-dark" : "calcite-mode-light";
     const containerClass = this._isMobile && this._hideTable ? "position-absolute-0 width-full height-full" : this._isMobile ? "display-none height-0" : "";
     return (
@@ -815,7 +820,7 @@ export class CrowdsourceManager {
         }}>
         <calcite-panel>
           {
-            !this._isMobile ? (
+            !this._isMobile && this._showInformationHeader || this._numSelected > 0 ? (
               <div
                 class={`display-flex align-items-center ${headerClass}`}
                 slot="header-content"
@@ -825,7 +830,7 @@ export class CrowdsourceManager {
                   {this._translations.information}
                 </div>
               </div>
-            ) : undefined
+            ) : <div />
           }
           {this._getCardNode()}
         </calcite-panel>
@@ -842,17 +847,27 @@ export class CrowdsourceManager {
   protected _getCardNode(): VNode {
     const isMapLayout = this.appLayout === 'mapView';
     const isTableLayout = this.appLayout === 'tableView';
-    const cardManagerHeight = ( isMapLayout || isTableLayout ) ? "height-full" : !this._isMobile ? "height-50" : "height-full";
+    const cardManagerHeight = (isMapLayout || isTableLayout) ? "height-full" : this._numSelected > 0 ? "height-51" : !this._showInformationHeader ? "adjusted-height-50_25" : !this._isMobile ? "height-51" : "height-full";
     const themeClass = this.theme === "dark" ? "calcite-mode-dark" : "calcite-mode-light";
     return (
       <div class={`width-50 height-full ${themeClass}`}>
         <card-manager
           class={`${cardManagerHeight} width-full`}
-          customInfoText={this.customInfoText}
+	  customInfoText={this.customInfoText}
+          enableCreateFeatures={this._enableCreateFeatures}
           enableEditGeometry={this?._mapInfo?.enableEditGeometry}
           isMobile={this._isMobile}
           layer={this._layer}
           mapView={this?._mapView}
+          onBackFromCreateWorkFlow={() => {
+            this._changeLayout(this.appLayout);
+            this._showInformationHeader = true;
+          }}
+          onCreateWorkFlowStarted={() => {
+            this._changeLayout(this._layer.isTable ? "tableView" : "mapView");
+            this._showInformationHeader = false;
+          }}
+          onFeatureOrRecordSubmitted={() => void this._layerTable.refresh()}
           selectedFeaturesIds={this._layerTable?.selectedIds}
           zoomAndScrollToSelected={this.zoomAndScrollToSelected}
         />
@@ -1131,7 +1146,7 @@ export class CrowdsourceManager {
    * @protected
    */
   protected _changeLayout(appLayout: AppLayout): void {
-    if(this.appLayout !== appLayout) {
+    if (this.appLayout !== appLayout) {
       this._setActiveLayout(appLayout);
       this.appLayout = appLayout;
       if (this._isMapViewOnLoad) {

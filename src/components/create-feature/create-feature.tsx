@@ -74,6 +74,13 @@ export class CreateFeature {
    * string: selected floor level
    */
   @Prop() formElements: any;
+
+  /**
+   * boolean: When true the Search box will be displayed
+   */
+  @Prop() enableSearch?: boolean = false;
+
+
   //--------------------------------------------------------------------------
   //
   //  State (internal)
@@ -180,6 +187,11 @@ export class CreateFeature {
    */
   protected _isSubmitBtnClicked = false;
 
+  /**
+   * __esri.FeatureLayer: selected feature layer;
+   */
+  protected _selectedLayer: __esri.FeatureLayer;
+
   //--------------------------------------------------------------------------
   //
   //  Watch handlers
@@ -211,7 +223,17 @@ export class CreateFeature {
   async _editorLoadingWatchHandler(v: boolean): Promise<void> {
     if (v) {
       this._container?.classList.add("display-none");
-      await this.startCreate();
+      if (this._selectedLayer?.isTable) {
+        const template = this._selectedLayer.templates[0];
+        const creationInfo = {
+          layer: this._selectedLayer,
+          template
+        };
+        await this._editor.startCreateFeaturesWorkflowAtFeatureCreation(creationInfo);
+        await this.hideEditorsElements();
+      } else {
+        await this.startCreate();
+      }
       this._container?.classList.remove("display-none");
       this._editorLoading = false;
     }
@@ -330,7 +352,7 @@ export class CreateFeature {
           scale="s"
         />
         <div class={featureFormClass} id="feature-form"/>
-        <div class={`search-widget ${showSearchWidget} ${featureFormClass}`} id="search-widget-ref"/>
+        {this.enableSearch && <div class={`search-widget ${showSearchWidget} ${featureFormClass}`} id="search-widget-ref" />}
         <div class={`${mobileMapClass}`} ref={(el) => { this._mapViewContainer = el }} />
       </Fragment>
     );
@@ -401,7 +423,9 @@ export class CreateFeature {
    */
   protected async _loadWidgets(): Promise<void> {
     await this.createEditorWidget();
-    await this.createSearchWidget();
+    if (this.enableSearch) {
+      await this.createSearchWidget();
+    }
   }
 
   /**
@@ -416,23 +440,28 @@ export class CreateFeature {
     this._container = document.createElement("div");
     this._container?.classList.add("display-none");
     const allMapLayers = await getAllLayers(this._updatedMapView);
-    // eslint-disable-next-line @typescript-eslint/no-misused-promises
-    allMapLayers.forEach(async (eachLayer: __esri.FeatureLayer) => {
-      layerInfos.push({
-        layer: eachLayer,
-        enabled: eachLayer?.type === "feature" && eachLayer?.id === this.selectedLayerId,
-        addEnabled: true, // default is true, set to false to disable the ability to add a new feature
-        updateEnabled: false, // default is true, set to false to disable the ability to edit an existing feature
-        deleteEnabled: false // default is true, set to false to disable the ability to delete features
-      })
-    });
+    this._selectedLayer = await getLayerOrTable(this.mapView, this.selectedLayerId);
+    // if layer is selected then only use the layerInfos while initializing the editor widget
+    if (!this._selectedLayer?.isTable) {
+      // eslint-disable-next-line @typescript-eslint/no-misused-promises
+      allMapLayers.forEach(async (eachLayer: __esri.FeatureLayer) => {
+        layerInfos.push({
+          layer: eachLayer,
+          enabled: eachLayer?.type === "feature" && eachLayer?.id === this.selectedLayerId,
+          addEnabled: true, // default is true, set to false to disable the ability to add a new feature
+          updateEnabled: false, // if true, enable ability to edit an existing feature
+          deleteEnabled: false // default is true, set to false to disable the ability to delete features
+        })
+      });
+    }
 
     this._editor = new this.Editor({
-      allowedWorkflows: "create-features",
       view: this._updatedMapView,
       layerInfos: layerInfos,
       visibleElements: {
-        snappingControls: false
+        snappingControls: false,
+        createFeaturesSection: true,
+        editFeaturesSection: false
       },
       container: this._container
     });
@@ -475,6 +504,7 @@ export class CreateFeature {
       (state) => {
         if (state === 'ready') {
           this._mapViewContainer?.classList?.replace("show-map", "hide-map");
+          this._editor.viewModel.featureFormViewModel.on('submit', this.submitted.bind(this));
           void this._setFloorLevel(this.floorLevel);
           this._showSearchWidget = false;
           this.progressStatus.emit(1);
@@ -510,8 +540,6 @@ export class CreateFeature {
         this._editor.viewModel.featureTemplatesViewModel.on('select', () => {
           this.progressStatus.emit(0.75);
           setTimeout(() => {
-            //on form submit
-            this._editor.viewModel.featureFormViewModel.on('submit', this.submitted.bind(this));
             //hides the header and footer elements in editor widget
             this.hideEditorsElements().then(() => {
               resolve({});
@@ -519,7 +547,6 @@ export class CreateFeature {
           }, 700);
         });
         //if only one feature template then directly start geometry creation for that
-        //else allow feature template selection to user
         if (items.length === 1) {
           this._editor.viewModel.featureTemplatesViewModel.select(items[0]);
         }
@@ -552,12 +579,11 @@ export class CreateFeature {
     this._search.popupEnabled = false;
     this._search.resultGraphicEnabled = false;
 
-    const layer = await getLayerOrTable(this._updatedMapView, this.selectedLayerId);
     let pointGeometry = null;
     // on search get the geometry of the searched location and pass it in sketchViewModel and go to featureForm page
     this._search.on('search-complete', (e) => {
       void this._updatedMapView.goTo(e.results[0].results[0].extent);
-      if (layer.geometryType === 'point') {
+      if (this._selectedLayer.geometryType === 'point') {
         pointGeometry = e.results[0].results[0]?.feature.geometry;
       }
     });
@@ -645,7 +671,7 @@ export class CreateFeature {
     if (!level) {
       return;
     }
-    const layer = await getLayerOrTable(this._updatedMapView, this.selectedLayerId);
+    const layer = this._selectedLayer;
     if (layer?.floorInfo?.floorField) {
       const layerField = layer.fields.find((field) => field.name === layer.floorInfo.floorField);
       // if layer field is present and form template is not present only then we can set value of floorfield into feature form otherwise create a mannual formtemplate to add the floorfeild element
