@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.10.17] - September 20th 2024
+Delivery for Manager Instant app - AGOl-2024.R03 - Sprint2 #880
+
 ## [0.10.16] - September 19th 2024
 Add enableLayerFeaturesOnLoad and enableSearchDistanceOnLoad to PN
 Add commentButtonText and commentSubmittedMessage to Reporter
@@ -783,4 +786,5 @@ Recover from test releases
 [0.10.14]: https://github.com/Esri/solution.js/compare/v0.10.13...v0.10.14 "v0.10.14"
 [0.10.15]: https://github.com/Esri/solution.js/compare/v0.10.14...v0.10.15 "v0.10.15"
 [0.10.16]: https://github.com/Esri/solution.js/compare/v0.10.15...v0.10.16 "v0.10.16"
-[Unreleased]: https://github.com/Esri/solution.js/compare/v0.10.16...HEAD "Unreleased Changes"
+[0.10.17]: https://github.com/Esri/solution.js/compare/v0.10.16...v0.10.17 "v0.10.17"
+[Unreleased]: https://github.com/Esri/solution.js/compare/v0.10.17...HEAD "Unreleased Changes"
