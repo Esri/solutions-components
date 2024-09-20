@@ -517,6 +517,7 @@ export class MapLayerPicker {
             selectionMode={disabled ? "none" : "single"}
           >
             <calcite-dropdown-item
+              icon-start={itemType}
               onClick={disabled ? undefined : () => void this._setSelectedLayer(id)}
               selected={selected}
             >

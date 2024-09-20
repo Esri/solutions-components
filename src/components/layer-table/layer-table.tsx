@@ -211,6 +211,16 @@ export class LayerTable {
    */
   @State() _translations: typeof LayerTable_T9n;
 
+  /**
+   * any[] Contains full text search info object
+   */
+  @State() _fullTextSearchInfo: any[];
+
+   /**
+   * string Placeholder string to show fields included in full text search
+   */
+   @State() _searchPlaceHolder: string = '';
+
   //--------------------------------------------------------------------------
   //
   //  Properties (protected)
@@ -407,6 +417,11 @@ export class LayerTable {
    */
   protected _toolbarSizeInfos: IToolSizeInfo[];
 
+  /**
+   * string the current search expression
+   */
+  protected _searchExpression: string;
+
   //--------------------------------------------------------------------------
   //
   //  Watch handlers
@@ -523,6 +538,7 @@ export class LayerTable {
     }
     if (this.mapView) {
       this._floorExpression = undefined;
+      this._searchExpression = undefined;
       this._updateShareUrl();
       this._mapClickHandle = this.reactiveUtils.on(
         () => this.mapView,
@@ -578,34 +594,36 @@ export class LayerTable {
   /**
    * Reset the filter
    */
-    @Method()
-    async filterReset(): Promise<void> {
-      void this._handleFilterListReset();
-    }
+  @Method()
+  async filterReset(): Promise<void> {
+    await this._handleFilterListReset();
+  }
 
   /**
    * Updates the filter
    */
-    @Method()
-    async filterUpdate(): Promise<void> {
-      this._handleFilterUpdate();
-    }
+  @Method()
+  async filterUpdate(): Promise<void> {
+    await this._handleFilterUpdate();
+  }
 
   /**
    * Closes the filter
    */
-    @Method()
-    async closeFilter(): Promise<void> {
-      await this._closeFilter();
-    }
+  @Method()
+  async closeFilter(): Promise<void> {
+    await this._closeFilter();
+  }
 
-    /**
-     * refresh the feature table
-     */
-    @Method()
-    async refresh(): Promise<void> {
+  /**
+   * refresh the feature table
+   */
+  @Method()
+  async refresh(): Promise<void> {
+    if (this._table) {
       await this._refresh();
     }
+  }
 
   //--------------------------------------------------------------------------
   //
@@ -659,17 +677,17 @@ export class LayerTable {
     }
   }
 
-    /**
+  /**
    * Handles layer selection change to show new table
    *
    * @param evt CustomEvent the id for the current layer
    */
-    @Listen("layerSelectionChange", { target: "window" })
-    async layerSelectionChange(
-      evt: CustomEvent
-    ): Promise<void> {
-      await this._layerSelectionChanged(evt);
-    }
+  @Listen("layerSelectionChange", { target: "window" })
+  async layerSelectionChange(
+    evt: CustomEvent
+  ): Promise<void> {
+    await this._layerSelectionChanged(evt);
+  }
 
   /**
    * Refresh the table when edits are completed
@@ -757,6 +775,7 @@ export class LayerTable {
     const total = this._allIds.length.toString();
     const selected = this.selectedIds.length.toString();
     const tableHeightClass = this.isMobile ? "height-full" : "height-full-adjusted";
+    const showSearch = this._canShowFullTextSearch();
     this._validateActiveActions();
     return (
       <Host>
@@ -764,6 +783,16 @@ export class LayerTable {
           {this._getTableControlRow("header")}
           <div class={`width-full ${tableHeightClass}`}>
             <calcite-panel class="height-full width-full">
+              {showSearch &&
+                <calcite-input
+                  clearable
+                  icon="search"
+                  onCalciteInputChange={(evt) => void this._searchTextChanged(evt)}
+                  placeholder={this._searchPlaceHolder}
+                  title={this._searchPlaceHolder}
+                  type="search" />
+              }
+              
               <calcite-loader
                 class={loadingClass}
                 label={this._translations.fetchingData}
@@ -774,18 +803,18 @@ export class LayerTable {
                 ref={this.onTableNodeCreate}
               />
             </calcite-panel>
-            {
-              !this.isMobile ? (
-                <div class="bottom-left text-color height-19">
-                  {
-                    this._translations.recordsSelected
-                      .replace("{{total}}", total)
-                      .replace("{{selected}}", selected)
-                  }
-                </div>
-              ) : undefined
-            }
           </div>
+          {
+            !this.isMobile ? (
+              <div class="bottom-left text-color height-19">
+                {
+                  this._translations.recordsSelected
+                    .replace("{{total}}", total)
+                    .replace("{{selected}}", selected)
+                }
+              </div>
+            ) : undefined
+          }
         </calcite-shell>
         {this.createFilterModal && this._filterModal()}
       </Host>
@@ -837,6 +866,113 @@ export class LayerTable {
   }
 
   /**
+   * Search using the fullTextSearch on layer and filter the table
+   *
+   * @param event The input change event
+   */
+  protected async _searchTextChanged(
+    event: any
+  ): Promise<void> {
+    this._fullTextSearchInfo.forEach(searchInfo => {
+      searchInfo.searchTerm = event.target.value;
+    })
+    void this._searchFullText();
+  }
+
+  /**
+   * Search using the fullTextSearch on layer and filter the table
+   *
+   */
+  protected async _searchFullText(): Promise<void> {
+    //always clear previous search definition
+    if(this._searchExpression){
+      this._clearSearchDefinitionExpression();
+    }
+    if (this._fullTextSearchInfo.length) {
+      if (this._fullTextSearchInfo[0].searchTerm) {
+        const searchQueryParams = this._layer.createQuery();
+        (searchQueryParams as any).fullText = this._fullTextSearchInfo;
+        const searchedIds = await this._layer.queryObjectIds(searchQueryParams);
+        this._updateSearchDefinitionExpression(searchedIds?.length ? searchedIds : [-1]);
+      }
+    }
+  }
+
+  /**
+   * Clears the applied search expression on the layer
+   * 
+   */
+  protected _clearSearchDefinitionExpression(): void {
+    const defExp = this._layer.definitionExpression;
+    //remove previous search expression first
+    if (this._searchExpression && defExp?.indexOf(this._searchExpression) > -1) {
+      // eslint-disable-next-line unicorn/prefer-ternary
+      if (defExp?.indexOf(' AND (' + this._searchExpression) > -1) {
+        this._layer.definitionExpression = defExp.replace(` AND (${this._searchExpression})`, '')
+      } else {
+        this._layer.definitionExpression = defExp.replace(this._searchExpression, '')
+      }
+    }
+    this._searchExpression = undefined;
+  }
+
+  /**
+   * Update the search expression in layer
+   * @param searchedIds 
+   */
+  protected _updateSearchDefinitionExpression(searchedIds: number[]): void {
+    const defExp = this._layer.definitionExpression;
+    if (searchedIds?.length) {
+      const searchExp = `objectId in(${searchedIds})`;
+      this._layer.definitionExpression = defExp?.indexOf(this._searchExpression) > -1 ?
+        defExp.replace(this._searchExpression, searchExp) :
+        defExp ? `${defExp} AND (${searchExp})` : searchExp;
+      this._searchExpression = searchExp;
+    } else {
+      this._clearSearchDefinitionExpression()
+    }
+  }
+
+  /**
+   * Validates if full text search is enabled and and indexes for fullTextSearch available on the layer
+   */
+  protected _canShowFullTextSearch(): boolean {
+    return (((this._layer as any)?.capabilities)?.query)?.supportsFullTextSearch &&
+      (this._layer as any).indexes.items.filter(i => i.indexType == 'FullText').length > 0;
+  }
+
+  /**
+   * Create list of full text search info
+   */
+  protected _getFullTextSearchInfo(): void {
+    this._fullTextSearchInfo = []
+    //combine all the fullText index
+    if((((this._layer as any)?.capabilities)?.query)?.supportsFullTextSearch){
+      const fullTextIndexes = (this._layer as any).indexes?.filter(i => i.indexType == 'FullText')
+      if (fullTextIndexes?.length) {
+        //create the search placeholder text
+        const onFields = [];
+        fullTextIndexes.forEach((index) => {
+          onFields.push(...index.fields.split(','))
+        })
+        //get field alias for fields
+        const fieldAlias: string[] = []
+        onFields.forEach(fieldName => {
+          //We splitting the fields array so we get leading/trailing spaces, hence trim the fieldName
+          const fieldInfo = this._layer.getField(fieldName.trim());
+          fieldAlias.push(fieldInfo.alias)
+        });
+        this._searchPlaceHolder = this._translations.searchPlaceholder.replace("{{fields}}", fieldAlias.join(' | '));
+        this._fullTextSearchInfo.push({
+          'onFields': ['*'],
+          'searchTerm': '',
+          'searchType': 'prefix'
+        });
+      }
+    }
+  }
+
+  /**
    * Update the toolbar when its size changes
    */
   protected _onResize(): void {
@@ -856,7 +992,7 @@ export class LayerTable {
     const id = "more-table-options";
     return (
       <div
-        class="display-flex border-bottom height-51"
+        class="display-flex border-bottom height-51-px"
         ref={(el) => this._toolbar = el}
         slot={slot}
       >
@@ -1041,19 +1177,19 @@ export class LayerTable {
     const hasFilterExpressions = this._hasFilterExpressions();
     if (this._translations) {
       this._toolInfos = [
-      !this.mapHidden ? {
-        active: false,
-        icon: "zoom-to-object",
-        indicator: false,
-        label: this._translations.zoom,
-        func: () => this._zoom(),
-        disabled: !featuresSelected,
-        isOverflow: false
-      } : undefined,
-      hasFilterExpressions ? {
-        active: false,
-        icon: "filter",
-        indicator: false,
+        !this.mapHidden ? {
+          active: false,
+          icon: "zoom-to-object",
+          indicator: false,
+          label: this._translations.zoom,
+          func: () => this._zoom(),
+          disabled: !featuresSelected,
+          isOverflow: false
+        } : undefined,
+        hasFilterExpressions ? {
+          active: false,
+          icon: "filter",
+          indicator: false,
           label: this._translations.filters,
           func: () => this.createFilterModal ? this._toggleFilter() : this.toggleFilter.emit(),
           disabled: false,
@@ -1067,7 +1203,6 @@ export class LayerTable {
           func: () => alert(this._translations.editMultiple),
           disabled: !showMultipleEdits,
           isOverflow: false,
-          isSublist: false
         } : undefined,
         this._deleteEnabled ? {
           active: undefined,
@@ -1078,66 +1213,66 @@ export class LayerTable {
           disabled: !featuresSelected,
           isDanger: true,
           isOverflow: false
-      } : undefined, {
-        active: false,
-        icon: "erase",
-        indicator: false,
-        label: this._translations.clearSelection,
-        func: () => this._clearSelection(),
-        disabled: !featuresSelected,
-        isOverflow: false
-      }, {
-        active: false,
-        icon: "selected-items-filter",
-        indicator: false,
-        label: this._showOnlySelected ? this._translations.showAll : this._translations.showSelected,
-        func: () => this._toggleShowSelected(),
-        disabled: !featuresSelected,
-        isOverflow: false
-      }, {
-        active: false,
-        icon: "list-check-all",
-        indicator: false,
-        func: () => this._selectAll(),
-        label: this._translations.selectAll,
-        disabled: featuresEmpty,
-        isOverflow: false
-      }, {
-        active: false,
-        icon: "compare",
-        indicator: false,
-        func: () => this._switchSelected(),
-        label: this._translations.switchSelected,
-        disabled: featuresEmpty,
-        isOverflow: false
-      }, {
-        active: false,
-        icon: "refresh",
-        indicator: false,
-        func: () => this._refresh(),
-        label: this._translations.refresh,
-        disabled: false,
-        isOverflow: false
-      },
-      this.enableCSV ? {
-        active: false,
-        icon: "export",
-        indicator: false,
-        func: () => void this._exportToCSV(),
-        label: this._translations.exportCSV,
-        loading: this._csvExporting,
-        disabled: featuresEmpty,
-        isOverflow: false
-      } : undefined, {
-        active: false,
-        icon: this._showHideOpen ? "chevron-down" : "chevron-right",
-        indicator: false,
-        func: () => this._toggleShowHide(),
-        label: this._translations.showHideColumns,
-        disabled: false,
-        isOverflow: false,
-        isSublist: true
-      }];
+        } : undefined, {
+          active: false,
+          icon: "erase",
+          indicator: false,
+          label: this._translations.clearSelection,
+          func: () => this._clearSelection(),
+          disabled: !featuresSelected,
+          isOverflow: false
+        }, {
+          active: false,
+          icon: "selected-items-filter",
+          indicator: false,
+          label: this._showOnlySelected ? this._translations.showAll : this._translations.showSelected,
+          func: () => this._toggleShowSelected(),
+          disabled: !featuresSelected,
+          isOverflow: false
+        }, {
+          active: false,
+          icon: "list-check-all",
+          indicator: false,
+          func: () => this._selectAll(),
+          label: this._translations.selectAll,
+          disabled: featuresEmpty,
+          isOverflow: false
+        }, {
+          active: false,
+          icon: "compare",
+          indicator: false,
+          func: () => this._switchSelected(),
+          label: this._translations.switchSelected,
+          disabled: featuresEmpty,
+          isOverflow: false
+        }, {
+          active: false,
+          icon: "refresh",
+          indicator: false,
+          func: () => this._refresh(),
+          label: this._translations.refresh,
+          disabled: false,
+          isOverflow: false
+        },
+        this.enableCSV ? {
+          active: false,
+          icon: "export",
+          indicator: false,
+          func: () => void this._exportToCSV(),
+          label: this._translations.exportCSV,
+          loading: this._csvExporting,
+          disabled: featuresEmpty,
+          isOverflow: false
+        } : undefined, {
+          active: false,
+          icon: this._showHideOpen ? "chevron-down" : "chevron-right",
+          indicator: false,
+          func: () => this._toggleShowHide(),
+          label: this._translations.showHideColumns,
+          disabled: false,
+          isOverflow: false,
+          isSublist: true
+        }];
 
       this._defaultVisibleToolSizeInfos = undefined;
     }
@@ -1969,6 +2104,8 @@ export class LayerTable {
 
   /**
    * Close show/hide dropdown when the user clicks outside of it
+   * @param e clicked event from mouse
+   * @protected
    */
   protected _handleDocumentClick(
     e: MouseEvent
@@ -2009,6 +2146,7 @@ export class LayerTable {
    * Show filter component in modal
    *
    * @returns node to interact with any configured filters for the current layer
+   * @protected
    */
   protected _filterModal(): VNode {
     return (
@@ -2034,8 +2172,8 @@ export class LayerTable {
             closeBtnOnClick={async () => this._closeFilter()}
             comboboxOverlayPositioning="fixed"
             layerExpressions={this._layerExpressions}
-            onFilterListReset={() => this._handleFilterListReset()}
-            onFilterUpdate={() => this._handleFilterUpdate()}
+            onFilterListReset={() => void this._handleFilterListReset()}
+            onFilterUpdate={() => void this._handleFilterUpdate()}
             ref={(el) => this._filterList = el}
             view={this.mapView}
             zoomBtn={false}
@@ -2047,16 +2185,19 @@ export class LayerTable {
 
   /**
    * Reset the filter active prop
+   * @protected
    */
-  protected _handleFilterListReset(): void {
+  protected async _handleFilterListReset(): Promise<void> {
     this._filterActive = false;
     this._updateShareUrl();
+    await this._searchFullText();
   }
 
   /**
    * Check if the layers definitionExpression has been modified
+   * @protected
    */
-  protected _handleFilterUpdate(): void {
+  protected async _handleFilterUpdate(): Promise<void> {
     const defExp = this._layer.definitionExpression;
     if (this._floorExpression) {
       const regEx = new RegExp(`${this._floorField} = ['].+[']`, "gm");
@@ -2069,10 +2210,12 @@ export class LayerTable {
       (this._floorExpression ? this._layer.definitionExpression !== this._floorExpression : true);
 
     this._updateShareUrl();
+    await this._searchFullText();
   }
 
   /**
    * Close the filter modal
+   * @protected
    */
   protected async _closeFilter(): Promise<void> {
     if (this._filterOpen) {
@@ -2086,6 +2229,7 @@ export class LayerTable {
    * Handle map click events to keep table and map click selection in sync
    *
    * @param evt IMapClick map click event details
+   * @protected
    */
   protected async _mapClicked(
     evt: IMapClick
@@ -2113,6 +2257,7 @@ export class LayerTable {
 
   /**
    * Select or deselect all rows
+   * @protected
    */
   protected _selectAll(): void {
     const ids = this._allIds;
@@ -2127,6 +2272,7 @@ export class LayerTable {
   /**
    * Toggle the show only selected flag
    *  When showOnly is true only the selected features will be shown in the table
+   * @protected
    */
   protected _toggleShowSelected(): void {
     this._showOnlySelected = !this._showOnlySelected;
@@ -2139,6 +2285,7 @@ export class LayerTable {
 
   /**
    * Clears the selected indexes
+   * @protected
    */
   protected _clearSelection(): void {
     this.selectedIds = [];
@@ -2149,6 +2296,7 @@ export class LayerTable {
 
   /**
    * When true the filter modal will be displayed
+   * @protected
    */
   protected _toggleFilter(): void {
     this._filterOpen = !this._filterOpen;
@@ -2157,6 +2305,7 @@ export class LayerTable {
   /**
    * Store any filters for the current layer.
    * Should only occur on layer change
+   * @protected
    */
   protected _initLayerExpressions(): void {
     const layerExpressions = this.mapInfo?.filterConfig?.layerExpressions;
@@ -2170,6 +2319,7 @@ export class LayerTable {
 
   /**
    * Select all rows that are not currently selectd
+   * @protected
    */
   protected _switchSelected(): void {
     const currentIndexes = [...this.selectedIds];
@@ -2190,6 +2340,7 @@ export class LayerTable {
    * Export all selected rows as CSV
    *
    * @returns a promise that will resolve when the operation is complete
+   * @protected
    */
   protected async _exportToCSV(): Promise<void> {
     const exportInfos: IExportInfos = {};
@@ -2226,6 +2377,7 @@ export class LayerTable {
 
   /**
    * Set the loading prop in the stored toolInfos
+   * @protected
    */
   protected _updateToolInfoLoading(
     name: string,
@@ -2241,9 +2393,11 @@ export class LayerTable {
 
   /**
    * Refreshes the table and maintains the curent scroll position
+   * @protected
    */
   protected async _refresh(): Promise<void> {
     await this._table.refresh();
+    this._allIds = await queryAllIds(this._layer);
     this.featureSelectionChange.emit(this.selectedIds);
   }
 
@@ -2251,6 +2405,7 @@ export class LayerTable {
    * Zoom to all selected features
    *
    * @returns a promise that will resolve when the operation is complete
+   * @protected
    */
   protected async _zoom(): Promise<void> {
     if (this._layer) {
@@ -2265,6 +2420,7 @@ export class LayerTable {
    * @param evt CustomEvent the id for the current layer
    *
    * @returns a promise that will resolve when the operation is complete
+   * @protected
    */
   protected async _layerSelectionChanged(
     evt: CustomEvent
@@ -2273,8 +2429,9 @@ export class LayerTable {
     if (id !== this._layer?.id || this._featuresEmpty()) {
       this._fetchingData = true;
       const layer = await getLayerOrTable(this.mapView, id);
-      await layer.when(() => {
+      layer && await layer.when(() => {
         this._layer = layer;
+        this._getFullTextSearchInfo();
       });
     }
     this._fetchingData = false;
@@ -2286,6 +2443,7 @@ export class LayerTable {
    * @param id item ID of the current map
    *
    * @returns a list of column templates if they exist
+   * @protected
    */
   protected _getColumnTemplates(
     id: string,
@@ -2342,6 +2500,7 @@ export class LayerTable {
 
   /**
    * Get the menu config that adds the ability to hide the current column
+   * @protected
    */
   protected _getMenuConfig(
     name: string
@@ -2362,6 +2521,7 @@ export class LayerTable {
 
   /**
    * Hide the table column for the provided name
+   * @protected
    */
   protected _handleHideClick(
     name: string

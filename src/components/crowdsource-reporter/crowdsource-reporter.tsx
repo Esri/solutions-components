@@ -934,6 +934,7 @@ export class CrowdsourceReporter {
           </calcite-notice>
           <create-feature
             customizeSubmit
+            enableSearch
             floorLevel={this.floorLevel}
             formElements={this._formElements.find(elm => elm.id === this._selectedLayerId)}
             isMobile={this.isMobile}
@@ -1342,14 +1343,11 @@ export class CrowdsourceReporter {
   }
 
   /**
-   * Get Filter page for apllying filter
-   * @param layerId Layer id
-   * @param layerName Layer name
-   * @returns feature list node
+   * Returns the calcite-flow item for filter
+   * @returns Node
    * @protected
    */
-  protected getFilterPanel(
-  ): Node {
+  protected getFilterPanel(): Node {
     const currentLayersExpressions = this.layerExpressions ? this.layerExpressions.filter((exp) => exp.id === this._selectedLayerId) : [];
     return (
       <calcite-flow-item
@@ -1773,13 +1771,12 @@ export class CrowdsourceReporter {
 
   /**
    * Applies a definition expression when floor field and level are available
-   *
-   * @returns boolean
+   * @param layer FeatureLayer on which the definitionExpression should be updated 
    * @protected
    */
   protected _updateFloorDefinitionExpression(layer: __esri.FeatureLayer): void {
     const floorField = layer.floorInfo.floorField;
-    // update the layer defination expression
+    // update the layer definition expression
     const floorExp = `${floorField} = '${this.floorLevel}'`;
     const defExp = layer.definitionExpression;
       layer.definitionExpression = defExp?.indexOf(this._floorExpression) > -1 ?
@@ -1837,7 +1834,7 @@ export class CrowdsourceReporter {
       await this._showMyFeaturesOnly(featureLayerView);
       const floorField = featureLayerView.layer?.floorInfo?.floorField;
       if (floorField && this.floorLevel) {
-        // Update the layer's defination as per selected floor level from map for all editable layers
+        // Update the layer's definition as per selected floor level from map for all editable layers
         this._updateFloorDefinitionExpression(featureLayerView.layer);
       }
     }
@@ -1845,6 +1842,7 @@ export class CrowdsourceReporter {
 
   /**
    * Show only loggedIn user's features
+   * @param featureLayerView on which the filter should be applied
    * @protected
    */
   protected async _showMyFeaturesOnly(featureLayerView: __esri.FeatureLayerView): Promise<void> {

@@ -94,8 +94,12 @@
   position: relative;
 }
 
-.height-50 {
-  height: 50%;
+.position-absolute {
+  position: absolute;
+}
+
+.height-51 {
+  height: 51%;
 }
 
 .adjusted-height-50 {
@@ -111,11 +115,11 @@
 }
 
 .display-none {
-  display: none;
+  display: none !important;
 }
 
-.height-53 {
-  height: 53px;
+.adjusted-height-50_25 {
+  height: calc(50% + 25px);
 }
 
 .position-absolute-53 {
@@ -202,4 +206,8 @@
           transform: translatey(5px);
   -webkit-transition: all 0.3s;
   transition: all 0.3s;
+}
+
+.z-index-0 {
+  z-index: 0 !important;
 }
