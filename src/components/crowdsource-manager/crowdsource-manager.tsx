@@ -877,7 +877,7 @@ export class CrowdsourceManager {
     const isMapLayout = this.appLayout === 'mapView';
     const isTableLayout = this.appLayout === 'tableView';
     const tableClass = hideTable && this._isMobile ? "visibility-hidden" : isMapLayout ? "display-none" : "";
-    const mapClass = isMapLayout ? "height-full width-full" : "display-none";
+    const mapClass = isMapLayout ? "height-full width-full z-index-0" : "display-none";
     const tableSizeClass = this._getTableSizeClass(layoutMode, panelOpen)
     const toggleLayout = layoutMode === ELayoutMode.HORIZONTAL ? "horizontal" : "vertical";
     const toggleSlot = layoutMode === ELayoutMode.HORIZONTAL  ? "header" : "panel-start";
@@ -900,7 +900,7 @@ export class CrowdsourceManager {
             </calcite-action-bar>
           ) : undefined
         }
-        <div class={`width-full height-full position-relative ${tableClass}`}>
+        <div class={`width-full height-full position-relative z-index-0 ${tableClass}`}>
             <layer-table
               createFilterModal={false}
               defaultGlobalId={hasMapAndLayer ? globalId : undefined}

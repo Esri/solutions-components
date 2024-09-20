@@ -165,7 +165,7 @@ export class CardManager {
       <Host>
         <div class="overflow-auto height-full">
           <calcite-shell class={"position-relative " + featuresClass}>
-            <div>
+            <div class="position-static z-index-500">
               <info-card
                 enableEditGeometry={this.enableEditGeometry}
                 graphics={this._graphics}

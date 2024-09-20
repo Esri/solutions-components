@@ -207,3 +207,7 @@
   -webkit-transition: all 0.3s;
   transition: all 0.3s;
 }
+
+.z-index-0 {
+  z-index: 0 !important;
+}
