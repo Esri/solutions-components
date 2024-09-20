@@ -774,18 +774,18 @@ export class LayerTable {
                 ref={this.onTableNodeCreate}
               />
             </calcite-panel>
-            {
-              !this.isMobile ? (
-                <div class="bottom-left text-color height-19">
-                  {
-                    this._translations.recordsSelected
-                      .replace("{{total}}", total)
-                      .replace("{{selected}}", selected)
-                  }
-                </div>
-              ) : undefined
-            }
           </div>
+          {
+            !this.isMobile ? (
+              <div class="bottom-left text-color height-19">
+                {
+                  this._translations.recordsSelected
+                    .replace("{{total}}", total)
+                    .replace("{{selected}}", selected)
+                }
+              </div>
+            ) : undefined
+          }
         </calcite-shell>
         {this.createFilterModal && this._filterModal()}
       </Host>
