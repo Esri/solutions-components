@@ -80,7 +80,6 @@ export class CreateFeature {
    */
   @Prop() enableSearch?: boolean = false;
 
-
   //--------------------------------------------------------------------------
   //
   //  State (internal)
