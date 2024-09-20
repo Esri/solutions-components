@@ -201,7 +201,7 @@ export class CardManager {
    */
   protected async _getFeaturesByIds(ids: number[]): Promise<__esri.Graphic[]> {
     // only query if we have some ids...query with no ids will result in all features being returned
-    const featureSet = ids.length > 0 ? await queryFeaturesByID(ids, this.layer, [], false, this.mapView.spatialReference) : [];
+    const featureSet = ids.length > 0 ? await queryFeaturesByID(ids, this.layer, [], true, this.mapView.spatialReference) : [];
     // https://github.com/Esri/solutions-components/issues/365
     return featureSet.sort((a, b) => ids.indexOf(a.getObjectId()) - ids.indexOf(b.getObjectId()));
   }
