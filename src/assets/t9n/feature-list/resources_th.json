@@ -1,4 +1,6 @@
 {
   "error": "ข้อผิดพลาด",
-  "featureErrorMsg": "ไม่พบบันทึกข้อมูล"
+  "featureErrorMsg": "ไม่พบบันทึกข้อมูล",
+  "thousandsAbbreviation": "ก้_{{abbreviated_value}}k_______________________ษฺ",
+  "millionsAbbreviation": "ก้_{{abbreviated_value}}M_______________________ษฺ"
 }

@@ -25,5 +25,7 @@
   "sortNewest": "최신",
   "sortOldest": "가장 오래됨",
   "sortHighestVoted": "최고 투표수",
-  "sortLowestVoted": "최저 투표수"
+  "sortLowestVoted": "최저 투표수",
+  "resetFilter": "한_Reset filter_____________빠",
+  "close": "한_Close___________빠"
 }

@@ -25,5 +25,7 @@
   "sortNewest": "Nieuwste",
   "sortOldest": "Oudste",
   "sortHighestVoted": "Hoogste aantal stemmen",
-  "sortLowestVoted": "Laagste aantal stemmen"
+  "sortLowestVoted": "Laagste aantal stemmen",
+  "resetFilter": "Ĳ_Reset filter_____________ä",
+  "close": "Ĳ_Close___________ä"
 }

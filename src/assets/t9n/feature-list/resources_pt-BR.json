@@ -1,4 +1,6 @@
 {
   "error": "Erro",
-  "featureErrorMsg": "Nenhum registro encontrado."
+  "featureErrorMsg": "Nenhum registro encontrado.",
+  "thousandsAbbreviation": "ã_{{abbreviated_value}}k_______________________Ç",
+  "millionsAbbreviation": "ã_{{abbreviated_value}}M_______________________Ç"
 }

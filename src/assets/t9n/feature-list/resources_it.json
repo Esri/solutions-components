@@ -1,4 +1,6 @@
 {
   "error": "Errore",
-  "featureErrorMsg": "Nessun record trovato."
+  "featureErrorMsg": "Nessun record trovato.",
+  "thousandsAbbreviation": "é_{{abbreviated_value}}k_______________________È",
+  "millionsAbbreviation": "é_{{abbreviated_value}}M_______________________È"
 }

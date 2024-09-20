@@ -1,4 +1,6 @@
 {
   "error": "Greška",
-  "featureErrorMsg": "Nema pronađenih zapisa."
+  "featureErrorMsg": "Nema pronađenih zapisa.",
+  "thousandsAbbreviation": "Č_{{abbreviated_value}}k_______________________ž",
+  "millionsAbbreviation": "Č_{{abbreviated_value}}M_______________________ž"
 }

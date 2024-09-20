@@ -25,5 +25,7 @@
   "sortNewest": "الأحدث",
   "sortOldest": "الأقدم",
   "sortHighestVoted": "الأعلى تصويتًا",
-  "sortLowestVoted": "الأقل تصويتًا"
+  "sortLowestVoted": "الأقل تصويتًا",
+  "resetFilter": "بيت_Reset filter_____________لاحقة",
+  "close": "بيت_Close___________لاحقة"
 }

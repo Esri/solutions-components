@@ -25,5 +25,7 @@
   "sortNewest": "Cel mai nou",
   "sortOldest": "Cel mai vechi",
   "sortHighestVoted": "Cel mai votat",
-  "sortLowestVoted": "Ce mai puțin votat"
+  "sortLowestVoted": "Ce mai puțin votat",
+  "resetFilter": "Ă_Reset filter_____________ș",
+  "close": "Ă_Close___________ș"
 }

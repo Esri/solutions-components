@@ -25,5 +25,7 @@
   "sortNewest": "Uusin",
   "sortOldest": "Vanhin",
   "sortHighestVoted": "Eniten äänestetty",
-  "sortLowestVoted": "Vähiten äänestetty"
+  "sortLowestVoted": "Vähiten äänestetty",
+  "resetFilter": "Å_Reset filter_____________ö",
+  "close": "Å_Close___________ö"
 }
