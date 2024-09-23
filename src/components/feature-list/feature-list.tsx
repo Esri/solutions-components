@@ -579,8 +579,7 @@ export class FeatureList {
             id={userInfo?.id}
             scale="m"
             slot="content-start"
-            thumbnail={userInfo?.userProfileUrl}
-            username={userInfo?.username} />}
+            thumbnail={userInfo?.userProfileUrl} />}
 
         {this.showFeatureSymbol &&
           <div
