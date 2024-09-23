@@ -250,6 +250,16 @@ export class FeatureDetails {
   @Event() commentSelect: EventEmitter<__esri.Graphic>;
 
   /**
+   * Emitted on demand when comment icon is clicked
+   */
+  @Event() addComment: EventEmitter<void>;
+
+  /**
+   * Emitted on demand when like or dislike button is clicked
+   */
+  @Event() likeOrDislikeClicked: EventEmitter<void>;
+
+  /**
    * Emitted on demand when the selected index changes
    */
   @Event() featureSelectionChange: EventEmitter<{ selectedFeature: __esri.Graphic[], selectedFeatureIndex: number }>;
@@ -287,13 +297,13 @@ export class FeatureDetails {
         {(this._likeFieldAvailable || this._dislikeFieldAvailable || this._commentsAvailable) &&
           <div class="buttons-container">
             {this._commentsAvailable &&
-              <div class="comment-btn">
-                <span>{this._relatedFeaturesOIDs.length}</span>
-                <calcite-icon
-                  icon="speech-bubble"
-                  scale='s'
-                />
-              </div>
+                <calcite-button
+                  appearance={"transparent"}
+                  iconEnd="speech-bubble"
+                  kind={"neutral"}
+                  onClick={() => { this.addComment.emit() }}
+                  scale='m'
+                >{this._relatedFeaturesOIDs.length}</calcite-button>
             }
             {this._likeFieldAvailable &&
               <calcite-button
@@ -558,6 +568,7 @@ export class FeatureDetails {
       //store the like dislike value for the current selected graphic in local storage
       this.setInLocalStorage();
       this._updating = false;
+      this.likeOrDislikeClicked.emit();
     }, (err) => {
       this._updating = false;
       console.log(err);

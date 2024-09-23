@@ -166,6 +166,10 @@ export namespace Components {
          */
         "selectedLayerId": string;
         /**
+          * boolean: When true the notice message with the current state should be shown
+         */
+        "showGuidingMsg"?: boolean;
+        /**
           * Submit the created feature
           * @returns Promise that resolves when the operation is complete
          */
@@ -188,6 +192,10 @@ export namespace Components {
           * __esri.Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
          */
         "selectedFeature": __esri.Graphic;
+        /**
+          * boolean: When true the notice message should be shown
+         */
+        "showGuidingMsg"?: boolean;
         /**
           * Submit the comment
          */
@@ -593,9 +601,10 @@ export namespace Components {
         "pageSize"?: number;
         /**
           * Refresh the feature list which will fetch the latest features and update the features list
+          * @param maintainPageState If true feature list page state will be maintained
           * @returns Promise that resolves when the operation is complete
          */
-        "refresh": () => Promise<void>;
+        "refresh": (maintainPageState?: boolean) => Promise<void>;
         /**
           * IReportingOptions: Key options for reporting
          */
@@ -2055,6 +2064,7 @@ declare global {
         "loadingStatus": boolean;
         "commentSelect": __esri.Graphic;
         "addComment": void;
+        "likeOrDislikeClicked": void;
         "featureSelectionChange": { selectedFeature: __esri.Graphic[], selectedFeatureIndex: number };
     }
     interface HTMLFeatureDetailsElement extends Components.FeatureDetails, HTMLStencilElement {
@@ -2781,6 +2791,10 @@ declare namespace LocalJSX {
           * string: Layer id of the feature layer in which the new feature is to be created
          */
         "selectedLayerId"?: string;
+        /**
+          * boolean: When true the notice message with the current state should be shown
+         */
+        "showGuidingMsg"?: boolean;
     }
     interface CreateRelatedFeature {
         /**
@@ -2811,6 +2825,10 @@ declare namespace LocalJSX {
           * __esri.Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
          */
         "selectedFeature"?: __esri.Graphic;
+        /**
+          * boolean: When true the notice message should be shown
+         */
+        "showGuidingMsg"?: boolean;
         /**
           * __esri.FeatureLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html
          */
@@ -3201,6 +3219,10 @@ declare namespace LocalJSX {
           * Emitted on demand when the selected index changes
          */
         "onFeatureSelectionChange"?: (event: FeatureDetailsCustomEvent<{ selectedFeature: __esri.Graphic[], selectedFeatureIndex: number }>) => void;
+        /**
+          * Emitted on demand when like or dislike button is clicked
+         */
+        "onLikeOrDislikeClicked"?: (event: FeatureDetailsCustomEvent<void>) => void;
         /**
           * Emitted on demand when like or dislike button is clicked
          */

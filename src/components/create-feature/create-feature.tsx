@@ -17,7 +17,9 @@
 import { Component, Element, EventEmitter, Prop, Fragment, h, Event, Watch, Method, State } from "@stencil/core";
 import { loadModules } from "../../utils/loadModules";
 import { getAllLayers, getLayerOrTable } from "../../utils/mapViewUtils";
+import CreateFeature_T9n from "../../assets/t9n/create-feature/resources.json";
 import { ILayerSourceConfigItem, ILocatorSourceConfigItem, ISearchConfiguration } from "../../utils/interfaces";
+import { getLocaleComponentStrings } from "../../utils/locale";
 
 @Component({
   tag: "create-feature",
@@ -80,6 +82,11 @@ export class CreateFeature {
    */
   @Prop() enableSearch?: boolean = false;
 
+  /**
+   * boolean: When true the notice message with the current state should be shown
+   */
+  @Prop() showGuidingMsg?: boolean = true;
+
   //--------------------------------------------------------------------------
   //
   //  State (internal)
@@ -95,6 +102,12 @@ export class CreateFeature {
    * boolean: When true the search widget will shown
    */
   @State() _showSearchWidget: boolean;
+
+  /**
+   * Contains the translations for this component.
+   * All UI strings should be defined here.
+   */
+  @State() _translations: typeof CreateFeature_T9n;
 
   //--------------------------------------------------------------------------
   //
@@ -190,6 +203,11 @@ export class CreateFeature {
    * __esri.FeatureLayer: selected feature layer;
    */
   protected _selectedLayer: __esri.FeatureLayer;
+
+  /**
+   * boolean: flag to maintain if user is on template picker page
+   */
+  protected _isTemplatePickerPage = true;
 
   //--------------------------------------------------------------------------
   //
@@ -325,6 +343,7 @@ export class CreateFeature {
    * @returns Promise when complete
    */
   async componentWillLoad(): Promise<void> {
+    await this._getTranslations();
     await this.initModules();
   }
 
@@ -343,8 +362,21 @@ export class CreateFeature {
     const loaderClass = this._editorLoading ? "" : "display-none";
     const featureFormClass = this._editorLoading ? "display-none" : "";
     const mobileMapClass = this.isMobile ? "show-map" : "display-none";
+    let guidingMsg = this._translations.provideDetailsMsg;
+    if (this._isTemplatePickerPage) {
+      guidingMsg = this._translations.chooseCategoryMsg;
+    } else if (this._showSearchWidget) {
+      guidingMsg = this._translations.provideLocationMsg;
+    }
     return (
       <Fragment>
+        {this.showGuidingMsg && <calcite-notice
+          class="notice-msg"
+          icon="lightbulb"
+          kind="success"
+          open>
+          <div slot="message">{guidingMsg}</div>
+        </calcite-notice>}
         <calcite-loader
           class={loaderClass}
           label=""
@@ -505,6 +537,7 @@ export class CreateFeature {
           this._mapViewContainer?.classList?.replace("show-map", "hide-map");
           this._editor.viewModel.featureFormViewModel.on('submit', this.submitted.bind(this));
           void this._setFloorLevel(this.floorLevel);
+          this._isTemplatePickerPage = false;
           this._showSearchWidget = false;
           this.progressStatus.emit(1);
           this.drawComplete.emit();
@@ -518,7 +551,10 @@ export class CreateFeature {
       (state) => {
         if (state === 'creating-features') {
           this._mapViewContainer?.classList?.replace("hide-map", "show-map");
-          this._showSearchWidget = true;
+          this._isTemplatePickerPage = false;
+          if (this._selectedLayer && !this._selectedLayer.isTable) {
+            this._showSearchWidget = true;
+          }
         }
       });
     this._editor.viewModel.addHandles(createFeatureHandle);
@@ -772,5 +808,15 @@ export class CreateFeature {
    */
   protected timeout(delay: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, delay));
+  }
+
+  /**
+   * Fetches the component's translations
+   * @returns Promise when complete
+   * @protected
+   */
+  protected async _getTranslations(): Promise<void> {
+    const messages = await getLocaleComponentStrings(this.el);
+    this._translations = messages[0] as typeof CreateFeature_T9n;
   }
 }

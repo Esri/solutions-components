@@ -46,7 +46,7 @@
 
 .search-widget {
   width: 92% !important;
-  margin: 5px 0 20px 14px;
+  margin: 5px 14px 20px 14px;
 }
 
 .display-none {
@@ -64,6 +64,11 @@
   bottom: 0;
   width: calc(100% - 22px);
   height: 50%;
+}
+
+.notice-msg {
+  padding: 10px;
+  width: calc(100% - 20px);
 }
 
 /* override the padding of the feature form */

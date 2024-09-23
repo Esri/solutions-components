@@ -830,6 +830,7 @@ export class CrowdsourceReporter {
     this._filterActive = false;
     this._filterUrlParams = null;
     this._filterInitState = null;
+    void this._featureList.refresh();
   }
 
   /**
@@ -841,6 +842,7 @@ export class CrowdsourceReporter {
     //set the filter active state based on the length of applied filters
     this._filterActive = this._filterList.urlParams.getAll('filter').length > 0;
     this._filterUrlParams = this._filterList.urlParams.getAll('filter');
+    void this._featureList.refresh();
   }
 
   /**
@@ -951,13 +953,6 @@ export class CrowdsourceReporter {
           <div class="progress-bar">
             <calcite-progress type="determinate" value={this._updatedProgressBarStatus} />
           </div>
-          <calcite-notice
-            class="notice-msg"
-            icon="lightbulb"
-            kind="success"
-            open>
-            <div slot="message">{this._translations.featureEditFormInfoMsg}</div>
-          </calcite-notice>
           <create-feature
             customizeSubmit
             enableSearch
@@ -1214,7 +1209,6 @@ export class CrowdsourceReporter {
    */
   protected async backFromFilterPanel(): Promise<void> {
     this._filterInitState = await this._filterList.getFilterInitState();
-    void this._featureList.refresh();
     this.backFromSelectedPanel();
   }
 
@@ -1235,10 +1229,6 @@ export class CrowdsourceReporter {
     if (updatedFlowItems[updatedFlowItems.length - 1] === 'reporting-layer-list' || (updatedFlowItems[updatedFlowItems.length - 1] === 'feature-create' &&
       (updatedFlowItems[0] === 'feature-list' || updatedFlowItems[updatedFlowItems.length - 2] === 'feature-list'))) {
       this.updatePanelState(this._sidePanelCollapsed, false);
-    }
-    // Coming back from feature details refresh the feature list to update the like count
-    if (this.reportingOptions && this.reportingOptions[this._selectedLayerId]?.like && updatedFlowItems[updatedFlowItems.length - 1] === 'feature-details') {
-      void this._featureList.refresh();
     }
     updatedFlowItems.pop();
     //Back to layer list, and return as the flowItems will be reset in navigateToHomePage
@@ -1483,6 +1473,7 @@ export class CrowdsourceReporter {
             onAddComment={this.showAddCommentsPanel.bind(this)}
             onCommentSelect={this.onCommentSelectFromList.bind(this)}
             onFeatureSelectionChange={this.selectionChanged.bind(this)}
+            onLikeOrDislikeClicked={() => { void this._featureList.refresh(true) }}
             onLoadingStatus={(evt) => void this.updatingFeatureDetails(evt.detail)}
             ref={el => this._featureDetails = el}
             reportingOptions={this.reportingOptions}

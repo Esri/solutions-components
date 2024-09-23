@@ -240,11 +240,21 @@ export class FeatureList {
 
   /**
    * Refresh the feature list which will fetch the latest features and update the features list
+   * @param maintainPageState If true feature list page state will be maintained
    * @returns Promise that resolves when the operation is complete
    */
   @Method()
-  async refresh(): Promise<void> {
-    await this.initializeFeatureItems();
+  async refresh(maintainPageState?: boolean): Promise<void> {
+    if (maintainPageState) {
+      const event = {
+        target: {
+          startItem: this._pagination.startItem
+        }
+      }
+      await this.pageChanged(event)
+    } else {
+      await this.initializeFeatureItems();
+    }
   }
 
   //
@@ -366,11 +376,11 @@ export class FeatureList {
     if (this._selectedLayer?.definitionExpression) {
       whereClause = whereClause + ' AND ' + this._selectedLayer.definitionExpression;
     }
-    // if layerview has any applied filter, use it
+    // if layerView has any applied filter, use it
     if (this.applyLayerViewFilter) {
       const selectedLayerView = await getFeatureLayerView(this.mapView, this.selectedLayerId);
       if (selectedLayerView?.filter?.where) {
-        whereClause = whereClause + ' AND ' + selectedLayerView.filter.where
+        whereClause = whereClause + ' AND ' + selectedLayerView.filter.where;
       }
     }
     return whereClause;
@@ -554,6 +564,7 @@ export class FeatureList {
    * Get each feature item
    * @param selectedFeature Each individual feature instance to be listed
    * @param popupTitle feature popup title
+   * @param featureSymbol feature symbol preview html
    * @returns individual feature item to be rendered
    * @protected
    */
@@ -599,6 +610,8 @@ export class FeatureList {
             slot="content-end">
             <span>{this._abbreviatedLikeCount}</span><calcite-icon icon="thumbs-up" scale='s' />
             <calcite-tooltip
+              overlayPositioning="fixed"
+              placement="top"
               reference-element={oId.concat("like")}>
               {formattedLikeCount}
             </calcite-tooltip>
