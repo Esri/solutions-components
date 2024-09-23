@@ -374,10 +374,19 @@ export class FeatureDetails {
       this.reportingOptions[selectedLayer.id].comment && selectedLayer.relationships?.length > 0;
     if (commentsConfigured) {
       //Get comments table id from map
-      const relatedTableIdFromRelnship = selectedLayer.relationships[0].relatedTableId;
       const allTables = await getAllTables(this.mapView);
-      const allRelatedTables = allTables.filter((table: __esri.FeatureLayer) => selectedLayer.url === table.url && relatedTableIdFromRelnship === table.layerId);
-      const relatedTable = allRelatedTables?.length > 0 ? allRelatedTables[0] as __esri.FeatureLayer : null;
+      let relatedTable = null
+      let validRelationshipId =  null;
+      allTables.some((table) => {
+        if (selectedLayer.url === (table as __esri.FeatureLayer).url) {
+          const relationship = selectedLayer.relationships.filter(a => (table as __esri.FeatureLayer).layerId === a.relatedTableId)
+          if (relationship?.length) {
+            relatedTable = table;
+            validRelationshipId = relationship[0].id
+            return true;
+          }
+        }
+      });
       this.relatedTableId = relatedTable?.id ?? '';
 
       //**Get the related records for the current selected feature**
@@ -388,7 +397,7 @@ export class FeatureDetails {
         const relationshipQuery = new this.RelationshipQuery({
           objectIds: [objectId],
           outFields: ['*'],
-          relationshipId: selectedLayer.relationships[0].id
+          relationshipId: validRelationshipId
         });
         const result = await selectedLayer.queryRelatedFeatures(relationshipQuery).catch((e) => {
           console.error(e);

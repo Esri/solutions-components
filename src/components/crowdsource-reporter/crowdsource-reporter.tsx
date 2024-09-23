@@ -1242,10 +1242,10 @@ export class CrowdsourceReporter {
    */
   protected async getRelatedTable(): Promise<void> {
     const selectedLayer = (this._currentFeature.layer as __esri.FeatureLayer);
-    const relatedTableIdFromRelnship = selectedLayer.relationships[0].relatedTableId;
+    const allRelatedTableIds = selectedLayer.relationships.map(a => a.relatedTableId);
     const allTables = await getAllTables(this.mapView);
-    const relatedTable = allTables.filter((table) => selectedLayer.url === (table as __esri.FeatureLayer).url && relatedTableIdFromRelnship === (table as __esri.FeatureLayer).layerId);
-    this._relatedTable = (relatedTable[0] as __esri.FeatureLayer);
+    const relatedTables = allTables.filter((table) => selectedLayer.url === (table as __esri.FeatureLayer).url && allRelatedTableIds.includes((table as __esri.FeatureLayer).layerId));
+    this._relatedTable = (relatedTables[0] as __esri.FeatureLayer);
   }
 
   /**
@@ -1399,7 +1399,7 @@ export class CrowdsourceReporter {
    * @returns Node
    */
   protected getFeatureDetailsFlowItem(): Node {
-    const showCommentBtn = this._getLayersConfig(this._selectedLayerId)?.comment && this._selectedLayer.relationships.length > 0;
+    const showCommentBtn = this._getLayersConfig(this._selectedLayerId)?.comment && this._selectedLayer.relationships.length > 0 && this._relatedTable;
     return (
       <calcite-flow-item
         collapsed={this.isMobile && this._sidePanelCollapsed}
