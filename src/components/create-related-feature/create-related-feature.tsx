@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
-import { Component, h, Prop, Element, Event, EventEmitter, Method, Watch, State } from '@stencil/core';
+import { Component, h, Prop, Element, Event, EventEmitter, Method, Watch, State, Fragment} from '@stencil/core';
+import CreateRelatedFeature_T9n from "../../assets/t9n/create-related-feature/resources.json";
 import { loadModules } from "../../utils/loadModules";
+import { getLocaleComponentStrings } from '../../utils/locale';
 
 @Component({
   tag: 'create-related-feature',
@@ -59,6 +61,11 @@ export class CreateRelatedFeature {
    */
   @Prop() customizeSubmit?: boolean = false;
 
+  /**
+   * boolean: When true the notice message should be shown
+   */
+  @Prop() showGuidingMsg?: boolean = true;
+
   //--------------------------------------------------------------------------
   //
   //  State (internal)
@@ -69,6 +76,12 @@ export class CreateRelatedFeature {
    * boolean: When true a loading indicator will be shown while the editor loads
    */
   @State() _editorLoading = false;
+
+  /**
+   * Contains the translations for this component.
+   * All UI strings should be defined here.
+   */
+  @State() _translations: typeof CreateRelatedFeature_T9n;
 
   //--------------------------------------------------------------------------
   //
@@ -199,6 +212,7 @@ export class CreateRelatedFeature {
    * @returns Promise when complete
    */
   async componentWillLoad(): Promise<void> {
+    await this._getTranslations();
     await this.initModules();
   }
 
@@ -228,11 +242,20 @@ export class CreateRelatedFeature {
   render() {
     const loaderClass = this._editorLoading ? "" : "display-none";
     return (
-      <calcite-loader
-        class={loaderClass}
-        label=""
-        scale="s"
-      />
+      <Fragment>
+        {this.showGuidingMsg && <calcite-notice
+          class="notice-msg"
+          icon="lightbulb"
+          kind="success"
+          open>
+          <div slot="message">{this._translations.provideDetailsMsg}</div>
+        </calcite-notice>}
+        <calcite-loader
+          class={loaderClass}
+          label=""
+          scale="s"
+        />
+      </Fragment>
     );
   }
 
@@ -418,5 +441,15 @@ export class CreateRelatedFeature {
    */
   protected timeout(delay: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, delay));
+  }
+
+  /**
+   * Fetches the component's translations
+   * @returns Promise when complete
+   * @protected
+   */
+  protected async _getTranslations(): Promise<void> {
+    const messages = await getLocaleComponentStrings(this.el);
+    this._translations = messages[0] as typeof CreateRelatedFeature_T9n;
   }
 }

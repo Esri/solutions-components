@@ -918,7 +918,7 @@ export class LayerTable {
 
   /**
    * Update the search expression in layer
-   * @param searchedIds
+   * @param searchedIds Array of objectIds satisfying the full search text
    */
   protected _updateSearchDefinitionExpression(searchedIds: number[]): void {
     const defExp = this._layer.definitionExpression;

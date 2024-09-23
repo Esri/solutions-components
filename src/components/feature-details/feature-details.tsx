@@ -250,6 +250,16 @@ export class FeatureDetails {
   @Event() commentSelect: EventEmitter<__esri.Graphic>;
 
   /**
+   * Emitted on demand when comment icon is clicked
+   */
+  @Event() addComment: EventEmitter<void>;
+
+  /**
+   * Emitted on demand when like or dislike button is clicked
+   */
+  @Event() likeOrDislikeClicked: EventEmitter<void>;
+
+  /**
    * Emitted on demand when the selected index changes
    */
   @Event() featureSelectionChange: EventEmitter<{ selectedFeature: __esri.Graphic[], selectedFeatureIndex: number }>;
@@ -287,13 +297,13 @@ export class FeatureDetails {
         {(this._likeFieldAvailable || this._dislikeFieldAvailable || this._commentsAvailable) &&
           <div class="buttons-container">
             {this._commentsAvailable &&
-              <div class="comment-btn">
-                <span>{this._relatedFeaturesOIDs.length}</span>
-                <calcite-icon
-                  icon="speech-bubble"
-                  scale='s'
-                />
-              </div>
+                <calcite-button
+                  appearance={"transparent"}
+                  iconEnd="speech-bubble"
+                  kind={"neutral"}
+                  onClick={() => { this.addComment.emit() }}
+                  scale='m'
+                >{this._relatedFeaturesOIDs.length}</calcite-button>
             }
             {this._likeFieldAvailable &&
               <calcite-button
@@ -374,10 +384,19 @@ export class FeatureDetails {
       this.reportingOptions[selectedLayer.id].comment && selectedLayer.relationships?.length > 0;
     if (commentsConfigured) {
       //Get comments table id from map
-      const relatedTableIdFromRelnship = selectedLayer.relationships[0].relatedTableId;
       const allTables = await getAllTables(this.mapView);
-      const allRelatedTables = allTables.filter((table: __esri.FeatureLayer) => selectedLayer.url === table.url && relatedTableIdFromRelnship === table.layerId);
-      const relatedTable = allRelatedTables?.length > 0 ? allRelatedTables[0] as __esri.FeatureLayer : null;
+      let relatedTable = null
+      let validRelationshipId =  null;
+      allTables.some((table) => {
+        if (selectedLayer.url === (table as __esri.FeatureLayer).url) {
+          const relationship = selectedLayer.relationships.filter(a => (table as __esri.FeatureLayer).layerId === a.relatedTableId)
+          if (relationship?.length) {
+            relatedTable = table;
+            validRelationshipId = relationship[0].id
+            return true;
+          }
+        }
+      });
       this.relatedTableId = relatedTable?.id ?? '';
 
       //**Get the related records for the current selected feature**
@@ -388,7 +407,7 @@ export class FeatureDetails {
         const relationshipQuery = new this.RelationshipQuery({
           objectIds: [objectId],
           outFields: ['*'],
-          relationshipId: selectedLayer.relationships[0].id
+          relationshipId: validRelationshipId
         });
         const result = await selectedLayer.queryRelatedFeatures(relationshipQuery).catch((e) => {
           console.error(e);
@@ -549,6 +568,7 @@ export class FeatureDetails {
       //store the like dislike value for the current selected graphic in local storage
       this.setInLocalStorage();
       this._updating = false;
+      this.likeOrDislikeClicked.emit();
     }, (err) => {
       this._updating = false;
       console.log(err);

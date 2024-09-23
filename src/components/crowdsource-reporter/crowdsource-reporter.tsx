@@ -434,6 +434,11 @@ export class CrowdsourceReporter {
   protected _validLayers: __esri.FeatureLayer[];
 
   /**
+   * __esri.FeatureLayer[]: layer from map whom visibility is disabled
+   */
+  protected _nonVisibleValidLayers: __esri.FeatureLayer[];
+
+  /**
    * __esri.FeatureLayer: Selected feature layer from the layer list
    */
   protected _selectedLayer: __esri.FeatureLayer;
@@ -515,6 +520,24 @@ export class CrowdsourceReporter {
     }
     if (this._createFeature) {
       void this._createFeature.refresh(this.floorLevel);
+    }
+  }
+
+  /**
+   * Called each time the my reports toggle is changed
+   */
+  @Watch("showMyReportsOnly")
+  async showMyReportsOnlyWatchHandler(): Promise<void> {
+    if (this._editableLayerIds) {
+      await this._updateFeatures();
+      setTimeout(() => {
+        if (this._layerList) {
+          void this._layerList.refresh();
+        }
+        if (this._featureList) {
+          void this._featureList.refresh();
+        }
+      }, 50)
     }
   }
 
@@ -658,7 +681,10 @@ export class CrowdsourceReporter {
     //show only current layer on map and hide other valid editable layers
     //if layerId is empty then show all the layers on map
     this._validLayers.forEach(layer => {
-      layer.set('visible', !layerId || (layer.id === layerId));
+      const nonVisibileValidLayer = this._nonVisibleValidLayers.find((l) => l.id === layer.id);
+      if(!nonVisibileValidLayer) {
+        layer.set('visible',  !layerId || (layer.id === layerId));
+      }
     })
   }
 
@@ -748,7 +774,7 @@ export class CrowdsourceReporter {
         autoClose
         label=""
         offsetDistance={0}
-        placement={this.isMobile ? "leading-start" : "auto"}
+        placement={this.isMobile ? "leading-start" : "bottom-start"}
         pointerDisabled
         referenceElement="sort-popover">
         <calcite-list selection-mode="single">
@@ -804,6 +830,7 @@ export class CrowdsourceReporter {
     this._filterActive = false;
     this._filterUrlParams = null;
     this._filterInitState = null;
+    void this._featureList.refresh();
   }
 
   /**
@@ -815,6 +842,7 @@ export class CrowdsourceReporter {
     //set the filter active state based on the length of applied filters
     this._filterActive = this._filterList.urlParams.getAll('filter').length > 0;
     this._filterUrlParams = this._filterList.urlParams.getAll('filter');
+    void this._featureList.refresh();
   }
 
   /**
@@ -925,13 +953,6 @@ export class CrowdsourceReporter {
           <div class="progress-bar">
             <calcite-progress type="determinate" value={this._updatedProgressBarStatus} />
           </div>
-          <calcite-notice
-            class="notice-msg"
-            icon="lightbulb"
-            kind="success"
-            open>
-            <div slot="message">{this._translations.featureEditFormInfoMsg}</div>
-          </calcite-notice>
           <create-feature
             customizeSubmit
             enableSearch
@@ -995,6 +1016,7 @@ export class CrowdsourceReporter {
   protected backFromCreateFeaturePanel(): void {
     if (this._createFeature) {
       void this._createFeature.close();
+      void this.updateNonVisibleLayersOnMap(false);
     }
     //on back form will be closed, so update the form state
     this.backFromSelectedPanel();
@@ -1042,6 +1064,7 @@ export class CrowdsourceReporter {
     if (this._showFullPanel) {
       this.updatePanelState(this._sidePanelCollapsed, false);
     }
+    void this.updateNonVisibleLayersOnMap(false);
     this._reportSubmitted = true;
     this._updatedProgressBarStatus = 0.25;
     void this.navigateToHomePage();
@@ -1102,6 +1125,7 @@ export class CrowdsourceReporter {
     if (evt.detail.layerId && evt.detail.layerName) {
       await this.setSelectedLayer(evt.detail.layerId, evt.detail.layerName);
     }
+    void this.updateNonVisibleLayersOnMap(true);
     // get the form template elements to pass in create-feature to create a LEVELID field in feature-form
     this._getFormElements();
     this._showSubmitCancelButton = false;
@@ -1119,6 +1143,17 @@ export class CrowdsourceReporter {
   }
 
   /**
+   * updates the non visible layer visibility
+   * @param visible boolean value to set the layers visibility
+   */
+  protected updateNonVisibleLayersOnMap(visible: boolean): void {
+    const isNonVisibleValidLayerSelected = this._nonVisibleValidLayers.find((layer) => layer.id === this._selectedLayerId);
+    if (isNonVisibleValidLayerSelected) {
+      this._selectedLayer.set('visible', visible);
+    }
+  }
+
+  /**
    * When layer list is loaded, we will receive the list of layers, if its  means we don't have any valid layer to be listed
    * @param evt Event which has list of layers
    * @protected
@@ -1129,9 +1164,13 @@ export class CrowdsourceReporter {
     const allMapLayers = await getAllLayers(this.mapView);
     const reportingEnabledLayerIds = [];
     this._validLayers = [];
+    this._nonVisibleValidLayers = [];
     allMapLayers.forEach((eachLayer: __esri.FeatureLayer) => {
       if (layersListed.includes(eachLayer.id)) {
         this._validLayers.push(eachLayer);
+        if (!eachLayer.visible) {
+          this._nonVisibleValidLayers.push(eachLayer);
+        }
         //create list of reporting enabled layers
         if (this._getLayersConfig(eachLayer.id)?.reporting && this._layerItemsHash[eachLayer.id] && this._layerItemsHash[eachLayer.id].supportsAdd) {
           reportingEnabledLayerIds.push(eachLayer.id);
@@ -1170,7 +1209,6 @@ export class CrowdsourceReporter {
    */
   protected async backFromFilterPanel(): Promise<void> {
     this._filterInitState = await this._filterList.getFilterInitState();
-    void this._featureList.refresh();
     this.backFromSelectedPanel();
   }
 
@@ -1191,10 +1229,6 @@ export class CrowdsourceReporter {
     if (updatedFlowItems[updatedFlowItems.length - 1] === 'reporting-layer-list' || (updatedFlowItems[updatedFlowItems.length - 1] === 'feature-create' &&
       (updatedFlowItems[0] === 'feature-list' || updatedFlowItems[updatedFlowItems.length - 2] === 'feature-list'))) {
       this.updatePanelState(this._sidePanelCollapsed, false);
-    }
-    // Coming back from feature details refresh the feature list to update the like count
-    if (this.reportingOptions && this.reportingOptions[this._selectedLayerId]?.like && updatedFlowItems[updatedFlowItems.length - 1] === 'feature-details') {
-      void this._featureList.refresh();
     }
     updatedFlowItems.pop();
     //Back to layer list, and return as the flowItems will be reset in navigateToHomePage
@@ -1242,10 +1276,10 @@ export class CrowdsourceReporter {
    */
   protected async getRelatedTable(): Promise<void> {
     const selectedLayer = (this._currentFeature.layer as __esri.FeatureLayer);
-    const relatedTableIdFromRelnship = selectedLayer.relationships[0].relatedTableId;
+    const allRelatedTableIds = selectedLayer.relationships.map(a => a.relatedTableId);
     const allTables = await getAllTables(this.mapView);
-    const relatedTable = allTables.filter((table) => selectedLayer.url === (table as __esri.FeatureLayer).url && relatedTableIdFromRelnship === (table as __esri.FeatureLayer).layerId);
-    this._relatedTable = (relatedTable[0] as __esri.FeatureLayer);
+    const relatedTables = allTables.filter((table) => selectedLayer.url === (table as __esri.FeatureLayer).url && allRelatedTableIds.includes((table as __esri.FeatureLayer).layerId));
+    this._relatedTable = (relatedTables[0] as __esri.FeatureLayer);
   }
 
   /**
@@ -1268,6 +1302,13 @@ export class CrowdsourceReporter {
     this._selectedFeatureIndex = evt.detail.selectedFeatureIndex;
     //update the feature details to reflect the like, dislike and comment values
     await this._featureDetails.refresh(evt.detail.selectedFeature[0]);
+  }
+
+  /**
+   * Shows the add comments panel 
+   */
+  protected showAddCommentsPanel(): void {
+    this._flowItems = [...this._flowItems, "add-comment"]
   }
 
   /**
@@ -1385,6 +1426,7 @@ export class CrowdsourceReporter {
             onFilterListReset={() => this._handleFilterListReset()}
             onFilterUpdate={() => this._handleFilterUpdate()}
             ref={(el) => this._filterList = el}
+            resetBtn={false}
             resetFiltersOnDisconnect={false}
             view={this.mapView}
             zoomBtn={false}
@@ -1398,7 +1440,7 @@ export class CrowdsourceReporter {
    * @returns Node
    */
   protected getFeatureDetailsFlowItem(): Node {
-    const showCommentBtn = this._getLayersConfig(this._selectedLayerId)?.comment && this._selectedLayer.relationships.length > 0;
+    const showCommentBtn = this._getLayersConfig(this._selectedLayerId)?.comment && this._selectedLayer.relationships.length > 0 && this._relatedTable;
     return (
       <calcite-flow-item
         collapsed={this.isMobile && this._sidePanelCollapsed}
@@ -1428,8 +1470,10 @@ export class CrowdsourceReporter {
             graphics={this._selectedFeature}
             layerItemsHash={this._layerItemsHash}
             mapView={this.mapView}
+            onAddComment={this.showAddCommentsPanel.bind(this)}
             onCommentSelect={this.onCommentSelectFromList.bind(this)}
             onFeatureSelectionChange={this.selectionChanged.bind(this)}
+            onLikeOrDislikeClicked={() => { void this._featureList.refresh(true) }}
             onLoadingStatus={(evt) => void this.updatingFeatureDetails(evt.detail)}
             ref={el => this._featureDetails = el}
             reportingOptions={this.reportingOptions}
@@ -1438,7 +1482,7 @@ export class CrowdsourceReporter {
           {showCommentBtn &&
             <calcite-button
               appearance="solid"
-              onClick={() => this._flowItems = [...this._flowItems, "add-comment"]}
+              onClick={this.showAddCommentsPanel.bind(this)}
               slot="footer"
               width="full"
             >
@@ -1716,7 +1760,7 @@ export class CrowdsourceReporter {
         return this._validLayers.includes(graphic.layer);
       })
       const nonReportingLayerGraphics = clickedGraphics.filter((graphic) => {
-        return !this._validLayers.includes(graphic.layer) && graphic?.layer?.id;
+        return !this._validLayers.includes(graphic.layer) && graphic?.layer?.popupEnabled && graphic?.layer?.id;
       })
 
       // if clicked graphic's layer is one of the reporting layers then show details in layer panel
@@ -1806,17 +1850,19 @@ export class CrowdsourceReporter {
   /**
    * Returns the ids of all OR configured layers that support edits with the update capability
    * @param hash each layer item details
-   * @param layers list of layers id
+   * @param layersEditingDisabled list layer ids for which editing is disabled 
    * @returns array of editable layer ids
    */
   protected reduceToConfiguredLayers(
-    hash: ILayerItemsHash
+    hash: ILayerItemsHash,
+    layersEditingDisabled: string[]
   ): string[] {
     return Object.keys(hash).reduce((prev, cur) => {
       // check if reporting options exists consider the visible prop if else just check the supports Add
       const showLayer = this.reportingOptions ? this._getLayersConfig(cur)?.visible
         : hash[cur].supportsAdd;
-      if (showLayer) {
+      //show layer only when editing is enabled
+      if (!layersEditingDisabled.includes(cur) && showLayer) {
         prev.push(cur);
       }
       return prev;
@@ -1862,12 +1908,16 @@ export class CrowdsourceReporter {
   protected async getLayersToShowInList(): Promise<void> {
     const layerItemsHash = await getMapLayerHash(this.mapView, true) as ILayerItemsHash;
     const allMapLayers = await getAllLayers(this.mapView);
+    const layersEditingDisabled: string[] = [];
     allMapLayers.forEach((eachLayer: __esri.FeatureLayer) => {
       if (eachLayer?.type === "feature" && eachLayer?.editingEnabled && eachLayer?.capabilities?.operations?.supportsAdd) {
         layerItemsHash[eachLayer.id].supportsAdd = true;
       }
-    })
-    this._editableLayerIds = this.reduceToConfiguredLayers(layerItemsHash);
+      if (!eachLayer?.editingEnabled) {
+        layersEditingDisabled.push(eachLayer.id)
+      }
+    });
+    this._editableLayerIds = this.reduceToConfiguredLayers(layerItemsHash, layersEditingDisabled);
     this._layerItemsHash = layerItemsHash;
   }
 
