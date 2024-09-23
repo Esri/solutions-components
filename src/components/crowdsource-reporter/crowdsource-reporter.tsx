@@ -518,6 +518,24 @@ export class CrowdsourceReporter {
     }
   }
 
+  /**
+   * Called each time the my reports toggle is changed
+   */
+  @Watch("showMyReportsOnly")
+  async showMyReportsOnlyWatchHandler(): Promise<void> {
+    if (this._editableLayerIds) {
+      await this._updateFeatures();
+      setTimeout(() => {
+        if (this._layerList) {
+          void this._layerList.refresh();
+        }
+        if (this._featureList) {
+          void this._featureList.refresh();
+        }
+      }, 50)
+    }
+  }
+
   //--------------------------------------------------------------------------
   //
   //  Methods (public)
