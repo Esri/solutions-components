@@ -1,3 +1,6 @@
 {
-  "selectFeaturesToStart": "Selecteer een record om aan de slag te gaan. Klik terwijl u de knop CTRL ingedrukt houdt als u meerdere records in de tabel wilt selecteren."
+  "selectFeaturesToStart": "Selecteer een record om aan de slag te gaan. Klik terwijl u de knop CTRL ingedrukt houdt als u meerdere records in de tabel wilt selecteren.",
+  "createFeature": "Ĳ_Create feature_______________ä",
+  "createRecord": "Ĳ_Create record______________ä",
+  "create": "Ĳ_Create_____________ä"
 }

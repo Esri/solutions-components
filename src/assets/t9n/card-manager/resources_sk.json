@@ -1,3 +1,6 @@
 {
-  "selectFeaturesToStart": "Vybrať záznam a začať. Kliknutím so stlačeným Ctrl vyberte viac záznamov v tabuľke."
+  "selectFeaturesToStart": "Vybrať záznam a začať. Kliknutím so stlačeným Ctrl vyberte viac záznamov v tabuľke.",
+  "createFeature": "ĺ_Create feature_______________ľ",
+  "createRecord": "ĺ_Create record______________ľ",
+  "create": "ĺ_Create_____________ľ"
 }

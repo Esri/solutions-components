@@ -16,5 +16,6 @@
   "showAll": "Показати всі",
   "recordsSelected": "Усього: {{total}} | Вибірка: {{selected}}",
   "moreOptions": "Інші опції таблиці",
-  "showHideColumns": "Показати/приховати стовпці"
+  "showHideColumns": "Показати/приховати стовпці",
+  "searchPlaceholder": "ґ_Search text in {{fields}} field_________________Ї"
 }

@@ -1,3 +1,6 @@
 {
-  "selectFeaturesToStart": "Chọn một bản ghi để bắt đầu. Nhấp trong khi giữ phím Ctrl để chọn nhiều bản ghi trong bảng."
+  "selectFeaturesToStart": "Chọn một bản ghi để bắt đầu. Nhấp trong khi giữ phím Ctrl để chọn nhiều bản ghi trong bảng.",
+  "createFeature": "Đ_Create feature_______________ớ",
+  "createRecord": "Đ_Create record______________ớ",
+  "create": "Đ_Create_____________ớ"
 }

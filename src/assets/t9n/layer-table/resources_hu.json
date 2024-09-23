@@ -16,5 +16,6 @@
   "showAll": "Összes megjelenítése",
   "recordsSelected": "Összesen: {{total}} | Kiválasztva: {{selected}}",
   "moreOptions": "További táblázat beállítások",
-  "showHideColumns": "Oszlopok megjelenítése/elrejtése"
+  "showHideColumns": "Oszlopok megjelenítése/elrejtése",
+  "searchPlaceholder": "í_Search text in {{fields}} field_________________ő"
 }

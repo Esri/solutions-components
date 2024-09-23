@@ -16,5 +16,6 @@
   "showAll": "Mostra-ho tot",
   "recordsSelected": "Total: {{total}} | Selecció: {{selected}}",
   "moreOptions": "Més opcions de taula",
-  "showHideColumns": "Mostra o amaga columnes"
+  "showHideColumns": "Mostra o amaga columnes",
+  "searchPlaceholder": "ó_Search text in {{fields}} field_________________à"
 }

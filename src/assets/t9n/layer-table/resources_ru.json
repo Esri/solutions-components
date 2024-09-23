@@ -16,5 +16,6 @@
   "showAll": "Показать все",
   "recordsSelected": "Всего: {{total}} | Выборка: {{selected}}",
   "moreOptions": "Дополнительные опции таблицы",
-  "showHideColumns": "Показать/скрыть столбцы"
+  "showHideColumns": "Показать/скрыть столбцы",
+  "searchPlaceholder": "Ж_Search text in {{fields}} field_________________Я"
 }

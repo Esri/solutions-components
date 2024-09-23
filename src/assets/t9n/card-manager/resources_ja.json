@@ -1,3 +1,6 @@
 {
-  "selectFeaturesToStart": "開始するレコードを選択します。 テーブル内の複数のレコードを選択するには、Ctrl キーを押しながらクリックします。"
+  "selectFeaturesToStart": "開始するレコードを選択します。 テーブル内の複数のレコードを選択するには、Ctrl キーを押しながらクリックします。",
+  "createFeature": "須_Create feature_______________鷗",
+  "createRecord": "須_Create record______________鷗",
+  "create": "須_Create_____________鷗"
 }

@@ -1,3 +1,6 @@
 {
-  "selectFeaturesToStart": "Per començar, seleccioneu un registre. Feu clic mentre premeu la tecla Ctrl per seleccionar diversos registres a la taula."
+  "selectFeaturesToStart": "Per començar, seleccioneu un registre. Feu clic mentre premeu la tecla Ctrl per seleccionar diversos registres a la taula.",
+  "createFeature": "ó_Create feature_______________à",
+  "createRecord": "ó_Create record______________à",
+  "create": "ó_Create_____________à"
 }

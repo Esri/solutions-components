@@ -1,3 +1,6 @@
 {
-  "selectFeaturesToStart": "Wybierz rekord, aby rozpocząć. Klikaj z wciśniętym klawiszem Ctrl, aby zaznaczyć wiele rekordów w tabeli."
+  "selectFeaturesToStart": "Wybierz rekord, aby rozpocząć. Klikaj z wciśniętym klawiszem Ctrl, aby zaznaczyć wiele rekordów w tabeli.",
+  "createFeature": "ł_Create feature_______________ą",
+  "createRecord": "ł_Create record______________ą",
+  "create": "ł_Create_____________ą"
 }

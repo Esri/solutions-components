@@ -16,5 +16,6 @@
   "showAll": "Εμφάνιση όλων",
   "recordsSelected": "Σύνολο: {{total}} | Επιλογή: {{selected}}",
   "moreOptions": "Περισσότερες επιλογές πίνακα",
-  "showHideColumns": "Εμφάνιση/Απόκρυψη στηλών"
+  "showHideColumns": "Εμφάνιση/Απόκρυψη στηλών",
+  "searchPlaceholder": "Đ_Search text in {{fields}} field_________________ớ"
 }

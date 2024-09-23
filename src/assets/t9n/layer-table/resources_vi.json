@@ -16,5 +16,6 @@
   "showAll": "Hiện tất cả",
   "recordsSelected": "Tổng: {{total}} | Lựa chọn: {{selected}}",
   "moreOptions": "Các tùy chọn bảng khác",
-  "showHideColumns": "Hiển thị/ẩn cột"
+  "showHideColumns": "Hiển thị/ẩn cột",
+  "searchPlaceholder": "Đ_Search text in {{fields}} field_________________ớ"
 }

@@ -1,3 +1,6 @@
 {
-  "selectFeaturesToStart": "Selezionare un record per iniziare. Fare clic tenendo premuto il tasto Ctrl per selezionare più record nella tabella."
+  "selectFeaturesToStart": "Selezionare un record per iniziare. Fare clic tenendo premuto il tasto Ctrl per selezionare più record nella tabella.",
+  "createFeature": "é_Create feature_______________È",
+  "createRecord": "é_Create record______________È",
+  "create": "é_Create_____________È"
 }

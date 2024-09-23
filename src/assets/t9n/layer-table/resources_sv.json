@@ -16,5 +16,6 @@
   "showAll": "Visa alla",
   "recordsSelected": "Totalt: {{total}} | Urval: {{selected}}",
   "moreOptions": "Fler tabellalternativ",
-  "showHideColumns": "Visa/dölj kolumner"
+  "showHideColumns": "Visa/dölj kolumner",
+  "searchPlaceholder": "Å_Search text in {{fields}} field_________________ö"
 }
