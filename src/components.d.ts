@@ -2054,6 +2054,7 @@ declare global {
     interface HTMLFeatureDetailsElementEventMap {
         "loadingStatus": boolean;
         "commentSelect": __esri.Graphic;
+        "addComment": void;
         "featureSelectionChange": { selectedFeature: __esri.Graphic[], selectedFeatureIndex: number };
     }
     interface HTMLFeatureDetailsElement extends Components.FeatureDetails, HTMLStencilElement {
@@ -3188,6 +3189,10 @@ declare namespace LocalJSX {
           * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
+        /**
+          * Emitted on demand when comment icon is clicked
+         */
+        "onAddComment"?: (event: FeatureDetailsCustomEvent<void>) => void;
         /**
           * Emitted on demand when comment is selected using the feature-list
          */

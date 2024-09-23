@@ -1289,6 +1289,13 @@ export class CrowdsourceReporter {
   }
 
   /**
+   * Shows the add comments panel 
+   */
+  protected showAddCommentsPanel(): void {
+    this._flowItems = [...this._flowItems, "add-comment"]
+  }
+
+  /**
    * When comment is selected from list store that and show comment details
    * @param evt Event which has details of selected feature
    * @protected
@@ -1447,6 +1454,7 @@ export class CrowdsourceReporter {
             graphics={this._selectedFeature}
             layerItemsHash={this._layerItemsHash}
             mapView={this.mapView}
+            onAddComment={this.showAddCommentsPanel.bind(this)}
             onCommentSelect={this.onCommentSelectFromList.bind(this)}
             onFeatureSelectionChange={this.selectionChanged.bind(this)}
             onLoadingStatus={(evt) => void this.updatingFeatureDetails(evt.detail)}
@@ -1457,7 +1465,7 @@ export class CrowdsourceReporter {
           {showCommentBtn &&
             <calcite-button
               appearance="solid"
-              onClick={() => this._flowItems = [...this._flowItems, "add-comment"]}
+              onClick={this.showAddCommentsPanel.bind(this)}
               slot="footer"
               width="full"
             >
