@@ -1833,17 +1833,19 @@ export class CrowdsourceReporter {
   /**
    * Returns the ids of all OR configured layers that support edits with the update capability
    * @param hash each layer item details
-   * @param layers list of layers id
+   * @param layersEditingDisabled list layer ids for which editing is disabled 
    * @returns array of editable layer ids
    */
   protected reduceToConfiguredLayers(
-    hash: ILayerItemsHash
+    hash: ILayerItemsHash,
+    layersEditingDisabled: string[]
   ): string[] {
     return Object.keys(hash).reduce((prev, cur) => {
       // check if reporting options exists consider the visible prop if else just check the supports Add
       const showLayer = this.reportingOptions ? this._getLayersConfig(cur)?.visible
         : hash[cur].supportsAdd;
-      if (showLayer) {
+      //show layer only when editing is enabled
+      if (!layersEditingDisabled.includes(cur) && showLayer) {
         prev.push(cur);
       }
       return prev;
@@ -1889,12 +1891,16 @@ export class CrowdsourceReporter {
   protected async getLayersToShowInList(): Promise<void> {
     const layerItemsHash = await getMapLayerHash(this.mapView, true) as ILayerItemsHash;
     const allMapLayers = await getAllLayers(this.mapView);
+    const layersEditingDisabled: string[] = [];
     allMapLayers.forEach((eachLayer: __esri.FeatureLayer) => {
       if (eachLayer?.type === "feature" && eachLayer?.editingEnabled && eachLayer?.capabilities?.operations?.supportsAdd) {
         layerItemsHash[eachLayer.id].supportsAdd = true;
       }
-    })
-    this._editableLayerIds = this.reduceToConfiguredLayers(layerItemsHash);
+      if (!eachLayer?.editingEnabled) {
+        layersEditingDisabled.push(eachLayer.id)
+      }
+    });
+    this._editableLayerIds = this.reduceToConfiguredLayers(layerItemsHash, layersEditingDisabled);
     this._layerItemsHash = layerItemsHash;
   }
 
