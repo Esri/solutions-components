@@ -748,7 +748,7 @@ export class CrowdsourceReporter {
         autoClose
         label=""
         offsetDistance={0}
-        placement={this.isMobile ? "leading-start" : "auto"}
+        placement={this.isMobile ? "leading-start" : "bottom-start"}
         pointerDisabled
         referenceElement="sort-popover">
         <calcite-list selection-mode="single">
