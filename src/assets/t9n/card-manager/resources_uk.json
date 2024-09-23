@@ -1,3 +1,6 @@
 {
-  "selectFeaturesToStart": "Щоб почати, виберіть запис Клацніть, утримуючи клавішу Ctrl, щоб вибрати кілька записів у таблиці."
+  "selectFeaturesToStart": "Щоб почати, виберіть запис Клацніть, утримуючи клавішу Ctrl, щоб вибрати кілька записів у таблиці.",
+  "createFeature": "ґ_Create feature_______________Ї",
+  "createRecord": "ґ_Create record______________Ї",
+  "create": "ґ_Create_____________Ї"
 }

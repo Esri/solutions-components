@@ -1,3 +1,6 @@
 {
-  "selectFeaturesToStart": "Aloita valitsemalla tietue. Valitse taulusta useita tietueita napsauttamalla tietueita ja pitämällä samalla Ctrl-näppäintä painettuna."
+  "selectFeaturesToStart": "Aloita valitsemalla tietue. Valitse taulusta useita tietueita napsauttamalla tietueita ja pitämällä samalla Ctrl-näppäintä painettuna.",
+  "createFeature": "Å_Create feature_______________ö",
+  "createRecord": "Å_Create record______________ö",
+  "create": "Å_Create_____________ö"
 }

@@ -16,5 +16,6 @@
   "showAll": "顯示全部",
   "recordsSelected": "總計: {{total}} | 選擇: {{selected}}",
   "moreOptions": "更多表格選項",
-  "showHideColumns": "顯示/隱藏欄"
+  "showHideColumns": "顯示/隱藏欄",
+  "searchPlaceholder": "試_Search text in {{fields}} field_________________驗"
 }

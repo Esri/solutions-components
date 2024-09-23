@@ -1,3 +1,6 @@
 {
-  "selectFeaturesToStart": "Izberite zapis za začetek. Kliknite medtem, ko pritiskate tipko Ctrl, da izberete več zapisov v tabeli."
+  "selectFeaturesToStart": "Izberite zapis za začetek. Kliknite medtem, ko pritiskate tipko Ctrl, da izberete več zapisov v tabeli.",
+  "createFeature": "Š_Create feature_______________č",
+  "createRecord": "Š_Create record______________č",
+  "create": "Š_Create_____________č"
 }

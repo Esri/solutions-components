@@ -16,5 +16,6 @@
   "showAll": "הצג הכול",
   "recordsSelected": "(סה\"כ: {{total}} | בחירה: {{selected}})",
   "moreOptions": "אפשרויות טבלה נוספות",
-  "showHideColumns": "הצג/הסתר עמודות"
+  "showHideColumns": "הצג/הסתר עמודות",
+  "searchPlaceholder": "כן_Search text in {{fields}} field_________________ש"
 }

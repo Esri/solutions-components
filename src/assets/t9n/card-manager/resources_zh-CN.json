@@ -1,3 +1,6 @@
 {
-  "selectFeaturesToStart": "选择一条记录即可开始。 在按住 Ctrl 键的同时单击可选择表中的多条记录。"
+  "selectFeaturesToStart": "选择一条记录即可开始。 在按住 Ctrl 键的同时单击可选择表中的多条记录。",
+  "createFeature": "试_Create feature_______________验",
+  "createRecord": "试_Create record______________验",
+  "create": "试_Create_____________验"
 }

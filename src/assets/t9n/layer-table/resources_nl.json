@@ -16,5 +16,6 @@
   "showAll": "Alles weergeven",
   "recordsSelected": "Totaal: {{total}} | Selectie: {{selected}}",
   "moreOptions": "Meer tabelopties",
-  "showHideColumns": "Kolommen weergeven/verbergen"
+  "showHideColumns": "Kolommen weergeven/verbergen",
+  "searchPlaceholder": "Ĳ_Search text in {{fields}} field_________________ä"
 }

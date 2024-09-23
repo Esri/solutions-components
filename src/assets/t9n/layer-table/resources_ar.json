@@ -16,5 +16,6 @@
   "showAll": "إظهار الكل",
   "recordsSelected": "الإجمالي: {{total}} | التحديد: {{selected}}",
   "moreOptions": "المزيد من خيارات الجدول",
-  "showHideColumns": "إظهار/إخفاء الأعمدة"
+  "showHideColumns": "إظهار/إخفاء الأعمدة",
+  "searchPlaceholder": "بيت_Search text in {{fields}} field_________________لاحقة"
 }

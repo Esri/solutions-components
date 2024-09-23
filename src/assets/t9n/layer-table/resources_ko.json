@@ -16,5 +16,6 @@
   "showAll": "모두 보기",
   "recordsSelected": "총: {{total}}개 | 선택: {{selected}}개",
   "moreOptions": "추가 테이블 옵션",
-  "showHideColumns": "열 표시/숨기기"
+  "showHideColumns": "열 표시/숨기기",
+  "searchPlaceholder": "한_Search text in {{fields}} field_________________빠"
 }

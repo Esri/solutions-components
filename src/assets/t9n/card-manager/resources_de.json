@@ -1,3 +1,6 @@
 {
-  "selectFeaturesToStart": "Zum Einstieg einen Datensatz auswählen. Zum Auswählen mehrerer Datensätze die Strg-Taste gedrückt halten und auf die gewünschten Datensätze klicken."
+  "selectFeaturesToStart": "Zum Einstieg einen Datensatz auswählen. Zum Auswählen mehrerer Datensätze die Strg-Taste gedrückt halten und auf die gewünschten Datensätze klicken.",
+  "createFeature": "ä_Create feature_______________Ü",
+  "createRecord": "ä_Create record______________Ü",
+  "create": "ä_Create_____________Ü"
 }

@@ -1,3 +1,6 @@
 {
-  "selectFeaturesToStart": "Sélectionnez un enregistrement pour commencer. Cliquez tout en maintenant la touche Ctrl enfoncée pour sélectionner plusieurs enregistrements dans la table."
+  "selectFeaturesToStart": "Sélectionnez un enregistrement pour commencer. Cliquez tout en maintenant la touche Ctrl enfoncée pour sélectionner plusieurs enregistrements dans la table.",
+  "createFeature": "æ_Create feature_______________Â",
+  "createRecord": "æ_Create record______________Â",
+  "create": "æ_Create_____________Â"
 }

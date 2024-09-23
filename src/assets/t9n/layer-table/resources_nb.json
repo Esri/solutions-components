@@ -16,5 +16,6 @@
   "showAll": "Vis alle",
   "recordsSelected": "Totalt: {{total}} | Utvalg: {{selected}}",
   "moreOptions": "Flere tabellalternativer",
-  "showHideColumns": "Vis/skjul kolonner"
+  "showHideColumns": "Vis/skjul kolonner",
+  "searchPlaceholder": "å_Search text in {{fields}} field_________________ø"
 }

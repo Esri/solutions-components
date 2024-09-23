@@ -16,5 +16,6 @@
   "showAll": "显示全部",
   "recordsSelected": "总数：{{total}} | 选择：{{selected}}",
   "moreOptions": "更多表选项",
-  "showHideColumns": "显示/隐藏列"
+  "showHideColumns": "显示/隐藏列",
+  "searchPlaceholder": "试_Search text in {{fields}} field_________________验"
 }

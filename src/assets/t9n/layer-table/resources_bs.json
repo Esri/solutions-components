@@ -16,5 +16,6 @@
   "showAll": "Prikaži sve",
   "recordsSelected": "Ukupno: {{total}} | Odabir: {{selected}}",
   "moreOptions": "Više opcija tablice",
-  "showHideColumns": "Prikaži/skrij stupce"
+  "showHideColumns": "Prikaži/skrij stupce",
+  "searchPlaceholder": "Č_Search text in {{fields}} field_________________ž"
 }

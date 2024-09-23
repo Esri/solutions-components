@@ -1,3 +1,6 @@
 {
-  "selectFeaturesToStart": "Pilih catatan untuk mulai. Klik saat menekan tombol Ctrl untuk memilih beberapa catatan di tabel."
+  "selectFeaturesToStart": "Pilih catatan untuk mulai. Klik saat menekan tombol Ctrl untuk memilih beberapa catatan di tabel.",
+  "createFeature": "ng_Create feature_______________ny",
+  "createRecord": "ng_Create record______________ny",
+  "create": "ng_Create_____________ny"
 }

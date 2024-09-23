@@ -1,3 +1,6 @@
 {
-  "selectFeaturesToStart": "Alustamiseks valige kirje. Tabelis mitme kirje valimiseks hoidke klõpsamise ajal alla klahvi CTRL."
+  "selectFeaturesToStart": "Alustamiseks valige kirje. Tabelis mitme kirje valimiseks hoidke klõpsamise ajal alla klahvi CTRL.",
+  "createFeature": "Š_Create feature_______________ä",
+  "createRecord": "Š_Create record______________ä",
+  "create": "Š_Create_____________ä"
 }

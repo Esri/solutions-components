@@ -16,5 +16,6 @@
   "showAll": "แสดงทั้งหมด",
   "recordsSelected": "รวม: {{total}} | ที่เลือก: {{selected}}",
   "moreOptions": "ตัวเลือกตารางเพิ่มเติม",
-  "showHideColumns": "แสดง/ซ่อนคอลัมน์"
+  "showHideColumns": "แสดง/ซ่อนคอลัมน์",
+  "searchPlaceholder": "ก้_Search text in {{fields}} field_________________ษฺ"
 }

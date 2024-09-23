@@ -16,5 +16,6 @@
   "showAll": "Mostra tutto",
   "recordsSelected": "Totale: {{total}} | Selezione: {{selected}}",
   "moreOptions": "Altre opzioni tabella",
-  "showHideColumns": "Mostra/nascondi colonne"
+  "showHideColumns": "Mostra/nascondi colonne",
+  "searchPlaceholder": "é_Search text in {{fields}} field_________________È"
 }

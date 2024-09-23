@@ -1,3 +1,6 @@
 {
-  "selectFeaturesToStart": "Başlamak için bir kayıt seçin. Tabloda birden fazla kayıt seçmek için Ctrl tuşuna basarken tıklayın."
+  "selectFeaturesToStart": "Başlamak için bir kayıt seçin. Tabloda birden fazla kayıt seçmek için Ctrl tuşuna basarken tıklayın.",
+  "createFeature": "ı_Create feature_______________İ",
+  "createRecord": "ı_Create record______________İ",
+  "create": "ı_Create_____________İ"
 }

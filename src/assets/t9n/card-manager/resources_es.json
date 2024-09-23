@@ -1,3 +1,6 @@
 {
-  "selectFeaturesToStart": "Seleccione un registro para empezar. Haga clic mientras mantiene pulsada la tecla Ctrl para seleccionar varios registros de la tabla."
+  "selectFeaturesToStart": "Seleccione un registro para empezar. Haga clic mientras mantiene pulsada la tecla Ctrl para seleccionar varios registros de la tabla.",
+  "createFeature": "á_Create feature_______________Ó",
+  "createRecord": "á_Create record______________Ó",
+  "create": "á_Create_____________Ó"
 }
