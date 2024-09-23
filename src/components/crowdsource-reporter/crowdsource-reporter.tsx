@@ -434,6 +434,11 @@ export class CrowdsourceReporter {
   protected _validLayers: __esri.FeatureLayer[];
 
   /**
+   * __esri.FeatureLayer[]: layer from map whom visibility is disabled
+   */
+  protected _nonVisibleValidLayers: __esri.FeatureLayer[];
+
+  /**
    * __esri.FeatureLayer: Selected feature layer from the layer list
    */
   protected _selectedLayer: __esri.FeatureLayer;
@@ -676,7 +681,10 @@ export class CrowdsourceReporter {
     //show only current layer on map and hide other valid editable layers
     //if layerId is empty then show all the layers on map
     this._validLayers.forEach(layer => {
-      layer.set('visible', !layerId || (layer.id === layerId));
+      const nonVisibileValidLayer = this._nonVisibleValidLayers.find((l) => l.id === layer.id);
+      if(!nonVisibileValidLayer) {
+        layer.set('visible',  !layerId || (layer.id === layerId));
+      }
     })
   }
 
@@ -1013,6 +1021,7 @@ export class CrowdsourceReporter {
   protected backFromCreateFeaturePanel(): void {
     if (this._createFeature) {
       void this._createFeature.close();
+      void this.updateNonVisibleLayersOnMap(false);
     }
     //on back form will be closed, so update the form state
     this.backFromSelectedPanel();
@@ -1060,6 +1069,7 @@ export class CrowdsourceReporter {
     if (this._showFullPanel) {
       this.updatePanelState(this._sidePanelCollapsed, false);
     }
+    void this.updateNonVisibleLayersOnMap(false);
     this._reportSubmitted = true;
     this._updatedProgressBarStatus = 0.25;
     void this.navigateToHomePage();
@@ -1120,6 +1130,7 @@ export class CrowdsourceReporter {
     if (evt.detail.layerId && evt.detail.layerName) {
       await this.setSelectedLayer(evt.detail.layerId, evt.detail.layerName);
     }
+    void this.updateNonVisibleLayersOnMap(true);
     // get the form template elements to pass in create-feature to create a LEVELID field in feature-form
     this._getFormElements();
     this._showSubmitCancelButton = false;
@@ -1137,6 +1148,17 @@ export class CrowdsourceReporter {
   }
 
   /**
+   * updates the non visible layer visibility
+   * @param visible boolean value to set the layers visibility
+   */
+  protected updateNonVisibleLayersOnMap(visible: boolean): void {
+    const isNonVisibleValidLayerSelected = this._nonVisibleValidLayers.find((layer) => layer.id === this._selectedLayerId);
+    if (isNonVisibleValidLayerSelected) {
+      this._selectedLayer.set('visible', visible);
+    }
+  }
+
+  /**
    * When layer list is loaded, we will receive the list of layers, if its  means we don't have any valid layer to be listed
    * @param evt Event which has list of layers
    * @protected
@@ -1147,9 +1169,13 @@ export class CrowdsourceReporter {
     const allMapLayers = await getAllLayers(this.mapView);
     const reportingEnabledLayerIds = [];
     this._validLayers = [];
+    this._nonVisibleValidLayers = [];
     allMapLayers.forEach((eachLayer: __esri.FeatureLayer) => {
       if (layersListed.includes(eachLayer.id)) {
         this._validLayers.push(eachLayer);
+        if (!eachLayer.visible) {
+          this._nonVisibleValidLayers.push(eachLayer);
+        }
         //create list of reporting enabled layers
         if (this._getLayersConfig(eachLayer.id)?.reporting && this._layerItemsHash[eachLayer.id] && this._layerItemsHash[eachLayer.id].supportsAdd) {
           reportingEnabledLayerIds.push(eachLayer.id);
