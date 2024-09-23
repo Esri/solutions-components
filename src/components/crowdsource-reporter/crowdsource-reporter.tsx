@@ -1717,7 +1717,7 @@ export class CrowdsourceReporter {
         return this._validLayers.includes(graphic.layer);
       })
       const nonReportingLayerGraphics = clickedGraphics.filter((graphic) => {
-        return !this._validLayers.includes(graphic.layer) && graphic?.layer?.id;
+        return !this._validLayers.includes(graphic.layer) && graphic?.layer?.popupEnabled && graphic?.layer?.id;
       })
 
       // if clicked graphic's layer is one of the reporting layers then show details in layer panel
