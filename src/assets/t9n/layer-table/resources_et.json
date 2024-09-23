@@ -16,5 +16,6 @@
   "showAll": "Kuva kõik",
   "recordsSelected": "Kokku: {{total}} | Valik: {{selected}}",
   "moreOptions": "Rohkem tabelivalikuid",
-  "showHideColumns": "Kuva/peida veerud"
+  "showHideColumns": "Kuva/peida veerud",
+  "searchPlaceholder": "Š_Search text in {{fields}} field_________________ä"
 }

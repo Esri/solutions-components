@@ -16,5 +16,6 @@
   "showAll": "Tümünü göster",
   "recordsSelected": "Toplam: {{total}} | Seçim: {{selected}}",
   "moreOptions": "Daha fazla tablo seçeneği",
-  "showHideColumns": "Sütunları göster/gizle"
+  "showHideColumns": "Sütunları göster/gizle",
+  "searchPlaceholder": "ı_Search text in {{fields}} field_________________İ"
 }

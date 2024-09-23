@@ -16,5 +16,6 @@
   "showAll": "Zobraziť všetko",
   "recordsSelected": "Celkový počet: {{total}} | Výber: {{selected}}",
   "moreOptions": "Viac možností tabuľky",
-  "showHideColumns": "Zobraziť/skryť stĺpce"
+  "showHideColumns": "Zobraziť/skryť stĺpce",
+  "searchPlaceholder": "ĺ_Search text in {{fields}} field_________________ľ"
 }

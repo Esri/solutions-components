@@ -1,3 +1,6 @@
 {
-  "selectFeaturesToStart": "Lai sāktu darbu, izvēlieties ierakstu. Lai tabulā izvēlētos vairākus ierakstus, klikšķinot, turiet nospiestu taustiņu Ctrl."
+  "selectFeaturesToStart": "Lai sāktu darbu, izvēlieties ierakstu. Lai tabulā izvēlētos vairākus ierakstus, klikšķinot, turiet nospiestu taustiņu Ctrl.",
+  "createFeature": "ķ_Create feature_______________ū",
+  "createRecord": "ķ_Create record______________ū",
+  "create": "ķ_Create_____________ū"
 }

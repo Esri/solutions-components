@@ -16,5 +16,6 @@
   "showAll": "Afficher tout",
   "recordsSelected": "Total : {{total}} | Sélection : {{selected}}",
   "moreOptions": "Autres options de la table",
-  "showHideColumns": "Afficher/masquer les colonnes"
+  "showHideColumns": "Afficher/masquer les colonnes",
+  "searchPlaceholder": "æ_Search text in {{fields}} field_________________Â"
 }

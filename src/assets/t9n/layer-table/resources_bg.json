@@ -16,5 +16,6 @@
   "showAll": "Показване на всички",
   "recordsSelected": "Общо: {{total}} | Избор: {{selected}}",
   "moreOptions": "Още опции за таблица",
-  "showHideColumns": "Показване/скриване на колони"
+  "showHideColumns": "Показване/скриване на колони",
+  "searchPlaceholder": "й_Search text in {{fields}} field_________________й"
 }

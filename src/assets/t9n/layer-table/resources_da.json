@@ -16,5 +16,6 @@
   "showAll": "Vis alle",
   "recordsSelected": "I alt: {{total}} | Markering: {{selected}}",
   "moreOptions": "Flere tabelindstillinger",
-  "showHideColumns": "Vis/skjul kolonner"
+  "showHideColumns": "Vis/skjul kolonner",
+  "searchPlaceholder": "ø_Search text in {{fields}} field_________________å"
 }

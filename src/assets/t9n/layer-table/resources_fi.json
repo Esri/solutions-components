@@ -16,5 +16,6 @@
   "showAll": "Näytä kaikki",
   "recordsSelected": "Yhteensä: {{total}} | Valinta: {{selected}}",
   "moreOptions": "Muut taulun asetukset",
-  "showHideColumns": "Näytä/piilota sarakkeet"
+  "showHideColumns": "Näytä/piilota sarakkeet",
+  "searchPlaceholder": "Å_Search text in {{fields}} field_________________ö"
 }

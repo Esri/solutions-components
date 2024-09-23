@@ -1,3 +1,6 @@
 {
-  "selectFeaturesToStart": "Välj en post för att komma igång. Klicka medan du trycker på Ctrl-tangenten för att välja flera poster i tabellen."
+  "selectFeaturesToStart": "Välj en post för att komma igång. Klicka medan du trycker på Ctrl-tangenten för att välja flera poster i tabellen.",
+  "createFeature": "Å_Create feature_______________ö",
+  "createRecord": "Å_Create record______________ö",
+  "create": "Å_Create_____________ö"
 }

@@ -16,5 +16,6 @@
   "showAll": "Rādīt visu",
   "recordsSelected": "Kopā: {{total}} | Izvēle: {{selected}}",
   "moreOptions": "Citas tabulas opcijas",
-  "showHideColumns": "Rādīt/paslēpt kolonnas"
+  "showHideColumns": "Rādīt/paslēpt kolonnas",
+  "searchPlaceholder": "ķ_Search text in {{fields}} field_________________ū"
 }

@@ -16,5 +16,6 @@
   "showAll": "Alle anzeigen",
   "recordsSelected": "Gesamt: {{total}} | Auswahl: {{selected}}",
   "moreOptions": "Weitere Tabellenoptionen",
-  "showHideColumns": "Spalten ein-/ausblenden"
+  "showHideColumns": "Spalten ein-/ausblenden",
+  "searchPlaceholder": "ä_Search text in {{fields}} field_________________Ü"
 }

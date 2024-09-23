@@ -16,5 +16,6 @@
   "showAll": "Afișare toate",
   "recordsSelected": "Total: {{total}} | Selecție: {{selected}}",
   "moreOptions": "Mai multe opțiuni de tabel",
-  "showHideColumns": "Afişare/ascundere coloane"
+  "showHideColumns": "Afişare/ascundere coloane",
+  "searchPlaceholder": "Ă_Search text in {{fields}} field_________________ș"
 }

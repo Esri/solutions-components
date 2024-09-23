@@ -1,3 +1,6 @@
 {
-  "selectFeaturesToStart": "تحديد سجل للبدء انقر بينما تضغط على مفتاح Ctrl لتحديد أكثر من سجل في الجدول."
+  "selectFeaturesToStart": "تحديد سجل للبدء انقر بينما تضغط على مفتاح Ctrl لتحديد أكثر من سجل في الجدول.",
+  "createFeature": "بيت_Create feature_______________لاحقة",
+  "createRecord": "بيت_Create record______________لاحقة",
+  "create": "بيت_Create_____________لاحقة"
 }

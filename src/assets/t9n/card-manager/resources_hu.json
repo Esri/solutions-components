@@ -1,3 +1,6 @@
 {
-  "selectFeaturesToStart": "Válasszon ki egy rekordot a kezdéshez. A Ctrl billentyű lenyomása közben kattintson a táblázat több rekordjának kijelöléséhez."
+  "selectFeaturesToStart": "Válasszon ki egy rekordot a kezdéshez. A Ctrl billentyű lenyomása közben kattintson a táblázat több rekordjának kijelöléséhez.",
+  "createFeature": "í_Create feature_______________ő",
+  "createRecord": "í_Create record______________ő",
+  "create": "í_Create_____________ő"
 }

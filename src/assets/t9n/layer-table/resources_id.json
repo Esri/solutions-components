@@ -16,5 +16,6 @@
   "showAll": "Tampilkan semua",
   "recordsSelected": "Total: {{total}} | Pilihan: {{selected}}",
   "moreOptions": "Opsi tabel lainnya",
-  "showHideColumns": "Tampilkan/sembunyikan kolom"
+  "showHideColumns": "Tampilkan/sembunyikan kolom",
+  "searchPlaceholder": "ng_Search text in {{fields}} field_________________ny"
 }
