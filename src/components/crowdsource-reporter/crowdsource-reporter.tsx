@@ -1385,6 +1385,7 @@ export class CrowdsourceReporter {
             onFilterListReset={() => this._handleFilterListReset()}
             onFilterUpdate={() => this._handleFilterUpdate()}
             ref={(el) => this._filterList = el}
+            resetBtn={false}
             resetFiltersOnDisconnect={false}
             view={this.mapView}
             zoomBtn={false}
