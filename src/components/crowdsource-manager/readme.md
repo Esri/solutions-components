@@ -184,6 +184,7 @@ graph TD;
   calcite-alert --> calcite-chip
   calcite-flow-item --> calcite-action
   calcite-flow-item --> calcite-panel
+  create-feature --> calcite-notice
   create-feature --> calcite-loader
   layer-table --> calcite-shell
   layer-table --> calcite-panel

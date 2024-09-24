@@ -20,8 +20,10 @@
 
 | Event                    | Description                                                       | Type                                                                         |
 | ------------------------ | ----------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| `addComment`             | Emitted on demand when comment icon is clicked                    | `CustomEvent<void>`                                                          |
 | `commentSelect`          | Emitted on demand when comment is selected using the feature-list | `CustomEvent<Graphic>`                                                       |
 | `featureSelectionChange` | Emitted on demand when the selected index changes                 | `CustomEvent<{ selectedFeature: Graphic[]; selectedFeatureIndex: number; }>` |
+| `likeOrDislikeClicked`   | Emitted on demand when like or dislike button is clicked          | `CustomEvent<void>`                                                          |
 | `loadingStatus`          | Emitted on demand when like or dislike button is clicked          | `CustomEvent<boolean>`                                                       |
 
 
@@ -84,7 +86,6 @@ Type: `Promise<void>`
 
 - calcite-panel
 - [info-card](../info-card)
-- calcite-icon
 - calcite-button
 - [feature-list](../feature-list)
 
@@ -93,7 +94,6 @@ Type: `Promise<void>`
 graph TD;
   feature-details --> calcite-panel
   feature-details --> info-card
-  feature-details --> calcite-icon
   feature-details --> calcite-button
   feature-details --> feature-list
   calcite-panel --> calcite-action
