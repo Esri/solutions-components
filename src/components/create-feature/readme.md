@@ -17,6 +17,7 @@
 | `mapView`             | --                  | esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html                                                                                | `MapView`              | `undefined` |
 | `searchConfiguration` | --                  | ISearchConfiguration: Configuration details for the Search widget                                                                                                                        | `ISearchConfiguration` | `undefined` |
 | `selectedLayerId`     | `selected-layer-id` | string: Layer id of the feature layer in which the new feature is to be created                                                                                                          | `string`               | `undefined` |
+| `showGuidingMsg`      | `show-guiding-msg`  | boolean: When true the notice message with the current state should be shown                                                                                                             | `boolean`              | `true`      |
 
 
 ## Events
@@ -79,12 +80,15 @@ Promise that resolves when the operation is complete
 
 ### Depends on
 
+- calcite-notice
 - calcite-loader
 
 ### Graph
 ```mermaid
 graph TD;
+  create-feature --> calcite-notice
   create-feature --> calcite-loader
+  calcite-notice --> calcite-icon
   card-manager --> create-feature
   crowdsource-reporter --> create-feature
   style create-feature fill:#f9f,stroke:#333,stroke-width:4px
