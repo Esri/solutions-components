@@ -35,9 +35,15 @@
 
 ## Methods
 
-### `refresh() => Promise<void>`
+### `refresh(maintainPageState?: boolean) => Promise<void>`
 
 Refresh the feature list which will fetch the latest features and update the features list
+
+#### Parameters
+
+| Name                | Type      | Description                                        |
+| ------------------- | --------- | -------------------------------------------------- |
+| `maintainPageState` | `boolean` | If true feature list page state will be maintained |
 
 #### Returns
 

@@ -90,6 +90,7 @@ graph TD;
   calcite-popover --> calcite-icon
   calcite-flow-item --> calcite-action
   calcite-flow-item --> calcite-panel
+  create-feature --> calcite-notice
   create-feature --> calcite-loader
   crowdsource-manager --> card-manager
   style card-manager fill:#f9f,stroke:#333,stroke-width:4px

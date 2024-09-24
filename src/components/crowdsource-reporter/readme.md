@@ -136,6 +136,7 @@ graph TD;
   layer-list --> calcite-list-item
   layer-list --> calcite-icon
   calcite-notice --> calcite-icon
+  create-feature --> calcite-notice
   create-feature --> calcite-loader
   feature-list --> calcite-panel
   feature-list --> calcite-loader
@@ -183,7 +184,6 @@ graph TD;
   instant-apps-social-share --> calcite-action
   feature-details --> calcite-panel
   feature-details --> info-card
-  feature-details --> calcite-icon
   feature-details --> calcite-button
   feature-details --> feature-list
   info-card --> calcite-shell
@@ -202,6 +202,7 @@ graph TD;
   calcite-modal --> calcite-icon
   edit-card --> calcite-notice
   edit-card --> calcite-loader
+  create-related-feature --> calcite-notice
   create-related-feature --> calcite-loader
   style crowdsource-reporter fill:#f9f,stroke:#333,stroke-width:4px
 ```
