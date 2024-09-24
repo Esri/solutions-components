@@ -54,6 +54,7 @@
     "@types/node": "^22.5.5",
     "@typescript-eslint/eslint-plugin": "^7.17.0",
     "@typescript-eslint/parser": "^7.18.0",
+    "@typescript-eslint/typescript-estree": "^8.7.0",
     "autoprefixer": "^10.4.19",
     "babel-jest": "^29.7.0",
     "braces": "^3.0.3",
