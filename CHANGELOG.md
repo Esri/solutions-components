@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.10.19] - September 24th 2024
+Update asset path and refresh basemap widget
+
 ## [0.10.18] - September 23rd 2024
 Delivery for Manager Instant app - CT-Manager-AGOL-2024.RO3 #888
 
@@ -791,4 +794,5 @@ Recover from test releases
 [0.10.16]: https://github.com/Esri/solution.js/compare/v0.10.15...v0.10.16 "v0.10.16"
 [0.10.17]: https://github.com/Esri/solution.js/compare/v0.10.16...v0.10.17 "v0.10.17"
 [0.10.18]: https://github.com/Esri/solution.js/compare/v0.10.17...v0.10.18 "v0.10.18"
-[Unreleased]: https://github.com/Esri/solution.js/compare/v0.10.18...HEAD "Unreleased Changes"
+[0.10.19]: https://github.com/Esri/solution.js/compare/v0.10.18...v0.10.19 "v0.10.19"
+[Unreleased]: https://github.com/Esri/solution.js/compare/v0.10.19...HEAD "Unreleased Changes"
