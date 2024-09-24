@@ -94,7 +94,11 @@ export class BasemapGallery {
 
   @Watch("basemapConfig")
   async basemapConfigWatchHandler(): Promise<void> {
-    await (this.basemapWidget?.source as __esri.PortalBasemapsSource)?.refresh();
+    if (this.basemapWidget?.source) {
+      const portalBasemapsSource = this.basemapWidget?.source as __esri.PortalBasemapsSource;
+      portalBasemapsSource.query = this.basemapConfig?.basemapGroupId ? `id:${this.basemapConfig.basemapGroupId}` : null;
+      await portalBasemapsSource.refresh();
+    }
   }
 
   @Watch("mapView")
