@@ -501,7 +501,7 @@ export class PublicNotification {
     await this._getTranslations();
     await this._initModules();
     this._initSymbols();
-    this._onboardingImageUrl = getAssetPath(`../assets/data/images/onboarding.png`);
+    this._onboardingImageUrl = getAssetPath(`assets/data/images/onboarding.png`);
   }
 
   /**
