@@ -44,7 +44,7 @@ export class CrowdsourceManager {
    * AppLayout: The type of layout the application should use.
    * Valid values: "mapView" or "tableView" or "splitView"
    */
-  @Prop({ mutable: true }) appLayout: AppLayout = 'splitView';
+  @Prop({ mutable: true }) appLayout: AppLayout;
 
   /**
    * Array of objects containing proxy information for premium platform services.
@@ -160,6 +160,11 @@ export class CrowdsourceManager {
    * boolean: when true the zoom widget will be available
    */
   @Prop() enableZoom = true;
+
+  /**
+   * boolean: when true the map will be hidden on load
+   */
+  @Prop() hideMapOnLoad = false;
 
   /**
    * IMapInfo[]: array of map infos (name and id)
@@ -366,6 +371,14 @@ export class CrowdsourceManager {
     this._initMapZoom();
   }
 
+  /**
+   * When true and no appLayout is defined the map will be hidden on load
+   */
+  @Watch("hideMapOnLoad")
+  hideMapOnLoadWatchHandler(): void {
+    console.warn("hideMapOnLoad will be removed. Please use appLayout to control layout options.");
+  }
+
   //--------------------------------------------------------------------------
   //
   //  Methods (public)
@@ -502,6 +515,11 @@ export class CrowdsourceManager {
    */
   async componentDidLoad(): Promise<void> {
     this._resizeObserver.observe(this.el);
+    if (this.hideMapOnLoad && !this.appLayout) {
+      this.appLayout = 'tableView';
+    } else if (!this.appLayout) {
+      this.appLayout = 'splitView';
+    }
     this._isMapViewOnLoad = this.appLayout === 'mapView';
     this._setActiveLayout(this.appLayout);
   }

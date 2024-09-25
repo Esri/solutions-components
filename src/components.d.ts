@@ -295,6 +295,10 @@ export namespace Components {
          */
         "enableZoom": boolean;
         /**
+          * boolean: when true the map will be hidden on load
+         */
+        "hideMapOnLoad": boolean;
+        /**
           * boolean: When true a introduction window has been enabled in the consuming application. Also when true a floating button will be shown in the lower right of the window that will emit an event when clicked that the consuming application can respond to that will open the introduction window.
          */
         "introductionWindowEnabled": boolean;
@@ -2923,6 +2927,10 @@ declare namespace LocalJSX {
           * boolean: when true the zoom widget will be available
          */
         "enableZoom"?: boolean;
+        /**
+          * boolean: when true the map will be hidden on load
+         */
+        "hideMapOnLoad"?: boolean;
         /**
           * boolean: When true a introduction window has been enabled in the consuming application. Also when true a floating button will be shown in the lower right of the window that will emit an event when clicked that the consuming application can respond to that will open the introduction window.
          */
