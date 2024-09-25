@@ -91,7 +91,7 @@ export class PublicNotification {
   /**
    * boolean: When true the use features from a layer options will be enabled when the component loads
    */
-  @Prop() enableLayerFeaturesOnLoad = true;
+  @Prop() enableLayerFeaturesOnLoad = false;
 
   /**
    * boolean: When true users will be allowed to optionally create a buffer around the selection geometry
@@ -101,7 +101,7 @@ export class PublicNotification {
   /**
    * boolean: When true the serach distance options will be enabled when the component loads
    */
-  @Prop() enableSearchDistanceOnLoad = true;
+  @Prop() enableSearchDistanceOnLoad = false;
 
   /**
    * boolean: When true sketch tools will be provided to allow users to draw a selection geometry
