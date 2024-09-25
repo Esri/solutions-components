@@ -372,7 +372,7 @@ export class CrowdsourceManager {
   }
 
   /**
-   * When true the map will be hidden on load
+   * When true and no appLayout is defined the map will be hidden on load
    */
   @Watch("hideMapOnLoad")
   hideMapOnLoadWatchHandler(): void {
