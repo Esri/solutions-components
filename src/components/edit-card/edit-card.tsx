@@ -126,8 +126,10 @@ export class EditCard {
 
   /**
    * esri/layers/FeatureLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html
+   * OR
+   * esri/layers/support/SubtypeSublayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-support-SubtypeSublayer.html
    */
-  protected _layer: __esri.FeatureLayer;
+  protected _layer: __esri.FeatureLayer | __esri.SubtypeSublayer;
 
   /**
    * HTMLDivElement: https://developer.mozilla.org/en-US/docs/Web/API/HTMLDivElement
@@ -246,11 +248,15 @@ export class EditCard {
    */
   async componentWillRender(): Promise<void> {
     if (this.graphics?.length > 0 && this.graphics[0]?.layer) {
-      this._layer = this.graphics[0].layer as __esri.FeatureLayer;
+      this._layer = this.graphics[0].layer as __esri.FeatureLayer | __esri.SubtypeSublayer;
       if (this._layerEditHandle) {
         this._layerEditHandle.remove();
       }
-      this._layerEditHandle = this._layer.on("edits", () => {
+
+      // #896 Editing on sybtype group layer is failing in Manager
+      const layer = this._layer.type === "subtype-sublayer" ? this._layer.parent : this._layer;
+
+      this._layerEditHandle = (layer as any).on("edits", () => {
         this.editsComplete.emit();
       });
     }
