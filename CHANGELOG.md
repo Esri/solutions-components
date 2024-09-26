@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.10.22] - September 26th 2024
+Handle edits for SubtypeSublayer and check view layer sources
+
 ## [0.10.21] - September 25th 2024
 hideMapOnLoad BC and don't enable layer features and search distance on load by default
 
@@ -803,4 +806,5 @@ Recover from test releases
 [0.10.19]: https://github.com/Esri/solution.js/compare/v0.10.18...v0.10.19 "v0.10.19"
 [0.10.20]: https://github.com/Esri/solution.js/compare/v0.10.19...v0.10.20 "v0.10.20"
 [0.10.21]: https://github.com/Esri/solution.js/compare/v0.10.20...v0.10.21 "v0.10.21"
-[Unreleased]: https://github.com/Esri/solution.js/compare/v0.10.21...HEAD "Unreleased Changes"
+[0.10.22]: https://github.com/Esri/solution.js/compare/v0.10.21...v0.10.22 "v0.10.22"
+[Unreleased]: https://github.com/Esri/solution.js/compare/v0.10.22...HEAD "Unreleased Changes"
