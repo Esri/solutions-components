@@ -213,6 +213,11 @@ export class MapSelectTools {
   //--------------------------------------------------------------------------
 
   /**
+   * esri/request: https://developers.arcgis.com/javascript/latest/api-reference/esri-request.html
+   */
+  protected _esriRequest: typeof import("esri/request");
+
+  /**
    * esri/layers/FeatureLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html
    */
   protected FeatureLayer: typeof import("esri/layers/FeatureLayer");
@@ -719,13 +724,15 @@ export class MapSelectTools {
    * @protected
    */
   protected async _initModules(): Promise<void> {
-    const [GraphicsLayer, Graphic, Search, geometryEngine, FeatureLayer] = await loadModules([
+    const [esriRequest, GraphicsLayer, Graphic, Search, geometryEngine, FeatureLayer] = await loadModules([
+      "esri/request",
       "esri/layers/GraphicsLayer",
       "esri/Graphic",
       "esri/widgets/Search",
       "esri/geometry/geometryEngine",
       "esri/layers/FeatureLayer"
     ]);
+    this._esriRequest = esriRequest;
     this.GraphicsLayer = GraphicsLayer;
     this.Graphic = Graphic;
     this.Search = Search;
@@ -814,32 +821,7 @@ export class MapSelectTools {
       });
 
       this._searchWidget.on("select-result", (searchResults) => {
-        if (searchResults.result) {
-          this._searchResult = searchResults.result;
-
-          const resultFeature = searchResults.result.feature;
-          const resultLayer = resultFeature?.layer as any;
-          const selectLayer = this.selectLayerView.layer;
-          const oid = resultFeature?.getObjectId();
-
-          const useOIDs = resultLayer?.url && selectLayer?.url && resultLayer.url === selectLayer.url && !isNaN(oid);
-
-          const oids = useOIDs ? [oid] : undefined;
-          this._workflowType = EWorkflowType.SEARCH;
-          void this._updateLabel();
-
-          const graphics = [searchResults.result.feature];
-          this._updateSelection(
-            graphics,
-            useOIDs,
-            oids
-          );
-          this._drawTools.graphics = graphics;
-          this._searchWidget.resultGraphic.visible = false;
-        } else {
-          const clearLabel = this._searchClearLabel();
-          void this._clearResults(false, clearLabel);
-        }
+        void this._selectResult(searchResults.result);
       });
 
       await this._searchWidget.when(() => {
@@ -848,6 +830,91 @@ export class MapSelectTools {
           this.searchConfiguration.allPlaceholder : this._translations.placeholder;
       })
     }
+  }
+
+  /**
+   * Handle the result from the search widget.
+   *
+   * @param url the url of the layer view
+   *
+   * @returns the url of the views source
+   * @protected
+   */
+  protected async _selectResult(
+    result: __esri.SearchSelectResultEventResult
+  ): Promise<void> {
+    if (result) {
+      this._searchResult = result;
+
+      const resultFeature = result.feature;
+      const resultLayer = resultFeature?.layer as any;
+      const selectLayer = this.selectLayerView.layer;
+      const oid = resultFeature?.getObjectId();
+
+      let resultLayerSourceUrl;
+      if (resultLayer.sourceJSON?.isView) {
+        resultLayerSourceUrl = await this._getViewSourceUrl(resultLayer.url);
+      }
+
+      let selectLayerSourceUrl;
+      if (selectLayer.sourceJSON?.isView) {
+        selectLayerSourceUrl = await this._getViewSourceUrl(selectLayer.url);
+      }
+
+      const rUrl = resultLayer?.url?.toLowerCase();
+      const rSourceUrl = resultLayerSourceUrl?.toLowerCase();
+
+      const sUrl = selectLayer?.url?.toLowerCase();
+      const sSourceUrl = selectLayerSourceUrl?.toLowerCase();
+
+      const useOIDs = rUrl && sUrl &&
+        (rUrl === sUrl || rUrl === sSourceUrl || rSourceUrl === sUrl || rSourceUrl === sSourceUrl) &&
+        !isNaN(oid);
+
+      const oids = useOIDs ? [oid] : undefined;
+      this._workflowType = EWorkflowType.SEARCH;
+      void this._updateLabel();
+
+      const graphics = [result.feature];
+      this._updateSelection(
+        graphics,
+        useOIDs,
+        oids
+      );
+      this._drawTools.graphics = graphics;
+      this._searchWidget.resultGraphic.visible = false;
+    } else {
+      const clearLabel = this._searchClearLabel();
+      void this._clearResults(false, clearLabel);
+    }
+  }
+
+  /**
+   * Get the source url for a view. This function supports single source views only.
+   *
+   * @param url the url of the layer view
+   *
+   * @returns the url of the views source
+   * @protected
+   */
+  protected async _getViewSourceUrl(
+    url: string
+  ): Promise<string> {
+    let sourceUrl = "";
+    const resultLayerSourcesUrl = `${url}/sources?f=json`;
+    const request = await this._esriRequest(
+      resultLayerSourcesUrl,
+      {
+        query: {
+          f: "json"
+        }
+      }
+    );
+
+    if (request.data.services.length === 1) {
+      sourceUrl = request.data.services[0].url;
+    }
+    return sourceUrl;
   }
 
   /**
