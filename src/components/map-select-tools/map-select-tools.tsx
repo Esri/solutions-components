@@ -902,17 +902,21 @@ export class MapSelectTools {
   ): Promise<string> {
     let sourceUrl = "";
     const resultLayerSourcesUrl = `${url}/sources?f=json`;
-    const request = await this._esriRequest(
-      resultLayerSourcesUrl,
-      {
-        query: {
-          f: "json"
+    try {
+      const request = await this._esriRequest(
+        resultLayerSourcesUrl,
+        {
+          query: {
+            f: "json"
+          }
         }
-      }
-    );
+      );
 
-    if (request.data.services.length === 1) {
-      sourceUrl = request.data.services[0].url;
+      if (request?.data?.services?.length === 1) {
+        sourceUrl = request.data.services[0].url;
+      }
+    } catch (error) {
+      console.log(error);
     }
     return sourceUrl;
   }
