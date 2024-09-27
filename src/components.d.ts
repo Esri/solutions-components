@@ -1595,6 +1595,8 @@ export namespace Components {
          */
         "solutionVariables": string;
     }
+    interface SolutionItemAccordion {
+    }
     interface SolutionItemDetails {
         /**
           * A template's itemId.
@@ -2437,6 +2439,12 @@ declare global {
         prototype: HTMLSolutionItemElement;
         new (): HTMLSolutionItemElement;
     };
+    interface HTMLSolutionItemAccordionElement extends Components.SolutionItemAccordion, HTMLStencilElement {
+    }
+    var HTMLSolutionItemAccordionElement: {
+        prototype: HTMLSolutionItemAccordionElement;
+        new (): HTMLSolutionItemAccordionElement;
+    };
     interface HTMLSolutionItemDetailsElement extends Components.SolutionItemDetails, HTMLStencilElement {
     }
     var HTMLSolutionItemDetailsElement: {
@@ -2598,6 +2606,7 @@ declare global {
         "solution-configuration": HTMLSolutionConfigurationElement;
         "solution-contents": HTMLSolutionContentsElement;
         "solution-item": HTMLSolutionItemElement;
+        "solution-item-accordion": HTMLSolutionItemAccordionElement;
         "solution-item-details": HTMLSolutionItemDetailsElement;
         "solution-item-icon": HTMLSolutionItemIconElement;
         "solution-item-sharing": HTMLSolutionItemSharingElement;
@@ -4240,6 +4249,8 @@ declare namespace LocalJSX {
          */
         "solutionVariables"?: string;
     }
+    interface SolutionItemAccordion {
+    }
     interface SolutionItemDetails {
         /**
           * A template's itemId.
@@ -4400,6 +4411,7 @@ declare namespace LocalJSX {
         "solution-configuration": SolutionConfiguration;
         "solution-contents": SolutionContents;
         "solution-item": SolutionItem;
+        "solution-item-accordion": SolutionItemAccordion;
         "solution-item-details": SolutionItemDetails;
         "solution-item-icon": SolutionItemIcon;
         "solution-item-sharing": SolutionItemSharing;
@@ -4459,6 +4471,7 @@ declare module "@stencil/core" {
             "solution-configuration": LocalJSX.SolutionConfiguration & JSXBase.HTMLAttributes<HTMLSolutionConfigurationElement>;
             "solution-contents": LocalJSX.SolutionContents & JSXBase.HTMLAttributes<HTMLSolutionContentsElement>;
             "solution-item": LocalJSX.SolutionItem & JSXBase.HTMLAttributes<HTMLSolutionItemElement>;
+            "solution-item-accordion": LocalJSX.SolutionItemAccordion & JSXBase.HTMLAttributes<HTMLSolutionItemAccordionElement>;
             "solution-item-details": LocalJSX.SolutionItemDetails & JSXBase.HTMLAttributes<HTMLSolutionItemDetailsElement>;
             "solution-item-icon": LocalJSX.SolutionItemIcon & JSXBase.HTMLAttributes<HTMLSolutionItemIconElement>;
             "solution-item-sharing": LocalJSX.SolutionItemSharing & JSXBase.HTMLAttributes<HTMLSolutionItemSharingElement>;
