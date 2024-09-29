@@ -1596,6 +1596,10 @@ export namespace Components {
         "solutionVariables": string;
     }
     interface SolutionItemAccordion {
+        /**
+          * string: The id for the current solution item
+         */
+        "solitionId": string;
     }
     interface SolutionItemDetails {
         /**
@@ -4250,6 +4254,10 @@ declare namespace LocalJSX {
         "solutionVariables"?: string;
     }
     interface SolutionItemAccordion {
+        /**
+          * string: The id for the current solution item
+         */
+        "solitionId"?: string;
     }
     interface SolutionItemDetails {
         /**

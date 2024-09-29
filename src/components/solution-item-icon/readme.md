@@ -19,6 +19,7 @@
 ### Used by
 
  - [solution-contents](../solution-contents)
+ - [solution-item-accordion](../solution-item-accordion)
  - [solution-item-sharing](../solution-item-sharing)
  - [solution-variables](../solution-variables)
 
@@ -26,6 +27,7 @@
 ```mermaid
 graph TD;
   solution-contents --> solution-item-icon
+  solution-item-accordion --> solution-item-icon
   solution-item-sharing --> solution-item-icon
   solution-variables --> solution-item-icon
   style solution-item-icon fill:#f9f,stroke:#333,stroke-width:4px

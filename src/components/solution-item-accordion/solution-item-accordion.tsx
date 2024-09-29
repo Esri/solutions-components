@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, State } from '@stencil/core';
+import { Component, Element, Host, h, Prop, State, VNode } from '@stencil/core';
 import SolutionItemAccordion_T9n from "../../assets/t9n/solution-item-accordion/resources.json"
 import { getLocaleComponentStrings } from "../../utils/locale";
 
@@ -37,6 +37,11 @@ export class SolutionItemAccordion {
   //  Properties (public)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * string: The id for the current solution item
+   */
+  @Prop() solitionId: string;
 
   //--------------------------------------------------------------------------
   //
@@ -81,12 +86,19 @@ export class SolutionItemAccordion {
   //--------------------------------------------------------------------------
 
   /**
+   * StencilJS: Called once just after the component is first connected to the DOM.
+   */
+  async componentWillLoad(): Promise<void> {
+    await this._getTranslations();
+  }
+
+  /**
    * Renders the component.
    */
   render() {
     return (
       <Host>
-        <slot/>
+        {this._getAccordion()}
       </Host>
     );
   }
@@ -96,6 +108,92 @@ export class SolutionItemAccordion {
   //  Functions (protected)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Load esri javascript api modules
+   *
+   * @returns Promise resolving when function is done
+   *
+   * @protected
+   */
+  protected _getAccordion(): VNode {
+    return (
+      <calcite-accordion>
+        <calcite-accordion-item description="Yachts, boats, and dinghies" heading="Watercraft" icon-start="embark">
+          <calcite-notice open>
+            <div slot="message">Recommended for coastal use</div>
+          </calcite-notice>
+        </calcite-accordion-item>
+        <calcite-accordion-item description="Cars, trucks, and buses" heading="Automobiles" icon-start="car">
+          <calcite-notice open>
+            <div slot="message">A good choice for inland adventure</div>
+          </calcite-notice>
+        </calcite-accordion-item>
+        {this._getAccordionItem("A")}
+      </calcite-accordion>
+    );
+  }
+
+  /**
+   *
+   *
+   * @returns
+   *
+   * @protected
+   */
+  protected _getAccordionItem(
+    id: string
+  ): VNode {
+    console.log(id)
+    const a = {
+      "value": {
+        "type": "Feature Service",
+        "typeKeywords": [
+          "ArcGIS Server",
+          "Data",
+          "Feature Access",
+          "Feature Service",
+          "Multi Services View",
+          "Service",
+          "Singlelayer",
+          "Hosted Service",
+          "View Service"
+        ]
+      }
+    };
+    return (
+      <calcite-accordion-item description={(
+        <solution-item-icon type={a.value.type} typeKeywords={a.value.typeKeywords}/>
+      )}
+        heading={(
+          <solution-item-icon type={a.value.type} typeKeywords={a.value.typeKeywords}/>
+        )}
+        icon-start={"https://i.sstatic.net/Lx60z.png"}
+      >
+        {this._getDependencyList(id)}
+      </calcite-accordion-item>
+    );
+  }
+
+  protected _getDependencyList(
+    id: string
+  ): VNode {
+    console.log(id)
+    return (
+      <calcite-list/>
+    );
+  }
+
+  /**
+   *
+   *
+   * @returns
+   *
+   * @protected
+   */
+  protected _getIcon(): void {
+    console.log("A")
+  }
 
   /**
    * Fetches the component's translations

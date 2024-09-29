@@ -1,0 +1,60 @@
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <title>Solution Item Accordion</title>
+  <!--
+    | Copyright 2024 Esri
+    |
+    | Licensed under the Apache License, Version 2.0 (the "License");
+    | you may not use this file except in compliance with the License.
+    | You may obtain a copy of the License at
+    |
+    |    http://www.apache.org/licenses/LICENSE-2.0
+    |
+    | Unless required by applicable law or agreed to in writing, software
+    | distributed under the License is distributed on an "AS IS" BASIS,
+    | WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    | See the License for the specific language governing permissions and
+    | limitations under the License.
+    -->
+  <style>
+    .main {
+      background-color: var(--calcite-color-foreground-1);
+      display: grid;
+      align-self: center;
+    }
+
+    .column {
+      min-width: 300px;
+      padding: 1rem;
+      border: 1px solid var(--calcite-color-border-2);
+    }
+  </style>
+
+  <script type="module" src="https://js.arcgis.com/calcite-components/2.12.2/calcite.esm.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://js.arcgis.com/calcite-components/2.12.2/calcite.css" />
+  <link rel="stylesheet" href="../solutions-components.css" type="text/css">
+
+  <script type="module" src="../solutions-components.esm.js"></script>
+
+  <script>
+    function addValues() {
+      // const demo = document.getElementById("demo");
+      // demo.values = {
+      //   "Details": "Details info goes here",
+      //   "Name": "Name here",
+      //   "Phone": "(000) 000-0000",
+      //   "Email": "example@gmail.com",
+      //   "Date": "May 11, 2022"
+      // };
+    }
+  </script>
+</head>
+
+<body onload="addValues()">
+  <solution-item-accordion id="demo" class="main column"></solution-item-accordion>
+</body>
+
+</html>
