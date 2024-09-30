@@ -59,7 +59,7 @@
     "babel-jest": "^29.7.0",
     "braces": "^3.0.3",
     "dotenv": "^16.4.5",
-    "eslint": "^8.56.0",
+    "eslint": "^8.57.1",
     "eslint-config-prettier": "9.1.0",
     "eslint-plugin-jest": "^28.8.2",
     "eslint-plugin-prettier": "5.2.1",
