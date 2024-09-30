@@ -6,7 +6,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
-## [0.10.22] - September 26th 2024
+## [0.10.23] - September 30th 2024
 Show map picker in tableView and show map icon in map picker and show table icon in layer picker
 
 ## [0.10.22] - September 26th 2024
@@ -810,4 +810,5 @@ Recover from test releases
 [0.10.20]: https://github.com/Esri/solution.js/compare/v0.10.19...v0.10.20 "v0.10.20"
 [0.10.21]: https://github.com/Esri/solution.js/compare/v0.10.20...v0.10.21 "v0.10.21"
 [0.10.22]: https://github.com/Esri/solution.js/compare/v0.10.21...v0.10.22 "v0.10.22"
-[Unreleased]: https://github.com/Esri/solution.js/compare/v0.10.22...HEAD "Unreleased Changes"
+[0.10.23]: https://github.com/Esri/solution.js/compare/v0.10.22...v0.10.23 "v0.10.23"
+[Unreleased]: https://github.com/Esri/solution.js/compare/v0.10.23...HEAD "Unreleased Changes"
