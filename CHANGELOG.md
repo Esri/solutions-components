@@ -7,6 +7,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [Unreleased]
 
 ## [0.10.22] - September 26th 2024
+Show map picker in tableView and show map icon in map picker and show table icon in layer picker
+
+## [0.10.22] - September 26th 2024
 Handle edits for SubtypeSublayer and check view layer sources
 
 ## [0.10.21] - September 25th 2024
