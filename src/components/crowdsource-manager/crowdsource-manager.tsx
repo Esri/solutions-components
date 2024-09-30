@@ -828,8 +828,9 @@ export class CrowdsourceManager {
     const headerClass = this._isMobile && this._showInformationHeader ? "display-none height-0" : "";
     const headerTheme = this.popupHeaderColor ? "" : !this._isMobile ? "calcite-mode-dark" : "calcite-mode-light";
     const containerClass = this._isMobile && this._hideTable ? "position-absolute-0 width-full height-full" : this._isMobile ? "display-none height-0" : "";
+    const tableViewClass = this.appLayout === "tableView" ? "position-relative top-51" : "";
     return (
-      <div class={`${headerTheme} ${popupNodeClass} ${containerClass}`}
+      <div class={`${headerTheme} ${popupNodeClass} ${containerClass} ${tableViewClass}`}
         style={{
           '--calcite-color-foreground-1': this.popupHeaderColor, /* background color that will be displayed on the popup header */
           '--calcite-color-foreground-2': this.popupHeaderHoverColor, /* background color that will be displayed on button when hovered */
