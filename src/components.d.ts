@@ -8,10 +8,14 @@ import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { AppLayout, ButtonType, DistanceUnit, EditType, EDrawMode, ELayoutMode, IBasemapConfig, IConsentResponse, IExportInfos, IFeatureServiceEnabledStatus, IInventoryItem, ILayerAndTableIds, ILayerExpression, IMapChange, IMapInfo, IReportingOptions, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISortingInfo, ISpatialRefRepresentation, IValueChange, theme } from "./utils/interfaces";
 import { IReportingOptions as IReportingOptions1 } from "./components";
 import { ILayerItemsHash } from "./components/layer-list/layer-list";
+import { unknown as FlipContext } from "./components/interfaces";
+import { RegistryEntry, RequestedItem } from "./components/solution-accordion-item/interfaces";
 import { UserSession } from "@esri/solution-common";
 export { AppLayout, ButtonType, DistanceUnit, EditType, EDrawMode, ELayoutMode, IBasemapConfig, IConsentResponse, IExportInfos, IFeatureServiceEnabledStatus, IInventoryItem, ILayerAndTableIds, ILayerExpression, IMapChange, IMapInfo, IReportingOptions, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISortingInfo, ISpatialRefRepresentation, IValueChange, theme } from "./utils/interfaces";
 export { IReportingOptions as IReportingOptions1 } from "./components";
 export { ILayerItemsHash } from "./components/layer-list/layer-list";
+export { unknown as FlipContext } from "./components/interfaces";
+export { RegistryEntry, RequestedItem } from "./components/solution-accordion-item/interfaces";
 export { UserSession } from "@esri/solution-common";
 export namespace Components {
     interface ArcgisLogin {
@@ -1549,6 +1553,32 @@ export namespace Components {
     }
     interface ShareItem {
     }
+    interface SolutionAccordionItem {
+        /**
+          * Specifies a description for the component.
+         */
+        "description": string;
+        /**
+          * When `true`, the component is expanded.
+         */
+        "expanded": boolean;
+        /**
+          * Specifies heading text for the component.
+         */
+        "heading": string;
+        /**
+          * Specifies an icon to display at the end of the component.
+         */
+        "iconEnd": string;
+        /**
+          * When `true`, the icon will be flipped when the element direction is right-to-left (`"rtl"`).
+         */
+        "iconFlipRtl": FlipContext;
+        /**
+          * Specifies an icon to display at the start of the component.
+         */
+        "iconStart": string;
+    }
     interface SolutionConfiguration {
         /**
           * Credentials for requests, which can be a serialized UserSession
@@ -1841,6 +1871,10 @@ export interface PublicNotificationCustomEvent<T> extends CustomEvent<T> {
 export interface RefineSelectionCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLRefineSelectionElement;
+}
+export interface SolutionAccordionItemCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLSolutionAccordionItemElement;
 }
 export interface SolutionContentsCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -2414,6 +2448,25 @@ declare global {
         prototype: HTMLShareItemElement;
         new (): HTMLShareItemElement;
     };
+    interface HTMLSolutionAccordionItemElementEventMap {
+        "calciteInternalAccordionItemSelect": RequestedItem;
+        "calciteInternalAccordionItemClose": void;
+        "calciteInternalAccordionItemRegister": RegistryEntry;
+    }
+    interface HTMLSolutionAccordionItemElement extends Components.SolutionAccordionItem, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLSolutionAccordionItemElementEventMap>(type: K, listener: (this: HTMLSolutionAccordionItemElement, ev: SolutionAccordionItemCustomEvent<HTMLSolutionAccordionItemElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLSolutionAccordionItemElementEventMap>(type: K, listener: (this: HTMLSolutionAccordionItemElement, ev: SolutionAccordionItemCustomEvent<HTMLSolutionAccordionItemElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLSolutionAccordionItemElement: {
+        prototype: HTMLSolutionAccordionItemElement;
+        new (): HTMLSolutionAccordionItemElement;
+    };
     interface HTMLSolutionConfigurationElement extends Components.SolutionConfiguration, HTMLStencilElement {
     }
     var HTMLSolutionConfigurationElement: {
@@ -2607,6 +2660,7 @@ declare global {
         "refine-results-flow-item": HTMLRefineResultsFlowItemElement;
         "refine-selection": HTMLRefineSelectionElement;
         "share-item": HTMLShareItemElement;
+        "solution-accordion-item": HTMLSolutionAccordionItemElement;
         "solution-configuration": HTMLSolutionConfigurationElement;
         "solution-contents": HTMLSolutionContentsElement;
         "solution-item": HTMLSolutionItemElement;
@@ -4209,6 +4263,35 @@ declare namespace LocalJSX {
     }
     interface ShareItem {
     }
+    interface SolutionAccordionItem {
+        /**
+          * Specifies a description for the component.
+         */
+        "description"?: string;
+        /**
+          * When `true`, the component is expanded.
+         */
+        "expanded"?: boolean;
+        /**
+          * Specifies heading text for the component.
+         */
+        "heading"?: string;
+        /**
+          * Specifies an icon to display at the end of the component.
+         */
+        "iconEnd"?: string;
+        /**
+          * When `true`, the icon will be flipped when the element direction is right-to-left (`"rtl"`).
+         */
+        "iconFlipRtl"?: FlipContext;
+        /**
+          * Specifies an icon to display at the start of the component.
+         */
+        "iconStart"?: string;
+        "onCalciteInternalAccordionItemClose"?: (event: SolutionAccordionItemCustomEvent<void>) => void;
+        "onCalciteInternalAccordionItemRegister"?: (event: SolutionAccordionItemCustomEvent<RegistryEntry>) => void;
+        "onCalciteInternalAccordionItemSelect"?: (event: SolutionAccordionItemCustomEvent<RequestedItem>) => void;
+    }
     interface SolutionConfiguration {
         /**
           * Credentials for requests, which can be a serialized UserSession
@@ -4416,6 +4499,7 @@ declare namespace LocalJSX {
         "refine-results-flow-item": RefineResultsFlowItem;
         "refine-selection": RefineSelection;
         "share-item": ShareItem;
+        "solution-accordion-item": SolutionAccordionItem;
         "solution-configuration": SolutionConfiguration;
         "solution-contents": SolutionContents;
         "solution-item": SolutionItem;
@@ -4476,6 +4560,7 @@ declare module "@stencil/core" {
             "refine-results-flow-item": LocalJSX.RefineResultsFlowItem & JSXBase.HTMLAttributes<HTMLRefineResultsFlowItemElement>;
             "refine-selection": LocalJSX.RefineSelection & JSXBase.HTMLAttributes<HTMLRefineSelectionElement>;
             "share-item": LocalJSX.ShareItem & JSXBase.HTMLAttributes<HTMLShareItemElement>;
+            "solution-accordion-item": LocalJSX.SolutionAccordionItem & JSXBase.HTMLAttributes<HTMLSolutionAccordionItemElement>;
             "solution-configuration": LocalJSX.SolutionConfiguration & JSXBase.HTMLAttributes<HTMLSolutionConfigurationElement>;
             "solution-contents": LocalJSX.SolutionContents & JSXBase.HTMLAttributes<HTMLSolutionContentsElement>;
             "solution-item": LocalJSX.SolutionItem & JSXBase.HTMLAttributes<HTMLSolutionItemElement>;
