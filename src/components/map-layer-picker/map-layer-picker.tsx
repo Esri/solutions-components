@@ -340,9 +340,10 @@ export class MapLayerPicker {
    * @returns Calcite label with the layer name and icon
    */
   protected _getSingleLayerPlaceholder(): VNode {
+    const itemTypeIcon = this._getItemTypeIcon();
     return (
       <div class="layer-picker-label-container cursor-default">
-        <calcite-icon icon="layers" scale="s" />
+        <calcite-icon icon={itemTypeIcon} scale="s" />
         <calcite-label class="no-bottom-margin padding-start-1">
           {this.selectedName}
         </calcite-label>
@@ -446,6 +447,7 @@ export class MapLayerPicker {
    * @returns the node for the button
    */
   protected _getDropdownButton(): VNode {
+    const itemTypeIcon = this._getItemTypeIcon();
     const buttonClass = this.isMobile ? "" : "max-width-350";
     const buttonSlot = this.isMobile ? "trigger" : "";
     const buttonIcon = this._isDropdownOpen ? "chevron-up" : "chevron-down";
@@ -455,7 +457,7 @@ export class MapLayerPicker {
         appearance={this.appearance}
         class={buttonClass}
         iconEnd={buttonIcon}
-        iconStart="layers"
+        iconStart={itemTypeIcon}
         kind="neutral"
         slot={buttonSlot}
         width="full"
@@ -465,6 +467,20 @@ export class MapLayerPicker {
         </div>
       </calcite-button>
     )
+  }
+
+  /**
+   * Get the appropriate icon based on the selected layer or table
+   *
+   * @returns a string for the appropriate icon
+   */
+  _getItemTypeIcon(): string {
+    let itemTypeIcon = "layers";
+    if (this.selectedIds.length > 0) {
+      const id = this.selectedIds[0];
+      itemTypeIcon = Object.keys(this._layerNameHash).indexOf(id) > -1 ? "layers" : "table";
+    }
+    return itemTypeIcon;
   }
 
   /**

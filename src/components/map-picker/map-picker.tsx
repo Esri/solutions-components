@@ -220,6 +220,7 @@ export class MapPicker {
           appearance="transparent"
           class="width-full height-full"
           iconEnd={mapListIcon}
+          iconStart="map"
           id={id}
           kind="neutral"
           onClick={() => this._chooseMap()}
@@ -228,7 +229,6 @@ export class MapPicker {
           {this._webMapInfo?.name}
         </calcite-button>
         <calcite-tooltip
-          label=""
           placement="bottom"
           reference-element={id}
         >
