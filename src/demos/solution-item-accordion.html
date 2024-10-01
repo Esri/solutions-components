@@ -41,14 +41,345 @@
 
   <script>
     function addValues() {
-      // const demo = document.getElementById("demo");
-      // demo.values = {
-      //   "Details": "Details info goes here",
-      //   "Name": "Name here",
-      //   "Phone": "(000) 000-0000",
-      //   "Email": "example@gmail.com",
-      //   "Date": "May 11, 2022"
-      // };
+      const demo = document.getElementById("demo");
+      demo.templateInfos = [
+        {
+          "id": "31758ff487e5485893234eba01c79b77",
+          "type": "Web Mapping Application",
+          "title": "Citizen Problem Reporter",
+          "typeKeywords": [
+            "JavaScript",
+            "Map",
+            "Mapping Site",
+            "Online Map",
+            "Web Map"
+          ],
+          "dependencies": [
+            "cc06da1fa54a45c4b2a1762df957ffcd",
+            "d2054e602d6146afb6a25d309e27370b"
+          ]
+        },
+        {
+          "id": "86599d4eeabc417d99578b6a1f7ab03a",
+          "type": "Web Mapping Application",
+          "title": "Citizen Problem Manager",
+          "typeKeywords": [
+            "JavaScript",
+            "Map",
+            "Mapping Site",
+            "Online Map",
+            "Web Map"
+          ],
+          "dependencies": [
+            "e0b46c3a56b04d3c8659dc69dd763b93"
+          ]
+        },
+        {
+          "id": "d2054e602d6146afb6a25d309e27370b",
+          "type": "CSV",
+          "title": "Request Types",
+          "typeKeywords": [
+            "CSV"
+          ],
+          "dependencies": []
+        },
+        {
+          "id": "954675e532574bc4a8c7f2358ebff437",
+          "type": "Form",
+          "title": "Citizen Problem Satisfaction Survey",
+          "typeKeywords": [
+            "Form",
+            "Survey123",
+            "Survey123 Connect",
+            "xForm"
+          ],
+          "dependencies": [
+            "e60b649516fd411ba21538dca263ecca"
+          ]
+        },
+        {
+          "id": "80f9f143f8fd4df8a46a8054b245e6dd",
+          "type": "Dashboard",
+          "title": "Citizen Problem Dashboard",
+          "typeKeywords": [
+            "Arcade Data Expression",
+            "ArcGIS Dashboards",
+            "Dashboard",
+            "Extent Filter",
+            "Operations Dashboard",
+            "Relative Date Filter"
+          ],
+          "dependencies": [
+            "1563c627529a4b038e32113a4f491d91",
+            "9daf5761f0974c2ba20afa6e8c386d0e",
+            "e6a0f7410f524fac9e6f4ce7ce950480"
+          ]
+        },
+        {
+          "id": "4d33ef6ca616432aaa4179b091d84db9",
+          "type": "Hub Site Application",
+          "title": "Citizen Request Center",
+          "typeKeywords": [
+            "Hub",
+            "hubSite",
+            "hubSolution",
+            "JavaScript",
+            "Map",
+            "Mapping Site",
+            "Online Map",
+            "OpenData",
+            "Ready To Use",
+            "selfConfigured",
+            "Web Map",
+            "Registered App"
+          ],
+          "dependencies": [
+            "28c68d4ce4a04bceba3857f4b2135f68",
+            "31758ff487e5485893234eba01c79b77",
+            "390746c7baf04df9bff478f9d14f4e70",
+            "bda9fcc1178b43c3af872fdb1fdaf36b"
+          ]
+        },
+        {
+          "id": "cc06da1fa54a45c4b2a1762df957ffcd",
+          "type": "Group",
+          "title": "Citizen Problem Reporter",
+          "typeKeywords": [],
+          "dependencies": [
+            "3d0cd75e700a4eda962663d2da393940",
+            "757ab315deb140789c717d4c390f5f29"
+          ]
+        },
+        {
+          "id": "e6a0f7410f524fac9e6f4ce7ce950480",
+          "type": "Web Map",
+          "title": "Citizen Problem Dashboard",
+          "typeKeywords": [
+            "ArcGIS Online",
+            "Collector",
+            "Data Editing",
+            "Explorer Web Map",
+            "Map",
+            "Online Map",
+            "useOnly",
+            "Web Map"
+          ],
+          "dependencies": [
+            "9daf5761f0974c2ba20afa6e8c386d0e"
+          ]
+        },
+        {
+          "id": "1563c627529a4b038e32113a4f491d91",
+          "type": "Web Map",
+          "title": "Citizen Problem Survey",
+          "typeKeywords": [
+            "ArcGIS Online",
+            "Explorer Web Map",
+            "Map",
+            "Online Map",
+            "useOnly",
+            "Web Map"
+          ],
+          "dependencies": [
+            "da70a4d1ebf7488bbf75dcf681f218b5"
+          ]
+        },
+        {
+          "id": "e0b46c3a56b04d3c8659dc69dd763b93",
+          "type": "Group",
+          "title": "Citizen Problem Manager",
+          "typeKeywords": [],
+          "dependencies": [
+            "9daf5761f0974c2ba20afa6e8c386d0e",
+            "9f308af70d084b949dff7a79910e6a93"
+          ]
+        },
+        {
+          "id": "390746c7baf04df9bff478f9d14f4e70",
+          "type": "Feature Service",
+          "title": "Requests_public",
+          "typeKeywords": [
+            "ArcGIS Server",
+            "Data",
+            "Feature Access",
+            "Feature Service",
+            "Multilayer",
+            "Service",
+            "Hosted Service",
+            "View Service"
+          ],
+          "dependencies": [
+            "9daf5761f0974c2ba20afa6e8c386d0e"
+          ]
+        },
+        {
+          "id": "bda9fcc1178b43c3af872fdb1fdaf36b",
+          "type": "Feature Service",
+          "title": "SatisfactionSurveys_public",
+          "typeKeywords": [
+            "ArcGIS Server",
+            "Data",
+            "Feature Access",
+            "Feature Service",
+            "Service",
+            "Singlelayer",
+            "Table",
+            "Hosted Service",
+            "View Service"
+          ],
+          "dependencies": [
+            "20ba141f80384ff1ad797002e2d4cb90"
+          ]
+        },
+        {
+          "id": "28c68d4ce4a04bceba3857f4b2135f68",
+          "type": "Hub Page",
+          "title": "Manage Requests",
+          "typeKeywords": [
+            "Hub",
+            "hubPage",
+            "JavaScript",
+            "Map",
+            "Mapping Site",
+            "Online Map",
+            "OpenData",
+            "selfConfigured",
+            "Web Map"
+          ],
+          "dependencies": [
+            "80f9f143f8fd4df8a46a8054b245e6dd",
+            "86599d4eeabc417d99578b6a1f7ab03a",
+            "9daf5761f0974c2ba20afa6e8c386d0e"
+          ]
+        },
+        {
+          "id": "e60b649516fd411ba21538dca263ecca",
+          "type": "Feature Service",
+          "title": "SatisfactionSurveys_submit",
+          "typeKeywords": [
+            "ArcGIS Server",
+            "Data",
+            "Feature Access",
+            "Feature Service",
+            "Public Data Collection",
+            "Service",
+            "Singlelayer",
+            "Table",
+            "Hosted Service",
+            "View Service"
+          ],
+          "dependencies": [
+            "20ba141f80384ff1ad797002e2d4cb90"
+          ]
+        },
+        {
+          "id": "3d0cd75e700a4eda962663d2da393940",
+          "type": "Web Map",
+          "title": "Citizen Problem Reporter",
+          "typeKeywords": [
+            "ArcGIS Online",
+            "Collector",
+            "Data Editing",
+            "Explorer Web Map",
+            "Map",
+            "Online Map",
+            "useOnly",
+            "Web Map"
+          ],
+          "dependencies": [
+            "757ab315deb140789c717d4c390f5f29"
+          ]
+        },
+        {
+          "id": "757ab315deb140789c717d4c390f5f29",
+          "type": "Feature Service",
+          "title": "Requests_reporter",
+          "typeKeywords": [
+            "ArcGIS Server",
+            "Data",
+            "Feature Access",
+            "Feature Service",
+            "Multilayer",
+            "Public Data Collection",
+            "Service",
+            "Hosted Service",
+            "View Service"
+          ],
+          "dependencies": [
+            "9daf5761f0974c2ba20afa6e8c386d0e"
+          ]
+        },
+        {
+          "id": "9daf5761f0974c2ba20afa6e8c386d0e",
+          "type": "Feature Service",
+          "title": "Requests",
+          "typeKeywords": [
+            "ArcGIS Server",
+            "Data",
+            "Feature Access",
+            "Feature Service",
+            "Metadata",
+            "Multilayer",
+            "Service",
+            "Hosted Service"
+          ],
+          "dependencies": []
+        },
+        {
+          "id": "9f308af70d084b949dff7a79910e6a93",
+          "type": "Web Map",
+          "title": "Citizen Problem Manager",
+          "typeKeywords": [
+            "ArcGIS Online",
+            "Collector",
+            "Data Editing",
+            "Explorer Web Map",
+            "Map",
+            "Online Map",
+            "useOnly",
+            "Web Map"
+          ],
+          "dependencies": [
+            "954675e532574bc4a8c7f2358ebff437",
+            "9daf5761f0974c2ba20afa6e8c386d0e"
+          ]
+        },
+        {
+          "id": "da70a4d1ebf7488bbf75dcf681f218b5",
+          "type": "Feature Service",
+          "title": "Requests_survey",
+          "typeKeywords": [
+            "ArcGIS Server",
+            "Data",
+            "Feature Access",
+            "Feature Service",
+            "Multi Services View",
+            "Service",
+            "Singlelayer",
+            "Hosted Service",
+            "View Service"
+          ],
+          "dependencies": [
+            "20ba141f80384ff1ad797002e2d4cb90",
+            "9daf5761f0974c2ba20afa6e8c386d0e"
+          ]
+        },
+        {
+          "id": "20ba141f80384ff1ad797002e2d4cb90",
+          "type": "Feature Service",
+          "title": "SatisfactionSurveys",
+          "typeKeywords": [
+            "ArcGIS Server",
+            "Data",
+            "Feature Access",
+            "Feature Service",
+            "Metadata",
+            "Service",
+            "Hosted Service"
+          ],
+          "dependencies": []
+        }
+      ];
     }
   </script>
 </head>

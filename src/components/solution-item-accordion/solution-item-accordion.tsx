@@ -17,6 +17,7 @@
 import { Component, Element, Host, h, Prop, State, VNode } from '@stencil/core';
 import SolutionItemAccordion_T9n from "../../assets/t9n/solution-item-accordion/resources.json"
 import { getLocaleComponentStrings } from "../../utils/locale";
+import { ITemplateInfo } from "../../utils/interfaces";
 
 @Component({
   tag: 'solution-item-accordion',
@@ -39,9 +40,9 @@ export class SolutionItemAccordion {
   //--------------------------------------------------------------------------
 
   /**
-   * string: The id for the current solution item
+   * ITemplateInfo[]: Collection of template infos
    */
-  @Prop() solitionId: string;
+  @Prop() templateInfos: ITemplateInfo[] = [];
 
   //--------------------------------------------------------------------------
   //
@@ -110,89 +111,99 @@ export class SolutionItemAccordion {
   //--------------------------------------------------------------------------
 
   /**
-   * Load esri javascript api modules
+   * Get the Accordion component
    *
-   * @returns Promise resolving when function is done
+   * @returns the Accordion component
    *
    * @protected
    */
   protected _getAccordion(): VNode {
     return (
       <calcite-accordion>
-        <calcite-accordion-item description="Yachts, boats, and dinghies" heading="Watercraft" icon-start="embark">
-          <calcite-notice open>
-            <div slot="message">Recommended for coastal use</div>
-          </calcite-notice>
-        </calcite-accordion-item>
-        <calcite-accordion-item description="Cars, trucks, and buses" heading="Automobiles" icon-start="car">
-          <calcite-notice open>
-            <div slot="message">A good choice for inland adventure</div>
-          </calcite-notice>
-        </calcite-accordion-item>
-        {this._getAccordionItem("A")}
+        {this.templateInfos.map(t => this._getAccordionItem(t))}
       </calcite-accordion>
     );
   }
 
   /**
+   * Get the Accordion Item component with the appropriate icon and title
    *
-   *
-   * @returns
+   * @returns the Accordion Item component
    *
    * @protected
    */
   protected _getAccordionItem(
-    id: string
+    templateInfo: ITemplateInfo
   ): VNode {
-    console.log(id)
-    const a = {
-      "value": {
-        "type": "Feature Service",
-        "typeKeywords": [
-          "ArcGIS Server",
-          "Data",
-          "Feature Access",
-          "Feature Service",
-          "Multi Services View",
-          "Service",
-          "Singlelayer",
-          "Hosted Service",
-          "View Service"
-        ]
-      }
-    };
     return (
-      <calcite-accordion-item description={(
-        <solution-item-icon type={a.value.type} typeKeywords={a.value.typeKeywords}/>
-      )}
-        heading={(
-          <solution-item-icon type={a.value.type} typeKeywords={a.value.typeKeywords}/>
-        )}
-        icon-start={"https://i.sstatic.net/Lx60z.png"}
-      >
-        {this._getDependencyList(id)}
+      <calcite-accordion-item description={`${templateInfo.title}-${templateInfo.type}`}>
+        {/* <solution-item-icon type={templateInfo.type} typeKeywords={templateInfo.typeKeywords}/> */}
+        {this._getDependencyList(templateInfo.dependencies)}
       </calcite-accordion-item>
     );
   }
 
+  /**
+   * Get list of the current tempates dependecies
+   *
+   * @param ids the list of dependecies
+   *
+   * @returns the List component
+   *
+   * @protected
+   */
   protected _getDependencyList(
-    id: string
+    ids: string[]
   ): VNode {
-    console.log(id)
     return (
-      <calcite-list/>
+      <calcite-list>
+        {ids.map(id => this._getDependencyListItem(id))}
+      </calcite-list>
     );
   }
 
   /**
+   * Get list item for the current dependency
    *
+   * @param id the id of the dependency
    *
-   * @returns
+   * @returns the List item component
    *
    * @protected
    */
-  protected _getIcon(): void {
-    console.log("A")
+  protected _getDependencyListItem(
+    id: string
+  ): VNode {
+    const templateInfo: ITemplateInfo = this._getTemplateInfo(id);
+    return (
+      <calcite-list-item label={`${templateInfo.title}-${templateInfo.type}`} value={templateInfo.id}>
+        <div slot="content-start">
+          <solution-item-icon type={templateInfo.type} typeKeywords={templateInfo.typeKeywords}/>
+        </div>
+      </calcite-list-item>
+    );
+  }
+
+  /**
+   * Get the template info for the current id
+   *
+   * @param id the id of the item to fetch the template info for
+   *
+   * @returns the template info for the given id
+   *
+   * @protected
+   */
+  protected _getTemplateInfo(
+    id: string
+  ): any {
+    let templateInfo;
+    this.templateInfos.some(t => {
+      if (t.id === id) {
+        templateInfo = t;
+        return true;
+      }
+    });
+    return templateInfo;
   }
 
   /**

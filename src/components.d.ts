@@ -5,16 +5,16 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { AppLayout, ButtonType, DistanceUnit, EditType, EDrawMode, ELayoutMode, IBasemapConfig, IConsentResponse, IExportInfos, IFeatureServiceEnabledStatus, IInventoryItem, ILayerAndTableIds, ILayerExpression, IMapChange, IMapInfo, IReportingOptions, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISortingInfo, ISpatialRefRepresentation, IValueChange, theme } from "./utils/interfaces";
+import { AppLayout, ButtonType, DistanceUnit, EditType, EDrawMode, ELayoutMode, IBasemapConfig, IConsentResponse, IExportInfos, IFeatureServiceEnabledStatus, IInventoryItem, ILayerAndTableIds, ILayerExpression, IMapChange, IMapInfo, IReportingOptions, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISortingInfo, ISpatialRefRepresentation, ITemplateInfo, IValueChange, theme } from "./utils/interfaces";
 import { IReportingOptions as IReportingOptions1 } from "./components";
 import { ILayerItemsHash } from "./components/layer-list/layer-list";
-import { unknown as FlipContext } from "./components/interfaces";
+import { FlipContext } from "./components/interfaces";
 import { RegistryEntry, RequestedItem } from "./components/solution-accordion-item/interfaces";
 import { UserSession } from "@esri/solution-common";
-export { AppLayout, ButtonType, DistanceUnit, EditType, EDrawMode, ELayoutMode, IBasemapConfig, IConsentResponse, IExportInfos, IFeatureServiceEnabledStatus, IInventoryItem, ILayerAndTableIds, ILayerExpression, IMapChange, IMapInfo, IReportingOptions, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISortingInfo, ISpatialRefRepresentation, IValueChange, theme } from "./utils/interfaces";
+export { AppLayout, ButtonType, DistanceUnit, EditType, EDrawMode, ELayoutMode, IBasemapConfig, IConsentResponse, IExportInfos, IFeatureServiceEnabledStatus, IInventoryItem, ILayerAndTableIds, ILayerExpression, IMapChange, IMapInfo, IReportingOptions, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISortingInfo, ISpatialRefRepresentation, ITemplateInfo, IValueChange, theme } from "./utils/interfaces";
 export { IReportingOptions as IReportingOptions1 } from "./components";
 export { ILayerItemsHash } from "./components/layer-list/layer-list";
-export { unknown as FlipContext } from "./components/interfaces";
+export { FlipContext } from "./components/interfaces";
 export { RegistryEntry, RequestedItem } from "./components/solution-accordion-item/interfaces";
 export { UserSession } from "@esri/solution-common";
 export namespace Components {
@@ -1627,9 +1627,9 @@ export namespace Components {
     }
     interface SolutionItemAccordion {
         /**
-          * string: The id for the current solution item
+          * ITemplateInfo[]: Collection of template infos
          */
-        "solitionId": string;
+        "templateInfos": ITemplateInfo[];
     }
     interface SolutionItemDetails {
         /**
@@ -4338,9 +4338,9 @@ declare namespace LocalJSX {
     }
     interface SolutionItemAccordion {
         /**
-          * string: The id for the current solution item
+          * ITemplateInfo[]: Collection of template infos
          */
-        "solitionId"?: string;
+        "templateInfos"?: ITemplateInfo[];
     }
     interface SolutionItemDetails {
         /**
