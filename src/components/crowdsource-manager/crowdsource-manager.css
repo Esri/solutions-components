@@ -102,6 +102,10 @@
   height: 51%;
 }
 
+.top-51 {
+  top: 51px;
+}
+
 .adjusted-height-50 {
   height: calc(50% - 25px);
 }
