@@ -17,3 +17,7 @@
 :host {
   display: block;
 }
+
+.padding-start-1 {
+  padding-inline-start: 1rem;
+}

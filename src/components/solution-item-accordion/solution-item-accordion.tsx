@@ -21,7 +21,7 @@ import { ITemplateInfo } from "../../utils/interfaces";
 
 @Component({
   tag: 'solution-item-accordion',
-  styleUrl: 'solution-item-accordion.scss',
+  styleUrl: 'solution-item-accordion.css',
   shadow: true,
 })
 export class SolutionItemAccordion {
@@ -137,7 +137,12 @@ export class SolutionItemAccordion {
   ): VNode {
     return (
       <calcite-accordion-item description={`${templateInfo.title}-${templateInfo.type}`}>
-        {/* <solution-item-icon type={templateInfo.type} typeKeywords={templateInfo.typeKeywords}/> */}
+        <solution-item-icon
+          class="padding-start-1"
+          slot="actions-start"
+          type={templateInfo.type}
+          typeKeywords={templateInfo.typeKeywords}
+        />
         {this._getDependencyList(templateInfo.dependencies)}
       </calcite-accordion-item>
     );
@@ -156,7 +161,7 @@ export class SolutionItemAccordion {
     ids: string[]
   ): VNode {
     return (
-      <calcite-list>
+      <calcite-list class="padding-start-1">
         {ids.map(id => this._getDependencyListItem(id))}
       </calcite-list>
     );
@@ -176,7 +181,10 @@ export class SolutionItemAccordion {
   ): VNode {
     const templateInfo: ITemplateInfo = this._getTemplateInfo(id);
     return (
-      <calcite-list-item label={`${templateInfo.title}-${templateInfo.type}`} value={templateInfo.id}>
+      <calcite-list-item
+        label={`${templateInfo.title}-${templateInfo.type}`}
+        value={templateInfo.id}
+      >
         <div slot="content-start">
           <solution-item-icon type={templateInfo.type} typeKeywords={templateInfo.typeKeywords}/>
         </div>

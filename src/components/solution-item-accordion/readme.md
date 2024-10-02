@@ -18,18 +18,18 @@
 
 - calcite-accordion
 - calcite-accordion-item
+- [solution-item-icon](../solution-item-icon)
 - calcite-list
 - calcite-list-item
-- [solution-item-icon](../solution-item-icon)
 
 ### Graph
 ```mermaid
 graph TD;
   solution-item-accordion --> calcite-accordion
   solution-item-accordion --> calcite-accordion-item
+  solution-item-accordion --> solution-item-icon
   solution-item-accordion --> calcite-list
   solution-item-accordion --> calcite-list-item
-  solution-item-accordion --> solution-item-icon
   calcite-accordion-item --> calcite-icon
   calcite-list --> calcite-scrim
   calcite-list --> calcite-stack
