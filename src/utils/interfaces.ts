@@ -366,6 +366,17 @@ export interface ITemplateData {
 }
 
 /**
+ * Stores the id, type, and title for a given template
+ */
+export interface ITemplateInfo {
+  id: string;
+  title: string;
+  type: string;
+  typeKeywords: string[];
+  description: string;
+}
+
+/**
  * Stores updated templates that contain runtime changes from the user
  */
 export interface IUpdateTemplateResponse {
