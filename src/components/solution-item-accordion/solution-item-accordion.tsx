@@ -147,6 +147,15 @@ export class SolutionItemAccordion {
   }
 
   /**
+   * StencilJS: Called before each render
+   */
+  async componentWillRender(): Promise<void> {
+    if (this._sortedTemplateInfos.length === 0 && this.templateInfos?.length > 0) {
+      this._sortedTemplateInfos = this._sortTemplates();
+    }
+  }
+
+  /**
    * Renders the component.
    */
   render() {
@@ -171,9 +180,6 @@ export class SolutionItemAccordion {
    * @protected
    */
   protected _getAccordion(): VNode {
-    if (this._sortedTemplateInfos.length === 0 && this.templateInfos?.length > 0) {
-      this._sortedTemplateInfos = this._sortTemplates();
-    }
     return (
       <calcite-accordion>
         {
