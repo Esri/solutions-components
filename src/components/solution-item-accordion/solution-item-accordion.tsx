@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Prop, State, VNode } from '@stencil/core';
+import { Component, Element, Host, h, Prop, State, VNode, Watch } from '@stencil/core';
 import SolutionItemAccordion_T9n from "../../assets/t9n/solution-item-accordion/resources.json"
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { ITemplateInfo } from "../../utils/interfaces";
@@ -51,6 +51,11 @@ export class SolutionItemAccordion {
   //--------------------------------------------------------------------------
 
   /**
+   * ITemplateInfo[]: Collection of sorted template infos
+   */
+  @State() _sortedTemplateInfos: ITemplateInfo[] = [];
+
+  /**
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
@@ -62,11 +67,67 @@ export class SolutionItemAccordion {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * string[]: Types that should display a different value than the stored type
+   */
+  protected _displayNameHash = {
+    "Geoprocessing Service": "Tool",
+    "Vector Tile Service": "Tile Layer"
+  };
+
+  /**
+   * string[]: The order we should sort templates based on
+   */
+  protected _sortOrder = [
+    "Hub Site Application",
+    "Hub Page",
+    "Web Experience",
+    "Instant App",
+    "Web Mapping Application",
+    "Dashboard",
+    "StoryMap",
+    "Form",
+    "QuickCapture Project",
+    "Workflow",
+    "Big Data Analytic",
+    "Real Time Analytic",
+    "Feed",
+    "Geoprocessing Service",
+    "Notebook",
+    "Data Pipeline",
+    "Project Package",
+    "Desktop Application Template",
+    "TypeNotFound",
+    "Web Map",
+    "Web Scene",
+    "Feature Layer (hosted, view)",
+    "Feature Layer (hosted)",
+    "Vector Tile Service",
+    "CSV",
+    "Microsoft Excel",
+    "Microsoft Word",
+    "Report Template",
+    "Rule Package",
+    "Group"
+  ];
+
+  /**
+   * string[]: Array of template types.
+   * This array is used during render to ensure only one Accordion item is added for each type.
+   */
+  protected _types: string[] = [];
+
   //--------------------------------------------------------------------------
   //
   //  Watch handlers
   //
   //--------------------------------------------------------------------------
+
+  @Watch("templateInfos")
+  async templateInfosWatchHandler(): Promise<void> {
+    this._types = [];
+    this._sortedTemplateInfos = this._sortTemplates();
+  }
 
   //--------------------------------------------------------------------------
   //
@@ -118,15 +179,27 @@ export class SolutionItemAccordion {
    * @protected
    */
   protected _getAccordion(): VNode {
+    if (this._sortedTemplateInfos.length === 0 && this.templateInfos?.length > 0) {
+      this._sortedTemplateInfos = this._sortTemplates();
+    }
     return (
       <calcite-accordion>
-        {this.templateInfos.map(t => this._getAccordionItem(t))}
+        {
+          this._sortedTemplateInfos.reduce((prev, cur) => {
+            if (this._types.indexOf(cur.type) < 0) {
+              this._types.push(cur.type);
+              prev.push(this._getAccordionItem(cur));
+            }
+            return prev;
+          }, [])
+        }
       </calcite-accordion>
     );
   }
 
   /**
-   * Get the Accordion Item component with the appropriate icon and title
+   * Get the Accordion Item component with the appropriate icon and template type
+   * Only one accordion item per type.
    *
    * @returns the Accordion Item component
    *
@@ -135,83 +208,112 @@ export class SolutionItemAccordion {
   protected _getAccordionItem(
     templateInfo: ITemplateInfo
   ): VNode {
+    const templateInfos = this._sortedTemplateInfos.filter(t => t.type === templateInfo.type);
+    const displayName = Object.keys(this._displayNameHash).indexOf(templateInfo.type) > -1 ?
+      this._displayNameHash[templateInfo.type] : templateInfo.type;
     return (
-      <calcite-accordion-item description={`${templateInfo.title}-${templateInfo.type}`}>
+      <calcite-accordion-item description={`${displayName} (${templateInfos.length})`}>
         <solution-item-icon
           class="padding-start-1"
           slot="actions-start"
           type={templateInfo.type}
           typeKeywords={templateInfo.typeKeywords}
         />
-        {this._getDependencyList(templateInfo.dependencies)}
+        {this._getList(templateInfos)}
       </calcite-accordion-item>
     );
   }
 
   /**
-   * Get list of the current tempates dependecies
+   * Get the list of template infos for the current type
    *
-   * @param ids the list of dependecies
+   * @param templateInfos filtered list of templateInfos for the current type
    *
    * @returns the List component
    *
    * @protected
    */
-  protected _getDependencyList(
-    ids: string[]
+  protected _getList(
+    templateInfos: ITemplateInfo[]
   ): VNode {
     return (
       <calcite-list class="padding-start-1">
-        {ids.map(id => this._getDependencyListItem(id))}
+        {templateInfos.map(t => this._getListItem(t))}
       </calcite-list>
     );
   }
 
   /**
-   * Get list item for the current dependency
+   * Get list item for the current type
    *
-   * @param id the id of the dependency
+   * @param templateInfo the current templateInfo to handle
    *
    * @returns the List item component
    *
    * @protected
    */
-  protected _getDependencyListItem(
-    id: string
+  protected _getListItem(
+    templateInfo: ITemplateInfo
   ): VNode {
-    const templateInfo: ITemplateInfo = this._getTemplateInfo(id);
     return (
       <calcite-list-item
-        label={`${templateInfo.title}-${templateInfo.type}`}
+        description={templateInfo.description}
+        label={templateInfo.title}
         value={templateInfo.id}
-      >
-        <div slot="content-start">
-          <solution-item-icon type={templateInfo.type} typeKeywords={templateInfo.typeKeywords}/>
-        </div>
-      </calcite-list-item>
+      />
     );
   }
 
   /**
-   * Get the template info for the current id
+   * Sort the templates based on the defined order in _sortOrder
    *
-   * @param id the id of the item to fetch the template info for
-   *
-   * @returns the template info for the given id
+   * @returns the sorted templates
    *
    * @protected
    */
-  protected _getTemplateInfo(
-    id: string
-  ): any {
-    let templateInfo;
-    this.templateInfos.some(t => {
-      if (t.id === id) {
-        templateInfo = t;
-        return true;
-      }
+  protected _sortTemplates(): ITemplateInfo[] {
+    return this.templateInfos.sort((a, b) => {
+      const aType = this._updateType(a);
+      const bType = this._updateType(b);
+
+      const indexA = this._sortOrder.indexOf(aType);
+      const indexB = this._sortOrder.indexOf(bType);
+
+      return indexA - indexB;
     });
-    return templateInfo;
+  }
+
+  /**
+   * Some template types are displayed with a value that is different than the stored type value.
+   * This function will catch and update the type value to match how we would like it sorted and displayed.
+   *
+   * @returns the sorted templates
+   *
+   * @protected
+   */
+  protected _updateType(
+    templateInfo: ITemplateInfo
+  ): string {
+    let updatedType = templateInfo.type;
+    if (templateInfo.type === "Feature Service") {
+      updatedType = templateInfo.typeKeywords.indexOf("View Service") > -1 ?
+        "Feature Layer (hosted, view)" : "Feature Layer (hosted)";
+      templateInfo.type = updatedType;
+    }
+
+    if (templateInfo.type === "Web Mapping Application") {
+      updatedType = templateInfo.typeKeywords.indexOf("configurableApp") > -1 ?
+        "Instant App" : updatedType;
+      templateInfo.type = updatedType;
+    }
+
+    if (this._sortOrder.indexOf(updatedType) < 0) {
+      // If we encounter an item type that is not in the list
+      // put it between the "Desktop Application Template" and "Web Map" section
+      updatedType = "TypeNotFound";
+    }
+
+    return updatedType;
   }
 
   /**

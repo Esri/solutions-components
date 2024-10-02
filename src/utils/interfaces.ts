@@ -373,7 +373,7 @@ export interface ITemplateInfo {
   title: string;
   type: string;
   typeKeywords: string[];
-  dependencies: string[];
+  description: string;
 }
 
 /**
