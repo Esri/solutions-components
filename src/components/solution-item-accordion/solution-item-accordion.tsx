@@ -68,14 +68,6 @@ export class SolutionItemAccordion {
   //--------------------------------------------------------------------------
 
   /**
-   * string[]: Types that should display a different value than the stored type
-   */
-  protected _displayNameHash = {
-    "Geoprocessing Service": "Tool",
-    "Vector Tile Service": "Tile Layer"
-  };
-
-  /**
    * string[]: The order we should sort templates based on
    */
   protected _sortOrder = [
@@ -92,7 +84,7 @@ export class SolutionItemAccordion {
     "Big Data Analytic",
     "Real Time Analytic",
     "Feed",
-    "Geoprocessing Service",
+    "Tool",
     "Notebook",
     "Data Pipeline",
     "Project Package",
@@ -102,7 +94,7 @@ export class SolutionItemAccordion {
     "Web Scene",
     "Feature Layer (hosted, view)",
     "Feature Layer (hosted)",
-    "Vector Tile Service",
+    "Tile Layer",
     "CSV",
     "Microsoft Excel",
     "Microsoft Word",
@@ -209,10 +201,8 @@ export class SolutionItemAccordion {
     templateInfo: ITemplateInfo
   ): VNode {
     const templateInfos = this._sortedTemplateInfos.filter(t => t.type === templateInfo.type);
-    const displayName = Object.keys(this._displayNameHash).indexOf(templateInfo.type) > -1 ?
-      this._displayNameHash[templateInfo.type] : templateInfo.type;
     return (
-      <calcite-accordion-item description={`${displayName} (${templateInfos.length})`}>
+      <calcite-accordion-item description={`${templateInfo.type} (${templateInfos.length})`}>
         <solution-item-icon
           class="padding-start-1"
           slot="actions-start"
@@ -298,18 +288,21 @@ export class SolutionItemAccordion {
     if (templateInfo.type === "Feature Service") {
       updatedType = templateInfo.typeKeywords.indexOf("View Service") > -1 ?
         "Feature Layer (hosted, view)" : "Feature Layer (hosted)";
-      templateInfo.type = updatedType;
     }
 
     if (templateInfo.type === "Web Mapping Application") {
       updatedType = templateInfo.typeKeywords.indexOf("configurableApp") > -1 ?
         "Instant App" : updatedType;
-      templateInfo.type = updatedType;
     }
+
+    templateInfo.type = templateInfo.type === "Geoprocessing Service" ? "Tool" :
+      templateInfo.type === "Vector Tile Service" ? "Tile Layer" : updatedType;
 
     if (this._sortOrder.indexOf(updatedType) < 0) {
       // If we encounter an item type that is not in the list
       // put it between the "Desktop Application Template" and "Web Map" section
+      // Do not set this as the templates type value as we want its actual type to be displayed
+      // this is just used for sorting
       updatedType = "TypeNotFound";
     }
 
