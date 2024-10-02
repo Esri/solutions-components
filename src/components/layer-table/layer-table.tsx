@@ -1098,7 +1098,7 @@ export class LayerTable {
             const selected = this._columnsInfo[k];
             return (
               <calcite-dropdown-item
-                id={k}
+                id={`layer-table-${k.toLowerCase().replaceAll(" ", "")}`}
                 onClick={(e) => {
                   const target = e.target as HTMLCalciteDropdownItemElement;
                   this._columnsInfo[target.id] = target.selected;
@@ -1503,7 +1503,7 @@ export class LayerTable {
                   <calcite-dropdown-item
                     disabled={item.loading}
                     iconStart={item.isSublist && this._showHideOpen ? "chevron-down" : item.loading ? "" : item.icon}
-                    id="solutions-subset-list"
+                    id={`layer-table-${item.icon}`}
                     onClick={item.func}
                   >
                     {item.loading ? (
@@ -1564,7 +1564,7 @@ export class LayerTable {
           appearance="solid"
           disabled={_disabled}
           icon={icon}
-          id={icon}
+          id={`layer-table-${icon}`}
           indicator={indicator}
           label={label}
           loading={loading}
