@@ -843,15 +843,16 @@ export class LayerTable {
       this._resizeObserver.observe(this._toolbar);
       this._observerSet = true;
     }
-    document.onclick = (e) => this._handleDocumentClick(e);
-    document.onkeydown = (e) => this._handleKeyDown(e);
-    document.onkeyup = (e) => this._handleKeyUp(e);
   }
 
   /**
    * Called after the component is rendered
    */
   componentDidRender(): void {
+    // need to be called after each render to get the clicked mouseEvent 
+    document.onclick = (e) => this._handleDocumentClick(e);
+    document.onkeydown = (e) => this._handleKeyDown(e);
+    document.onkeyup = (e) => this._handleKeyUp(e);
     this._updateToolbar();
   }
 
@@ -1116,13 +1117,14 @@ export class LayerTable {
             return (
               <calcite-dropdown-item
                 id={`layer-table-${k.toLowerCase().replaceAll(" ", "")}`}
+                label={k}
                 onClick={(e) => {
                   const target = e.target as HTMLCalciteDropdownItemElement;
-                  this._columnsInfo[target.id] = target.selected;
+                  this._columnsInfo[target.label] = target.selected;
                   if (!target.selected) {
-                    this._table.hideColumn(target.id);
+                    this._table.hideColumn(target.label);
                   } else {
-                    this._table.showColumn(target.id);
+                    this._table.showColumn(target.label);
                   }
                 }}
                 selected={selected}
@@ -1226,8 +1228,8 @@ export class LayerTable {
           active: undefined,
           icon: "trash",
           indicator: undefined,
-          label: undefined,
-          func: undefined,
+          label: this._translations.delete,
+          func: () => undefined,
           disabled: !featuresSelected,
           isDanger: true,
           isOverflow: false
@@ -1516,7 +1518,7 @@ export class LayerTable {
               return (
                 <calcite-dropdown-group
                   class={item.disabled ? "disabled" : ""}
-                  selectionMode={item.disabled ? "none" : "single"}
+                  selectionMode={"none"}
                 >
                   <calcite-dropdown-item
                     disabled={item.loading}
@@ -1729,7 +1731,7 @@ export class LayerTable {
             disabled={_disabled}
             id={icon}
             onClick={func}
-            text=""
+            text={label}
           >
             <calcite-button
               appearance="transparent"
@@ -2137,7 +2139,9 @@ export class LayerTable {
     e: MouseEvent
   ): void {
     const id = (e.target as any)?.id;
-    if (this._showHideOpen && Object.keys(this._columnsInfo).indexOf(id) < 0 && id !== "solutions-subset-list" && id !== "chevron-right") {
+    if (id.startsWith('layer-table-')) {
+      this._moreDropdown.open = true;
+    } else if (this._showHideOpen && Object.keys(this._columnsInfo).indexOf(id) < 0 && id !== "chevron-right") {
       this._closeShowHide();
       if (this._moreDropdown) {
         this._moreDropdown.open = false;
