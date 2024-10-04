@@ -537,7 +537,7 @@ export class CrowdsourceReporter {
         if (this._featureList) {
           void this._featureList.refresh();
         }
-      }, 50)
+      }, 50);
     }
   }
 

@@ -192,6 +192,10 @@ export class DeleteButton {
           </calcite-action>
         )}
         {this._deleteMessage()}
+        <calcite-tooltip
+          placement={"bottom"}
+          reference-element={this.buttonType === "button" ? "solutions-delete" : this.icon}
+        ><span>{this._translations.delete}</span></calcite-tooltip>
       </Host>
     );
   }

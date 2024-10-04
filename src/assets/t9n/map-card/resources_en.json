@@ -4,5 +4,6 @@
   "filters": "Filters",
   "zoom": "Zoom",
   "refresh": "Refresh",
-  "editMultiple": "Edit multiple"
+  "editMultiple": "Edit multiple",
+  "clearSelection": "Clear selection"
 }

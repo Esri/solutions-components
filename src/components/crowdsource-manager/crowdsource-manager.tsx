@@ -258,6 +258,11 @@ export class CrowdsourceManager {
   @State() _isMobile = false;
 
   /**
+   * When true the component will render an optimized view for mobile devices
+   */
+  @State() _isPortraitMobile = false;
+
+  /**
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
@@ -302,6 +307,16 @@ export class CrowdsourceManager {
    * boolean: When true information header will be displayed
    */
   @State() _showInformationHeader = true;
+
+  /**
+   * boolean: list of layer ids
+   */
+  @State() _layerIds: string[];
+
+  /**
+   * boolean: if true panel will be in loading state
+   */
+  @State() _isLoading: boolean = true;
 
   //--------------------------------------------------------------------------
   //
@@ -351,6 +366,11 @@ export class CrowdsourceManager {
    * HTMLInstantAppsFilterListElement: Component from Instant Apps that supports interacting with the current filter config
    */
   protected _filterList: HTMLInstantAppsFilterListElement;
+
+  /**
+   * HTMLMapCardElement: Map card refrence element
+   */
+  protected _mapCard: HTMLMapCardElement;
 
   /**
    * boolean: True when app is directly rendered to map view layout
@@ -416,7 +436,7 @@ export class CrowdsourceManager {
    */
   @Listen("popupClosed", { target: "window" })
   async popupClosed(): Promise<void> {
-    if (this._isMobile) {
+    if (this._isPortraitMobile) {
       this.showHideMapPopupAndTable(false);
     }
   }
@@ -454,9 +474,24 @@ export class CrowdsourceManager {
     const id: string = evt.detail[0];
     const layer = await getLayerOrTable(this._mapView, id);
     layer && await layer.when(() => {
+      // on render if no layer is present and only one table is present in map and app is in map view layer then change it to split layout
+      if (this._layerIds.length === 0 && this.appLayout === 'mapView' && layer.isTable ) {
+        this._changeLayout('splitView');
+      }
       this._layer = layer;
       this._initLayerExpressions();
+      this._isLoading = false;
     });
+  }
+
+  /**
+   * Get the layer ids from the map
+   */
+  @Listen("idsFound", { target: "window" })
+  async idsFound(
+    evt: CustomEvent
+  ): Promise<void> {
+    this._layerIds = evt.detail.layerIds;
   }
 
   //--------------------------------------------------------------------------
@@ -486,6 +521,7 @@ export class CrowdsourceManager {
         <calcite-shell class="position-relative">
           <calcite-panel
             class={`width-full height-full ${borderClass}`}
+            loading={this._isLoading}
           >
             {this._getBody(this._layoutMode, this._panelOpen, this._hideTable)}
           </calcite-panel>
@@ -539,7 +575,7 @@ export class CrowdsourceManager {
   protected _getFooter(): VNode {
     const hasSelectedFeatures = this._numSelected > 0;
     const deleteEnabled = this._layer?.editingEnabled && this._layer?.capabilities?.operations?.supportsDelete;
-    return this._isMobile && hasSelectedFeatures && !this._hideFooter ? (
+    return this._isPortraitMobile && hasSelectedFeatures && !this._hideFooter ? (
       <div class={`width-100`} slot="footer">
         <div class="display-flex padding-1-2">
           <calcite-button
@@ -754,8 +790,9 @@ export class CrowdsourceManager {
     hideTable: boolean
   ): VNode {
     const mapSizeClass = this._getMapSizeClass(layoutMode, panelOpen, hideTable);
+    const borderRight = !this._isPortraitMobile && this._isMobile ? "border-right" : "";
     return (
-      <div class={`${mapSizeClass} overflow-hidden`}>
+      <div class={`${mapSizeClass} overflow-hidden ${borderRight}`}>
         {this._getMapNode(panelOpen)}
         {this._getPopupExpandNode()}
       </div>
@@ -776,7 +813,7 @@ export class CrowdsourceManager {
   ): VNode {
     const isMapLayout = this.appLayout === 'mapView';
     const isTableLayout = this.appLayout === 'tableView';
-    const mapContainerClass = (isMapLayout || isTableLayout) ? "position-absolute-0" : this._layoutMode === ELayoutMode.HORIZONTAL && (!this._isMobile || panelOpen) ? "" : "adjusted-height-50";
+    const mapContainerClass = (isMapLayout || isTableLayout) ? "position-absolute-0" : this._layoutMode === ELayoutMode.HORIZONTAL && (!this._isPortraitMobile || panelOpen) ? "" : "adjusted-height-50";
     const hasMapAndLayer = this.defaultWebmap && this.defaultLayer;
     return (
       <div class={`${mapContainerClass} overflow-hidden`} id="card-mapView">
@@ -793,7 +830,7 @@ export class CrowdsourceManager {
           enableLegend={this.enableLegend}
           enableSearch={this.enableSearch}
           enableSingleExpand={true}
-          hidden={!this._isMobile && isTableLayout}
+          hidden={!this._isPortraitMobile && isTableLayout}
           homeZoomIndex={3}
           homeZoomPosition={"top-left"}
           homeZoomToolsSize={"s"}
@@ -806,6 +843,7 @@ export class CrowdsourceManager {
           mapWidgetsSize={"m"}
           onToggleFilter={this._toggleFilter.bind(this)}
           onlyShowUpdatableLayers={this.onlyShowUpdatableLayers}
+          ref={(el) => this._mapCard = el}
           selectedFeaturesIds={this._layerTable?.selectedIds}
           selectedLayer={this._layer}
           stackTools={true}
@@ -824,11 +862,11 @@ export class CrowdsourceManager {
    * @protected
    */
   protected _getPopupExpandNode(): VNode {
-    const popupNodeClass = "height-full"
-    const headerClass = this._isMobile && this._showInformationHeader ? "display-none height-0" : "";
-    const headerTheme = this.popupHeaderColor ? "" : !this._isMobile ? "calcite-mode-dark" : "calcite-mode-light";
-    const containerClass = this._isMobile && this._hideTable ? "position-absolute-0 width-full height-full" : this._isMobile ? "display-none height-0" : "";
-    const tableViewClass = this.appLayout === "tableView" ? "position-relative top-51" : "";
+    const popupNodeClass = this._isMobile ? "height-full" : "position-relative z-index-0"
+    const headerClass = this._isPortraitMobile && this._showInformationHeader ? "display-none height-0" : "";
+    const headerTheme = this.popupHeaderColor ? "" : !this._isPortraitMobile ? "calcite-mode-dark" : "calcite-mode-light";
+    const containerClass = this._isPortraitMobile && this._hideTable ? "position-absolute-0 width-full height-full" : this._isPortraitMobile ? "display-none height-0" : "";
+    const tableViewClass = this.mapInfos?.length > 1 && this.appLayout === "tableView" ? "position-relative top-51" : "";
     return (
       <div class={`${headerTheme} ${popupNodeClass} ${containerClass} ${tableViewClass}`}
         style={{
@@ -839,7 +877,7 @@ export class CrowdsourceManager {
         }}>
         <calcite-panel>
           {
-            !this._isMobile && this._showInformationHeader || this._numSelected > 0 ? (
+            (!this._isPortraitMobile && this._showInformationHeader) || (this._numSelected > 0 && !this._isPortraitMobile) ? (
               <div
                 class={`display-flex align-items-center ${headerClass}`}
                 slot="header-content"
@@ -866,16 +904,16 @@ export class CrowdsourceManager {
   protected _getCardNode(): VNode {
     const isMapLayout = this.appLayout === 'mapView';
     const isTableLayout = this.appLayout === 'tableView';
-    const cardManagerHeight = (isMapLayout || isTableLayout) ? "height-full" : this._numSelected > 0 ? "height-51" : !this._showInformationHeader ? "adjusted-height-50_25" : !this._isMobile ? "height-51" : "height-full";
+    const cardManagerHeight = isTableLayout && this.mapInfos?.length > 1 ? "adjusted-height-100-51" : isMapLayout || isTableLayout ? "height-full" : (this._numSelected > 0 && !this._isMobile) ? "height-50" : !this._showInformationHeader ? "adjusted-height-50_25" : !this._isPortraitMobile ? "height-50" : "height-full";
     const themeClass = this.theme === "dark" ? "calcite-mode-dark" : "calcite-mode-light";
     return (
       <div class={`width-50 height-full ${themeClass}`}>
         <card-manager
           class={`${cardManagerHeight} width-full`}
           customInfoText={this.customInfoText}
-          enableCreateFeatures={this._enableCreateFeatures}
+          enableCreateFeatures={this._enableCreateFeatures && !this._isMobile}
           enableEditGeometry={this?._mapInfo?.enableEditGeometry}
-          isMobile={this._isMobile}
+          isMobile={this._isPortraitMobile}
           layer={this._layer}
           mapView={this?._mapView}
           onBackFromCreateWorkFlow={() => {
@@ -888,6 +926,7 @@ export class CrowdsourceManager {
           }}
           onFeatureOrRecordSubmitted={() => void this._layerTable.refresh()}
           selectedFeaturesIds={this._layerTable?.selectedIds}
+          selectingFeatureFromMap={this.appLayout === "mapView"}
           zoomAndScrollToSelected={this.zoomAndScrollToSelected}
         />
       </div>
@@ -910,7 +949,7 @@ export class CrowdsourceManager {
   ): VNode {
     const isMapLayout = this.appLayout === 'mapView';
     const isTableLayout = this.appLayout === 'tableView';
-    const tableClass = hideTable && this._isMobile ? "visibility-hidden" : isMapLayout ? "display-none" : "";
+    const tableClass = hideTable && this._isPortraitMobile ? "visibility-hidden" : isMapLayout ? "display-none" : "";
     const mapClass = isMapLayout ? "height-full width-full z-index-0" : "display-none";
     const tableSizeClass = this._getTableSizeClass(layoutMode, panelOpen)
     const toggleLayout = layoutMode === ELayoutMode.HORIZONTAL ? "horizontal" : "vertical";
@@ -945,7 +984,7 @@ export class CrowdsourceManager {
             enableColumnReorder={this.enableColumnReorder}
             enableInlineEdit={this?._mapInfo?.enableInlineEdit}
             enableShare={this.enableShare}
-            isMobile={this._isMobile}
+            isMobile={this._isPortraitMobile}
             mapHidden={isTableLayout}
             mapInfo={this._mapInfo}
             mapView={this?._mapView}
@@ -1012,6 +1051,7 @@ export class CrowdsourceManager {
         <calcite-action
           active={this.appLayout === 'mapView'}
           class="toggle-node"
+          disabled={this._layerIds?.length === 0}
           icon={"browser-map"}
           id={"browser-map-action"}
           onClick={() => { this._changeLayout('mapView') }}
@@ -1073,8 +1113,14 @@ export class CrowdsourceManager {
             closeBtnOnClick={async () => this._closeFilter()}
             comboboxOverlayPositioning="fixed"
             layerExpressions={this._layerExpressions}
-            onFilterListReset={() => this._handleFilterListReset()}
-            onFilterUpdate={() => void this._layerTable?.filterUpdate()}
+            onFilterListReset={() => {
+              this._handleFilterListReset();
+              void this._mapCard.resetFilter();
+            }}
+            onFilterUpdate={() => {
+              void this._layerTable?.filterUpdate();
+              void this._mapCard.updateFilterState();
+            }}
             ref={(el) => this._filterList = el}
             view={this._mapView}
             zoomBtn={false}
@@ -1139,13 +1185,17 @@ export class CrowdsourceManager {
     const isMobile = this.el.offsetWidth < 1024;
     const forceOpen = !this._isMobile && isMobile;
     this._isMobile = isMobile;
-    this._layoutMode = this._isMobile ? ELayoutMode.HORIZONTAL : ELayoutMode.GRID;
     if (forceOpen) {
       this._panelOpen = true;
     }
     if (this._isMobile) {
       this.showHideMapPopupAndTable(!this._isMobile);
+      this._isPortraitMobile = !!window.matchMedia("(orientation: portrait)").matches;
+      this._changeLayout('splitView');
+    } else {
+      this._isPortraitMobile = false;
     }
+    this._layoutMode = this._isPortraitMobile ? ELayoutMode.HORIZONTAL : ELayoutMode.GRID;
   }
 
   /**
@@ -1168,6 +1218,10 @@ export class CrowdsourceManager {
     if (this.appLayout !== appLayout) {
       this._setActiveLayout(appLayout);
       this.appLayout = appLayout;
+      // update the layer if table selected while switching to map view
+      if(this.appLayout === "mapView" && this._layer.isTable) {
+        void this._mapCard.updateLayer()
+      }
       if (this._isMapViewOnLoad) {
         void this._layerTable.refresh();
         this._isMapViewOnLoad = false;

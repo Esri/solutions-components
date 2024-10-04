@@ -21,6 +21,8 @@ import CreateFeature_T9n from "../../assets/t9n/create-feature/resources.json";
 import { ILayerSourceConfigItem, ILocatorSourceConfigItem, ISearchConfiguration } from "../../utils/interfaces";
 import { getLocaleComponentStrings } from "../../utils/locale";
 
+type ICurrentPage = "templatePicker" | "drawing" | "featureForm";
+
 @Component({
   tag: "create-feature",
   styleUrl: "create-feature.css",
@@ -87,6 +89,11 @@ export class CreateFeature {
    */
   @Prop() showGuidingMsg?: boolean = true;
 
+  /**
+   * boolean: When false the notice message at drawing page will be hidden
+   */
+  @Prop() showGuidingMsgWhileDrawing?: boolean = true;
+
   //--------------------------------------------------------------------------
   //
   //  State (internal)
@@ -99,9 +106,9 @@ export class CreateFeature {
   @State() _editorLoading = false;
 
   /**
-   * boolean: When true the search widget will shown
+   * ICurrentPage: specifies the current page
    */
-  @State() _showSearchWidget: boolean;
+  @State() _currentPage: ICurrentPage = "templatePicker";
 
   /**
    * Contains the translations for this component.
@@ -203,11 +210,6 @@ export class CreateFeature {
    * __esri.FeatureLayer: selected feature layer;
    */
   protected _selectedLayer: __esri.FeatureLayer;
-
-  /**
-   * boolean: flag to maintain if user is on template picker page
-   */
-  protected _isTemplatePickerPage = true;
 
   //--------------------------------------------------------------------------
   //
@@ -358,19 +360,21 @@ export class CreateFeature {
    * Renders the component.
    */
   render() {
-    const showSearchWidget = this._showSearchWidget ? '' : 'display-none';
+    const showSearchWidget = this._currentPage === 'drawing' ? "" : "display-none";
     const loaderClass = this._editorLoading ? "" : "display-none";
     const featureFormClass = this._editorLoading ? "display-none" : "";
     const mobileMapClass = this.isMobile ? "show-map" : "display-none";
-    let guidingMsg = this._translations.provideDetailsMsg;
-    if (this._isTemplatePickerPage) {
-      guidingMsg = this._translations.chooseCategoryMsg;
-    } else if (this._showSearchWidget) {
+    // hide guiding msg for drawing page when showGuidingMsgWhileDrawing is false
+    const showGuidingMsg = this.showGuidingMsg && (this.showGuidingMsgWhileDrawing || this._currentPage !== "drawing");
+    let guidingMsg = this._translations.chooseCategoryMsg;
+    if (this._currentPage === 'drawing') {
       guidingMsg = this._translations.provideLocationMsg;
+    } else if (this._currentPage === 'featureForm') {
+      guidingMsg = this._translations.provideDetailsMsg;
     }
     return (
       <Fragment>
-        {this.showGuidingMsg && <calcite-notice
+        {showGuidingMsg && <calcite-notice
           class="notice-msg"
           icon="lightbulb"
           kind="success"
@@ -537,8 +541,7 @@ export class CreateFeature {
           this._mapViewContainer?.classList?.replace("show-map", "hide-map");
           this._editor.viewModel.featureFormViewModel.on('submit', this.submitted.bind(this));
           void this._setFloorLevel(this.floorLevel);
-          this._isTemplatePickerPage = false;
-          this._showSearchWidget = false;
+          this._currentPage = 'featureForm';
           this.progressStatus.emit(1);
           this.drawComplete.emit();
         }
@@ -550,10 +553,11 @@ export class CreateFeature {
       () => this._editor.viewModel.state,
       (state) => {
         if (state === 'creating-features') {
-          this._mapViewContainer?.classList?.replace("hide-map", "show-map");
-          this._isTemplatePickerPage = false;
-          if (this._selectedLayer && !this._selectedLayer.isTable) {
-            this._showSearchWidget = true;
+          if (this._editor.viewModel.featureFormViewModel.state === 'disabled') {
+            this._mapViewContainer?.classList?.replace("hide-map", "show-map");
+            if (this._selectedLayer && !this._selectedLayer.isTable) {
+              this._currentPage = 'drawing';
+            }
           }
         }
       });

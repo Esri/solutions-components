@@ -1,5 +1,6 @@
 {
   "clearSelection": "Clear selection",
+  "delete": "Delete",
   "exportCSV": "Export to CSV",
   "filter": "Filter: {{title}}",
   "filters": "Filters",

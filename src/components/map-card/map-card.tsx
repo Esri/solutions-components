@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, State, Watch, Fragment, Method } from "@stencil/core";
+import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, State, Watch, Method, VNode } from "@stencil/core";
 import MapCard_T9n from "../../assets/t9n/map-card/resources.json"
 import { loadModules } from "../../utils/loadModules";
-import { IBasemapConfig, IMapChange, IMapInfo, ISearchConfiguration, theme } from "../../utils/interfaces";
+import { IBasemapConfig, IMapChange, IMapInfo, ISearchConfiguration, IToolInfo, IToolSizeInfo, theme, TooltipPlacement } from "../../utils/interfaces";
 import { joinAppProxies } from "templates-common-library-esm/functionality/proxy";
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { getFeatureLayerView, goToSelection } from "../../utils/mapViewUtils";
@@ -174,7 +174,7 @@ export class MapCard {
   /**
    * boolean: When true map will shown is full screen
    */
-  @Prop() isMapLayout: boolean
+  @Prop() isMapLayout: boolean;
 
   /**
    * number[]: A list of ids that are currently selected
@@ -232,6 +232,16 @@ export class MapCard {
    * boolean: When true the show/hide fields list is forced open
    */
   @State() _showHideOpen = false;
+
+  /**
+   * IToolInfo[]: Key details used for creating the tools
+   */
+  @State() _toolInfos: IToolInfo[];
+
+  /**
+   * IToolSizeInfo[]: The controls that currently fit based on toolbar size
+   */
+  @State() _controlsThatFit: IToolSizeInfo[];
 
   //--------------------------------------------------------------------------
   //
@@ -309,6 +319,46 @@ export class MapCard {
    */
   protected _definitionExpression: string;
 
+  /**
+   * HTMLMapLayerPickerElement: The Map layer picker refrence element
+   */
+  protected _mapLayerPicker: HTMLMapLayerPickerElement;
+
+  /**
+   * ResizeObserver: The observer that watches for toolbar size changes
+   */
+  protected _resizeObserver: ResizeObserver;
+
+  /**
+   * HTMLCalciteDropdownElement: Dropdown the will support show/hide of table columns
+   */
+  protected _showHideDropdown: HTMLCalciteDropdownElement;
+
+  /**
+   * HTMLDivElement: The toolbars containing node
+   */
+  protected _toolbar: HTMLDivElement;
+
+  /**
+   * any: Timeout used to limit redundancy for toolbar resizing
+   */
+  protected _timeout: any;
+
+  /**
+   * IToolSizeInfo[]: Id and Width for the current tools
+   */
+  protected _toolbarSizeInfos: IToolSizeInfo[];
+
+  /**
+   * IToolSizeInfo[]: The default list of tool size info for tools that should display outside of the dropdown
+   */
+  protected _defaultVisibleToolSizeInfos: IToolSizeInfo[];
+
+  /**
+   * boolean: When true the observer has been set and we don't need to set it again
+   */
+  protected _observerSet = false;
+
   //--------------------------------------------------------------------------
   //
   //  Watch handlers
@@ -333,6 +383,32 @@ export class MapCard {
     })
   }
 
+  /**
+   * watch for features ids changes
+   */
+  @Watch("selectedFeaturesIds")
+  async selectedFeaturesIdsWatchHandler(): Promise<void> {
+    this._validateEnabledActions();
+  }
+
+  /**
+   * watch for changes to the list of controls that will currently fit in the display
+   */
+  @Watch("_controlsThatFit")
+  _controlsThatFitWatchHandler(): void {
+    const ids = this._controlsThatFit ? this._controlsThatFit.reduce((prev, cur) => {
+      prev.push(cur.id)
+      return prev;
+    }, []) : [];
+    this._toolInfos = this._toolInfos?.map(ti => {
+      if (ti && this._controlsThatFit) {
+        const id = this._getId(ti.icon);
+        ti.isOverflow = ids.indexOf(id) < 0;
+        return ti;
+      }
+    })
+  }
+
   //--------------------------------------------------------------------------
   //
   //  Methods (public)
@@ -343,7 +419,7 @@ export class MapCard {
    * Reset the filter
    */
   @Method()
-  async filterReset(): Promise<void> {
+  async resetFilter(): Promise<void> {
     this._filterActive = false;
   }
 
@@ -351,8 +427,16 @@ export class MapCard {
    * updates the filter
    */
   @Method()
-  async updateFilter(): Promise<void> {
+  async updateFilterState(): Promise<void> {
     this._filterActive = this._definitionExpression !== this.selectedLayer.definitionExpression;
+  }
+
+  /**
+   * updates the layer in map layer picker
+   */
+  @Method()
+  async updateLayer(): Promise<void> {
+    void this._mapLayerPicker.updateLayer();
   }
 
   //--------------------------------------------------------------------------
@@ -377,6 +461,11 @@ export class MapCard {
   @Event() toggleFilter: EventEmitter<void>;
 
   /**
+   * Emitted on demand when clear selection button is clicked
+   */
+  @Event() clearSelection: EventEmitter<void>;
+
+  /**
    * Listen for changes to map info and load the appropriate map
    */
   @Listen("mapInfoChange", { target: "window" })
@@ -395,6 +484,16 @@ export class MapCard {
     this.selectedFeaturesIds = [];
   }
 
+  /**
+   * Handles layer selection change to show new table
+   */
+  @Listen("layerSelectionChange", { target: "window" })
+  layerSelectionChange(): void {
+    setTimeout(() => {
+      this._initToolInfos();
+    }, 50)
+  }
+
   //--------------------------------------------------------------------------
   //
   //  Functions (lifecycle)
@@ -407,50 +506,28 @@ export class MapCard {
   async componentWillLoad(): Promise<void> {
     await this._getTranslations();
     await this._initModules();
+    this._initToolInfos()
+    if (!this._resizeObserver) {
+      this._resizeObserver = new ResizeObserver(() => this._updateToolbar());
+    }
   }
 
   /**
    * Renders the component.
    */
   render() {
-    const mapContainerClass = this.isMapLayout ? "display-flex height-50-px" : "";
+    const mapContainerClass = this.isMapLayout ? "display-flex height-50-px border-bottom-3px" : "";
     const mapClass = this.hidden ? "visibility-hidden-1" : "";
     const themeClass = this.theme === "dark" ? "calcite-mode-dark" : "calcite-mode-light";
-    const mapPickerClass = this.mapInfos?.length > 1 ? "" : "display-none";
-    const mapHeightClass = this.mapInfos?.length > 1 ? "map-height" : "height-full";
-    const containerClass = this.isMobile ? "width-full" : "";
-    const mobileClass = this.isMobile ? "border-top" : "";
-    const headerElements = this.isMapLayout ? "" : "display-none";
+    const mapHeightClass = this.mapInfos?.length > 1 || this.isMapLayout ? "map-height" : "height-full";
+    this._validateActiveActions();
     return (
       <Host>
-        <div class={`${mapContainerClass}`}>
-          <map-picker
-            class={mapPickerClass}
-            isMapLayout={this.isMapLayout}
-            mapInfos={this.mapInfos}
-            ref={(el) => this._mapPicker = el} />
-
-          <div class={`mapView-header display-flex ${headerElements}`}>
-
-            <div class={`border-end ${containerClass} ${mobileClass}`} id="solutions-map-layer-picker-container">
-              {this.mapView && <map-layer-picker
-                appearance="transparent"
-                defaultLayerId={this.defaultLayerId}
-                display="inline-flex"
-                height={50}
-                isMobile={this.isMobile}
-                mapView={this.mapView}
-                onlyShowUpdatableLayers={this.onlyShowUpdatableLayers}
-                placeholderIcon="layers"
-                scale="l"
-                selectedIds={this.selectedLayer ? [this.selectedLayer.id] : []}
-                showSingleLayerAsLabel={true}
-                showTables={true}
-                type="dropdown"
-              />}
-            </div>
-            {this._getDropDownItem()}
-          </div>
+        <div class={`${mapContainerClass} width-full`}
+          ref={(el) => this._toolbar = el}>
+          {this._getActionBar()}
+          {/* dropdown actions */}
+          {!this.isMobile && this.isMapLayout && this._getDropdown("more-table-options")}
         </div>
         <div class={`${mapHeightClass} ${mapClass}`} ref={(el) => (this._mapDiv = el)} />
         <map-tools
@@ -480,8 +557,21 @@ export class MapCard {
    * Called each time after the component is loaded
    */
   async componentDidRender(): Promise<void> {
+    if(this.isMapLayout) {
+      this._updateToolbar();
+    }
     document.onclick = (e) => this._handleDocumentClick(e);
   }
+
+  /**
+   * Called once after the component is loaded
+   */
+    async componentDidLoad(): Promise<void> {
+      if (!this.isMobile && !this._observerSet) {
+        this._resizeObserver.observe(this._toolbar);
+        this._observerSet = true;
+      }
+    }
 
   //--------------------------------------------------------------------------
   //
@@ -574,6 +664,369 @@ export class MapCard {
   }
 
   /**
+   * Add/Remove tools from the action bar and dropdown based on available size
+   * @protected
+   */
+  protected _updateToolbar(): void {
+    if (this._timeout) {
+      clearTimeout(this._timeout)
+    }
+    if (!this.isMobile && this._toolbar && this._toolInfos) {
+      this._timeout = setTimeout(() => {
+        clearTimeout(this._timeout)
+        this._setToolbarSizeInfos();
+        const toolbarWidth = this._toolbar.offsetWidth;
+        let controlsWidth = this._toolbarSizeInfos.reduce((prev, cur) => {
+          prev += cur.width;
+          return prev;
+        }, 0);
+
+        const skipControls = ["solutions-more", "solutions-map-layer-picker-container", "map-picker"];
+        if (controlsWidth > toolbarWidth) {
+          if (this._toolbarSizeInfos.length > 0) {
+            const controlsThatFit = [...this._toolbarSizeInfos].reverse().reduce((prev, cur) => {
+              if (skipControls.indexOf(cur.id) < 0) {
+                if (controlsWidth > toolbarWidth) {
+                  controlsWidth -= cur.width;
+                } else {
+                  prev.push(cur);
+                }
+              }
+              return prev;
+            }, []).reverse();
+
+            this._setControlsThatFit(controlsThatFit, skipControls);
+          }
+        } else {
+          if (this._defaultVisibleToolSizeInfos) {
+            const currentTools = this._toolbarSizeInfos.reduce((prev, cur) => {
+              prev.push(cur.id);
+              return prev;
+            }, []);
+
+            let forceFinish = false;
+            const controlsThatFit = [...this._defaultVisibleToolSizeInfos].reduce((prev, cur) => {
+              if (!forceFinish && skipControls.indexOf(cur.id) < 0 &&
+                (currentTools.indexOf(cur.id) > -1 || (controlsWidth + cur.width) <= toolbarWidth)
+              ) {
+                if (currentTools.indexOf(cur.id) < 0) {
+                  controlsWidth += cur.width;
+                }
+                prev.push(cur);
+              } else if (skipControls.indexOf(cur.id) < 0 && (controlsWidth + cur.width) > toolbarWidth) {
+                // exit the first time we evalute this as true...otherwise it will add the next control that will fit
+                // and not preserve the overall order of controls
+                forceFinish = true;
+              }
+              return prev;
+            }, []);
+
+            this._setControlsThatFit(controlsThatFit, skipControls);
+          }
+        }
+      }, 250);
+    }
+  }
+
+  /**
+   * Validate if controls that fit the current display has changed or
+   * is different from what is currently displayed
+   * @param _setControlsThatFit
+   * @param skipControls
+   * @protected
+   */
+  protected _setControlsThatFit(
+    controlsThatFit: IToolSizeInfo[],
+    skipControls: string[]
+  ): void {
+    let update = JSON.stringify(controlsThatFit) !== JSON.stringify(this._controlsThatFit);
+    const actionbar = document.getElementById("solutions-action-bar");
+    actionbar?.childNodes?.forEach((n: any) => {
+      if (skipControls.indexOf(n.id) < 0 && !update) {
+        update = this._controlsThatFit.map(c => c.id).indexOf(n.id) < 0;
+      }
+    });
+    if (update) {
+      this._controlsThatFit = [...controlsThatFit];
+    }
+  }
+
+  /**
+   * Get the id and size for the toolbars current items
+   * @protected
+   */
+  protected _setToolbarSizeInfos(): void {
+    let hasWidth = false;
+    this._toolbarSizeInfos = [];
+    this._toolbar.childNodes.forEach((c: any, i) => {
+      // handle the action bar
+      if (i === 0) {
+        c.childNodes.forEach((actionbarChild: any) => {
+          this._toolbarSizeInfos.push({
+            id: actionbarChild.id,
+            width: actionbarChild.offsetWidth
+          });
+          if (!hasWidth) {
+            hasWidth = actionbarChild.offsetWidth > 0;
+          }
+        });
+      } else if (!c.referenceElement) {
+        // skip tooltips
+        this._toolbarSizeInfos.push({
+          id: c.id,
+          width: c.offsetWidth
+        });
+        if (!hasWidth) {
+          hasWidth = c.offsetWidth > 0;
+        }
+      }
+    });
+    if (hasWidth && !this._defaultVisibleToolSizeInfos) {
+      this._defaultVisibleToolSizeInfos = [...this._toolbarSizeInfos];
+    }
+  }
+
+  /**
+   * Gets a row of controls that can be used for various interactions with the table
+   *
+   * @returns The dom node that contains the controls
+   * @protected
+   */
+  protected _getActionBar(): VNode {
+    const mapPickerClass = this.mapInfos?.length > 1 ? "" : "display-none";
+    const containerClass = this.isMapLayout ? "display-flex" : "display-block";
+    const mobileClass = this.isMobile ? "border-top" : "";
+    const headerElements = this.isMapLayout ? "" : "display-none";
+    return (
+      <calcite-action-bar
+        class={containerClass}
+        expandDisabled={true}
+        expanded={true}
+        id={this._getId("bar")}
+        layout="horizontal"
+      >
+        <map-picker
+          class={mapPickerClass}
+          isMapLayout={this.isMapLayout}
+          mapInfos={this.mapInfos}
+          ref={(el) => this._mapPicker = el} />
+
+        <div class={`mapView-header display-flex ${headerElements}`}>
+          <div class={`border-end ${containerClass} ${mobileClass}`} id="solutions-map-layer-picker-container">
+            {this.mapView && <map-layer-picker
+              appearance="transparent"
+              defaultLayerId={this.defaultLayerId}
+              display="inline-flex"
+              height={50}
+              isMobile={this.isMobile}
+              mapView={this.mapView}
+              onlyShowUpdatableLayers={this.onlyShowUpdatableLayers}
+              placeholderIcon="layers"
+              ref={(el) => this._mapLayerPicker = el}
+              scale="l"
+              selectedIds={this.selectedLayer ? [this.selectedLayer.id] : []}
+              showSingleLayerAsLabel={true}
+              showTables={true}
+              showTablesDisabled={true}
+              type="dropdown"
+            />}
+          </div>
+        </div>
+        {!this.isMobile && this.isMapLayout ? this._getActions() : undefined}
+      </calcite-action-bar>
+    );
+  }
+
+  /**
+   * Get a list of toolInfos that should display in the dropdown
+   *
+   * @param id string the id for the dropdown and its tooltip
+   *
+   * @returns VNode the dropdown node
+   * @protected
+   */
+  protected _getDropdown(
+    id: string
+  ): VNode {
+    const dropdownItems = this._getDropdownItems();
+    return dropdownItems.length > 0 ? (
+      <calcite-dropdown
+        closeOnSelectDisabled={true}
+        disabled={this.selectedLayer === undefined}
+        id="solutions-more"
+        onCalciteDropdownBeforeClose={() => this._forceShowHide()}
+        ref={(el) => this._moreDropdown = el}
+      >
+        <calcite-action
+          appearance="solid"
+          id={id}
+          label=""
+          onClick={() => this._closeShowHide()}
+          slot="trigger"
+          text=""
+        >
+          <calcite-button
+            appearance="transparent"
+            iconEnd="chevron-down"
+            kind="neutral"
+          >
+            {this._translations.more}
+          </calcite-button>
+        </calcite-action>
+        <calcite-dropdown-group selection-mode="none">
+          {
+            dropdownItems.map(item => {
+              return (
+                <calcite-dropdown-group
+                  class={item.disabled ? "disabled" : ""}
+                  selectionMode={"none"}
+                >
+                  <calcite-dropdown-item
+                    disabled={item.loading}
+                    iconStart={item.icon}
+                    id="solutions-subset-list"
+                    onClick={item.func}
+                  >
+                    {item.loading ? (
+                      <div class={"display-flex"}>
+                        <calcite-loader
+                          inline={true}
+                          label={item.label}
+                          scale="m"
+                        />
+                        {item.label}
+                      </div>
+                    ) : item.label}
+                  </calcite-dropdown-item>
+                </calcite-dropdown-group>
+              )
+            })
+          }
+        </calcite-dropdown-group>
+      </calcite-dropdown>
+    ) : undefined;
+  }
+
+  /**
+   * Open show/hide dropdown
+   * @protected
+   */
+  protected _closeShowHide(): void {
+    this._showHideOpen = false;
+  }
+  
+  /**
+   * Get a list of toolInfos that should display in the dropdown
+   *
+   * @returns IToolInfo[] the list of toolInfos that should display in the dropdown
+   * @protected
+   */
+  protected _getDropdownItems(): IToolInfo[] {
+    return this._toolInfos?.filter(toolInfo => toolInfo && toolInfo.isOverflow);
+  }
+
+  /**
+   * Get the full list of toolInfos.
+   * Order is important. They should be listed in the order they should display in the UI from
+   * Left to Right for the action bar and Top to Bottom for the dropdown.
+   * @protected
+   */
+  protected _initToolInfos(): void {
+    const featuresSelected = this.selectedFeaturesIds?.length > 0;
+    const hasFilterExpressions = this._hasFilterExpressions();
+    // hide multiple edits for R03
+    const showMultipleEdits = this.selectedFeaturesIds?.length > 1 && false;
+    if (this._translations) {
+      this._toolInfos = [
+        {
+          active: false,
+          icon: "zoom-to-object",
+          indicator: false,
+          label: this._translations.zoom,
+          func: () => this._zoom(),
+          disabled: !featuresSelected,
+          isOverflow: false
+        },
+        hasFilterExpressions ? {
+          active: false,
+          icon: "filter",
+          indicator: false,
+          label: this._translations.filters,
+          func: () => this._toggleFilter(),
+          disabled: false,
+          isOverflow: false
+        } : undefined,
+        showMultipleEdits ? {
+          active: false,
+          icon: "pencil",
+          indicator: false,
+          label: this._translations.editMultiple,
+          func: () => alert(this._translations.editMultiple),
+          disabled: !showMultipleEdits,
+          isOverflow: false,
+        } : undefined,
+        {
+          active: false,
+          icon: "refresh",
+          indicator: false,
+          label: this._translations.refresh,
+          func: () => this.selectedLayer.refresh(),
+          disabled: false,
+          isOverflow: false
+        },
+        {
+          active: false,
+          icon: "erase",
+          indicator: false,
+          label: this._translations.clearSelection,
+          func: () => this.clearSelection.emit(),
+          disabled: !featuresSelected,
+          isOverflow: false
+        }
+      ];
+      this._defaultVisibleToolSizeInfos = undefined;
+    }
+  }
+
+  /**
+   * Update actions active prop based on a stored value
+   * @protected
+   */
+  protected _validateActiveActions(): void {
+    const activeDependant = [
+      "filter"
+    ];
+    this._toolInfos?.forEach(ti => {
+      if (ti && activeDependant.indexOf(ti.icon) > -1) {
+        if (ti.icon === "filter") {
+          ti.indicator = this._filterActive;
+        }
+      }
+    });
+  }
+
+  /**
+   * Update actions enabled prop based on number of selected indexes
+   * @protected
+   */
+  protected _validateEnabledActions(): void {
+    const featuresSelected = this.selectedFeaturesIds?.length > 0;
+    const showMultipleEdits = this.selectedFeaturesIds?.length > 1 && this.selectedLayer?.capabilities?.operations?.supportsUpdate;
+    const selectionDependant = [
+      "zoom-to-object",
+      "pencil",
+      "erase"
+    ];
+    this._toolInfos?.forEach(ti => {
+      if (ti && selectionDependant.indexOf(ti.icon) > -1) {
+        // disable the pencil icon if multiple features are not selected
+        // For other icons disable them if any feature is not selected
+        ti.disabled = ti.icon === "pencil" ? !showMultipleEdits : !featuresSelected;
+      }
+    });
+  }
+
+  /**
    * Add/remove the home widget base on enableHome prop
    *
    * @protected
@@ -615,7 +1068,9 @@ export class MapCard {
     e: MouseEvent
   ): void {
     const id = (e.target as any)?.id;
-    if (this._showHideOpen && id !== "solutions-subset-list" && id !== "solutions-more" && id !== "chevron-down") {
+    if (id === "solutions-subset-list") {
+      this._moreDropdown.open = true;
+    } else if (this._showHideOpen && id !== "solutions-subset-list" && id !== "solutions-more" && id !== "chevron-down") {
       if (this._moreDropdown) {
         this._showHideOpen = false;
         this._moreDropdown.open = false;
@@ -634,10 +1089,10 @@ export class MapCard {
   }
 
   /**
- * Zoom to all selected features
- *
- * @returns a promise that will resolve when the operation is complete
- */
+   * Zoom to all selected features
+   *
+   * @returns a promise that will resolve when the operation is complete
+   */
   protected async _zoom(): Promise<void> {
     if (this.selectedLayer) {
       const selectedLayerView = await getFeatureLayerView(this.mapView, this.selectedLayer.id);
@@ -645,6 +1100,10 @@ export class MapCard {
     }
   }
 
+  /**
+   * toggle the filter
+   * @protected
+   */
   protected async _toggleFilter(): Promise<void> {
     this.toggleFilter.emit();
   }
@@ -664,100 +1123,111 @@ export class MapCard {
   }
 
   /**
-   * Get Dropdown action item
-   * @returns Dropdown item
+   * Get the actions that are used for various interactions with the table
+   *
+   * @returns VNode[] the action nodes
    */
-  protected _getDropDownItem(): Node {
-    return (
-      <calcite-dropdown
-        closeOnSelectDisabled={true}
-        disabled={this.selectedLayer === undefined}
-        id="solutions-more"
-        onCalciteDropdownBeforeClose={() => this._forceShowHide()}
-        ref={(el) => this._moreDropdown = el}
-        widthScale="l"
+  protected _getActions(): VNode[] {
+    const actions = this._getActionItems();
+    return actions?.reduce((prev, cur) => {
+      if (cur && !cur.isOverflow) {
+        prev.push(
+          this._getAction(cur.active, cur.icon, cur.indicator, cur.label, cur.func, cur.disabled, cur.loading)
+        )
+      }
+      return prev;
+    }, []);
+  }
+
+  /**
+   * Get a tooltip
+   *
+   * @param placement string where the tooltip should display
+   * @param referenceElement string the element the tooltip will be associated with
+   * @param text string the text to display in the tooltip
+   *
+   * @returns VNode The tooltip node
+   */
+  protected _getToolTip(
+    placement: TooltipPlacement,
+    referenceElement: string,
+    text: string
+  ): VNode {
+    return document.getElementById(referenceElement) ? (
+      <calcite-tooltip
+        placement={placement}
+        reference-element={"map-" + referenceElement}
       >
+        <span>{text}</span>
+      </calcite-tooltip>
+    ) : undefined;
+  }
+
+  /**
+   * Get a list of toolInfos that should display outside of the dropdown
+   *
+   * @returns IToolInfo[] the list of toolInfos that should not display in the overflow dropdown
+   */
+  protected _getActionItems(): IToolInfo[] {
+    return this._toolInfos?.filter(toolInfo => toolInfo && !toolInfo.isOverflow)
+  }
+
+  /**
+   * Get an action and tooltip
+   *
+   * @param active boolean if true the icon is in use
+   * @param icon string the name of the icon to display, will also be used as the id
+   * @param indicator if true the icon will shown using indicator
+   * @param label string the text to display and label the action
+   * @param func any the function to execute
+   * @param disabled boolean when true the user will not be able to interact with the action
+   * @param loading if true loading indicator will shown
+   * @param slot slot for the action 
+   *
+   * @returns VNode The node representing the DOM element that will contain the action
+   */
+  protected _getAction(
+    active: boolean,
+    icon: string,
+    indicator: boolean,
+    label: string,
+    func: any,
+    disabled: boolean,
+    loading: boolean,
+    slot?: string
+  ): VNode {
+    const _disabled = this.selectedLayer === undefined ? true : disabled;
+    return (
+      <div class={"display-flex"} id={this._getId(icon)} slot={slot}>
         <calcite-action
+          active={active}
           appearance="solid"
-          id={'solutions-more'}
-          label=""
-          onClick={() => this._toggleShowHide()}
-          slot="trigger"
-          text=""
-        >
-          <calcite-button
-            appearance="transparent"
-            iconEnd={this._showHideOpen ? "chevron-up" : "chevron-down"}
-            kind="neutral"
-          >
-            {this._translations.more}
-          </calcite-button>
-        </calcite-action>
-        <calcite-dropdown-group
-          selectionMode="none"
-        >
-          {this._getDropDownItems()}
-        </calcite-dropdown-group>
-      </calcite-dropdown>
+          disabled={_disabled}
+          icon={icon}
+          id={"map-" + icon}
+          indicator={indicator}
+          label={label}
+          loading={loading}
+          onClick={func}
+          text={label}
+          textEnabled={true}
+        />
+        {this._getToolTip("bottom", icon, label)}
+      </div>
     )
   }
 
   /**
-   * Gets the dropdown items
-   * @returns dropdown items
+   * Get an id with a prefix to the user supplied value
+   *
+   * @param id the unique value for the id
+   *
+   * @returns the new id with the prefix value
    */
-  protected _getDropDownItems(): Node {
-    const featureSelected = this.selectedFeaturesIds?.length > 0;
-    const showMultipleEdits = this.selectedFeaturesIds?.length > 1;
-    const hasFilterExpressions = this._hasFilterExpressions()
-    return (
-      <Fragment>
-        <calcite-dropdown-group
-          selectionMode={"none"}>
-          <calcite-dropdown-item
-            disabled={!showMultipleEdits}
-            iconStart={"pencil"}
-            id="solutions-subset-list"
-            onClick={() => alert(this._translations.editMultiple)}>
-            {this._translations.editMultiple}
-          </calcite-dropdown-item>
-        </calcite-dropdown-group>
-
-        <calcite-dropdown-group
-          selectionMode={"none"}>
-          <calcite-dropdown-item
-            iconStart={"refresh"}
-            id="solutions-subset-list"
-            onClick={() => { this.selectedLayer.refresh() }}>
-            {this._translations.refresh}
-          </calcite-dropdown-item>
-        </calcite-dropdown-group>
-
-        <calcite-dropdown-group
-          selectionMode={"none"}>
-          <calcite-dropdown-item
-            disabled={!featureSelected}
-            iconStart={"zoom-to-object"}
-            id="solutions-subset-list"
-            onClick={this._zoom.bind(this)}>
-            {this._translations.zoom}
-          </calcite-dropdown-item>
-        </calcite-dropdown-group>
-
-        {hasFilterExpressions &&
-          <calcite-dropdown-group>
-            <calcite-dropdown-item
-              disabled={false}
-              iconStart={"filter"}
-              id="solutions-subset-list"
-              onClick={this._toggleFilter.bind(this)}
-              selected={this._filterActive}>
-              {this._translations.filters}
-            </calcite-dropdown-item>
-          </calcite-dropdown-group>}
-
-      </Fragment>
-    )
+  protected _getId(
+    id: string
+  ): string {
+    return `solutions-action-${id}`;
   }
 
   /**

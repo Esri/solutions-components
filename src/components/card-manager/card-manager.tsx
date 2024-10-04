@@ -79,6 +79,11 @@ export class CardManager {
    */
   @Prop() enableCreateFeatures = true;
 
+  /**
+   * boolean: When select feature from map message will shown
+   */
+  @Prop() selectingFeatureFromMap: boolean
+
   //--------------------------------------------------------------------------
   //
   //  State (internal)
@@ -215,6 +220,7 @@ export class CardManager {
     const messageClass = this._graphics?.length > 0 || this._showCreateFeatureComponent ? "display-none" : "";
     const isTable = this.layer?.isTable;
     const heading = isTable ? this._translations.createRecord : this._translations.createFeature;
+    const guideMsg = this.customInfoText || this.selectingFeatureFromMap ? this._translations.selectFeaturesFromMapToStart : this._translations.selectFeaturesToStart
     const showCreateFeatureOrRecordBtn = this.enableCreateFeatures && this.layer?.capabilities?.operations?.supportsAdd;
     return (
       <Host>
@@ -234,11 +240,11 @@ export class CardManager {
             <calcite-flow-item>
               <calcite-panel>
                 <div class={"padding-1"}>
-                  <calcite-notice icon="table" open>
-                    <div slot="message">{this.customInfoText || this._translations.selectFeaturesToStart}</div>
+                  <calcite-notice icon={this.selectingFeatureFromMap ? "map" : "table"} iconFlipRtl open>
+                    <div slot="message">{guideMsg}</div>
                   </calcite-notice>
                 </div>
-                {showCreateFeatureOrRecordBtn && <calcite-button
+                {!this.isMobile && showCreateFeatureOrRecordBtn && <calcite-button
                   disabled={!this.layer}
                   onClick={() => this._createFeatureBtnClicked()}
                   slot="footer"
@@ -259,7 +265,7 @@ export class CardManager {
                   onClick={this._backFromCreateFeature.bind(this)}
                   scale="s"
                   slot="header-actions-start"
-                  text="back" />
+                  text=""/>
                 {this.getEditorComponent()}
                 {this._showSubmitBtn && <calcite-button
                   appearance="solid"
@@ -297,6 +303,7 @@ export class CardManager {
           onSuccess={this._featureCreated.bind(this)}
           ref={el => this._createFeature = el}
           selectedLayerId={this.layer?.id}
+          showGuidingMsgWhileDrawing={false}
         />}
       </div>
     )
@@ -310,7 +317,7 @@ export class CardManager {
 
   /**
    * Gets the Feature using its ids
-   *
+   * @param ids list of ids that are currently selected
    * @returns Promise when complete
    * @protected
    */

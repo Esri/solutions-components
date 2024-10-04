@@ -385,14 +385,14 @@ export class FeatureDetails {
     if (commentsConfigured) {
       //Get comments table id from map
       const allTables = await getAllTables(this.mapView);
-      let relatedTable = null
+      let relatedTable = null;
       let validRelationshipId =  null;
       allTables.some((table) => {
         if (selectedLayer.url === (table as __esri.FeatureLayer).url) {
-          const relationship = selectedLayer.relationships.filter(a => (table as __esri.FeatureLayer).layerId === a.relatedTableId)
+          const relationship = selectedLayer.relationships.filter(a => (table as __esri.FeatureLayer).layerId === a.relatedTableId);
           if (relationship?.length) {
             relatedTable = table;
-            validRelationshipId = relationship[0].id
+            validRelationshipId = relationship[0].id;
             return true;
           }
         }

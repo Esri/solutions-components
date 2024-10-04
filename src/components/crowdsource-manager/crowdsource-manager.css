@@ -85,6 +85,10 @@
   border-bottom: 1px solid var(--calcite-color-border-3);
 }
 
+.border-right {
+  border-right: 2px solid var(--calcite-color-border-3);
+}
+
 .border-sides {
   border-left: 1px solid var(--calcite-color-border-3);
   border-right: 1px solid var(--calcite-color-border-3);
@@ -98,8 +102,8 @@
   position: absolute;
 }
 
-.height-51 {
-  height: 51%;
+.height-50 {
+  height: 50%;
 }
 
 .top-51 {
@@ -114,8 +118,8 @@
   height: calc(100% - 50px);
 }
 
-.adjusted-height-100-50 {
-  height: calc(100% - 50px);
+.adjusted-height-100-51 {
+  height: calc(100% - 51px);
 }
 
 .display-none {

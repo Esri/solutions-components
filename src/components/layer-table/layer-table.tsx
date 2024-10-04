@@ -221,6 +221,11 @@ export class LayerTable {
   */
   @State() _searchPlaceHolder: string = '';
 
+  /**
+   * number Total number of records currently displayed in the table. This takes into account all active filters.
+   */
+  @State() _size: number = 0;
+
   //--------------------------------------------------------------------------
   //
   //  Properties (protected)
@@ -491,7 +496,7 @@ export class LayerTable {
         ti.isOverflow = ids.indexOf(id) < 0;
         return ti;
       }
-    })
+    });
   }
 
   /**
@@ -746,6 +751,14 @@ export class LayerTable {
     this._clearSelection();
   }
 
+  /**
+   * Clears the selection from table
+   */
+  @Listen("clearSelection", { target: "window" })
+  clearSelection(): void {
+    this._clearSelection();
+  }
+
   //--------------------------------------------------------------------------
   //
   //  Functions (lifecycle)
@@ -772,7 +785,7 @@ export class LayerTable {
   render() {
     const tableNodeClass = this._fetchingData ? "display-none" : "";
     const loadingClass = this._fetchingData ? "" : "display-none";
-    const total = this._allIds.length.toString();
+    const total = this._size.toString();
     const selected = this.selectedIds.length.toString();
     const tableHeightClass = this.isMobile ? "height-full" : "height-full-adjusted";
     const showSearch = this._canShowFullTextSearch();
@@ -785,6 +798,7 @@ export class LayerTable {
             <calcite-panel class="height-full width-full">
               {showSearch &&
                 <calcite-input
+                  class={"search"}
                   clearable
                   icon="search"
                   onCalciteInputChange={(evt) => void this._searchTextChanged(evt)}
@@ -829,15 +843,16 @@ export class LayerTable {
       this._resizeObserver.observe(this._toolbar);
       this._observerSet = true;
     }
-    document.onclick = (e) => this._handleDocumentClick(e);
-    document.onkeydown = (e) => this._handleKeyDown(e);
-    document.onkeyup = (e) => this._handleKeyUp(e);
   }
 
   /**
    * Called after the component is rendered
    */
   componentDidRender(): void {
+    // need to be called after each render to get the clicked mouseEvent 
+    document.onclick = (e) => this._handleDocumentClick(e);
+    document.onkeydown = (e) => this._handleKeyDown(e);
+    document.onkeyup = (e) => this._handleKeyUp(e);
     this._updateToolbar();
   }
 
@@ -893,9 +908,12 @@ export class LayerTable {
         const searchQueryParams = this._layer.createQuery();
         (searchQueryParams as any).fullText = this._fullTextSearchInfo;
         const searchedIds = await this._layer.queryObjectIds(searchQueryParams);
-        this._updateSearchDefinitionExpression(searchedIds?.length ? searchedIds : [-1]);
+        await this._updateSearchDefinitionExpression(searchedIds?.length ? searchedIds : [-1]);
       }
     }
+    //Added timeout and table.refresh() to avoid the issue in which we see empty table records after searching in combination to filter/reset filter
+    await new Promise(resolve => setTimeout(resolve, 800));
+    await this._updateAllIds();
   }
 
   /**
@@ -920,7 +938,7 @@ export class LayerTable {
    * Update the search expression in layer
    * @param searchedIds Array of objectIds satisfying the full search text
    */
-  protected _updateSearchDefinitionExpression(searchedIds: number[]): void {
+  protected async _updateSearchDefinitionExpression(searchedIds: number[]): Promise<void> {
     const defExp = this._layer.definitionExpression;
     if (searchedIds?.length) {
       const searchExp = `objectId in(${searchedIds})`;
@@ -929,7 +947,7 @@ export class LayerTable {
         defExp ? `${defExp} AND (${searchExp})` : searchExp;
       this._searchExpression = searchExp;
     } else {
-      this._clearSearchDefinitionExpression()
+      this._clearSearchDefinitionExpression();
     }
   }
 
@@ -962,7 +980,7 @@ export class LayerTable {
           const fieldInfo = this._layer.getField(fieldName.trim());
           fieldAlias.push(fieldInfo.alias)
         });
-        this._searchPlaceHolder = this._translations.searchPlaceholder.replace("{{fields}}", fieldAlias.join(' | '));
+        this._searchPlaceHolder = this._translations.searchPlaceholder.replace("{{fields}}", fieldAlias.join(', '));
         this._fullTextSearchInfo.push({
           'onFields': ['*'],
           'searchTerm': '',
@@ -1099,13 +1117,14 @@ export class LayerTable {
             return (
               <calcite-dropdown-item
                 id={`layer-table-${k.toLowerCase().replaceAll(" ", "")}`}
+                label={k}
                 onClick={(e) => {
                   const target = e.target as HTMLCalciteDropdownItemElement;
-                  this._columnsInfo[target.id] = target.selected;
+                  this._columnsInfo[target.label] = target.selected;
                   if (!target.selected) {
-                    this._table.hideColumn(target.id);
+                    this._table.hideColumn(target.label);
                   } else {
-                    this._table.showColumn(target.id);
+                    this._table.showColumn(target.label);
                   }
                 }}
                 selected={selected}
@@ -1172,7 +1191,8 @@ export class LayerTable {
    */
   protected _initToolInfos(): void {
     const featuresSelected = this._featuresSelected();
-    const showMultipleEdits = this.selectedIds.length > 1 && this._layer?.capabilities?.operations?.supportsUpdate;
+    // hide multiple edits for R03
+    const showMultipleEdits = this.selectedIds.length > 1 && this._layer?.capabilities?.operations?.supportsUpdate && false;
     const featuresEmpty = this._featuresEmpty();
     const hasFilterExpressions = this._hasFilterExpressions();
     if (this._translations) {
@@ -1195,7 +1215,7 @@ export class LayerTable {
           disabled: false,
           isOverflow: false
         } : undefined,
-        !this.mapHidden ? {
+        showMultipleEdits ? {
           active: false,
           icon: "pencil",
           indicator: false,
@@ -1208,8 +1228,8 @@ export class LayerTable {
           active: undefined,
           icon: "trash",
           indicator: undefined,
-          label: undefined,
-          func: undefined,
+          label: this._translations.delete,
+          func: () => undefined,
           disabled: !featuresSelected,
           isDanger: true,
           isOverflow: false
@@ -1498,7 +1518,7 @@ export class LayerTable {
               return (
                 <calcite-dropdown-group
                   class={item.disabled ? "disabled" : ""}
-                  selectionMode={item.disabled ? "none" : "single"}
+                  selectionMode={"none"}
                 >
                   <calcite-dropdown-item
                     disabled={item.loading}
@@ -1711,7 +1731,7 @@ export class LayerTable {
             disabled={_disabled}
             id={icon}
             onClick={func}
-            text=""
+            text={label}
           >
             <calcite-button
               appearance="transparent"
@@ -1782,6 +1802,14 @@ export class LayerTable {
         this._table.highlightIds.on("change", (evt) => {
           void this._handleOnChange(evt);
         });
+
+        //Add handle to watch size of the table and update the state to reflect the total count
+        const handle = this.reactiveUtils.watch(
+          () => (this._table as any).size,
+          (size) => {
+            this._size = size;
+          });
+        this._table.viewModel.addHandles(handle);
       });
     }
   }
@@ -2111,7 +2139,9 @@ export class LayerTable {
     e: MouseEvent
   ): void {
     const id = (e.target as any)?.id;
-    if (this._showHideOpen && Object.keys(this._columnsInfo).indexOf(id) < 0 && id !== "solutions-subset-list" && id !== "chevron-right") {
+    if (id.startsWith('layer-table-')) {
+      this._moreDropdown.open = true;
+    } else if (this._showHideOpen && Object.keys(this._columnsInfo).indexOf(id) < 0 && id !== "chevron-right") {
       this._closeShowHide();
       if (this._moreDropdown) {
         this._moreDropdown.open = false;
@@ -2392,7 +2422,7 @@ export class LayerTable {
   }
 
   /**
-   * Refreshes the table and maintains the curent scroll position
+   * Refreshes the table and maintains the current scroll position
    * @protected
    */
   protected async _refresh(): Promise<void> {
