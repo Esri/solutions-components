@@ -1,10 +1,10 @@
 {
-  "fetchingData": "正在获取数据",
-  "edit": "编辑",
-  "enableEditing": "必须在图层上启用更新功能。",
-  "editDisabled": "已禁用编辑",
-  "next": "下一步",
-  "back": "返回",
-  "indexOfTotal": "{{index}}/{{total}}",
-  "delete": "删除"
+  "fetchingData": "试_Fetching data______________验",
+  "edit": "试_Edit_________验",
+  "enableEditing": "试_Update capability must be enabled on the layer_________________________验.",
+  "editDisabled": "试_Editing Disabled_________________验",
+  "next": "试_Next_________验",
+  "back": "试_Back_________验",
+  "indexOfTotal": "试_{{index}} of {{total}}_______________________验",
+  "delete": "试_Delete_____________验"
 }

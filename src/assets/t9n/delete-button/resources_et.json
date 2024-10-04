@@ -1,8 +1,8 @@
 {
-  "cancel": "Loobu",
-  "confirmMultiple": "Need objektid eemaldatakse jäädavalt.",
-  "confirmSingle": "Objekt eemaldatakse jäädavalt.",
-  "delete": "Kustuta",
-  "deleteCount": "Kustuta ({{n}})",
-  "deleteFeature": "Kustuta objekt"
+  "cancel": "Š_Cancel_____________ä",
+  "confirmMultiple": "Š_These features will be permanently removed_______________________ä.",
+  "confirmSingle": "Š_This feature will be permanently removed______________________ä.",
+  "delete": "Š_Delete_____________ä",
+  "deleteCount": "Š_Delete ({{n}})_______________ä",
+  "deleteFeature": "Š_Delete feature_______________ä"
 }

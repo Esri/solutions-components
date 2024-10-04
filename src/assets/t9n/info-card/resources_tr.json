@@ -1,10 +1,10 @@
 {
-  "fetchingData": "Veriler getiriliyor",
-  "edit": "Düzenle",
-  "enableEditing": "Katmanda güncelleme yeteneği etkinleştirilmelidir.",
-  "editDisabled": "Düzenleme Devre Dışı Bırakıldı",
-  "next": "İleri",
-  "back": "Geri",
-  "indexOfTotal": "{{index}} / {{total}}",
-  "delete": "Sil"
+  "fetchingData": "ı_Fetching data______________İ",
+  "edit": "ı_Edit_________İ",
+  "enableEditing": "ı_Update capability must be enabled on the layer_________________________İ.",
+  "editDisabled": "ı_Editing Disabled_________________İ",
+  "next": "ı_Next_________İ",
+  "back": "ı_Back_________İ",
+  "indexOfTotal": "ı_{{index}} of {{total}}_______________________İ",
+  "delete": "ı_Delete_____________İ"
 }

@@ -1,10 +1,10 @@
 {
-  "fetchingData": "Извлечение данных",
-  "edit": "Редактировать",
-  "enableEditing": "Возможность обновления должна быть включена для слоя.",
-  "editDisabled": "Редактирование отключено",
-  "next": "Следующий",
-  "back": "Назад",
-  "indexOfTotal": "{{index}} из {{total}}",
-  "delete": "Удалить"
+  "fetchingData": "Ж_Fetching data______________Я",
+  "edit": "Ж_Edit_________Я",
+  "enableEditing": "Ж_Update capability must be enabled on the layer_________________________Я.",
+  "editDisabled": "Ж_Editing Disabled_________________Я",
+  "next": "Ж_Next_________Я",
+  "back": "Ж_Back_________Я",
+  "indexOfTotal": "Ж_{{index}} of {{total}}_______________________Я",
+  "delete": "Ж_Delete_____________Я"
 }

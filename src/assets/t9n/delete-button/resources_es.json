@@ -1,8 +1,8 @@
 {
-  "cancel": "Cancelar",
-  "confirmMultiple": "Estas entidades se eliminarán de forma permanente.",
-  "confirmSingle": "Esta entidad se eliminará de forma permanente.",
-  "delete": "Eliminar",
-  "deleteCount": "Eliminar ({{n}})",
-  "deleteFeature": "Eliminar entidad"
+  "cancel": "á_Cancel_____________Ó",
+  "confirmMultiple": "á_These features will be permanently removed_______________________Ó.",
+  "confirmSingle": "á_This feature will be permanently removed______________________Ó.",
+  "delete": "á_Delete_____________Ó",
+  "deleteCount": "á_Delete ({{n}})_______________Ó",
+  "deleteFeature": "á_Delete feature_______________Ó"
 }

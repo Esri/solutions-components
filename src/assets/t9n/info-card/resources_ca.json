@@ -1,10 +1,10 @@
 {
-  "fetchingData": "S'estan recuperant les dades",
-  "edit": "Edita",
-  "enableEditing": "Cal haver habilitat la funció d'actualització a la capa.",
-  "editDisabled": "S'ha deshabilitat l'edició",
-  "next": "Següent",
-  "back": "Enrere",
-  "indexOfTotal": "{{index}} de {{total}}",
-  "delete": "Suprimeix"
+  "fetchingData": "ó_Fetching data______________à",
+  "edit": "ó_Edit_________à",
+  "enableEditing": "ó_Update capability must be enabled on the layer_________________________à.",
+  "editDisabled": "ó_Editing Disabled_________________à",
+  "next": "ó_Next_________à",
+  "back": "ó_Back_________à",
+  "indexOfTotal": "ó_{{index}} of {{total}}_______________________à",
+  "delete": "ó_Delete_____________à"
 }

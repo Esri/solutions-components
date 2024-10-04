@@ -1,10 +1,10 @@
 {
-  "fetchingData": "Daten werden abgerufen",
-  "edit": "Bearbeiten",
-  "enableEditing": "Die Aktualisierungsfunktion muss für den Layer aktiviert sein.",
-  "editDisabled": "Bearbeitung ist deaktiviert",
-  "next": "Weiter",
-  "back": "Zurück",
-  "indexOfTotal": "{{index}} von {{total}}",
-  "delete": "Löschen"
+  "fetchingData": "ä_Fetching data______________Ü",
+  "edit": "ä_Edit_________Ü",
+  "enableEditing": "ä_Update capability must be enabled on the layer_________________________Ü.",
+  "editDisabled": "ä_Editing Disabled_________________Ü",
+  "next": "ä_Next_________Ü",
+  "back": "ä_Back_________Ü",
+  "indexOfTotal": "ä_{{index}} of {{total}}_______________________Ü",
+  "delete": "ä_Delete_____________Ü"
 }

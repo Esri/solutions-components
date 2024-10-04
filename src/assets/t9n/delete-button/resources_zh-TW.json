@@ -1,8 +1,8 @@
 {
-  "cancel": "取消",
-  "confirmMultiple": "將永久移除這些圖徵。",
-  "confirmSingle": "將永久移除此圖徵。",
-  "delete": "刪除",
-  "deleteCount": "刪除 ({{n}})",
-  "deleteFeature": "刪除圖徵"
+  "cancel": "試_Cancel_____________驗",
+  "confirmMultiple": "試_These features will be permanently removed_______________________驗.",
+  "confirmSingle": "試_This feature will be permanently removed______________________驗.",
+  "delete": "試_Delete_____________驗",
+  "deleteCount": "試_Delete ({{n}})_______________驗",
+  "deleteFeature": "試_Delete feature_______________驗"
 }

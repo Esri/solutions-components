@@ -1,8 +1,8 @@
 {
-  "cancel": "ยกเลิก",
-  "confirmMultiple": "ฟีเจอร์เหล่านี้จะถูกลบออกอย่างถาวร",
-  "confirmSingle": "ฟีเจอร์นี้จะถูกลบออกอย่างถาวร",
-  "delete": "ลบ",
-  "deleteCount": "ลบ ({{n}})",
-  "deleteFeature": "ลบข้อมูลนี้"
+  "cancel": "ก้_Cancel_____________ษฺ",
+  "confirmMultiple": "ก้_These features will be permanently removed_______________________ษฺ.",
+  "confirmSingle": "ก้_This feature will be permanently removed______________________ษฺ.",
+  "delete": "ก้_Delete_____________ษฺ",
+  "deleteCount": "ก้_Delete ({{n}})_______________ษฺ",
+  "deleteFeature": "ก้_Delete feature_______________ษฺ"
 }

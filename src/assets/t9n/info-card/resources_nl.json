@@ -1,10 +1,10 @@
 {
-  "fetchingData": "Bezig met ophalen gegevens",
-  "edit": "Bewerken",
-  "enableEditing": "Update-mogelijkheid moet zijn ingeschakeld voor de laag.",
-  "editDisabled": "Bewerken is uitgeschakeld",
-  "next": "Volgende",
-  "back": "Terug",
-  "indexOfTotal": "{{index}} van {{total}}",
-  "delete": "Verwijderen"
+  "fetchingData": "Ĳ_Fetching data______________ä",
+  "edit": "Ĳ_Edit_________ä",
+  "enableEditing": "Ĳ_Update capability must be enabled on the layer_________________________ä.",
+  "editDisabled": "Ĳ_Editing Disabled_________________ä",
+  "next": "Ĳ_Next_________ä",
+  "back": "Ĳ_Back_________ä",
+  "indexOfTotal": "Ĳ_{{index}} of {{total}}_______________________ä",
+  "delete": "Ĳ_Delete_____________ä"
 }

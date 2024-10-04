@@ -1,8 +1,8 @@
 {
-  "cancel": "Скасувати",
-  "confirmMultiple": "Ці об'єкти будуть вилучені остаточно.",
-  "confirmSingle": "Цей об'єкт буде назавжди видалено.",
-  "delete": "Видалити",
-  "deleteCount": "Видалити ({{n}})",
-  "deleteFeature": "Видалити об'єкт"
+  "cancel": "ґ_Cancel_____________Ї",
+  "confirmMultiple": "ґ_These features will be permanently removed_______________________Ї.",
+  "confirmSingle": "ґ_This feature will be permanently removed______________________Ї.",
+  "delete": "ґ_Delete_____________Ї",
+  "deleteCount": "ґ_Delete ({{n}})_______________Ї",
+  "deleteFeature": "ґ_Delete feature_______________Ї"
 }
