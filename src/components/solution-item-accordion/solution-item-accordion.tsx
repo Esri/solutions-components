@@ -181,7 +181,7 @@ export class SolutionItemAccordion {
    */
   protected _getAccordion(): VNode {
     return (
-      <calcite-accordion>
+      <calcite-accordion selectionMode="single">
         {
           this._sortedTemplateInfos.reduce((prev, cur) => {
             if (this._types.indexOf(cur.type) < 0) {
