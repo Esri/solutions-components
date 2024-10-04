@@ -259,7 +259,7 @@ export class CardManager {
                   onClick={this._backFromCreateFeature.bind(this)}
                   scale="s"
                   slot="header-actions-start"
-                  text="back" />
+                  text=""/>
                 {this.getEditorComponent()}
                 {this._showSubmitBtn && <calcite-button
                   appearance="solid"
@@ -297,6 +297,7 @@ export class CardManager {
           onSuccess={this._featureCreated.bind(this)}
           ref={el => this._createFeature = el}
           selectedLayerId={this.layer?.id}
+          showGuidingMsgWhileDrawing={false}
         />}
       </div>
     )
@@ -310,7 +311,7 @@ export class CardManager {
 
   /**
    * Gets the Feature using its ids
-   *
+   * @param ids list of ids that are currently selected
    * @returns Promise when complete
    * @protected
    */
