@@ -21,7 +21,7 @@
 }
 
 .map-height {
-  height: calc(100% - 51px);
+  height: calc(100% - 53px);
 }
 
 .height-full {
@@ -48,4 +48,8 @@
 
 .display-none {
   display: none;
+}
+
+.display-block {
+  display: block;
 }

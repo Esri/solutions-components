@@ -746,6 +746,14 @@ export class LayerTable {
     this._clearSelection();
   }
 
+  /**
+   * Clears the selection from table
+   */
+  @Listen("clearSelection", { target: "window" })
+  clearSelection(): void {
+    this._clearSelection();
+  }
+
   //--------------------------------------------------------------------------
   //
   //  Functions (lifecycle)

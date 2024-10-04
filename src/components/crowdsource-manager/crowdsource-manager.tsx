@@ -353,6 +353,11 @@ export class CrowdsourceManager {
   protected _filterList: HTMLInstantAppsFilterListElement;
 
   /**
+   * HTMLMapCardElement: Map card refrence element
+   */
+  protected _mapCard: HTMLMapCardElement;
+
+  /**
    * boolean: True when app is directly rendered to map view layout
    */
   protected _isMapViewOnLoad = false;
@@ -806,6 +811,7 @@ export class CrowdsourceManager {
           mapWidgetsSize={"m"}
           onToggleFilter={this._toggleFilter.bind(this)}
           onlyShowUpdatableLayers={this.onlyShowUpdatableLayers}
+          ref={(el) => this._mapCard = el}
           selectedFeaturesIds={this._layerTable?.selectedIds}
           selectedLayer={this._layer}
           stackTools={true}
@@ -1073,8 +1079,14 @@ export class CrowdsourceManager {
             closeBtnOnClick={async () => this._closeFilter()}
             comboboxOverlayPositioning="fixed"
             layerExpressions={this._layerExpressions}
-            onFilterListReset={() => this._handleFilterListReset()}
-            onFilterUpdate={() => void this._layerTable?.filterUpdate()}
+            onFilterListReset={() => {
+              this._handleFilterListReset();
+              this._mapCard.resetFilter();
+            }}
+            onFilterUpdate={() => {
+              void this._layerTable?.filterUpdate();
+              this._mapCard.updateFilterState();
+            }}
             ref={(el) => this._filterList = el}
             view={this._mapView}
             zoomBtn={false}
