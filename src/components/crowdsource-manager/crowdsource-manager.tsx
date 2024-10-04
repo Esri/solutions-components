@@ -313,6 +313,11 @@ export class CrowdsourceManager {
    */
   @State() _layerIds: string[];
 
+  /**
+   * boolean: if true panel will be in loading state
+   */
+  @State() _isLoading: boolean = true;
+
   //--------------------------------------------------------------------------
   //
   //  Properties (protected)
@@ -475,7 +480,18 @@ export class CrowdsourceManager {
       }
       this._layer = layer;
       this._initLayerExpressions();
+      this._isLoading = false;
     });
+  }
+
+  /**
+   * Get the layer ids from the map
+   */
+  @Listen("idsFound", { target: "window" })
+  async idsFound(
+    evt: CustomEvent
+  ): Promise<void> {
+    this._layerIds = evt.detail.layerIds;
   }
 
   //--------------------------------------------------------------------------
@@ -505,6 +521,7 @@ export class CrowdsourceManager {
         <calcite-shell class="position-relative">
           <calcite-panel
             class={`width-full height-full ${borderClass}`}
+            loading={this._isLoading}
           >
             {this._getBody(this._layoutMode, this._panelOpen, this._hideTable)}
           </calcite-panel>

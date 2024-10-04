@@ -100,6 +100,10 @@ export namespace Components {
          */
         "selectedFeaturesIds": number[];
         /**
+          * boolean: When select feature from map message will shown
+         */
+        "selectingFeatureFromMap": boolean;
+        /**
           * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
          */
         "zoomAndScrollToSelected": boolean;
@@ -169,6 +173,10 @@ export namespace Components {
           * boolean: When true the notice message with the current state should be shown
          */
         "showGuidingMsg"?: boolean;
+        /**
+          * boolean: When false the notice message at drawing page will be hidden
+         */
+        "showGuidingMsgWhileDrawing"?: boolean;
         /**
           * Submit the created feature
           * @returns Promise that resolves when the operation is complete
@@ -941,10 +949,6 @@ export namespace Components {
          */
         "enableSingleExpand": boolean;
         /**
-          * Reset the filter
-         */
-        "filterReset": () => Promise<void>;
-        /**
           * boolean: When true the map display will be hidden
          */
         "hidden": boolean;
@@ -997,6 +1001,10 @@ export namespace Components {
          */
         "onlyShowUpdatableLayers": boolean;
         /**
+          * Reset the filter
+         */
+        "resetFilter": () => Promise<void>;
+        /**
           * number[]: A list of ids that are currently selected
          */
         "selectedFeaturesIds": number[];
@@ -1019,7 +1027,11 @@ export namespace Components {
         /**
           * updates the filter
          */
-        "updateFilter": () => Promise<void>;
+        "updateFilterState": () => Promise<void>;
+        /**
+          * updates the layer in map layer picker
+         */
+        "updateLayer": () => Promise<void>;
         /**
           * number: default scale to zoom to when zooming to a single point feature
          */
@@ -1145,9 +1157,17 @@ export namespace Components {
          */
         "showTables": boolean;
         /**
+          * boolean: when true table will shown as disabled
+         */
+        "showTablesDisabled": boolean;
+        /**
           * "select" | "combobox" | "dropdown": type of component to leverage
          */
         "type": "select" | "combobox" | "dropdown";
+        /**
+          * updates the layers
+         */
+        "updateLayer": () => Promise<void>;
     }
     interface MapLegend {
         /**
@@ -2232,6 +2252,7 @@ declare global {
         "mapChanged": IMapChange;
         "beforeMapChanged": void;
         "toggleFilter": void;
+        "clearSelection": void;
     }
     interface HTMLMapCardElement extends Components.MapCard, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMapCardElementEventMap>(type: K, listener: (this: HTMLMapCardElement, ev: MapCardCustomEvent<HTMLMapCardElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2729,6 +2750,10 @@ declare namespace LocalJSX {
          */
         "selectedFeaturesIds"?: number[];
         /**
+          * boolean: When select feature from map message will shown
+         */
+        "selectingFeatureFromMap"?: boolean;
+        /**
           * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
          */
         "zoomAndScrollToSelected"?: boolean;
@@ -2812,6 +2837,10 @@ declare namespace LocalJSX {
           * boolean: When true the notice message with the current state should be shown
          */
         "showGuidingMsg"?: boolean;
+        /**
+          * boolean: When false the notice message at drawing page will be hidden
+         */
+        "showGuidingMsgWhileDrawing"?: boolean;
     }
     interface CreateRelatedFeature {
         /**
@@ -3645,6 +3674,10 @@ declare namespace LocalJSX {
          */
         "onBeforeMapChanged"?: (event: MapCardCustomEvent<void>) => void;
         /**
+          * Emitted on demand when clear selection button is clicked
+         */
+        "onClearSelection"?: (event: MapCardCustomEvent<void>) => void;
+        /**
           * Emitted when a new map is loaded
          */
         "onMapChanged"?: (event: MapCardCustomEvent<IMapChange>) => void;
@@ -3787,7 +3820,7 @@ declare namespace LocalJSX {
          */
         "mapView"?: __esri.MapView;
         /**
-          * Emitted on demand when no valid layers are found
+          * Emitted on demand when valid layers are found
          */
         "onIdsFound"?: (event: MapLayerPickerCustomEvent<ILayerAndTableIds>) => void;
         /**
@@ -3822,6 +3855,10 @@ declare namespace LocalJSX {
           * boolean: when true standalone tables will also be available
          */
         "showTables"?: boolean;
+        /**
+          * boolean: when true table will shown as disabled
+         */
+        "showTablesDisabled"?: boolean;
         /**
           * "select" | "combobox" | "dropdown": type of component to leverage
          */

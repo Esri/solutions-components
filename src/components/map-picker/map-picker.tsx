@@ -274,8 +274,8 @@ export class MapPicker {
   protected _getMapNameList(
     show: boolean
   ): VNode {
-    const width = this.isMapLayout ? "width-25" : "width-full";
-    const listClass = show ? `map-list border-bottom-1 ${width}` : "display-none";
+    const width = this.isMapLayout ? "width-26" : "width-full";
+    const listClass = show ? `map-list border-bottom-1 adjusted-height ${width}` : "display-none";
     return (
       <div class={listClass}>
         <calcite-list

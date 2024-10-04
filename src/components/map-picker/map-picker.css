@@ -23,8 +23,8 @@
   width: 100%;
 }
 
-.width-25 {
-  width: 25% !important;
+.width-26 {
+  width: 26% !important;
 }
 
 .height-full {
@@ -55,7 +55,6 @@
   position: absolute;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
   animation: calcite-scrim-fade-in var(--calcite-internal-animation-timing-medium) ease-in-out;
   background-color: var(--calcite-color-background);
   z-index: 1000;
@@ -69,4 +68,9 @@
 
 .align-center {
   align-items: center;
+}
+
+.adjusted-height {
+  height: calc(100% - 52px);
+  overflow-y: auto;
 }
