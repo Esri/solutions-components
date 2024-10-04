@@ -308,6 +308,11 @@ export class CrowdsourceManager {
    */
   @State() _showInformationHeader = true;
 
+  /**
+   * boolean: list of layer ids
+   */
+  @State() _layerIds: string[];
+
   //--------------------------------------------------------------------------
   //
   //  Properties (protected)
@@ -464,6 +469,10 @@ export class CrowdsourceManager {
     const id: string = evt.detail[0];
     const layer = await getLayerOrTable(this._mapView, id);
     layer && await layer.when(() => {
+      // on render if no layer is present and only one table is present in map and app is in map view layer then change it to split layout
+      if (this._layerIds.length === 0 && this.appLayout === 'mapView' && layer.isTable ) {
+        this._changeLayout('splitView');
+      }
       this._layer = layer;
       this._initLayerExpressions();
     });
@@ -1025,6 +1034,7 @@ export class CrowdsourceManager {
         <calcite-action
           active={this.appLayout === 'mapView'}
           class="toggle-node"
+          disabled={this._layerIds?.length === 0}
           icon={"browser-map"}
           id={"browser-map-action"}
           onClick={() => { this._changeLayout('mapView') }}
@@ -1191,6 +1201,10 @@ export class CrowdsourceManager {
     if (this.appLayout !== appLayout) {
       this._setActiveLayout(appLayout);
       this.appLayout = appLayout;
+      // update the layer if table selected while switching to map view
+      if(this.appLayout === "mapView" && this._layer.isTable) {
+        void this._mapCard.updateLayer()
+      }
       if (this._isMapViewOnLoad) {
         void this._layerTable.refresh();
         this._isMapViewOnLoad = false;

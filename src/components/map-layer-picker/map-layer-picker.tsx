@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Prop, State, VNode, Watch } from "@stencil/core";
+import { Component, Element, Event, EventEmitter, Host, h, Prop, State, VNode, Watch, Method } from "@stencil/core";
 import MapLayerPicker_T9n from "../../assets/t9n/map-layer-picker/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
-import { getMapLayerHash, getMapTableHash } from "../../utils/mapViewUtils";
+import { getLayerOrTable, getMapLayerHash, getMapTableHash } from "../../utils/mapViewUtils";
 import state from "../../utils/publicNotificationStore";
 import { ILayerAndTableIds, ILayerHashInfo, IMapItemHash } from "../../utils/interfaces";
 
@@ -107,6 +107,11 @@ export class MapLayerPicker {
    * boolean: when true standalone tables will also be available
    */
   @Prop() showTables: boolean;
+
+  /**
+   * boolean: when true table will shown as disabled
+   */
+  @Prop() showTablesDisabled: boolean;
 
   /**
    * boolean: when true a map with a single layer will show a label rather than a dropdown
@@ -211,6 +216,14 @@ export class MapLayerPicker {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * updates the layers
+   */
+  @Method()
+  async updateLayer(): Promise<void> {
+    this._setSelectedLayer(this.ids[0]);
+  }
+
   //--------------------------------------------------------------------------
   //
   //  Events (public)
@@ -218,7 +231,7 @@ export class MapLayerPicker {
   //--------------------------------------------------------------------------
 
   /**
-   * Emitted on demand when no valid layers are found
+   * Emitted on demand when valid layers are found
    *
    */
   @Event() idsFound: EventEmitter<ILayerAndTableIds>;
@@ -533,6 +546,7 @@ export class MapLayerPicker {
           selectionMode={disabled ? "none" : "single"}
         >
           <calcite-dropdown-item
+            disabled={itemType === 'table' && this.showTablesDisabled}
             icon-start={itemType}
             onClick={disabled ? undefined : () => void this._setSelectedLayer(id)}
             selected={selected}
