@@ -28,6 +28,10 @@
   height: 100%;
 }
 
+.border-bottom-3px {
+  border-bottom: 3px solid var(--calcite-color-border-3);
+}
+
 .height-50-px {
   height: 50px;
 }
