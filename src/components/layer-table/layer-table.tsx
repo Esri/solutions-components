@@ -1172,7 +1172,8 @@ export class LayerTable {
    */
   protected _initToolInfos(): void {
     const featuresSelected = this._featuresSelected();
-    const showMultipleEdits = this.selectedIds.length > 1 && this._layer?.capabilities?.operations?.supportsUpdate;
+    // hide multiple edits for R03
+    const showMultipleEdits = this.selectedIds.length > 1 && this._layer?.capabilities?.operations?.supportsUpdate && false;
     const featuresEmpty = this._featuresEmpty();
     const hasFilterExpressions = this._hasFilterExpressions();
     if (this._translations) {
@@ -1195,7 +1196,7 @@ export class LayerTable {
           disabled: false,
           isOverflow: false
         } : undefined,
-        !this.mapHidden ? {
+        showMultipleEdits ? {
           active: false,
           icon: "pencil",
           indicator: false,
