@@ -900,6 +900,7 @@ export class CrowdsourceManager {
           }}
           onFeatureOrRecordSubmitted={() => void this._layerTable.refresh()}
           selectedFeaturesIds={this._layerTable?.selectedIds}
+          selectingFeatureFromMap={this.appLayout === "mapView"}
           zoomAndScrollToSelected={this.zoomAndScrollToSelected}
         />
       </div>
