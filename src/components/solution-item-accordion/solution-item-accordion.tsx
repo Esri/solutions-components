@@ -253,7 +253,7 @@ export class SolutionItemAccordion {
   ): VNode {
     return (
       <calcite-list-item
-        description={templateInfo.description}
+        description={templateInfo.snippet}
         label={templateInfo.title}
         value={templateInfo.id}
       />
