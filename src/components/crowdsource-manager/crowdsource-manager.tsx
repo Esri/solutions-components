@@ -1115,11 +1115,11 @@ export class CrowdsourceManager {
             layerExpressions={this._layerExpressions}
             onFilterListReset={() => {
               this._handleFilterListReset();
-              this._mapCard.resetFilter();
+              void this._mapCard.resetFilter();
             }}
             onFilterUpdate={() => {
               void this._layerTable?.filterUpdate();
-              this._mapCard.updateFilterState();
+              void this._mapCard.updateFilterState();
             }}
             ref={(el) => this._filterList = el}
             view={this._mapView}
