@@ -43,16 +43,17 @@
 
 ## Events
 
-| Event              | Description                                     | Type                      |
-| ------------------ | ----------------------------------------------- | ------------------------- |
-| `beforeMapChanged` | Emitted before a new map is loaded              | `CustomEvent<void>`       |
-| `mapChanged`       | Emitted when a new map is loaded                | `CustomEvent<IMapChange>` |
-| `toggleFilter`     | Emitted on demand when filter action is clicked | `CustomEvent<void>`       |
+| Event              | Description                                              | Type                      |
+| ------------------ | -------------------------------------------------------- | ------------------------- |
+| `beforeMapChanged` | Emitted before a new map is loaded                       | `CustomEvent<void>`       |
+| `clearSelection`   | Emitted on demand when clear selection button is clicked | `CustomEvent<void>`       |
+| `mapChanged`       | Emitted when a new map is loaded                         | `CustomEvent<IMapChange>` |
+| `toggleFilter`     | Emitted on demand when filter action is clicked          | `CustomEvent<void>`       |
 
 
 ## Methods
 
-### `filterReset() => Promise<void>`
+### `resetFilter() => Promise<void>`
 
 Reset the filter
 
@@ -62,9 +63,19 @@ Type: `Promise<void>`
 
 
 
-### `updateFilter() => Promise<void>`
+### `updateFilterState() => Promise<void>`
 
 updates the filter
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+### `updateLayer() => Promise<void>`
+
+updates the layer in map layer picker
 
 #### Returns
 
@@ -81,26 +92,49 @@ Type: `Promise<void>`
 
 ### Depends on
 
+- [map-tools](../map-tools)
+- calcite-action-bar
 - [map-picker](../map-picker)
 - [map-layer-picker](../map-layer-picker)
-- [map-tools](../map-tools)
 - calcite-dropdown
 - calcite-action
 - calcite-button
 - calcite-dropdown-group
 - calcite-dropdown-item
+- calcite-loader
+- calcite-tooltip
 
 ### Graph
 ```mermaid
 graph TD;
+  map-card --> map-tools
+  map-card --> calcite-action-bar
   map-card --> map-picker
   map-card --> map-layer-picker
-  map-card --> map-tools
   map-card --> calcite-dropdown
   map-card --> calcite-action
   map-card --> calcite-button
   map-card --> calcite-dropdown-group
   map-card --> calcite-dropdown-item
+  map-card --> calcite-loader
+  map-card --> calcite-tooltip
+  map-tools --> basemap-gallery
+  map-tools --> map-search
+  map-tools --> map-legend
+  map-tools --> map-fullscreen
+  map-tools --> floor-filter
+  map-tools --> calcite-action
+  map-tools --> calcite-icon
+  map-tools --> calcite-tooltip
+  calcite-action --> calcite-loader
+  calcite-action --> calcite-icon
+  calcite-action-bar --> calcite-action-group
+  calcite-action-group --> calcite-action-menu
+  calcite-action-group --> calcite-action
+  calcite-action-menu --> calcite-action
+  calcite-action-menu --> calcite-popover
+  calcite-popover --> calcite-action
+  calcite-popover --> calcite-icon
   map-picker --> calcite-button
   map-picker --> calcite-tooltip
   map-picker --> calcite-action-bar
@@ -108,15 +142,6 @@ graph TD;
   map-picker --> calcite-list-item
   calcite-button --> calcite-loader
   calcite-button --> calcite-icon
-  calcite-action-bar --> calcite-action-group
-  calcite-action-group --> calcite-action-menu
-  calcite-action-group --> calcite-action
-  calcite-action-menu --> calcite-action
-  calcite-action-menu --> calcite-popover
-  calcite-action --> calcite-loader
-  calcite-action --> calcite-icon
-  calcite-popover --> calcite-action
-  calcite-popover --> calcite-icon
   calcite-list --> calcite-scrim
   calcite-list --> calcite-stack
   calcite-list --> calcite-filter
@@ -149,14 +174,6 @@ graph TD;
   calcite-combobox-item --> calcite-icon
   calcite-chip --> calcite-icon
   calcite-dropdown-item --> calcite-icon
-  map-tools --> basemap-gallery
-  map-tools --> map-search
-  map-tools --> map-legend
-  map-tools --> map-fullscreen
-  map-tools --> floor-filter
-  map-tools --> calcite-action
-  map-tools --> calcite-icon
-  map-tools --> calcite-tooltip
   crowdsource-manager --> map-card
   style map-card fill:#f9f,stroke:#333,stroke-width:4px
 ```

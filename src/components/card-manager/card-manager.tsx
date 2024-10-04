@@ -265,7 +265,7 @@ export class CardManager {
                   onClick={this._backFromCreateFeature.bind(this)}
                   scale="s"
                   slot="header-actions-start"
-                  text=""/>
+                  text="" />
                 {this.getEditorComponent()}
                 {this._showSubmitBtn && <calcite-button
                   appearance="solid"

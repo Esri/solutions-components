@@ -195,7 +195,9 @@ export class DeleteButton {
         <calcite-tooltip
           placement={"bottom"}
           reference-element={this.buttonType === "button" ? "solutions-delete" : this.icon}
-        ><span>{this._translations.delete}</span></calcite-tooltip>
+        >
+          <span>{this._translations.delete}</span>
+        </calcite-tooltip>
       </Host>
     );
   }

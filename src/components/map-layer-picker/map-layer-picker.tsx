@@ -271,7 +271,7 @@ export class MapLayerPicker {
       if (id !== this.selectedIds[0]) {
         this._setSelectedLayer(id);
       }
-      // update the layer name when changing the layout (for crowdsource manager) 
+      // update the layer name when changing the layout (for crowdsource manager)
       else {
         const layer = await getLayerOrTable(this.mapView, this.selectedIds[0]);
         this.selectedName = layer?.title;

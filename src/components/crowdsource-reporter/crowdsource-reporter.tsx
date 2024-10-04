@@ -682,8 +682,8 @@ export class CrowdsourceReporter {
     //if layerId is empty then show all the layers on map
     this._validLayers.forEach(layer => {
       const nonVisibileValidLayer = this._nonVisibleValidLayers.find((l) => l.id === layer.id);
-      if(!nonVisibileValidLayer) {
-        layer.set('visible',  !layerId || (layer.id === layerId));
+      if (!nonVisibileValidLayer) {
+        layer.set('visible', !layerId || (layer.id === layerId));
       }
     })
   }
@@ -1305,7 +1305,7 @@ export class CrowdsourceReporter {
   }
 
   /**
-   * Shows the add comments panel 
+   * Shows the add comments panel
    */
   protected showAddCommentsPanel(): void {
     this._flowItems = [...this._flowItems, "add-comment"]
@@ -1850,7 +1850,7 @@ export class CrowdsourceReporter {
   /**
    * Returns the ids of all OR configured layers that support edits with the update capability
    * @param hash each layer item details
-   * @param layersEditingDisabled list layer ids for which editing is disabled 
+   * @param layersEditingDisabled list layer ids for which editing is disabled
    * @returns array of editable layer ids
    */
   protected reduceToConfiguredLayers(

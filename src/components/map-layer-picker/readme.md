@@ -23,6 +23,7 @@
 | `selectedIds`             | --                           | string[]: list of layer ids that have been selected by the end user                                                               | `string[]`                             | `[]`             |
 | `showSingleLayerAsLabel`  | `show-single-layer-as-label` | boolean: when true a map with a single layer will show a label rather than a dropdown Used in conjunction with _hasMultipleLayers | `boolean`                              | `false`          |
 | `showTables`              | `show-tables`                | boolean: when true standalone tables will also be available                                                                       | `boolean`                              | `undefined`      |
+| `showTablesDisabled`      | `show-tables-disabled`       | boolean: when true table will shown as disabled                                                                                   | `boolean`                              | `undefined`      |
 | `type`                    | `type`                       | "select" \| "combobox" \| "dropdown": type of component to leverage                                                               | `"combobox" \| "dropdown" \| "select"` | `"select"`       |
 
 
@@ -30,9 +31,22 @@
 
 | Event                  | Description                                      | Type                             |
 | ---------------------- | ------------------------------------------------ | -------------------------------- |
-| `idsFound`             | Emitted on demand when no valid layers are found | `CustomEvent<ILayerAndTableIds>` |
+| `idsFound`             | Emitted on demand when valid layers are found    | `CustomEvent<ILayerAndTableIds>` |
 | `layerSelectionChange` | Emitted on demand when a layer is selected       | `CustomEvent<string[]>`          |
 | `noLayersFound`        | Emitted on demand when no valid layers are found | `CustomEvent<void>`              |
+
+
+## Methods
+
+### `updateLayer() => Promise<void>`
+
+updates the layers
+
+#### Returns
+
+Type: `Promise<void>`
+
+
 
 
 ## Dependencies

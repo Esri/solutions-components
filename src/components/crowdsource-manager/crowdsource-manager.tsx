@@ -475,7 +475,7 @@ export class CrowdsourceManager {
     const layer = await getLayerOrTable(this._mapView, id);
     layer && await layer.when(() => {
       // on render if no layer is present and only one table is present in map and app is in map view layer then change it to split layout
-      if (this._layerIds.length === 0 && this.appLayout === 'mapView' && layer.isTable ) {
+      if (this._layerIds.length === 0 && this.appLayout === 'mapView' && layer.isTable) {
         this._changeLayout('splitView');
       }
       this._layer = layer;
@@ -1219,7 +1219,7 @@ export class CrowdsourceManager {
       this._setActiveLayout(appLayout);
       this.appLayout = appLayout;
       // update the layer if table selected while switching to map view
-      if(this.appLayout === "mapView" && this._layer.isTable) {
+      if (this.appLayout === "mapView" && this._layer.isTable) {
         void this._mapCard.updateLayer()
       }
       if (this._isMapViewOnLoad) {

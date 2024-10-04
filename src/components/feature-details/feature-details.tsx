@@ -297,13 +297,13 @@ export class FeatureDetails {
         {(this._likeFieldAvailable || this._dislikeFieldAvailable || this._commentsAvailable) &&
           <div class="buttons-container">
             {this._commentsAvailable &&
-                <calcite-button
-                  appearance={"transparent"}
-                  iconEnd="speech-bubble"
-                  kind={"neutral"}
-                  onClick={() => { this.addComment.emit() }}
-                  scale='m'
-                >{this._relatedFeaturesOIDs.length}</calcite-button>
+              <calcite-button
+                appearance={"transparent"}
+                iconEnd="speech-bubble"
+                kind={"neutral"}
+                onClick={() => { this.addComment.emit() }}
+                scale='m'
+              >{this._relatedFeaturesOIDs.length}</calcite-button>
             }
             {this._likeFieldAvailable &&
               <calcite-button
@@ -386,7 +386,7 @@ export class FeatureDetails {
       //Get comments table id from map
       const allTables = await getAllTables(this.mapView);
       let relatedTable = null;
-      let validRelationshipId =  null;
+      let validRelationshipId = null;
       allTables.some((table) => {
         if (selectedLayer.url === (table as __esri.FeatureLayer).url) {
           const relationship = selectedLayer.relationships.filter(a => (table as __esri.FeatureLayer).layerId === a.relatedTableId);

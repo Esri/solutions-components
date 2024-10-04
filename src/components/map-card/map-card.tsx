@@ -557,7 +557,7 @@ export class MapCard {
    * Called each time after the component is loaded
    */
   async componentDidRender(): Promise<void> {
-    if(this.isMapLayout) {
+    if (this.isMapLayout) {
       this._updateToolbar();
     }
     document.onclick = (e) => this._handleDocumentClick(e);
@@ -566,12 +566,12 @@ export class MapCard {
   /**
    * Called once after the component is loaded
    */
-    async componentDidLoad(): Promise<void> {
-      if (!this.isMobile && !this._observerSet) {
-        this._resizeObserver.observe(this._toolbar);
-        this._observerSet = true;
-      }
+  async componentDidLoad(): Promise<void> {
+    if (!this.isMobile && !this._observerSet) {
+      this._resizeObserver.observe(this._toolbar);
+      this._observerSet = true;
     }
+  }
 
   //--------------------------------------------------------------------------
   //
@@ -914,7 +914,7 @@ export class MapCard {
   protected _closeShowHide(): void {
     this._showHideOpen = false;
   }
-  
+
   /**
    * Get a list of toolInfos that should display in the dropdown
    *
@@ -1182,7 +1182,7 @@ export class MapCard {
    * @param func any the function to execute
    * @param disabled boolean when true the user will not be able to interact with the action
    * @param loading if true loading indicator will shown
-   * @param slot slot for the action 
+   * @param slot slot for the action
    *
    * @returns VNode The node representing the DOM element that will contain the action
    */

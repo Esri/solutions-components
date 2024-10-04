@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.10.26] - October 4th 2024
+Delivery for Manager AGOL-2024.R03 - Sprint3
+
 ## [0.10.25] - October 3rd 2024
 Update IAC that has the filter reset fix
 
@@ -819,4 +822,5 @@ Recover from test releases
 [0.10.23]: https://github.com/Esri/solution.js/compare/v0.10.22...v0.10.23 "v0.10.23"
 [0.10.24]: https://github.com/Esri/solution.js/compare/v0.10.23...v0.10.24 "v0.10.24"
 [0.10.25]: https://github.com/Esri/solution.js/compare/v0.10.24...v0.10.25 "v0.10.25"
-[Unreleased]: https://github.com/Esri/solution.js/compare/v0.10.25...HEAD "Unreleased Changes"
+[0.10.26]: https://github.com/Esri/solution.js/compare/v0.10.25...v0.10.26 "v0.10.26"
+[Unreleased]: https://github.com/Esri/solution.js/compare/v0.10.26...HEAD "Unreleased Changes"

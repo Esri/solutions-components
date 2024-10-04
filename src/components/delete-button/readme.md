@@ -35,6 +35,7 @@
 
 - calcite-button
 - calcite-action
+- calcite-tooltip
 - calcite-modal
 
 ### Graph
@@ -42,6 +43,7 @@
 graph TD;
   delete-button --> calcite-button
   delete-button --> calcite-action
+  delete-button --> calcite-tooltip
   delete-button --> calcite-modal
   calcite-button --> calcite-loader
   calcite-button --> calcite-icon

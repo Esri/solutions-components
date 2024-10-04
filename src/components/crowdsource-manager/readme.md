@@ -104,25 +104,37 @@ graph TD;
   calcite-button --> calcite-icon
   delete-button --> calcite-button
   delete-button --> calcite-action
+  delete-button --> calcite-tooltip
   delete-button --> calcite-modal
   calcite-modal --> calcite-scrim
   calcite-modal --> calcite-icon
+  map-card --> map-tools
+  map-card --> calcite-action-bar
   map-card --> map-picker
   map-card --> map-layer-picker
-  map-card --> map-tools
   map-card --> calcite-dropdown
   map-card --> calcite-action
   map-card --> calcite-button
   map-card --> calcite-dropdown-group
   map-card --> calcite-dropdown-item
+  map-card --> calcite-loader
+  map-card --> calcite-tooltip
+  map-tools --> basemap-gallery
+  map-tools --> map-search
+  map-tools --> map-legend
+  map-tools --> map-fullscreen
+  map-tools --> floor-filter
+  map-tools --> calcite-action
+  map-tools --> calcite-icon
+  map-tools --> calcite-tooltip
+  calcite-action-bar --> calcite-action-group
+  calcite-action-group --> calcite-action-menu
+  calcite-action-group --> calcite-action
   map-picker --> calcite-button
   map-picker --> calcite-tooltip
   map-picker --> calcite-action-bar
   map-picker --> calcite-list
   map-picker --> calcite-list-item
-  calcite-action-bar --> calcite-action-group
-  calcite-action-group --> calcite-action-menu
-  calcite-action-group --> calcite-action
   calcite-list --> calcite-scrim
   calcite-list --> calcite-stack
   calcite-list --> calcite-filter
@@ -154,14 +166,6 @@ graph TD;
   calcite-combobox-item --> calcite-icon
   calcite-chip --> calcite-icon
   calcite-dropdown-item --> calcite-icon
-  map-tools --> basemap-gallery
-  map-tools --> map-search
-  map-tools --> map-legend
-  map-tools --> map-fullscreen
-  map-tools --> floor-filter
-  map-tools --> calcite-action
-  map-tools --> calcite-icon
-  map-tools --> calcite-tooltip
   card-manager --> calcite-shell
   card-manager --> info-card
   card-manager --> calcite-flow-item

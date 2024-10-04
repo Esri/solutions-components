@@ -197,6 +197,7 @@ graph TD;
   info-card --> calcite-panel
   delete-button --> calcite-button
   delete-button --> calcite-action
+  delete-button --> calcite-tooltip
   delete-button --> calcite-modal
   calcite-modal --> calcite-scrim
   calcite-modal --> calcite-icon
