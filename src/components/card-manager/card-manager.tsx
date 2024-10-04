@@ -238,7 +238,7 @@ export class CardManager {
                     <div slot="message">{this.customInfoText || this._translations.selectFeaturesToStart}</div>
                   </calcite-notice>
                 </div>
-                {showCreateFeatureOrRecordBtn && <calcite-button
+                {!this.isMobile && showCreateFeatureOrRecordBtn && <calcite-button
                   disabled={!this.layer}
                   onClick={() => this._createFeatureBtnClicked()}
                   slot="footer"

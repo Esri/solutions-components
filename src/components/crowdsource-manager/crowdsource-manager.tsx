@@ -258,6 +258,11 @@ export class CrowdsourceManager {
   @State() _isMobile = false;
 
   /**
+   * When true the component will render an optimized view for mobile devices
+   */
+  @State() _isPortraitMobile = false;
+
+  /**
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
@@ -421,7 +426,7 @@ export class CrowdsourceManager {
    */
   @Listen("popupClosed", { target: "window" })
   async popupClosed(): Promise<void> {
-    if (this._isMobile) {
+    if (this._isPortraitMobile) {
       this.showHideMapPopupAndTable(false);
     }
   }
@@ -544,7 +549,7 @@ export class CrowdsourceManager {
   protected _getFooter(): VNode {
     const hasSelectedFeatures = this._numSelected > 0;
     const deleteEnabled = this._layer?.editingEnabled && this._layer?.capabilities?.operations?.supportsDelete;
-    return this._isMobile && hasSelectedFeatures && !this._hideFooter ? (
+    return this._isPortraitMobile && hasSelectedFeatures && !this._hideFooter ? (
       <div class={`width-100`} slot="footer">
         <div class="display-flex padding-1-2">
           <calcite-button
@@ -759,8 +764,9 @@ export class CrowdsourceManager {
     hideTable: boolean
   ): VNode {
     const mapSizeClass = this._getMapSizeClass(layoutMode, panelOpen, hideTable);
+    const borderRight = !this._isPortraitMobile && this._isMobile ? "border-right" : "";
     return (
-      <div class={`${mapSizeClass} overflow-hidden`}>
+      <div class={`${mapSizeClass} overflow-hidden ${borderRight}`}>
         {this._getMapNode(panelOpen)}
         {this._getPopupExpandNode()}
       </div>
@@ -781,7 +787,7 @@ export class CrowdsourceManager {
   ): VNode {
     const isMapLayout = this.appLayout === 'mapView';
     const isTableLayout = this.appLayout === 'tableView';
-    const mapContainerClass = (isMapLayout || isTableLayout) ? "position-absolute-0" : this._layoutMode === ELayoutMode.HORIZONTAL && (!this._isMobile || panelOpen) ? "" : "adjusted-height-50";
+    const mapContainerClass = (isMapLayout || isTableLayout) ? "position-absolute-0" : this._layoutMode === ELayoutMode.HORIZONTAL && (!this._isPortraitMobile || panelOpen) ? "" : "adjusted-height-50";
     const hasMapAndLayer = this.defaultWebmap && this.defaultLayer;
     return (
       <div class={`${mapContainerClass} overflow-hidden`} id="card-mapView">
@@ -798,7 +804,7 @@ export class CrowdsourceManager {
           enableLegend={this.enableLegend}
           enableSearch={this.enableSearch}
           enableSingleExpand={true}
-          hidden={!this._isMobile && isTableLayout}
+          hidden={!this._isPortraitMobile && isTableLayout}
           homeZoomIndex={3}
           homeZoomPosition={"top-left"}
           homeZoomToolsSize={"s"}
@@ -830,11 +836,11 @@ export class CrowdsourceManager {
    * @protected
    */
   protected _getPopupExpandNode(): VNode {
-    const popupNodeClass = "height-full"
-    const headerClass = this._isMobile && this._showInformationHeader ? "display-none height-0" : "";
-    const headerTheme = this.popupHeaderColor ? "" : !this._isMobile ? "calcite-mode-dark" : "calcite-mode-light";
-    const containerClass = this._isMobile && this._hideTable ? "position-absolute-0 width-full height-full" : this._isMobile ? "display-none height-0" : "";
-    const tableViewClass = this.appLayout === "tableView" ? "position-relative top-51" : "";
+    const popupNodeClass = this._isMobile ? "height-full" : "position-relative z-index-0"
+    const headerClass = this._isPortraitMobile && this._showInformationHeader ? "display-none height-0" : "";
+    const headerTheme = this.popupHeaderColor ? "" : !this._isPortraitMobile ? "calcite-mode-dark" : "calcite-mode-light";
+    const containerClass = this._isPortraitMobile && this._hideTable ? "position-absolute-0 width-full height-full" : this._isPortraitMobile ? "display-none height-0" : "";
+    const tableViewClass = this.mapInfos?.length > 1 && this.appLayout === "tableView" ? "position-relative top-51" : "";
     return (
       <div class={`${headerTheme} ${popupNodeClass} ${containerClass} ${tableViewClass}`}
         style={{
@@ -845,7 +851,7 @@ export class CrowdsourceManager {
         }}>
         <calcite-panel>
           {
-            !this._isMobile && this._showInformationHeader || this._numSelected > 0 ? (
+            (!this._isPortraitMobile && this._showInformationHeader) || (this._numSelected > 0 && !this._isPortraitMobile) ? (
               <div
                 class={`display-flex align-items-center ${headerClass}`}
                 slot="header-content"
@@ -872,16 +878,16 @@ export class CrowdsourceManager {
   protected _getCardNode(): VNode {
     const isMapLayout = this.appLayout === 'mapView';
     const isTableLayout = this.appLayout === 'tableView';
-    const cardManagerHeight = (isMapLayout || isTableLayout) ? "height-full" : this._numSelected > 0 ? "height-51" : !this._showInformationHeader ? "adjusted-height-50_25" : !this._isMobile ? "height-51" : "height-full";
+    const cardManagerHeight = isTableLayout && this.mapInfos?.length > 1 ? "adjusted-height-100-51" : isMapLayout || isTableLayout ? "height-full" : (this._numSelected > 0 && !this._isMobile) ? "height-50" : !this._showInformationHeader ? "adjusted-height-50_25" : !this._isPortraitMobile ? "height-50" : "height-full";
     const themeClass = this.theme === "dark" ? "calcite-mode-dark" : "calcite-mode-light";
     return (
       <div class={`width-50 height-full ${themeClass}`}>
         <card-manager
           class={`${cardManagerHeight} width-full`}
           customInfoText={this.customInfoText}
-          enableCreateFeatures={this._enableCreateFeatures}
+          enableCreateFeatures={this._enableCreateFeatures && !this._isMobile}
           enableEditGeometry={this?._mapInfo?.enableEditGeometry}
-          isMobile={this._isMobile}
+          isMobile={this._isPortraitMobile}
           layer={this._layer}
           mapView={this?._mapView}
           onBackFromCreateWorkFlow={() => {
@@ -916,7 +922,7 @@ export class CrowdsourceManager {
   ): VNode {
     const isMapLayout = this.appLayout === 'mapView';
     const isTableLayout = this.appLayout === 'tableView';
-    const tableClass = hideTable && this._isMobile ? "visibility-hidden" : isMapLayout ? "display-none" : "";
+    const tableClass = hideTable && this._isPortraitMobile ? "visibility-hidden" : isMapLayout ? "display-none" : "";
     const mapClass = isMapLayout ? "height-full width-full z-index-0" : "display-none";
     const tableSizeClass = this._getTableSizeClass(layoutMode, panelOpen)
     const toggleLayout = layoutMode === ELayoutMode.HORIZONTAL ? "horizontal" : "vertical";
@@ -951,7 +957,7 @@ export class CrowdsourceManager {
             enableColumnReorder={this.enableColumnReorder}
             enableInlineEdit={this?._mapInfo?.enableInlineEdit}
             enableShare={this.enableShare}
-            isMobile={this._isMobile}
+            isMobile={this._isPortraitMobile}
             mapHidden={isTableLayout}
             mapInfo={this._mapInfo}
             mapView={this?._mapView}
@@ -1151,13 +1157,17 @@ export class CrowdsourceManager {
     const isMobile = this.el.offsetWidth < 1024;
     const forceOpen = !this._isMobile && isMobile;
     this._isMobile = isMobile;
-    this._layoutMode = this._isMobile ? ELayoutMode.HORIZONTAL : ELayoutMode.GRID;
     if (forceOpen) {
       this._panelOpen = true;
     }
     if (this._isMobile) {
       this.showHideMapPopupAndTable(!this._isMobile);
+      this._isPortraitMobile = !!window.matchMedia("(orientation: portrait)").matches;
+      this._changeLayout('splitView');
+    } else {
+      this._isPortraitMobile = false;
     }
+    this._layoutMode = this._isPortraitMobile ? ELayoutMode.HORIZONTAL : ELayoutMode.GRID;
   }
 
   /**

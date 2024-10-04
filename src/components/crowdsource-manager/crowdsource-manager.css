@@ -85,6 +85,10 @@
   border-bottom: 1px solid var(--calcite-color-border-3);
 }
 
+.border-right {
+  border-right: 2px solid var(--calcite-color-border-3);
+}
+
 .border-sides {
   border-left: 1px solid var(--calcite-color-border-3);
   border-right: 1px solid var(--calcite-color-border-3);
