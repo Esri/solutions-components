@@ -1,10 +1,10 @@
 {
-  "fetchingData": "データを取得しています",
-  "edit": "編集",
-  "enableEditing": "更新機能をレイヤーに対して有効化する必要があります。",
-  "editDisabled": "編集が無効になっています",
-  "next": "次へ",
-  "back": "戻る",
-  "indexOfTotal": "{{index}} / {{total}}",
-  "delete": "削除"
+  "fetchingData": "須_Fetching data______________鷗",
+  "edit": "須_Edit_________鷗",
+  "enableEditing": "須_Update capability must be enabled on the layer_________________________鷗.",
+  "editDisabled": "須_Editing Disabled_________________鷗",
+  "next": "須_Next_________鷗",
+  "back": "須_Back_________鷗",
+  "indexOfTotal": "須_{{index}} of {{total}}_______________________鷗",
+  "delete": "須_Delete_____________鷗"
 }

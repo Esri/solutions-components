@@ -1,8 +1,8 @@
 {
-  "cancel": "Отмена",
-  "confirmMultiple": "Эти объекты будут удалены навсегда.",
-  "confirmSingle": "Этот объект будет полностью удален.",
-  "delete": "Удалить",
-  "deleteCount": "Удалить ({{n}})",
-  "deleteFeature": "Удалить объект"
+  "cancel": "Ж_Cancel_____________Я",
+  "confirmMultiple": "Ж_These features will be permanently removed_______________________Я.",
+  "confirmSingle": "Ж_This feature will be permanently removed______________________Я.",
+  "delete": "Ж_Delete_____________Я",
+  "deleteCount": "Ж_Delete ({{n}})_______________Я",
+  "deleteFeature": "Ж_Delete feature_______________Я"
 }

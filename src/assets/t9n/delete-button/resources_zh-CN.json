@@ -1,8 +1,8 @@
 {
-  "cancel": "取消",
-  "confirmMultiple": "这些要素将永久移除。",
-  "confirmSingle": "此要素将永久移除。",
-  "delete": "删除",
-  "deleteCount": "删除 ({{n}})",
-  "deleteFeature": "删除要素"
+  "cancel": "试_Cancel_____________验",
+  "confirmMultiple": "试_These features will be permanently removed_______________________验.",
+  "confirmSingle": "试_This feature will be permanently removed______________________验.",
+  "delete": "试_Delete_____________验",
+  "deleteCount": "试_Delete ({{n}})_______________验",
+  "deleteFeature": "试_Delete feature_______________验"
 }

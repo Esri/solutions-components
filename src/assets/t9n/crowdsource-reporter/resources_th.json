@@ -13,7 +13,6 @@
   "invalidConfigurationErrorMsg": "การกำหนดค่าไม่ถูกต้อง",
   "chooseCategoryMsg": "ทำการเลือกจากรายการด้านล่าง",
   "featureErrorMsg": "ไม่พบบันทึกข้อมูล",
-  "featureEditFormInfoMsg": "โปรดระบุรายละเอียด",
   "currentLocationMsg": "ใช้ตำแหน่งปัจจุบันของฉัน",
   "addLocationMsg": "โปรดเพิ่มตำแหน่ง",
   "submitMsg": "ขอบคุณ ส่งรายงานของคุณเรียบร้อยแล้ว",

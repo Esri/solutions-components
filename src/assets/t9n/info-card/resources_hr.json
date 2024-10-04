@@ -1,10 +1,10 @@
 {
-  "fetchingData": "Dohvaćanje podataka",
-  "edit": "Uredi",
-  "enableEditing": "Ažuriranje mogućnosti mora biti omogućeno na sloju",
-  "editDisabled": "Uređivanje onemogućeno",
-  "next": "Sljedeće",
-  "back": "Natrag",
-  "indexOfTotal": "{{index}} od {{total}}",
-  "delete": "Izbriši"
+  "fetchingData": "Č_Fetching data______________ž",
+  "edit": "Č_Edit_________ž",
+  "enableEditing": "Č_Update capability must be enabled on the layer_________________________ž.",
+  "editDisabled": "Č_Editing Disabled_________________ž",
+  "next": "Č_Next_________ž",
+  "back": "Č_Back_________ž",
+  "indexOfTotal": "Č_{{index}} of {{total}}_______________________ž",
+  "delete": "Č_Delete_____________ž"
 }

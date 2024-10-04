@@ -1,10 +1,10 @@
 {
-  "fetchingData": "กำลังดึงข้อมูล",
-  "edit": "แก้ไข",
-  "enableEditing": "ต้องเปิดใช้งานการอัปเดตความสามารถบนชั้นข้อมูล",
-  "editDisabled": "การแก้ไขถูกปิดใช้งาน",
-  "next": "ถัดไป",
-  "back": "กลับ",
-  "indexOfTotal": "{{index}} จาก {{total}}",
-  "delete": "ลบ"
+  "fetchingData": "ก้_Fetching data______________ษฺ",
+  "edit": "ก้_Edit_________ษฺ",
+  "enableEditing": "ก้_Update capability must be enabled on the layer_________________________ษฺ.",
+  "editDisabled": "ก้_Editing Disabled_________________ษฺ",
+  "next": "ก้_Next_________ษฺ",
+  "back": "ก้_Back_________ษฺ",
+  "indexOfTotal": "ก้_{{index}} of {{total}}_______________________ษฺ",
+  "delete": "ก้_Delete_____________ษฺ"
 }

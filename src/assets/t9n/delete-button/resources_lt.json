@@ -1,8 +1,8 @@
 {
-  "cancel": "Atšaukti",
-  "confirmMultiple": "Šie elementai bus pašalinti visam laikui.",
-  "confirmSingle": "Šis elementas bus pašalintas visam laikui.",
-  "delete": "Pašalinti",
-  "deleteCount": "Ištrinti ({{n}})",
-  "deleteFeature": "Ištrinti elementą"
+  "cancel": "Į_Cancel_____________š",
+  "confirmMultiple": "Į_These features will be permanently removed_______________________š.",
+  "confirmSingle": "Į_This feature will be permanently removed______________________š.",
+  "delete": "Į_Delete_____________š",
+  "deleteCount": "Į_Delete ({{n}})_______________š",
+  "deleteFeature": "Į_Delete feature_______________š"
 }

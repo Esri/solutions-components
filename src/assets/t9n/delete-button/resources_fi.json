@@ -1,8 +1,8 @@
 {
-  "cancel": "Peruuta",
-  "confirmMultiple": "Nämä kohteet poistetaan pysyvästi.",
-  "confirmSingle": "Tämä kohde poistetaan pysyvästi.",
-  "delete": "Poista",
-  "deleteCount": "Poista ({{n}})",
-  "deleteFeature": "Poista kohde"
+  "cancel": "Å_Cancel_____________ö",
+  "confirmMultiple": "Å_These features will be permanently removed_______________________ö.",
+  "confirmSingle": "Å_This feature will be permanently removed______________________ö.",
+  "delete": "Å_Delete_____________ö",
+  "deleteCount": "Å_Delete ({{n}})_______________ö",
+  "deleteFeature": "Å_Delete feature_______________ö"
 }

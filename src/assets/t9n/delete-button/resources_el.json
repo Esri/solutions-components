@@ -1,8 +1,8 @@
 {
-  "cancel": "Ακύρωση",
-  "confirmMultiple": "Αυτά τα στοιχεία θα καταργηθούν οριστικά.",
-  "confirmSingle": "Το στοιχείο αυτό θα καταργηθεί οριστικά.",
-  "delete": "Διαγραφή",
-  "deleteCount": "Διαγραφή ({{n}})",
-  "deleteFeature": "Διαγραφή στοιχείου"
+  "cancel": "Đ_Cancel_____________ớ",
+  "confirmMultiple": "Đ_These features will be permanently removed_______________________ớ.",
+  "confirmSingle": "Đ_This feature will be permanently removed______________________ớ.",
+  "delete": "Đ_Delete_____________ớ",
+  "deleteCount": "Đ_Delete ({{n}})_______________ớ",
+  "deleteFeature": "Đ_Delete feature_______________ớ"
 }

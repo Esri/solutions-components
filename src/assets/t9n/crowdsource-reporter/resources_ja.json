@@ -13,7 +13,6 @@
   "invalidConfigurationErrorMsg": "無効な構成",
   "chooseCategoryMsg": "以下のリストから選択してください。",
   "featureErrorMsg": "レコードが見つかりませんでした。",
-  "featureEditFormInfoMsg": "詳細を入力してください。",
   "currentLocationMsg": "現在地を使用",
   "addLocationMsg": "位置を追加してください。",
   "submitMsg": "ありがとうございます。 レポートが正常に送信されました。",
