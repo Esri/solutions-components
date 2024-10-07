@@ -184,8 +184,9 @@ export class SolutionItemAccordion {
       <calcite-accordion selectionMode="single">
         {
           this._sortedTemplateInfos.reduce((prev, cur) => {
-            if (this._types.indexOf(cur.type) < 0) {
-              this._types.push(cur.type);
+            const displayType = this._getTypeForDisplay(cur.type, cur.typeKeywords)
+            if (this._types.indexOf(displayType) < 0) {
+              this._types.push(displayType);
               prev.push(this._getAccordionItem(cur));
             }
             return prev;
@@ -199,6 +200,8 @@ export class SolutionItemAccordion {
    * Get the Accordion Item component with the appropriate icon and template type
    * Only one accordion item per type.
    *
+   * @param templateInfo the current templateInfo to handle
+   *
    * @returns the Accordion Item component
    *
    * @protected
@@ -206,9 +209,13 @@ export class SolutionItemAccordion {
   protected _getAccordionItem(
     templateInfo: ITemplateInfo
   ): VNode {
-    const templateInfos = this._sortedTemplateInfos.filter(t => t.type === templateInfo.type);
+    const _type = this._getTypeForDisplay(templateInfo.type, templateInfo.typeKeywords);
+    const templateInfos = this._sortedTemplateInfos.filter(t => {
+      const tType = this._getTypeForDisplay(t.type, t.typeKeywords);
+      return tType === _type
+    });
     return (
-      <calcite-accordion-item description={`${templateInfo.type} (${templateInfos.length})`}>
+      <calcite-accordion-item description={`${_type} (${templateInfos.length})`}>
         <solution-item-icon
           class="padding-start-1"
           slot="actions-start"
@@ -269,8 +276,8 @@ export class SolutionItemAccordion {
    */
   protected _sortTemplates(): ITemplateInfo[] {
     return this.templateInfos.sort((a, b) => {
-      const aType = this._updateType(a);
-      const bType = this._updateType(b);
+      const aType = this._getTypeForSort(a);
+      const bType = this._getTypeForSort(b);
 
       const indexA = this._sortOrder.indexOf(aType);
       const indexB = this._sortOrder.indexOf(bType);
@@ -280,39 +287,54 @@ export class SolutionItemAccordion {
   }
 
   /**
-   * Some template types are displayed with a value that is different than the stored type value.
-   * This function will catch and update the type value to match how we would like it sorted and displayed.
+   * This function will update the type value to match how we would like it sorted.
+   *
+   * @param templateInfo
    *
    * @returns the sorted templates
    *
    * @protected
    */
-  protected _updateType(
+  protected _getTypeForSort(
     templateInfo: ITemplateInfo
   ): string {
-    let updatedType = templateInfo.type;
-    if (templateInfo.type === "Feature Service") {
-      updatedType = templateInfo.typeKeywords.indexOf("View Service") > -1 ?
-        "Feature Layer (hosted, view)" : "Feature Layer (hosted)";
-    }
-
-    if (templateInfo.type === "Web Mapping Application") {
-      updatedType = templateInfo.typeKeywords.indexOf("configurableApp") > -1 ?
-        "Instant App" : updatedType;
-    }
-
-    templateInfo.type = templateInfo.type === "Geoprocessing Service" ? "Tool" :
-      templateInfo.type === "Vector Tile Service" ? "Tile Layer" : updatedType;
+    let updatedType = this._getTypeForDisplay(templateInfo.type, templateInfo.typeKeywords);
 
     if (this._sortOrder.indexOf(updatedType) < 0) {
       // If we encounter an item type that is not in the list
       // put it between the "Desktop Application Template" and "Web Map" section
-      // Do not set this as the templates type value as we want its actual type to be displayed
-      // this is just used for sorting
       updatedType = "TypeNotFound";
     }
 
     return updatedType;
+  }
+
+  /**
+   * This function will update the type value to match how we would like it displayed.
+   *
+   * @param type the current item type
+   * @param typeKeywords the type keywords for the current item
+   *
+   * @returns the updated type value
+   *
+   * @protected
+   */
+  protected _getTypeForDisplay(
+    type: string,
+    typeKeywords: string[]
+  ): string {
+    let _type = type;
+    if (type === "Feature Service") {
+      _type = typeKeywords.indexOf("View Service") > -1 ?
+        "Feature Layer (hosted, view)" : "Feature Layer (hosted)";
+    }
+
+    if (type === "Web Mapping Application") {
+      _type = typeKeywords.indexOf("configurableApp") > -1 ?
+        "Instant App" : _type;
+    }
+
+    return _type;
   }
 
   /**
