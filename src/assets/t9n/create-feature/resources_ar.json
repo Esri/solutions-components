@@ -1,5 +1,5 @@
 {
-  "chooseCategoryMsg": "بيت_Make a selection from the list below____________________لاحقة.",
-  "provideDetailsMsg": "بيت_Please provide the details____________________________لاحقة.",
-  "provideLocationMsg": "بيت_Enter an address or click on the map to create a feature______________________________لاحقة."
+  "chooseCategoryMsg": "اختر من القائمة أدناه.",
+  "provideDetailsMsg": "الرجاء إدخال التفاصيل.",
+  "provideLocationMsg": "أدخل عنوانًا أو انقر على الخريطة لإنشاء معلم."
 }

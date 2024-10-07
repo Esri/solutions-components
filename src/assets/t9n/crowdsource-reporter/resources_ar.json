@@ -16,7 +16,7 @@
   "currentLocationMsg": "استخدم موقعي الحالي",
   "addLocationMsg": "الرجاء إضافة موقع.",
   "submitMsg": "شكرًا لك! تم إرسال تقريرك بنجاح.",
-  "filterLayerTitle": "تصفية: {{title}}",
+  "filterLayerTitle": "بيت_Filter: {{title}}__________________لاحقة",
   "indexOfTotal": "{{index}} من {{total}}",
   "comment": "تعليق",
   "commentSubmittedMsg": "تم إرسال تعليق",
@@ -25,6 +25,6 @@
   "sortOldest": "الأقدم",
   "sortHighestVoted": "الأعلى تصويتًا",
   "sortLowestVoted": "الأقل تصويتًا",
-  "resetFilter": "بيت_Reset filter_____________لاحقة",
-  "close": "بيت_Close___________لاحقة"
+  "resetFilter": "إعادة تعيين عامل التصفية",
+  "close": "إغلاق"
 }

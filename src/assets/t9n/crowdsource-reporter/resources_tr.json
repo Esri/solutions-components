@@ -16,7 +16,7 @@
   "currentLocationMsg": "Geçerli konumumu kullan",
   "addLocationMsg": "Lütfen bir konum ekleyin.",
   "submitMsg": "Teşekkürler! Raporunuz başarıyla gönderildi.",
-  "filterLayerTitle": "Filtre: {{title}}",
+  "filterLayerTitle": "ı_Filter: {{title}}__________________İ",
   "indexOfTotal": "{{index}} / {{total}}",
   "comment": "Yorum",
   "commentSubmittedMsg": "Yorum gönderildi",
@@ -25,6 +25,6 @@
   "sortOldest": "En Eski",
   "sortHighestVoted": "En yüksek oy alan",
   "sortLowestVoted": "En düşük oy alan",
-  "resetFilter": "ı_Reset filter_____________İ",
-  "close": "ı_Close___________İ"
+  "resetFilter": "Filtreyi sıfırla",
+  "close": "Kapat"
 }

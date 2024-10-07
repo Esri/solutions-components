@@ -16,7 +16,7 @@
   "currentLocationMsg": "Jelenlegi saját hely használata",
   "addLocationMsg": "Adjon meg egy helyszínt.",
   "submitMsg": "Köszönjük! Az Ön jelentésének elküldése sikeresen megtörtént.",
-  "filterLayerTitle": "Szűrő: {{title}}",
+  "filterLayerTitle": "í_Filter: {{title}}__________________ő",
   "indexOfTotal": "{{index}}/{{total}}",
   "comment": "Megjegyzés",
   "commentSubmittedMsg": "A hozzászólás elküldve",
@@ -25,6 +25,6 @@
   "sortOldest": "Legrégebbi",
   "sortHighestVoted": "Legmagasabbra értékelt",
   "sortLowestVoted": "Legalacsonyabbra értékelt",
-  "resetFilter": "í_Reset filter_____________ő",
-  "close": "í_Close___________ő"
+  "resetFilter": "Szűrő alaphelyzetbe állítása",
+  "close": "Bezárás"
 }

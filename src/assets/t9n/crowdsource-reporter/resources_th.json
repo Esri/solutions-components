@@ -16,7 +16,7 @@
   "currentLocationMsg": "ใช้ตำแหน่งปัจจุบันของฉัน",
   "addLocationMsg": "โปรดเพิ่มตำแหน่ง",
   "submitMsg": "ขอบคุณ ส่งรายงานของคุณเรียบร้อยแล้ว",
-  "filterLayerTitle": "ตัวกรอง: {{title}}",
+  "filterLayerTitle": "ก้_Filter: {{title}}__________________ษฺ",
   "indexOfTotal": "{{index}} จาก {{total}}",
   "comment": "ความคิดเห็น",
   "commentSubmittedMsg": "ส่งความคิดเห็นแล้ว",
@@ -25,6 +25,6 @@
   "sortOldest": "เก่าที่สุด",
   "sortHighestVoted": "คะแนนโหวตสูงสุด",
   "sortLowestVoted": "คะแนนโหวตต่ำสุด",
-  "resetFilter": "ก้_Reset filter_____________ษฺ",
-  "close": "ก้_Close___________ษฺ"
+  "resetFilter": "รีเซ็ตตัวกรอง",
+  "close": "ปิด"
 }

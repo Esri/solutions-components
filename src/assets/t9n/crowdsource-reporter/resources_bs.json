@@ -16,7 +16,7 @@
   "currentLocationMsg": "Iskoristi moju trenutačnu lokaciju",
   "addLocationMsg": "Dodajte lokaciju.",
   "submitMsg": "Hvala vam! Vaše je izvješće uspješno poslano.",
-  "filterLayerTitle": "Filtar: {{title}}",
+  "filterLayerTitle": "Č_Filter: {{title}}__________________ž",
   "indexOfTotal": "{{index}} od {{total}}",
   "comment": "Komentiraj",
   "commentSubmittedMsg": "Komentar poslan",
@@ -25,6 +25,6 @@
   "sortOldest": "Najstarije",
   "sortHighestVoted": "Najviše glasova",
   "sortLowestVoted": "Najmanje glasova",
-  "resetFilter": "Č_Reset filter_____________ž",
-  "close": "Č_Close___________ž"
+  "resetFilter": "Vrati filtar na početne postavke",
+  "close": "Zatvori"
 }

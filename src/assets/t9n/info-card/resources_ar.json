@@ -1,10 +1,10 @@
 {
-  "fetchingData": "بيت_Fetching data______________لاحقة",
-  "edit": "بيت_Edit_________لاحقة",
-  "enableEditing": "بيت_Update capability must be enabled on the layer_________________________لاحقة.",
-  "editDisabled": "بيت_Editing Disabled_________________لاحقة",
-  "next": "بيت_Next_________لاحقة",
-  "back": "بيت_Back_________لاحقة",
+  "fetchingData": "إحضار البيانات",
+  "edit": "تحرير",
+  "enableEditing": "يجب تمكين إمكانية التحديث في الطبقة.",
+  "editDisabled": "تم تعطيل التحرير",
+  "next": "التالي",
+  "back": "رجوع",
   "indexOfTotal": "بيت_{{index}} of {{total}}_______________________لاحقة",
-  "delete": "بيت_Delete_____________لاحقة"
+  "delete": "حذف"
 }

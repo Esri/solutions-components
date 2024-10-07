@@ -1,10 +1,10 @@
 {
-  "fetchingData": "ĺ_Fetching data______________ľ",
-  "edit": "ĺ_Edit_________ľ",
-  "enableEditing": "ĺ_Update capability must be enabled on the layer_________________________ľ.",
-  "editDisabled": "ĺ_Editing Disabled_________________ľ",
-  "next": "ĺ_Next_________ľ",
-  "back": "ĺ_Back_________ľ",
+  "fetchingData": "Získavanie dát",
+  "edit": "Editovať",
+  "enableEditing": "Pre vrstvu musí byť povolená editácia.",
+  "editDisabled": "Editácia deaktivovaná",
+  "next": "Ďalšie",
+  "back": "Späť",
   "indexOfTotal": "ĺ_{{index}} of {{total}}_______________________ľ",
-  "delete": "ĺ_Delete_____________ľ"
+  "delete": "Zmazať"
 }

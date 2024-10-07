@@ -1,8 +1,8 @@
 {
-  "cancel": "Ă_Cancel_____________ș",
-  "confirmMultiple": "Ă_These features will be permanently removed_______________________ș.",
-  "confirmSingle": "Ă_This feature will be permanently removed______________________ș.",
-  "delete": "Ă_Delete_____________ș",
-  "deleteCount": "Ă_Delete ({{n}})_______________ș",
-  "deleteFeature": "Ă_Delete feature_______________ș"
+  "cancel": "Anulare",
+  "confirmMultiple": "Aceste obiecte spațiale vor fi eliminate definitiv.",
+  "confirmSingle": "Acest obiect spațial va fi eliminat definitiv.",
+  "delete": "Ștergere",
+  "deleteCount": "Ștergere ({{n}})",
+  "deleteFeature": "Ştergere obiect spaţial"
 }

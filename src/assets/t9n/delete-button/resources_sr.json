@@ -1,8 +1,8 @@
 {
-  "cancel": "Č_Cancel_____________ž",
-  "confirmMultiple": "Č_These features will be permanently removed_______________________ž.",
-  "confirmSingle": "Č_This feature will be permanently removed______________________ž.",
-  "delete": "Č_Delete_____________ž",
-  "deleteCount": "Č_Delete ({{n}})_______________ž",
-  "deleteFeature": "Č_Delete feature_______________ž"
+  "cancel": "Otkaži",
+  "confirmMultiple": "Ove karakteristike će biti trajno uklonjene.",
+  "confirmSingle": "Ovaj geoobjekat će biti trajno uklonjen.",
+  "delete": "Izbriši",
+  "deleteCount": "Brisanje ({{n}})",
+  "deleteFeature": "Obriši geoobjekat"
 }

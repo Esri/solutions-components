@@ -16,7 +16,7 @@
   "currentLocationMsg": "Käytä nykyistä sijaintiani",
   "addLocationMsg": "Lisää sijainti.",
   "submitMsg": "Kiitos! Raporttisi lähettäminen onnistui.",
-  "filterLayerTitle": "Suodatin: {{title}}",
+  "filterLayerTitle": "Å_Filter: {{title}}__________________ö",
   "indexOfTotal": "{{index}}/{{total}}",
   "comment": "Kommentti",
   "commentSubmittedMsg": "Kommentti lähetetty",
@@ -25,6 +25,6 @@
   "sortOldest": "Vanhin",
   "sortHighestVoted": "Eniten äänestetty",
   "sortLowestVoted": "Vähiten äänestetty",
-  "resetFilter": "Å_Reset filter_____________ö",
-  "close": "Å_Close___________ö"
+  "resetFilter": "Nollaa suodatin",
+  "close": "Sulje"
 }

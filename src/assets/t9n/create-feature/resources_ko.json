@@ -1,5 +1,5 @@
 {
-  "chooseCategoryMsg": "한_Make a selection from the list below____________________빠.",
-  "provideDetailsMsg": "한_Please provide the details____________________________빠.",
-  "provideLocationMsg": "한_Enter an address or click on the map to create a feature______________________________빠."
+  "chooseCategoryMsg": "아래 목록에서 선택하세요.",
+  "provideDetailsMsg": "세부정보를 입력하세요.",
+  "provideLocationMsg": "주소를 입력하거나 맵을 클릭하여 피처를 생성하세요."
 }
