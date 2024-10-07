@@ -16,7 +16,7 @@
   "currentLocationMsg": "Usa la mia posizione corrente",
   "addLocationMsg": "Aggiungere una posizione.",
   "submitMsg": "Grazie! Il report è stato inviato con successo.",
-  "filterLayerTitle": "Filtro: {{title}}",
+  "filterLayerTitle": "é_Filter: {{title}}__________________È",
   "indexOfTotal": "{{index}} di {{total}}",
   "comment": "Commento",
   "commentSubmittedMsg": "Commento inviato",
@@ -25,6 +25,6 @@
   "sortOldest": "Meno recente",
   "sortHighestVoted": "Più votato",
   "sortLowestVoted": "Meno votato",
-  "resetFilter": "é_Reset filter_____________È",
-  "close": "é_Close___________È"
+  "resetFilter": "Ripristina filtro",
+  "close": "Chiudi"
 }

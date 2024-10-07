@@ -16,7 +16,7 @@
   "currentLocationMsg": "使用我的目前位置",
   "addLocationMsg": "请添加位置。",
   "submitMsg": "谢谢! 您的报告已成功提交。",
-  "filterLayerTitle": "过滤器：{{title}}",
+  "filterLayerTitle": "试_Filter: {{title}}__________________验",
   "indexOfTotal": "{{index}}/{{total}}",
   "comment": "评论",
   "commentSubmittedMsg": "评论已提交",
@@ -25,6 +25,6 @@
   "sortOldest": "最旧",
   "sortHighestVoted": "得票最高",
   "sortLowestVoted": "得票最低",
-  "resetFilter": "试_Reset filter_____________验",
-  "close": "试_Close___________验"
+  "resetFilter": "重置过滤器",
+  "close": "关闭"
 }

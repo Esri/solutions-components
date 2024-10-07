@@ -1,8 +1,8 @@
 {
-  "cancel": "í_Cancel_____________ő",
-  "confirmMultiple": "í_These features will be permanently removed_______________________ő.",
-  "confirmSingle": "í_This feature will be permanently removed______________________ő.",
-  "delete": "í_Delete_____________ő",
-  "deleteCount": "í_Delete ({{n}})_______________ő",
-  "deleteFeature": "í_Delete feature_______________ő"
+  "cancel": "Mégse",
+  "confirmMultiple": "Ezek a vektoros elemek végleg el lesznek távolítva.",
+  "confirmSingle": "A vektoros elem véglegesen el lesz távolítva.",
+  "delete": "Törlés",
+  "deleteCount": "Törlés ({{n}})",
+  "deleteFeature": "Vektoros elem törlése"
 }

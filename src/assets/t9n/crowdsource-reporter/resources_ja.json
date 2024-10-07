@@ -16,7 +16,7 @@
   "currentLocationMsg": "現在地を使用",
   "addLocationMsg": "位置を追加してください。",
   "submitMsg": "ありがとうございます。 レポートが正常に送信されました。",
-  "filterLayerTitle": "フィルター: {{title}}",
+  "filterLayerTitle": "須_Filter: {{title}}__________________鷗",
   "indexOfTotal": "{{index}} / {{total}}",
   "comment": "コメント",
   "commentSubmittedMsg": "コメントが送信されました",
@@ -25,6 +25,6 @@
   "sortOldest": "古い順",
   "sortHighestVoted": "投票数の多い順",
   "sortLowestVoted": "投票数の少ない順",
-  "resetFilter": "須_Reset filter_____________鷗",
-  "close": "須_Close___________鷗"
+  "resetFilter": "フィルターのリセット",
+  "close": "閉じる"
 }

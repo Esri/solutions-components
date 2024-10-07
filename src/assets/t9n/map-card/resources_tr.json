@@ -1,8 +1,9 @@
 {
   "mapName": "Harita Adı",
-  "more": "ı_More_________İ",
-  "filters": "ı_Filters_______________İ",
-  "zoom": "ı_Zoom_________İ",
-  "refresh": "ı_Refresh_______________İ",
-  "editMultiple": "ı_Edit multiple______________İ"
+  "more": "Daha fazla",
+  "filters": "Filtreler",
+  "zoom": "Yakınlaştır",
+  "refresh": "Yenile",
+  "editMultiple": "Çoklu düzenle",
+  "clearSelection": "ı_Clear selection________________İ"
 }

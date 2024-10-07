@@ -1,5 +1,6 @@
 {
   "clearSelection": "Valyti išranką",
+  "delete": "Į_Delete_____________š",
   "exportCSV": "Eksportuoti į CSV",
   "filter": "Filtras: {{title}}",
   "filters": "Filtrai",
@@ -10,12 +11,12 @@
   "showSelected": "Rodyti pasirinktus",
   "switchSelected": "Pakeisti pasirinktus",
   "zoom": "Didinti",
-  "editMultiple": "Į_Edit multiple______________š",
+  "editMultiple": "Redaguoti kelis",
   "fetchingData": "Gaunami duomenys",
   "refresh": "Atnaujinti",
   "showAll": "Rodyti visus",
   "recordsSelected": "Iš viso: {{total}} | Pasirinkta: {{selected}}",
   "moreOptions": "Daugiau lentelės parinkčių",
   "showHideColumns": "Rodyti / slėpti stulpelius",
-  "searchPlaceholder": "Į_Search text in {{fields}} field_________________š"
+  "searchPlaceholder": "Ieškoti teksto lauke {{fields}}"
 }

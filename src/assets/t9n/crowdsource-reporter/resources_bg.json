@@ -16,7 +16,7 @@
   "currentLocationMsg": "Използвай моето текущо местоположение",
   "addLocationMsg": "Моля, добавете местоположение.",
   "submitMsg": "Благодаря Ви! Отчетът Ви беше изпратен успешно.",
-  "filterLayerTitle": "Филтър: {{title}}",
+  "filterLayerTitle": "й_Filter: {{title}}__________________й",
   "indexOfTotal": "{{index}} от {{total}}",
   "comment": "Коментар",
   "commentSubmittedMsg": "Коментарът е изпратен",
@@ -25,6 +25,6 @@
   "sortOldest": "Най-стари",
   "sortHighestVoted": "Най-високо оценени",
   "sortLowestVoted": "Най-ниско оценени",
-  "resetFilter": "й_Reset filter_____________й",
-  "close": "й_Close___________й"
+  "resetFilter": "Нулиране на филтър",
+  "close": "Затваряне"
 }

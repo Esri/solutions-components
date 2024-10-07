@@ -16,7 +16,7 @@
   "currentLocationMsg": "Aktuelle eigene Position verwenden",
   "addLocationMsg": "Fügen Sie einen Speicherort hinzu.",
   "submitMsg": "Vielen Dank. Ihr Bericht wurde erfolgreich gesendet.",
-  "filterLayerTitle": "Filter: {{title}}",
+  "filterLayerTitle": "ä_Filter: {{title}}__________________Ü",
   "indexOfTotal": "{{index}} von {{total}}",
   "comment": "Kommentar",
   "commentSubmittedMsg": "Kommentar gesendet",
@@ -25,6 +25,6 @@
   "sortOldest": "Älteste",
   "sortHighestVoted": "Höchste Stimmenzahl",
   "sortLowestVoted": "Niedrigste Stimmenzahl",
-  "resetFilter": "ä_Reset filter_____________Ü",
-  "close": "ä_Close___________Ü"
+  "resetFilter": "Filter zurücksetzen",
+  "close": "Schließen"
 }

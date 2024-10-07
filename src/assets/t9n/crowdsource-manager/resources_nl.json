@@ -5,8 +5,8 @@
   "expandPopup": "Pop-up uitvouwen",
   "collapsePopup": "Pop-up samenvouwen",
   "view": "Weergeven ({{n}})",
-  "splitView": "Ĳ_Split view_____________________ä",
-  "tableView": "Ĳ_Table view_____________________ä",
-  "mapView": "Ĳ_Map view_________________ä",
-  "filter": "Ĳ_Filter: {{title}}__________________ä"
+  "splitView": "Gesplitste weergave",
+  "tableView": "Tabelweergave",
+  "mapView": "Kaartweergave",
+  "filter": "Filter: {{title}}"
 }

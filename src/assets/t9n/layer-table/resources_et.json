@@ -1,5 +1,6 @@
 {
   "clearSelection": "Tühista valik",
+  "delete": "Š_Delete_____________ä",
   "exportCSV": "Ekspordi CSV-vormingusse",
   "filter": "Filter: {{title}}",
   "filters": "Filtrid",
@@ -10,12 +11,12 @@
   "showSelected": "Kuva valitud",
   "switchSelected": "Lülita valitud",
   "zoom": "Suumi",
-  "editMultiple": "Š_Edit multiple______________ä",
+  "editMultiple": "Mitme üksuse muutmine",
   "fetchingData": "Andmete toomine",
   "refresh": "Värskenda",
   "showAll": "Kuva kõik",
   "recordsSelected": "Kokku: {{total}} | Valik: {{selected}}",
   "moreOptions": "Rohkem tabelivalikuid",
   "showHideColumns": "Kuva/peida veerud",
-  "searchPlaceholder": "Š_Search text in {{fields}} field_________________ä"
+  "searchPlaceholder": "Otsige teksti väljal {{fields}}"
 }

@@ -5,8 +5,8 @@
   "expandPopup": "Expandir elemento emergente",
   "collapsePopup": "Contraer elemento emergente",
   "view": "Ver ({{n}})",
-  "splitView": "á_Split view_____________________Ó",
-  "tableView": "á_Table view_____________________Ó",
-  "mapView": "á_Map view_________________Ó",
-  "filter": "á_Filter: {{title}}__________________Ó"
+  "splitView": "Vista dividida",
+  "tableView": "Vista de tabla",
+  "mapView": "Vista del mapa",
+  "filter": "Filtro: {{title}}"
 }

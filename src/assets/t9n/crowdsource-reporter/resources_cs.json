@@ -16,7 +16,7 @@
   "currentLocationMsg": "Použijte mou aktuální polohu",
   "addLocationMsg": "Přidejte umístění.",
   "submitMsg": "Děkujeme! Váš report byl úspěšně odeslán.",
-  "filterLayerTitle": "Filtr: {{title}}",
+  "filterLayerTitle": "Ř_Filter: {{title}}__________________ů",
   "indexOfTotal": "{{index}} z {{total}}",
   "comment": "Komentář",
   "commentSubmittedMsg": "Komentář byl odeslán",
@@ -25,6 +25,6 @@
   "sortOldest": "Nejstarší",
   "sortHighestVoted": "S nejvyšším počtem hlasů",
   "sortLowestVoted": "S nejnižším počtem hlasů",
-  "resetFilter": "Ř_Reset filter_____________ů",
-  "close": "Ř_Close___________ů"
+  "resetFilter": "Obnovit filtr",
+  "close": "Zavřít"
 }

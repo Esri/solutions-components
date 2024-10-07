@@ -1,10 +1,10 @@
 {
-  "fetchingData": "æ_Fetching data______________Â",
-  "edit": "æ_Edit_________Â",
-  "enableEditing": "æ_Update capability must be enabled on the layer_________________________Â.",
-  "editDisabled": "æ_Editing Disabled_________________Â",
-  "next": "æ_Next_________Â",
-  "back": "æ_Back_________Â",
-  "indexOfTotal": "æ_{{index}} of {{total}}_______________________Â",
-  "delete": "æ_Delete_____________Â"
+  "fetchingData": "Récupération des données",
+  "edit": "Modifier",
+  "enableEditing": "La fonctionnalité de mise à jour doit être activée sur la couche.",
+  "editDisabled": "Mise à jour désactivée",
+  "next": "Suivant",
+  "back": "Retour",
+  "indexOfTotal": "{{index}} sur {{total}}",
+  "delete": "Supprimer"
 }

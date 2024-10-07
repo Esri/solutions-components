@@ -1,8 +1,9 @@
 {
   "mapName": "マップ名",
-  "more": "須_More_________鷗",
-  "filters": "須_Filters_______________鷗",
-  "zoom": "須_Zoom_________鷗",
-  "refresh": "須_Refresh_______________鷗",
-  "editMultiple": "須_Edit multiple______________鷗"
+  "more": "その他",
+  "filters": "フィルター",
+  "zoom": "ズーム",
+  "refresh": "更新",
+  "editMultiple": "複数を編集",
+  "clearSelection": "須_Clear selection________________鷗"
 }

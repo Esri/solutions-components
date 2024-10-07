@@ -16,7 +16,7 @@
   "currentLocationMsg": "使用我的目前位置",
   "addLocationMsg": "請新增位置。",
   "submitMsg": "謝謝! 已成功提交您的報告。",
-  "filterLayerTitle": "篩選器: {{title}}",
+  "filterLayerTitle": "試_Filter: {{title}}__________________驗",
   "indexOfTotal": "{{index}}/{{total}}",
   "comment": "評論",
   "commentSubmittedMsg": "已提交評論",
@@ -25,6 +25,6 @@
   "sortOldest": "最早",
   "sortHighestVoted": "得票最高的",
   "sortLowestVoted": "得票最低的",
-  "resetFilter": "試_Reset filter_____________驗",
-  "close": "試_Close___________驗"
+  "resetFilter": "重設篩選器",
+  "close": "關閉"
 }

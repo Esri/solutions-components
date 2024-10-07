@@ -1,10 +1,10 @@
 {
-  "fetchingData": "כן_Fetching data______________ש",
-  "edit": "כן_Edit_________ש",
-  "enableEditing": "כן_Update capability must be enabled on the layer_________________________ש.",
-  "editDisabled": "כן_Editing Disabled_________________ש",
-  "next": "כן_Next_________ש",
-  "back": "כן_Back_________ש",
-  "indexOfTotal": "כן_{{index}} of {{total}}_______________________ש",
-  "delete": "כן_Delete_____________ש"
+  "fetchingData": "מאחזר נתונים",
+  "edit": "עריכה",
+  "enableEditing": "יש להפעיל את יכול העדכון בשכבה.",
+  "editDisabled": "עריכה מושבתת",
+  "next": "הבא",
+  "back": "חזור",
+  "indexOfTotal": "{{index}} מתוך {{total}}",
+  "delete": "מחיקה"
 }

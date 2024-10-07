@@ -16,7 +16,7 @@
   "currentLocationMsg": "Gunakan lokasi saya saat ini",
   "addLocationMsg": "Tambahkan lokasi.",
   "submitMsg": "Terima kasih! Laporan Anda berhasil dikirim.",
-  "filterLayerTitle": "Filter: {{title}}",
+  "filterLayerTitle": "ng_Filter: {{title}}__________________ny",
   "indexOfTotal": "{{index}} dari {{total}}",
   "comment": "Komentar",
   "commentSubmittedMsg": "Komentar dikirimkan",
@@ -25,6 +25,6 @@
   "sortOldest": "Terlama",
   "sortHighestVoted": "Suara tertinggi",
   "sortLowestVoted": "Suara terendah",
-  "resetFilter": "ng_Reset filter_____________ny",
-  "close": "ng_Close___________ny"
+  "resetFilter": "Reset filter",
+  "close": "Tutup"
 }

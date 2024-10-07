@@ -16,7 +16,7 @@
   "currentLocationMsg": "Brug min nuværende position",
   "addLocationMsg": "Tilføj en position.",
   "submitMsg": "Tak Din rapport er blevet sendt.",
-  "filterLayerTitle": "Filter: {{title}}",
+  "filterLayerTitle": "ø_Filter: {{title}}__________________å",
   "indexOfTotal": "{{index}} for {{total}}",
   "comment": "Kommentar",
   "commentSubmittedMsg": "Kommentar sendt",
@@ -25,6 +25,6 @@
   "sortOldest": "Ældste",
   "sortHighestVoted": "Med flest stemmer",
   "sortLowestVoted": "Med færrest stemmer",
-  "resetFilter": "ø_Reset filter_____________å",
-  "close": "ø_Close___________å"
+  "resetFilter": "Nulstil filter",
+  "close": "Luk"
 }

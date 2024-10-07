@@ -1,5 +1,6 @@
 {
   "clearSelection": "Очистити вибір",
+  "delete": "ґ_Delete_____________Ї",
   "exportCSV": "Експорт в CSV",
   "filter": "Фільтр: {{title}}",
   "filters": "Фільтри",
@@ -10,12 +11,12 @@
   "showSelected": "Показати вибране",
   "switchSelected": "Переключити вибране",
   "zoom": "Масштабування",
-  "editMultiple": "ґ_Edit multiple______________Ї",
+  "editMultiple": "Редагувати декілька елементів",
   "fetchingData": "Отримання даних",
   "refresh": "Оновити",
   "showAll": "Показати всі",
   "recordsSelected": "Усього: {{total}} | Вибірка: {{selected}}",
   "moreOptions": "Інші опції таблиці",
   "showHideColumns": "Показати/приховати стовпці",
-  "searchPlaceholder": "ґ_Search text in {{fields}} field_________________Ї"
+  "searchPlaceholder": "Пошук тексту у полі {{fields}}"
 }

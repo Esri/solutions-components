@@ -1,8 +1,8 @@
 {
-  "cancel": "ø_Cancel_____________å",
-  "confirmMultiple": "ø_These features will be permanently removed_______________________å.",
-  "confirmSingle": "ø_This feature will be permanently removed______________________å.",
-  "delete": "ø_Delete_____________å",
-  "deleteCount": "ø_Delete ({{n}})_______________å",
-  "deleteFeature": "ø_Delete feature_______________å"
+  "cancel": "Annuller",
+  "confirmMultiple": "Disse objekter vil blive fjernet permanent.",
+  "confirmSingle": "Dette objekt vil blive fjernet permanent.",
+  "delete": "Slet",
+  "deleteCount": "Slet ({{n}})",
+  "deleteFeature": "Slet objekt"
 }

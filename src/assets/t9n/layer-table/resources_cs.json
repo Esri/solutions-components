@@ -1,5 +1,6 @@
 {
   "clearSelection": "Zrušit výběr",
+  "delete": "Ř_Delete_____________ů",
   "exportCSV": "Exportovat do CSV",
   "filter": "Filtr: {{title}}",
   "filters": "Filtry",
@@ -10,12 +11,12 @@
   "showSelected": "Zobrazit vybrané",
   "switchSelected": "Přepnout vybrané",
   "zoom": "Přiblížení",
-  "editMultiple": "Ř_Edit multiple______________ů",
+  "editMultiple": "Hromadná editace",
   "fetchingData": "Načítání dat",
   "refresh": "Obnovit",
   "showAll": "Zobrazit vše",
   "recordsSelected": "Celkem: {{total}} | Výběr: {{selected}}",
   "moreOptions": "Další možnosti tabulky",
   "showHideColumns": "Zobrazit/skrýt sloupce",
-  "searchPlaceholder": "Ř_Search text in {{fields}} field_________________ů"
+  "searchPlaceholder": "Vyhledat text v poli {{fields}}"
 }

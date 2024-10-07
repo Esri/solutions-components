@@ -5,8 +5,8 @@
   "expandPopup": "ポップアップの展開",
   "collapsePopup": "ポップアップを折りたたむ",
   "view": "表示 ({{n}})",
-  "splitView": "須_Split view_____________________鷗",
-  "tableView": "須_Table view_____________________鷗",
-  "mapView": "須_Map view_________________鷗",
-  "filter": "須_Filter: {{title}}__________________鷗"
+  "splitView": "分割ビュー",
+  "tableView": "テーブル ビュー",
+  "mapView": "マップ ビュー",
+  "filter": "フィルター: {{title}}"
 }

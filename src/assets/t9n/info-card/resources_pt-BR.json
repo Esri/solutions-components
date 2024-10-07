@@ -1,10 +1,10 @@
 {
-  "fetchingData": "ã_Fetching data______________Ç",
-  "edit": "ã_Edit_________Ç",
-  "enableEditing": "ã_Update capability must be enabled on the layer_________________________Ç.",
-  "editDisabled": "ã_Editing Disabled_________________Ç",
-  "next": "ã_Next_________Ç",
-  "back": "ã_Back_________Ç",
-  "indexOfTotal": "ã_{{index}} of {{total}}_______________________Ç",
-  "delete": "ã_Delete_____________Ç"
+  "fetchingData": "Buscando dados",
+  "edit": "Editar",
+  "enableEditing": "A capacidade de atualização deve estar habilitada na camada.",
+  "editDisabled": "Edição Desabilitada",
+  "next": "Avançar",
+  "back": "Voltar",
+  "indexOfTotal": "{{index}} de {{total}}",
+  "delete": "Excluir"
 }

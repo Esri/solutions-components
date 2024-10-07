@@ -5,8 +5,8 @@
   "expandPopup": "Açılır pencereyi genişlet",
   "collapsePopup": "Açılır pencereyi daralt",
   "view": "Görüntü ({{n}})",
-  "splitView": "ı_Split view_____________________İ",
-  "tableView": "ı_Table view_____________________İ",
-  "mapView": "ı_Map view_________________İ",
-  "filter": "ı_Filter: {{title}}__________________İ"
+  "splitView": "Bölünmüş görünüm",
+  "tableView": "Tablo görünümü",
+  "mapView": "Harita görünümü",
+  "filter": "Filtrele: {{title}}"
 }

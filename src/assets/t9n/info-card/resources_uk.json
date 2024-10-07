@@ -1,10 +1,10 @@
 {
-  "fetchingData": "ґ_Fetching data______________Ї",
-  "edit": "ґ_Edit_________Ї",
-  "enableEditing": "ґ_Update capability must be enabled on the layer_________________________Ї.",
-  "editDisabled": "ґ_Editing Disabled_________________Ї",
-  "next": "ґ_Next_________Ї",
-  "back": "ґ_Back_________Ї",
-  "indexOfTotal": "ґ_{{index}} of {{total}}_______________________Ї",
-  "delete": "ґ_Delete_____________Ї"
+  "fetchingData": "Отримання даних",
+  "edit": "Редагування",
+  "enableEditing": "У шарі має бути увімкнено функцію оновлення.",
+  "editDisabled": "Редагування вимкнено",
+  "next": "Далі",
+  "back": "Назад",
+  "indexOfTotal": "{{index}} з {{total}}",
+  "delete": "Видалити"
 }

@@ -16,7 +16,7 @@
   "currentLocationMsg": "내 현재 위치 사용",
   "addLocationMsg": "위치를 추가하세요.",
   "submitMsg": "감사합니다! 보고서가 제출되었습니다.",
-  "filterLayerTitle": "필터: {{title}}",
+  "filterLayerTitle": "한_Filter: {{title}}__________________빠",
   "indexOfTotal": "{{index}} / {{total}}",
   "comment": "의견",
   "commentSubmittedMsg": "의견이 제출됨",
@@ -25,6 +25,6 @@
   "sortOldest": "가장 오래됨",
   "sortHighestVoted": "최고 투표수",
   "sortLowestVoted": "최저 투표수",
-  "resetFilter": "한_Reset filter_____________빠",
-  "close": "한_Close___________빠"
+  "resetFilter": "필터 재설정",
+  "close": "닫기"
 }

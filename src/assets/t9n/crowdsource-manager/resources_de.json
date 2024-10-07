@@ -5,8 +5,8 @@
   "expandPopup": "Pop-up einblenden",
   "collapsePopup": "Pop-up ausblenden",
   "view": "Anzeigen ({{n}})",
-  "splitView": "ä_Split view_____________________Ü",
-  "tableView": "ä_Table view_____________________Ü",
-  "mapView": "ä_Map view_________________Ü",
-  "filter": "ä_Filter: {{title}}__________________Ü"
+  "splitView": "Geteilte Ansicht",
+  "tableView": "Tabellensicht",
+  "mapView": "Kartenansicht",
+  "filter": "Filter: {{title}}"
 }

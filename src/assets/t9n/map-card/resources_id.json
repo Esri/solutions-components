@@ -1,8 +1,9 @@
 {
   "mapName": "Nama Peta",
-  "more": "ng_More_________ny",
-  "filters": "ng_Filters_______________ny",
-  "zoom": "ng_Zoom_________ny",
-  "refresh": "ng_Refresh_______________ny",
-  "editMultiple": "ng_Edit multiple______________ny"
+  "more": "Lainnya",
+  "filters": "Filter",
+  "zoom": "Perbesar",
+  "refresh": "Muat Ulang",
+  "editMultiple": "Edit ganda",
+  "clearSelection": "ng_Clear selection________________ny"
 }

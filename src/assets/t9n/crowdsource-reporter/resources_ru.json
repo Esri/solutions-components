@@ -16,7 +16,7 @@
   "currentLocationMsg": "Использовать мое текущее местоположение",
   "addLocationMsg": "Добавьте местоположение.",
   "submitMsg": "Спасибо! Ваш отчет успешно отправлен.",
-  "filterLayerTitle": "Фильтр: {{title}}",
+  "filterLayerTitle": "Ж_Filter: {{title}}__________________Я",
   "indexOfTotal": "{{index}} из {{total}}",
   "comment": "Комментарий",
   "commentSubmittedMsg": "Комментарий добавлен",
@@ -25,6 +25,6 @@
   "sortOldest": "Самое старое",
   "sortHighestVoted": "Наибольшее количество голосов",
   "sortLowestVoted": "Наименьшее количество голосов",
-  "resetFilter": "Ж_Reset filter_____________Я",
-  "close": "Ж_Close___________Я"
+  "resetFilter": "Сбросить фильтр",
+  "close": "Закрыть"
 }

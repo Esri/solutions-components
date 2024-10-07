@@ -5,8 +5,8 @@
   "expandPopup": "Proširi skočni prozor",
   "collapsePopup": "Sažmi skočni prozor",
   "view": "Prikaz ({{n}})",
-  "splitView": "Č_Split view_____________________ž",
-  "tableView": "Č_Table view_____________________ž",
-  "mapView": "Č_Map view_________________ž",
-  "filter": "Č_Filter: {{title}}__________________ž"
+  "splitView": "Podijeljeni prikaz",
+  "tableView": "Tablični prikaz",
+  "mapView": "Prikaz karte",
+  "filter": "Filtar: {{title}}"
 }

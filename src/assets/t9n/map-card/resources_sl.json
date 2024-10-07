@@ -1,8 +1,9 @@
 {
   "mapName": "Ime karte",
-  "more": "Š_More_________č",
-  "filters": "Š_Filters_______________č",
-  "zoom": "Š_Zoom_________č",
-  "refresh": "Š_Refresh_______________č",
-  "editMultiple": "Š_Edit multiple______________č"
+  "more": "Več",
+  "filters": "Filtri",
+  "zoom": "Povečava",
+  "refresh": "Osveži",
+  "editMultiple": "Uredi več",
+  "clearSelection": "Š_Clear selection________________č"
 }

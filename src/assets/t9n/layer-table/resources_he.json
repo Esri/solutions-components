@@ -1,5 +1,6 @@
 {
   "clearSelection": "נקה בחירה",
+  "delete": "כן_Delete_____________ש",
   "exportCSV": "יצוא ל-CSV",
   "filter": "מסנן: {{title}}",
   "filters": "סינונים",
@@ -10,12 +11,12 @@
   "showSelected": "הצג פריטים שנבחרו",
   "switchSelected": "החלף פריטים שנבחרו.",
   "zoom": "זום",
-  "editMultiple": "כן_Edit multiple______________ש",
+  "editMultiple": "ערוך מרובים",
   "fetchingData": "מאחזר נתונים",
   "refresh": "רענן",
   "showAll": "הצג הכול",
   "recordsSelected": "(סה\"כ: {{total}} | בחירה: {{selected}})",
   "moreOptions": "אפשרויות טבלה נוספות",
   "showHideColumns": "הצג/הסתר עמודות",
-  "searchPlaceholder": "כן_Search text in {{fields}} field_________________ש"
+  "searchPlaceholder": "חיפוש טקסט בשדה {{fields}}"
 }

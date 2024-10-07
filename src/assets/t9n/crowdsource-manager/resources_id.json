@@ -5,8 +5,8 @@
   "expandPopup": "Perluas pop-up",
   "collapsePopup": "Perkecil pop-up",
   "view": "Lihat: ({{n}})",
-  "splitView": "ng_Split view_____________________ny",
-  "tableView": "ng_Table view_____________________ny",
-  "mapView": "ng_Map view_________________ny",
-  "filter": "ng_Filter: {{title}}__________________ny"
+  "splitView": "Tampilan terpisah",
+  "tableView": "Tampilan tabel",
+  "mapView": "Tampilan peta",
+  "filter": "Filter: {{title}}"
 }

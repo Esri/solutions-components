@@ -1,8 +1,9 @@
 {
   "mapName": "Nom del mapa",
-  "more": "ó_More_________à",
-  "filters": "ó_Filters_______________à",
-  "zoom": "ó_Zoom_________à",
-  "refresh": "ó_Refresh_______________à",
-  "editMultiple": "ó_Edit multiple______________à"
+  "more": "Més",
+  "filters": "Filtres",
+  "zoom": "Zoom",
+  "refresh": "Actualitza",
+  "editMultiple": "Edició múltiple",
+  "clearSelection": "ó_Clear selection________________à"
 }

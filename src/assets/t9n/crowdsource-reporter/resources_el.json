@@ -16,7 +16,7 @@
   "currentLocationMsg": "Χρήση τρέχουσας τοποθεσίας μου",
   "addLocationMsg": "Προσθέστε τοποθεσία.",
   "submitMsg": "Σας ευχαριστούμε! Η αναφορά υποβολήθηκε με επιτυχία.",
-  "filterLayerTitle": "Φίλτρο: {{title}}",
+  "filterLayerTitle": "Đ_Filter: {{title}}__________________ớ",
   "indexOfTotal": "{{index}} από {{total}}",
   "comment": "Σχόλιο",
   "commentSubmittedMsg": "Το σχόλιο υποβλήθηκε",
@@ -25,6 +25,6 @@
   "sortOldest": "Παλαιότερα",
   "sortHighestVoted": "Με τις περισσότερες ψήφους",
   "sortLowestVoted": "Με τις λιγότερες ψήφους",
-  "resetFilter": "Đ_Reset filter_____________ớ",
-  "close": "Đ_Close___________ớ"
+  "resetFilter": "Επαναφορά φίλτρου",
+  "close": "Κλείσιμο"
 }

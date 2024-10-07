@@ -1,6 +1,7 @@
 {
   "selectFeaturesToStart": "Pilih catatan untuk mulai. Klik saat menekan tombol Ctrl untuk memilih beberapa catatan di tabel.",
-  "createFeature": "ng_Create feature_______________ny",
-  "createRecord": "ng_Create record______________ny",
-  "create": "ng_Create_____________ny"
+  "selectFeaturesFromMapToStart": "ng_Select a feature from map to get started. Click while pressing the Ctrl key to select multiple features_____________________________________________________ny.",
+  "createFeature": "Buat fitur",
+  "createRecord": "Buat catatan",
+  "create": "Buat"
 }

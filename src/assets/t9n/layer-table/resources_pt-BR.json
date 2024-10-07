@@ -1,5 +1,6 @@
 {
   "clearSelection": "Limpar seleção",
+  "delete": "ã_Delete_____________Ç",
   "exportCSV": "Exportar para CSV",
   "filter": "Filtro: {{title}}",
   "filters": "Filtros",
@@ -10,12 +11,12 @@
   "showSelected": "Mostrar selecionado",
   "switchSelected": "Trocar selecionado",
   "zoom": "Zoom",
-  "editMultiple": "ã_Edit multiple______________Ç",
+  "editMultiple": "Editar múltiplos",
   "fetchingData": "Buscar Dados",
   "refresh": "Atualizar",
   "showAll": "Mostrar todos",
   "recordsSelected": "Total: {{total}} | Seleção: {{selected}}",
   "moreOptions": "Mais opções da tabela",
   "showHideColumns": "Mostrar/ocultar colunas",
-  "searchPlaceholder": "ã_Search text in {{fields}} field_________________Ç"
+  "searchPlaceholder": "Procurar texto no campo {{fields}}"
 }

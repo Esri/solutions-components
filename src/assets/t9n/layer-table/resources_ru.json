@@ -1,5 +1,6 @@
 {
   "clearSelection": "Очистить выборку",
+  "delete": "Ж_Delete_____________Я",
   "exportCSV": "Экспорт в CSV",
   "filter": "Фильтр: {{title}}",
   "filters": "Фильтры",
@@ -10,12 +11,12 @@
   "showSelected": "Показать выбранные",
   "switchSelected": "Переключить выбранные",
   "zoom": "Масштабировать",
-  "editMultiple": "Ж_Edit multiple______________Я",
+  "editMultiple": "Редактировать несколько",
   "fetchingData": "Извлечение данных",
   "refresh": "Обновить",
   "showAll": "Показать все",
   "recordsSelected": "Всего: {{total}} | Выборка: {{selected}}",
   "moreOptions": "Дополнительные опции таблицы",
   "showHideColumns": "Показать/скрыть столбцы",
-  "searchPlaceholder": "Ж_Search text in {{fields}} field_________________Я"
+  "searchPlaceholder": "Поиск текста в поле {{fields}}"
 }

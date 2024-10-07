@@ -1,8 +1,9 @@
 {
   "mapName": "Kartnamn",
-  "more": "Å_More_________ö",
-  "filters": "Å_Filters_______________ö",
-  "zoom": "Å_Zoom_________ö",
-  "refresh": "Å_Refresh_______________ö",
-  "editMultiple": "Å_Edit multiple______________ö"
+  "more": "Mer",
+  "filters": "Filter",
+  "zoom": "Zooma",
+  "refresh": "Uppdatera",
+  "editMultiple": "Redigera flera",
+  "clearSelection": "Å_Clear selection________________ö"
 }

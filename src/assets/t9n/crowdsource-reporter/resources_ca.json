@@ -16,7 +16,7 @@
   "currentLocationMsg": "Utilitza la meva ubicació actual",
   "addLocationMsg": "Afegiu una ubicació.",
   "submitMsg": "Gràcies. El vostre informe s'ha enviat correctament.",
-  "filterLayerTitle": "Filtre: {{title}}",
+  "filterLayerTitle": "ó_Filter: {{title}}__________________à",
   "indexOfTotal": "{{index}} de {{total}}",
   "comment": "Comentaris",
   "commentSubmittedMsg": "S'ha enviat el comentari",
@@ -25,6 +25,6 @@
   "sortOldest": "Més antic",
   "sortHighestVoted": "Més votat",
   "sortLowestVoted": "Menys votat",
-  "resetFilter": "ó_Reset filter_____________à",
-  "close": "ó_Close___________à"
+  "resetFilter": "Restableix el filtre",
+  "close": "Tanca"
 }

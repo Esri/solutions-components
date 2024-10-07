@@ -1,5 +1,6 @@
 {
   "clearSelection": "Kijelölés megszüntetése",
+  "delete": "í_Delete_____________ő",
   "exportCSV": "Exportálás CSV-fájlba",
   "filter": "Szűrő: {{title}}",
   "filters": "Szűrők",
@@ -10,12 +11,12 @@
   "showSelected": "Kiválasztott elemek megjelenítése",
   "switchSelected": "Váltás a kiválasztott elemekre",
   "zoom": "Nagyítás/kicsinyítés",
-  "editMultiple": "í_Edit multiple______________ő",
+  "editMultiple": "Több szerkesztése",
   "fetchingData": "Adatok lekérése",
   "refresh": "Frissítés",
   "showAll": "Összes megjelenítése",
   "recordsSelected": "Összesen: {{total}} | Kiválasztva: {{selected}}",
   "moreOptions": "További táblázat beállítások",
   "showHideColumns": "Oszlopok megjelenítése/elrejtése",
-  "searchPlaceholder": "í_Search text in {{fields}} field_________________ő"
+  "searchPlaceholder": "Szöveg keresése a(z) {{fields}} mezőben"
 }

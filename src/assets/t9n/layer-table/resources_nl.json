@@ -1,5 +1,6 @@
 {
   "clearSelection": "Selectie wissen",
+  "delete": "Ĳ_Delete_____________ä",
   "exportCSV": "Exporteren naar CSV",
   "filter": "Filter: {{title}}",
   "filters": "Filters",
@@ -10,12 +11,12 @@
   "showSelected": "Selectie weergeven",
   "switchSelected": "Selectie wisselen",
   "zoom": "Zoomen",
-  "editMultiple": "Ĳ_Edit multiple______________ä",
+  "editMultiple": "Meerdere bewerken",
   "fetchingData": "Bezig met ophalen gegevens",
   "refresh": "Vernieuwen",
   "showAll": "Alles weergeven",
   "recordsSelected": "Totaal: {{total}} | Selectie: {{selected}}",
   "moreOptions": "Meer tabelopties",
   "showHideColumns": "Kolommen weergeven/verbergen",
-  "searchPlaceholder": "Ĳ_Search text in {{fields}} field_________________ä"
+  "searchPlaceholder": "Tekst zoeken in veld {{fields}}"
 }
