@@ -64,7 +64,7 @@
     "eslint-plugin-jest": "^28.8.2",
     "eslint-plugin-prettier": "5.2.1",
     "eslint-plugin-react": "7.37.1",
-    "eslint-plugin-unicorn": "^55.0.0",
+    "eslint-plugin-unicorn": "^56.0.0",
     "esri-loader": "^3.7.0",
     "form-request-submit-polyfill": "^2.0.0",
     "gh-release": "^7.0.2",
