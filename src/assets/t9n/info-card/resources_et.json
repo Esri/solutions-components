@@ -5,6 +5,6 @@
   "editDisabled": "Redigeerimine keelatud",
   "next": "Edasi",
   "back": "Tagasi",
-  "indexOfTotal": "Š_{{index}} of {{total}}_______________________ä",
+  "indexOfTotal": "{{index}} /{{total}}",
   "delete": "Kustuta"
 }

@@ -1,5 +1,6 @@
 {
   "clearSelection": "Tøm utvalg",
+  "delete": "å_Delete_____________ø",
   "exportCSV": "Eksporter til CSV",
   "filter": "Filter: {{title}}",
   "filters": "Filtre",
@@ -10,12 +11,12 @@
   "showSelected": "Vis valgte",
   "switchSelected": "Bytt valgte",
   "zoom": "Zoom",
-  "editMultiple": "å_Edit multiple______________ø",
+  "editMultiple": "Rediger flere",
   "fetchingData": "Henter data",
   "refresh": "Oppdater",
   "showAll": "Vis alle",
   "recordsSelected": "Totalt: {{total}} | Utvalg: {{selected}}",
   "moreOptions": "Flere tabellalternativer",
   "showHideColumns": "Vis/skjul kolonner",
-  "searchPlaceholder": "å_Search text in {{fields}} field_________________ø"
+  "searchPlaceholder": "Søk etter tekst i {{fields}} felt"
 }

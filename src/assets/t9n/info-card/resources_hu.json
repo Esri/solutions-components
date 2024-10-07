@@ -5,6 +5,6 @@
   "editDisabled": "Szerkesztés letiltva",
   "next": "Tovább",
   "back": "Vissza",
-  "indexOfTotal": "í_{{index}} of {{total}}_______________________ő",
+  "indexOfTotal": "{{index}}/{{total}}",
   "delete": "Törlés"
 }

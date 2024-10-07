@@ -1,5 +1,6 @@
 {
   "clearSelection": "Изчистване на избора",
+  "delete": "й_Delete_____________й",
   "exportCSV": "Експортиране в CSV",
   "filter": "Филтър: {{title}}",
   "filters": "Филтри",
@@ -10,12 +11,12 @@
   "showSelected": "Показване на избраните",
   "switchSelected": "Превключване на избрани",
   "zoom": "Мащабиране",
-  "editMultiple": "й_Edit multiple______________й",
+  "editMultiple": "Редактиране на няколко",
   "fetchingData": "Извличане на данни",
   "refresh": "Обновяване",
   "showAll": "Показване на всички",
   "recordsSelected": "Общо: {{total}} | Избор: {{selected}}",
   "moreOptions": "Още опции за таблица",
   "showHideColumns": "Показване/скриване на колони",
-  "searchPlaceholder": "й_Search text in {{fields}} field_________________й"
+  "searchPlaceholder": "Търсене на текст в поле {{fields}}"
 }

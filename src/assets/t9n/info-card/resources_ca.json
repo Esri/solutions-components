@@ -5,6 +5,6 @@
   "editDisabled": "S'ha deshabilitat l'edició",
   "next": "Següent",
   "back": "Enrere",
-  "indexOfTotal": "ó_{{index}} of {{total}}_______________________à",
+  "indexOfTotal": "{{index}} de {{total}}",
   "delete": "Suprimeix"
 }

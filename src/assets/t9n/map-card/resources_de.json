@@ -1,8 +1,9 @@
 {
   "mapName": "Kartenname",
-  "more": "ä_More_________Ü",
-  "filters": "ä_Filters_______________Ü",
-  "zoom": "ä_Zoom_________Ü",
-  "refresh": "ä_Refresh_______________Ü",
-  "editMultiple": "ä_Edit multiple______________Ü"
+  "more": "Mehr",
+  "filters": "Filter",
+  "zoom": "Zoomen",
+  "refresh": "Aktualisieren",
+  "editMultiple": "Mehrere bearbeiten",
+  "clearSelection": "ä_Clear selection________________Ü"
 }

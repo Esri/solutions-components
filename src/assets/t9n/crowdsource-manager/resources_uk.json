@@ -5,8 +5,8 @@
   "expandPopup": "Розгорнути спливне вікно",
   "collapsePopup": "Згорнути спливне вікно",
   "view": "Вид ({{n}})",
-  "splitView": "ґ_Split view_____________________Ї",
-  "tableView": "ґ_Table view_____________________Ї",
-  "mapView": "ґ_Map view_________________Ї",
-  "filter": "ґ_Filter: {{title}}__________________Ї"
+  "splitView": "Розділений вид",
+  "tableView": "Табличне подання",
+  "mapView": "Подання карти",
+  "filter": "Фільтр: {{title}}"
 }

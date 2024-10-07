@@ -1,6 +1,7 @@
 {
   "selectFeaturesToStart": "Zum Einstieg einen Datensatz auswählen. Zum Auswählen mehrerer Datensätze die Strg-Taste gedrückt halten und auf die gewünschten Datensätze klicken.",
-  "createFeature": "ä_Create feature_______________Ü",
-  "createRecord": "ä_Create record______________Ü",
-  "create": "ä_Create_____________Ü"
+  "selectFeaturesFromMapToStart": "ä_Select a feature from map to get started. Click while pressing the Ctrl key to select multiple features_____________________________________________________Ü.",
+  "createFeature": "Feature erstellen",
+  "createRecord": "Datensatz erstellen",
+  "create": "Erstellen"
 }

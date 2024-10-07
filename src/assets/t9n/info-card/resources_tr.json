@@ -5,6 +5,6 @@
   "editDisabled": "Düzenleme Devre Dışı Bırakıldı",
   "next": "İleri",
   "back": "Geri",
-  "indexOfTotal": "ı_{{index}} of {{total}}_______________________İ",
+  "indexOfTotal": "{{index}} / {{total}}",
   "delete": "Sil"
 }

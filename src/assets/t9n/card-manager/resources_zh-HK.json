@@ -1,6 +1,7 @@
 {
   "selectFeaturesToStart": "選擇記錄以開始使用。 按住 Ctrl 鍵的同時按一下可選取表格中的多筆記錄。",
-  "createFeature": "試_Create feature_______________驗",
-  "createRecord": "試_Create record______________驗",
-  "create": "試_Create_____________驗"
+  "selectFeaturesFromMapToStart": "試_Select a feature from map to get started. Click while pressing the Ctrl key to select multiple features_____________________________________________________驗.",
+  "createFeature": "建立圖徵",
+  "createRecord": "建立記錄",
+  "create": "建立"
 }

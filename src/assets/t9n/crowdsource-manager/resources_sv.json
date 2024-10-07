@@ -5,8 +5,8 @@
   "expandPopup": "Expandera popup-fönster",
   "collapsePopup": "Dölj popup-fönster",
   "view": "Vy ({{n}})",
-  "splitView": "Å_Split view_____________________ö",
-  "tableView": "Å_Table view_____________________ö",
-  "mapView": "Å_Map view_________________ö",
-  "filter": "Å_Filter: {{title}}__________________ö"
+  "splitView": "Delad vy",
+  "tableView": "Tabellvy",
+  "mapView": "Kartvy",
+  "filter": "Filter: {{title}}"
 }

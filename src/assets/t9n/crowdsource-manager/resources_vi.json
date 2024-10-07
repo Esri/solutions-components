@@ -5,8 +5,8 @@
   "expandPopup": "Mở rộng cửa sổ pop-up",
   "collapsePopup": "Thu gọn cửa sổ pop-up",
   "view": "Chế độ xem ({{n}})",
-  "splitView": "Đ_Split view_____________________ớ",
-  "tableView": "Đ_Table view_____________________ớ",
-  "mapView": "Đ_Map view_________________ớ",
-  "filter": "Đ_Filter: {{title}}__________________ớ"
+  "splitView": "Chế độ xem phân tách",
+  "tableView": "Xem bảng",
+  "mapView": "Xem bản đồ",
+  "filter": "Bộ lọc: {{title}}"
 }

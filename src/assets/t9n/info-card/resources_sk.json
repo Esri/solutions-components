@@ -3,8 +3,8 @@
   "edit": "Editovať",
   "enableEditing": "Pre vrstvu musí byť povolená editácia.",
   "editDisabled": "Editácia deaktivovaná",
-  "next": "Ďalšie",
+  "next": "Ďalej",
   "back": "Späť",
-  "indexOfTotal": "ĺ_{{index}} of {{total}}_______________________ľ",
+  "indexOfTotal": "{{index}} z {{total}}",
   "delete": "Zmazať"
 }

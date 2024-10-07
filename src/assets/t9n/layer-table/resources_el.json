@@ -1,5 +1,6 @@
 {
   "clearSelection": "Απαλοιφή επιλογών",
+  "delete": "Đ_Delete_____________ớ",
   "exportCSV": "Εξαγωγή σε CSV",
   "filter": "Φίλτρο: {{title}}",
   "filters": "Φίλτρα",
@@ -10,12 +11,12 @@
   "showSelected": "Εμφάνιση επιλεγμένων",
   "switchSelected": "Επιλογή Αλλαγής",
   "zoom": "Εστίαση",
-  "editMultiple": "Đ_Edit multiple______________ớ",
+  "editMultiple": "Επεξεργασία πολλαπλών αντικειμένων",
   "fetchingData": "Ανάκτηση Δεδομένων",
   "refresh": "Ανανέωση",
   "showAll": "Εμφάνιση όλων",
   "recordsSelected": "Σύνολο: {{total}} | Επιλογή: {{selected}}",
   "moreOptions": "Περισσότερες επιλογές πίνακα",
   "showHideColumns": "Εμφάνιση/Απόκρυψη στηλών",
-  "searchPlaceholder": "Đ_Search text in {{fields}} field_________________ớ"
+  "searchPlaceholder": "Αναζήτηση κειμένου στο πεδίο {{fields}}"
 }

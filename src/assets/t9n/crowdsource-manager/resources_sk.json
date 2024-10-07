@@ -5,8 +5,8 @@
   "expandPopup": "Rozbaliť kontextové okno",
   "collapsePopup": "Zbaliť kontextové okno",
   "view": "Zobraziť ({{n}})",
-  "splitView": "ĺ_Split view_____________________ľ",
-  "tableView": "ĺ_Table view_____________________ľ",
-  "mapView": "ĺ_Map view_________________ľ",
-  "filter": "ĺ_Filter: {{title}}__________________ľ"
+  "splitView": "Rozdelené zobrazenie",
+  "tableView": "Tabuľkové zobrazenie",
+  "mapView": "Mapové zobrazenie",
+  "filter": "Filter: {{title}}"
 }

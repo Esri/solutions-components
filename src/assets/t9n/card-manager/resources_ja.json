@@ -1,6 +1,7 @@
 {
   "selectFeaturesToStart": "開始するレコードを選択します。 テーブル内の複数のレコードを選択するには、Ctrl キーを押しながらクリックします。",
-  "createFeature": "須_Create feature_______________鷗",
-  "createRecord": "須_Create record______________鷗",
-  "create": "須_Create_____________鷗"
+  "selectFeaturesFromMapToStart": "須_Select a feature from map to get started. Click while pressing the Ctrl key to select multiple features_____________________________________________________鷗.",
+  "createFeature": "フィーチャの作成",
+  "createRecord": "レコードの作成",
+  "create": "作成"
 }

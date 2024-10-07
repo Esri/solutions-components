@@ -5,6 +5,6 @@
   "editDisabled": "Uređivanje je onemogućeno",
   "next": "Sledeće",
   "back": "Nazad",
-  "indexOfTotal": "Č_{{index}} of {{total}}_______________________ž",
+  "indexOfTotal": "{{index}} od {{total}}",
   "delete": "Izbriši"
 }

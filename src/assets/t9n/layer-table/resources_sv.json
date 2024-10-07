@@ -1,5 +1,6 @@
 {
   "clearSelection": "Rensa markering",
+  "delete": "Å_Delete_____________ö",
   "exportCSV": "Exportera till CSV",
   "filter": "Filter: {{title}}",
   "filters": "Filter",
@@ -10,12 +11,12 @@
   "showSelected": "Visa valda",
   "switchSelected": "Växla valda",
   "zoom": "Zooma",
-  "editMultiple": "Å_Edit multiple______________ö",
+  "editMultiple": "Redigera flera",
   "fetchingData": "Hämtar data",
   "refresh": "Uppdatera",
   "showAll": "Visa alla",
   "recordsSelected": "Totalt: {{total}} | Urval: {{selected}}",
   "moreOptions": "Fler tabellalternativ",
   "showHideColumns": "Visa/dölj kolumner",
-  "searchPlaceholder": "Å_Search text in {{fields}} field_________________ö"
+  "searchPlaceholder": "Söktext i fältet {{fields}}"
 }

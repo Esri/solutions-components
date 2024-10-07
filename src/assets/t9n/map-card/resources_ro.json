@@ -1,8 +1,9 @@
 {
   "mapName": "Nume hartă",
-  "more": "Ă_More_________ș",
-  "filters": "Ă_Filters_______________ș",
-  "zoom": "Ă_Zoom_________ș",
-  "refresh": "Ă_Refresh_______________ș",
-  "editMultiple": "Ă_Edit multiple______________ș"
+  "more": "Mai mult",
+  "filters": "Filtre",
+  "zoom": "Zoom",
+  "refresh": "Reîmprospătare",
+  "editMultiple": "Editare multiplă",
+  "clearSelection": "Ă_Clear selection________________ș"
 }

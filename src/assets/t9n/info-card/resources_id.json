@@ -5,6 +5,6 @@
   "editDisabled": "Pengeditan dinonaktifkan",
   "next": "Selanjutnya",
   "back": "Kembali",
-  "indexOfTotal": "ng_{{index}} of {{total}}_______________________ny",
+  "indexOfTotal": "{{index}} dari {{total}}",
   "delete": "Hapus"
 }

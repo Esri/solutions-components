@@ -5,8 +5,8 @@
   "expandPopup": "Laienda hüpikaken",
   "collapsePopup": "Ahenda hüpikaken",
   "view": "Kuva ({{n}})",
-  "splitView": "Š_Split view_____________________ä",
-  "tableView": "Š_Table view_____________________ä",
-  "mapView": "Š_Map view_________________ä",
-  "filter": "Š_Filter: {{title}}__________________ä"
+  "splitView": "Tükeldatud vaade",
+  "tableView": "Tabelivaade",
+  "mapView": "Kaardivaade",
+  "filter": "Filter: {{title}}"
 }

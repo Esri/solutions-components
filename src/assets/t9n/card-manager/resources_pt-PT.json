@@ -1,6 +1,7 @@
 {
   "selectFeaturesToStart": "Selecione um registo para começar. Pressione a tecla Ctrl para selecionar vários registos na tabela.",
-  "createFeature": "ã_Create feature_______________Ç",
-  "createRecord": "ã_Create record______________Ç",
-  "create": "ã_Create_____________Ç"
+  "selectFeaturesFromMapToStart": "ã_Select a feature from map to get started. Click while pressing the Ctrl key to select multiple features_____________________________________________________Ç.",
+  "createFeature": "Criar elemento",
+  "createRecord": "Criar registo",
+  "create": "Criar"
 }

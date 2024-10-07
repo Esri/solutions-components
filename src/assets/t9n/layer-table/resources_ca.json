@@ -1,5 +1,6 @@
 {
   "clearSelection": "Esborra la selecció",
+  "delete": "ó_Delete_____________à",
   "exportCSV": "Exporta a CSV",
   "filter": "Filtre: {{title}}",
   "filters": "Filtres",
@@ -10,12 +11,12 @@
   "showSelected": "Mostra els seleccionats",
   "switchSelected": "Canvia la selecció",
   "zoom": "Zoom",
-  "editMultiple": "ó_Edit multiple______________à",
+  "editMultiple": "Edició múltiple",
   "fetchingData": "S'estan recuperant les dades",
   "refresh": "Actualitza",
   "showAll": "Mostra-ho tot",
   "recordsSelected": "Total: {{total}} | Selecció: {{selected}}",
   "moreOptions": "Més opcions de taula",
   "showHideColumns": "Mostra o amaga columnes",
-  "searchPlaceholder": "ó_Search text in {{fields}} field_________________à"
+  "searchPlaceholder": "Cerca text al camp {{fields}}"
 }

@@ -5,8 +5,8 @@
   "expandPopup": "Extindere pop-up",
   "collapsePopup": "Restrângere pop-up",
   "view": "Vizualizare ({{n}})",
-  "splitView": "Ă_Split view_____________________ș",
-  "tableView": "Ă_Table view_____________________ș",
-  "mapView": "Ă_Map view_________________ș",
-  "filter": "Ă_Filter: {{title}}__________________ș"
+  "splitView": "Vizualizare împărțită",
+  "tableView": "Vizualizare tabel",
+  "mapView": "Vizualizare hartă",
+  "filter": "Filtru: {{title}}"
 }

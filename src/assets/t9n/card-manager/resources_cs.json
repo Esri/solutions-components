@@ -1,6 +1,7 @@
 {
   "selectFeaturesToStart": "Začněte výběrem záznamu. Kliknutím se stisknutou klávesou Ctrl vyberete v tabulce více záznamů.",
-  "createFeature": "Ř_Create feature_______________ů",
-  "createRecord": "Ř_Create record______________ů",
-  "create": "Ř_Create_____________ů"
+  "selectFeaturesFromMapToStart": "Ř_Select a feature from map to get started. Click while pressing the Ctrl key to select multiple features_____________________________________________________ů.",
+  "createFeature": "Vytvořit prvek",
+  "createRecord": "Vytvořit záznam",
+  "create": "Vytvořit"
 }

@@ -1,6 +1,7 @@
 {
   "selectFeaturesToStart": "Lai sāktu darbu, izvēlieties ierakstu. Lai tabulā izvēlētos vairākus ierakstus, klikšķinot, turiet nospiestu taustiņu Ctrl.",
-  "createFeature": "ķ_Create feature_______________ū",
-  "createRecord": "ķ_Create record______________ū",
-  "create": "ķ_Create_____________ū"
+  "selectFeaturesFromMapToStart": "ķ_Select a feature from map to get started. Click while pressing the Ctrl key to select multiple features_____________________________________________________ū.",
+  "createFeature": "Izveidot elementu",
+  "createRecord": "Izveidot ierakstu",
+  "create": "Izveidot"
 }

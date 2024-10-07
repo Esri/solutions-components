@@ -1,5 +1,6 @@
 {
   "clearSelection": "Golire selecție",
+  "delete": "Ă_Delete_____________ș",
   "exportCSV": "Export în CSV",
   "filter": "Filtrare: {{title}}",
   "filters": "Filtre",
@@ -10,12 +11,12 @@
   "showSelected": "Afișare selectate",
   "switchSelected": "Comutare selectată",
   "zoom": "Zoom",
-  "editMultiple": "Ă_Edit multiple______________ș",
+  "editMultiple": "Editare multiplă",
   "fetchingData": "Extragerea datelor",
   "refresh": "Reîmprospătare",
   "showAll": "Afișare toate",
   "recordsSelected": "Total: {{total}} | Selecție: {{selected}}",
   "moreOptions": "Mai multe opțiuni de tabel",
   "showHideColumns": "Afişare/ascundere coloane",
-  "searchPlaceholder": "Ă_Search text in {{fields}} field_________________ș"
+  "searchPlaceholder": "Căutare text în câmpul {{fields}}"
 }

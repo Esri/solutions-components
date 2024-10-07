@@ -5,6 +5,6 @@
   "editDisabled": "Editare dezactivată",
   "next": "Următorul",
   "back": "Înapoi",
-  "indexOfTotal": "Ă_{{index}} of {{total}}_______________________ș",
+  "indexOfTotal": "{{index}} din {{total}}",
   "delete": "Ștergere"
 }
