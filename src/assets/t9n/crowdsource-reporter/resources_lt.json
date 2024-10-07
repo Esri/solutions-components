@@ -16,7 +16,7 @@
   "currentLocationMsg": "Naudoti mano dabartinę vietą",
   "addLocationMsg": "Pridėkite vietą.",
   "submitMsg": "Ačiū! Jūsų ataskaita sėkmingai pateikta.",
-  "filterLayerTitle": "Filtras: {{title}}",
+  "filterLayerTitle": "Į_Filter: {{title}}__________________š",
   "indexOfTotal": "{{index}} iš {{total}}",
   "comment": "Komentuoti",
   "commentSubmittedMsg": "Komentaras pateiktas",
@@ -25,6 +25,6 @@
   "sortOldest": "Seniausius",
   "sortHighestVoted": "Daugiausiai balsų",
   "sortLowestVoted": "Mažiausiai balsų",
-  "resetFilter": "Į_Reset filter_____________š",
-  "close": "Į_Close___________š"
+  "resetFilter": "Iš naujo nustatyti filtrą",
+  "close": "Uždaryti"
 }

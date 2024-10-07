@@ -1,8 +1,9 @@
 {
   "mapName": "Tên Bản đồ",
-  "more": "Đ_More_________ớ",
-  "filters": "Đ_Filters_______________ớ",
-  "zoom": "Đ_Zoom_________ớ",
-  "refresh": "Đ_Refresh_______________ớ",
-  "editMultiple": "Đ_Edit multiple______________ớ"
+  "more": "Thêm",
+  "filters": "Bộ lọc",
+  "zoom": "Thu phóng",
+  "refresh": "Tải lại",
+  "editMultiple": "Chỉnh sửa nhiều mục",
+  "clearSelection": "Đ_Clear selection________________ớ"
 }

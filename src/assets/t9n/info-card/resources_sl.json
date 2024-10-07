@@ -1,10 +1,10 @@
 {
-  "fetchingData": "Š_Fetching data______________č",
-  "edit": "Š_Edit_________č",
-  "enableEditing": "Š_Update capability must be enabled on the layer_________________________č.",
-  "editDisabled": "Š_Editing Disabled_________________č",
-  "next": "Š_Next_________č",
-  "back": "Š_Back_________č",
-  "indexOfTotal": "Š_{{index}} of {{total}}_______________________č",
-  "delete": "Š_Delete_____________č"
+  "fetchingData": "Pridobivanje podatkov",
+  "edit": "Uredi",
+  "enableEditing": "Zmožnost posodabljanja mora biti omogočena na sloju.",
+  "editDisabled": "Urejanje onemogočenega",
+  "next": "Naprej",
+  "back": "Nazaj",
+  "indexOfTotal": "{{index}} od {{total}}",
+  "delete": "Izbriši"
 }

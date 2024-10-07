@@ -1,5 +1,5 @@
 {
-  "chooseCategoryMsg": "ı_Make a selection from the list below____________________İ.",
-  "provideDetailsMsg": "ı_Please provide the details____________________________İ.",
-  "provideLocationMsg": "ı_Enter an address or click on the map to create a feature______________________________İ."
+  "chooseCategoryMsg": "Aşağıdaki listeden bir seçim yapın.",
+  "provideDetailsMsg": "Lütfen ayrıntıları sağlayın.",
+  "provideLocationMsg": "Bir detay oluşturmak için bir adres girin veya haritaya tıklayın."
 }

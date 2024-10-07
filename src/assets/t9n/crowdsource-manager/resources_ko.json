@@ -5,8 +5,8 @@
   "expandPopup": "팝업 확장",
   "collapsePopup": "팝업 축소",
   "view": "뷰({{n}})",
-  "splitView": "한_Split view_____________________빠",
-  "tableView": "한_Table view_____________________빠",
-  "mapView": "한_Map view_________________빠",
-  "filter": "한_Filter: {{title}}__________________빠"
+  "splitView": "분할 뷰",
+  "tableView": "테이블 뷰",
+  "mapView": "맵 뷰",
+  "filter": "필터: {{title}}"
 }

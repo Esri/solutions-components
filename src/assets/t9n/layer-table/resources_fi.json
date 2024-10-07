@@ -1,5 +1,6 @@
 {
   "clearSelection": "Tyhjennä valinnat",
+  "delete": "Å_Delete_____________ö",
   "exportCSV": "Vie CSV-tiedostoon",
   "filter": "Suodatin: {{title}}",
   "filters": "Suodattimet",
@@ -10,12 +11,12 @@
   "showSelected": "Näytä valitut",
   "switchSelected": "Vaihda valitut",
   "zoom": "Tarkenna",
-  "editMultiple": "Å_Edit multiple______________ö",
+  "editMultiple": "Muokkaa useaa",
   "fetchingData": "Noudetaan aineistoa",
   "refresh": "Päivitä",
   "showAll": "Näytä kaikki",
   "recordsSelected": "Yhteensä: {{total}} | Valinta: {{selected}}",
   "moreOptions": "Muut taulun asetukset",
   "showHideColumns": "Näytä/piilota sarakkeet",
-  "searchPlaceholder": "Å_Search text in {{fields}} field_________________ö"
+  "searchPlaceholder": "Hakuteksti kentässä {{fields}}"
 }

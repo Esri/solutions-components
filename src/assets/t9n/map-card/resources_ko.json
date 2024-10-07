@@ -1,8 +1,9 @@
 {
   "mapName": "맵 이름",
-  "more": "한_More_________빠",
-  "filters": "한_Filters_______________빠",
-  "zoom": "한_Zoom_________빠",
-  "refresh": "한_Refresh_______________빠",
-  "editMultiple": "한_Edit multiple______________빠"
+  "more": "더 보기",
+  "filters": "필터",
+  "zoom": "확대/축소",
+  "refresh": "새로고침",
+  "editMultiple": "다중 편집",
+  "clearSelection": "한_Clear selection________________빠"
 }

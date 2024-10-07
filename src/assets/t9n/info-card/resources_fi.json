@@ -1,10 +1,10 @@
 {
-  "fetchingData": "Å_Fetching data______________ö",
-  "edit": "Å_Edit_________ö",
-  "enableEditing": "Å_Update capability must be enabled on the layer_________________________ö.",
-  "editDisabled": "Å_Editing Disabled_________________ö",
-  "next": "Å_Next_________ö",
-  "back": "Å_Back_________ö",
-  "indexOfTotal": "Å_{{index}} of {{total}}_______________________ö",
-  "delete": "Å_Delete_____________ö"
+  "fetchingData": "Noudetaan aineistoa",
+  "edit": "Muokkaa",
+  "enableEditing": "Päivitysominaisuuden on oltava käytössä karttatasossa.",
+  "editDisabled": "Muokkaaminen on poistettu käytöstä",
+  "next": "Seuraava",
+  "back": "Takaisin",
+  "indexOfTotal": "{{index}}/{{total}}",
+  "delete": "Poista"
 }

@@ -16,7 +16,7 @@
   "currentLocationMsg": "השתמש במיקום הנוכחי שלי",
   "addLocationMsg": "הוסף מיקום.",
   "submitMsg": "תודה! הדוח שלך נשלח בהצלחה.",
-  "filterLayerTitle": "מסנן: {{title}}",
+  "filterLayerTitle": "כן_Filter: {{title}}__________________ש",
   "indexOfTotal": "{{index}} מתוך {{total}}",
   "comment": "הערה",
   "commentSubmittedMsg": "ההערה נשלחה",
@@ -25,6 +25,6 @@
   "sortOldest": "הישן ביותר",
   "sortHighestVoted": "ההצבעה הגבוהה ביותר",
   "sortLowestVoted": "ההצבעה הנמוכה ביותר",
-  "resetFilter": "כן_Reset filter_____________ש",
-  "close": "כן_Close___________ש"
+  "resetFilter": "איפוס מסנן",
+  "close": "סגירה"
 }

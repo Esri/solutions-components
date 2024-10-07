@@ -1,10 +1,10 @@
 {
-  "fetchingData": "Ă_Fetching data______________ș",
-  "edit": "Ă_Edit_________ș",
-  "enableEditing": "Ă_Update capability must be enabled on the layer_________________________ș.",
-  "editDisabled": "Ă_Editing Disabled_________________ș",
-  "next": "Ă_Next_________ș",
-  "back": "Ă_Back_________ș",
-  "indexOfTotal": "Ă_{{index}} of {{total}}_______________________ș",
-  "delete": "Ă_Delete_____________ș"
+  "fetchingData": "Extragerea datelor",
+  "edit": "Editare",
+  "enableEditing": "Actualizarea capacității trebuie să fie activată pe stratul tematic.",
+  "editDisabled": "Editare dezactivată",
+  "next": "Următorul",
+  "back": "Înapoi",
+  "indexOfTotal": "{{index}} din {{total}}",
+  "delete": "Ștergere"
 }

@@ -1,5 +1,5 @@
 {
-  "chooseCategoryMsg": "试_Make a selection from the list below____________________验.",
-  "provideDetailsMsg": "试_Please provide the details____________________________验.",
-  "provideLocationMsg": "试_Enter an address or click on the map to create a feature______________________________验."
+  "chooseCategoryMsg": "从下面的列表中进行选择。",
+  "provideDetailsMsg": "请提供详细信息。",
+  "provideLocationMsg": "输入地址或单击地图创建要素。"
 }

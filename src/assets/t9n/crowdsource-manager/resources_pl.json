@@ -5,8 +5,8 @@
   "expandPopup": "Rozwiń okno podręczne",
   "collapsePopup": "Zwiń okno podręczne",
   "view": "Widok ({{n}})",
-  "splitView": "ł_Split view_____________________ą",
-  "tableView": "ł_Table view_____________________ą",
-  "mapView": "ł_Map view_________________ą",
-  "filter": "ł_Filter: {{title}}__________________ą"
+  "splitView": "Widok podzielony",
+  "tableView": "Widok tabeli",
+  "mapView": "Widok mapy",
+  "filter": "Filtr: {{title}}"
 }

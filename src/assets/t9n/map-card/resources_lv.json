@@ -1,8 +1,9 @@
 {
   "mapName": "Kartes nosaukums",
-  "more": "ķ_More_________ū",
-  "filters": "ķ_Filters_______________ū",
-  "zoom": "ķ_Zoom_________ū",
-  "refresh": "ķ_Refresh_______________ū",
-  "editMultiple": "ķ_Edit multiple______________ū"
+  "more": "Vairāk",
+  "filters": "Filtri",
+  "zoom": "Tālummaiņa",
+  "refresh": "Atsvaidzināt",
+  "editMultiple": "Rediģēt vairākus",
+  "clearSelection": "ķ_Clear selection________________ū"
 }

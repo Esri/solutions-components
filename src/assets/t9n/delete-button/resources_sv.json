@@ -1,8 +1,8 @@
 {
-  "cancel": "Å_Cancel_____________ö",
-  "confirmMultiple": "Å_These features will be permanently removed_______________________ö.",
-  "confirmSingle": "Å_This feature will be permanently removed______________________ö.",
-  "delete": "Å_Delete_____________ö",
-  "deleteCount": "Å_Delete ({{n}})_______________ö",
-  "deleteFeature": "Å_Delete feature_______________ö"
+  "cancel": "Avbryt",
+  "confirmMultiple": "Dessa geoobjekt tas bort permanent.",
+  "confirmSingle": "Geoobjektet tas bort permanent.",
+  "delete": "Ta bort",
+  "deleteCount": "Ta bort ({{n}})",
+  "deleteFeature": "Ta bort geoobjekt"
 }

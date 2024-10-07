@@ -16,7 +16,7 @@
   "currentLocationMsg": "Folosiți locația mea curentă",
   "addLocationMsg": "Adăugați o locație.",
   "submitMsg": "Vă mulțumim! Raportul dvs. a fost trimis cu succes.",
-  "filterLayerTitle": "Filtrare: {{title}}",
+  "filterLayerTitle": "Ă_Filter: {{title}}__________________ș",
   "indexOfTotal": "{{index}} din {{total}}",
   "comment": "Comentariu",
   "commentSubmittedMsg": "Comentariu transmis",
@@ -25,6 +25,6 @@
   "sortOldest": "Cel mai vechi",
   "sortHighestVoted": "Cel mai votat",
   "sortLowestVoted": "Ce mai puțin votat",
-  "resetFilter": "Ă_Reset filter_____________ș",
-  "close": "Ă_Close___________ș"
+  "resetFilter": "Resetați filtrul",
+  "close": "Închidere"
 }

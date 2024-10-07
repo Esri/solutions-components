@@ -16,7 +16,7 @@
   "currentLocationMsg": "Usar a minha localização atual",
   "addLocationMsg": "Adicione uma localização.",
   "submitMsg": "Obrigado! O seu relatório foi enviado com êxito.",
-  "filterLayerTitle": "Filtro: {{title}}",
+  "filterLayerTitle": "ã_Filter: {{title}}__________________Ç",
   "indexOfTotal": "{{index}} de {{total}}",
   "comment": "Comentar",
   "commentSubmittedMsg": "Comentário enviado",
@@ -25,6 +25,6 @@
   "sortOldest": "Mais Antigo",
   "sortHighestVoted": "Mais votado",
   "sortLowestVoted": "Menos votado",
-  "resetFilter": "ã_Reset filter_____________Ç",
-  "close": "ã_Close___________Ç"
+  "resetFilter": "Repor filtro",
+  "close": "Fechar"
 }

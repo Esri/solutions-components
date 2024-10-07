@@ -1,5 +1,6 @@
 {
   "clearSelection": "Hapus pilihan",
+  "delete": "ng_Delete_____________ny",
   "exportCSV": "Ekspor ke CSV",
   "filter": "Filter: {{title}}",
   "filters": "Filter",
@@ -10,12 +11,12 @@
   "showSelected": "Tampilkan yang dipilih",
   "switchSelected": "Alihkan yang dipilih",
   "zoom": "Perbesar",
-  "editMultiple": "ng_Edit multiple______________ny",
+  "editMultiple": "Edit ganda",
   "fetchingData": "Mengambil data",
   "refresh": "Muat Ulang",
   "showAll": "Tampilkan semua",
   "recordsSelected": "Total: {{total}} | Pilihan: {{selected}}",
   "moreOptions": "Opsi tabel lainnya",
   "showHideColumns": "Tampilkan/sembunyikan kolom",
-  "searchPlaceholder": "ng_Search text in {{fields}} field_________________ny"
+  "searchPlaceholder": "Cari teks di kolom {{fields}}"
 }

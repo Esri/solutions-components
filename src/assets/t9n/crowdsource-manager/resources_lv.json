@@ -5,8 +5,8 @@
   "expandPopup": "Izvērst uznirstošo logu",
   "collapsePopup": "Sakļaut uznirstošo logu",
   "view": "Skats ({{n}})",
-  "splitView": "ķ_Split view_____________________ū",
-  "tableView": "ķ_Table view_____________________ū",
-  "mapView": "ķ_Map view_________________ū",
-  "filter": "ķ_Filter: {{title}}__________________ū"
+  "splitView": "Dalīts skats",
+  "tableView": "Tabulas skats",
+  "mapView": "Kartes skats",
+  "filter": "Filtrēt: {{title}}"
 }

@@ -16,7 +16,7 @@
   "currentLocationMsg": "Använd min aktuella plats",
   "addLocationMsg": "Lägg till en plats.",
   "submitMsg": "Tack! Din rapport har skickats in.",
-  "filterLayerTitle": "Filter: {{title}}",
+  "filterLayerTitle": "Å_Filter: {{title}}__________________ö",
   "indexOfTotal": "{{index}} av {{total}}",
   "comment": "Kommentar",
   "commentSubmittedMsg": "Kommentar har skickats",
@@ -25,6 +25,6 @@
   "sortOldest": "Äldsta",
   "sortHighestVoted": "Med flest röster",
   "sortLowestVoted": "Med lägst röster",
-  "resetFilter": "Å_Reset filter_____________ö",
-  "close": "Å_Close___________ö"
+  "resetFilter": "Återställ filter",
+  "close": "Stäng"
 }

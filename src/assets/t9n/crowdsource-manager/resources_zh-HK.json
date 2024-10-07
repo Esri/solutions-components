@@ -5,8 +5,8 @@
   "expandPopup": "展開快顯視窗",
   "collapsePopup": "折疊快顯視窗",
   "view": "檢視 ({{n}})",
-  "splitView": "試_Split view_____________________驗",
-  "tableView": "試_Table view_____________________驗",
-  "mapView": "試_Map view_________________驗",
-  "filter": "試_Filter: {{title}}__________________驗"
+  "splitView": "分割視圖",
+  "tableView": "表格視圖",
+  "mapView": "地圖視圖",
+  "filter": "篩選器: {{title}}"
 }

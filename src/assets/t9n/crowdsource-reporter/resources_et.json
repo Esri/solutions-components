@@ -16,7 +16,7 @@
   "currentLocationMsg": "Kasuta minu praegust asukohta",
   "addLocationMsg": "Lisage asukoht.",
   "submitMsg": "Täname teid. Teie aruanne edastati.",
-  "filterLayerTitle": "Filter: {{title}}",
+  "filterLayerTitle": "Š_Filter: {{title}}__________________ä",
   "indexOfTotal": "{{index}}/{{total}}",
   "comment": "Kommentaar",
   "commentSubmittedMsg": "Kommentaari esitatud",
@@ -25,6 +25,6 @@
   "sortOldest": "Vanim",
   "sortHighestVoted": "Suurima häälte arvuga",
   "sortLowestVoted": "Väikseima häälte arvuga",
-  "resetFilter": "Š_Reset filter_____________ä",
-  "close": "Š_Close___________ä"
+  "resetFilter": "Lähtesta filter",
+  "close": "Sule"
 }

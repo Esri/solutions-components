@@ -1,6 +1,7 @@
 {
   "selectFeaturesToStart": "Изберете запис, за да започнете. Натиснете, докато държите клавиша Ctrl, за да изберете няколко записа в таблицата.",
-  "createFeature": "й_Create feature_______________й",
-  "createRecord": "й_Create record______________й",
-  "create": "й_Create_____________й"
+  "selectFeaturesFromMapToStart": "й_Select a feature from map to get started. Click while pressing the Ctrl key to select multiple features_____________________________________________________й.",
+  "createFeature": "Създаване на обект",
+  "createRecord": "Създаване на запис",
+  "create": "Създаване"
 }

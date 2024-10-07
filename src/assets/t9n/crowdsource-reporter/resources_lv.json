@@ -16,7 +16,7 @@
   "currentLocationMsg": "Izmantot manu pašreizējo novietojumu",
   "addLocationMsg": "Lūdzu, pievienojiet atrašanās vietu.",
   "submitMsg": "Paldies! Jūsu pārskats ir veiksmīgi iesniegts.",
-  "filterLayerTitle": "Filtrēt: {{title}}",
+  "filterLayerTitle": "ķ_Filter: {{title}}__________________ū",
   "indexOfTotal": "{{index}} no {{total}}",
   "comment": "Komentārs",
   "commentSubmittedMsg": "Komentārs iesniegts",
@@ -25,6 +25,6 @@
   "sortOldest": "Vecākais",
   "sortHighestVoted": "Ar vislielāko balsojumu",
   "sortLowestVoted": "Ar vismazāko balsojumu",
-  "resetFilter": "ķ_Reset filter_____________ū",
-  "close": "ķ_Close___________ū"
+  "resetFilter": "Atiestatīt filtru",
+  "close": "Aizvērt"
 }

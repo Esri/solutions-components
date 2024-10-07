@@ -1,10 +1,10 @@
 {
-  "fetchingData": "Š_Fetching data______________ä",
-  "edit": "Š_Edit_________ä",
-  "enableEditing": "Š_Update capability must be enabled on the layer_________________________ä.",
-  "editDisabled": "Š_Editing Disabled_________________ä",
-  "next": "Š_Next_________ä",
-  "back": "Š_Back_________ä",
-  "indexOfTotal": "Š_{{index}} of {{total}}_______________________ä",
-  "delete": "Š_Delete_____________ä"
+  "fetchingData": "Andmete toomine",
+  "edit": "Muuda",
+  "enableEditing": "Uuendusvõimalus peab olema kihis lubatud.",
+  "editDisabled": "Redigeerimine keelatud",
+  "next": "Edasi",
+  "back": "Tagasi",
+  "indexOfTotal": "{{index}} /{{total}}",
+  "delete": "Kustuta"
 }

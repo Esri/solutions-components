@@ -16,7 +16,7 @@
   "currentLocationMsg": "Bruk min nåværende lokasjon",
   "addLocationMsg": "Legg til en lokasjon.",
   "submitMsg": "Takk! Rapporten er innsendt.",
-  "filterLayerTitle": "Filter: {{title}}",
+  "filterLayerTitle": "å_Filter: {{title}}__________________ø",
   "indexOfTotal": "{{index}} av {{total}}",
   "comment": "Kommentar",
   "commentSubmittedMsg": "Kommentar sendt inn",
@@ -25,6 +25,6 @@
   "sortOldest": "Eldst",
   "sortHighestVoted": "Høyest rangering",
   "sortLowestVoted": "Lavest rangering",
-  "resetFilter": "å_Reset filter_____________ø",
-  "close": "å_Close___________ø"
+  "resetFilter": "Tilbakestill filter",
+  "close": "Lukk"
 }

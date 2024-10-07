@@ -1,5 +1,6 @@
 {
   "clearSelection": "Auswahl aufheben",
+  "delete": "ä_Delete_____________Ü",
   "exportCSV": "In CSV exportieren",
   "filter": "Filter: {{title}}",
   "filters": "Filter",
@@ -10,12 +11,12 @@
   "showSelected": "Ausgewählte anzeigen",
   "switchSelected": "Auswahl umkehren",
   "zoom": "Zoomen",
-  "editMultiple": "ä_Edit multiple______________Ü",
+  "editMultiple": "Mehrere bearbeiten",
   "fetchingData": "Daten werden abgerufen",
   "refresh": "Aktualisieren",
   "showAll": "Alle anzeigen",
   "recordsSelected": "Gesamt: {{total}} | Auswahl: {{selected}}",
   "moreOptions": "Weitere Tabellenoptionen",
   "showHideColumns": "Spalten ein-/ausblenden",
-  "searchPlaceholder": "ä_Search text in {{fields}} field_________________Ü"
+  "searchPlaceholder": "Suchtext im Feld {{fields}}"
 }

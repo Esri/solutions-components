@@ -1,6 +1,7 @@
 {
   "selectFeaturesToStart": "Välj en post för att komma igång. Klicka medan du trycker på Ctrl-tangenten för att välja flera poster i tabellen.",
-  "createFeature": "Å_Create feature_______________ö",
-  "createRecord": "Å_Create record______________ö",
-  "create": "Å_Create_____________ö"
+  "selectFeaturesFromMapToStart": "Å_Select a feature from map to get started. Click while pressing the Ctrl key to select multiple features_____________________________________________________ö.",
+  "createFeature": "Skapa geoobjekt",
+  "createRecord": "Skapa post",
+  "create": "Skapa"
 }

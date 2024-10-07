@@ -1,6 +1,7 @@
 {
   "selectFeaturesToStart": "Wybierz rekord, aby rozpocząć. Klikaj z wciśniętym klawiszem Ctrl, aby zaznaczyć wiele rekordów w tabeli.",
-  "createFeature": "ł_Create feature_______________ą",
-  "createRecord": "ł_Create record______________ą",
-  "create": "ł_Create_____________ą"
+  "selectFeaturesFromMapToStart": "ł_Select a feature from map to get started. Click while pressing the Ctrl key to select multiple features_____________________________________________________ą.",
+  "createFeature": "Utwórz obiekt",
+  "createRecord": "Utwórz rekord",
+  "create": "Utwórz"
 }

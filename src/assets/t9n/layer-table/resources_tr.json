@@ -1,5 +1,6 @@
 {
   "clearSelection": "Seçimi temizle",
+  "delete": "ı_Delete_____________İ",
   "exportCSV": "CSV olarak dışa aktar",
   "filter": "Filtre: {{title}}",
   "filters": "Filtreler",
@@ -10,12 +11,12 @@
   "showSelected": "Seçilenleri göster",
   "switchSelected": "Seçili olanı değiştir",
   "zoom": "Yakınlaştır",
-  "editMultiple": "ı_Edit multiple______________İ",
+  "editMultiple": "Çoklu düzenle",
   "fetchingData": "Veriler Getiriliyor",
   "refresh": "Yenile",
   "showAll": "Tümünü göster",
   "recordsSelected": "Toplam: {{total}} | Seçim: {{selected}}",
   "moreOptions": "Daha fazla tablo seçeneği",
   "showHideColumns": "Sütunları göster/gizle",
-  "searchPlaceholder": "ı_Search text in {{fields}} field_________________İ"
+  "searchPlaceholder": "{{fields}} alanında metin ara"
 }

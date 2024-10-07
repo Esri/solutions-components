@@ -1,5 +1,6 @@
 {
   "clearSelection": "Očisti odabir",
+  "delete": "Č_Delete_____________ž",
   "exportCSV": "Izvezi u CSV",
   "filter": "Filtar: {{title}}",
   "filters": "Filtri",
@@ -10,12 +11,12 @@
   "showSelected": "Prikaži odabrano",
   "switchSelected": "Zamijeni odabrano",
   "zoom": "Povećaj",
-  "editMultiple": "Č_Edit multiple______________ž",
+  "editMultiple": "Uredi više",
   "fetchingData": "Dohvaćanje podataka",
   "refresh": "Osvježi",
   "showAll": "Prikaži sve",
   "recordsSelected": "Ukupno: {{total}} | Odabir: {{selected}}",
   "moreOptions": "Više opcija tablice",
   "showHideColumns": "Prikaži/skrij stupce",
-  "searchPlaceholder": "Č_Search text in {{fields}} field_________________ž"
+  "searchPlaceholder": "Pretraži tekst u polju {{fields}}"
 }

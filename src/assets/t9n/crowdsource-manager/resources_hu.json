@@ -5,8 +5,8 @@
   "expandPopup": "Felugró ablak kiterjesztése",
   "collapsePopup": "Felugró ablak összecsukása",
   "view": "Megtekintés ({{n}})",
-  "splitView": "í_Split view_____________________ő",
-  "tableView": "í_Table view_____________________ő",
-  "mapView": "í_Map view_________________ő",
-  "filter": "í_Filter: {{title}}__________________ő"
+  "splitView": "Osztott nézet",
+  "tableView": "Táblanézet",
+  "mapView": "Térképnézet",
+  "filter": "Szűrő: {{title}}"
 }

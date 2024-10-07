@@ -1,6 +1,7 @@
 {
   "selectFeaturesToStart": "Vybrať záznam a začať. Kliknutím so stlačeným Ctrl vyberte viac záznamov v tabuľke.",
-  "createFeature": "ĺ_Create feature_______________ľ",
-  "createRecord": "ĺ_Create record______________ľ",
-  "create": "ĺ_Create_____________ľ"
+  "selectFeaturesFromMapToStart": "ĺ_Select a feature from map to get started. Click while pressing the Ctrl key to select multiple features_____________________________________________________ľ.",
+  "createFeature": "Vytvoriť prvok",
+  "createRecord": "Vytvoriť záznam",
+  "create": "Vytvoriť"
 }

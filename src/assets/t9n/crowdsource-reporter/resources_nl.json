@@ -16,7 +16,7 @@
   "currentLocationMsg": "Gebruik mijn huidige locatie",
   "addLocationMsg": "Voeg een locatie toe.",
   "submitMsg": "Bedankt! Uw rapport is ingediend.",
-  "filterLayerTitle": "Filter: {{title}}",
+  "filterLayerTitle": "Ĳ_Filter: {{title}}__________________ä",
   "indexOfTotal": "{{index}} van {{total}}",
   "comment": "Opmerkingen maken",
   "commentSubmittedMsg": "Opmerking is verzonden",
@@ -25,6 +25,6 @@
   "sortOldest": "Oudste",
   "sortHighestVoted": "Hoogste aantal stemmen",
   "sortLowestVoted": "Laagste aantal stemmen",
-  "resetFilter": "Ĳ_Reset filter_____________ä",
-  "close": "Ĳ_Close___________ä"
+  "resetFilter": "Filter opnieuw instellen",
+  "close": "Sluiten"
 }

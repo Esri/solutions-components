@@ -1,6 +1,7 @@
 {
   "selectFeaturesToStart": "تحديد سجل للبدء انقر بينما تضغط على مفتاح Ctrl لتحديد أكثر من سجل في الجدول.",
-  "createFeature": "بيت_Create feature_______________لاحقة",
-  "createRecord": "بيت_Create record______________لاحقة",
-  "create": "بيت_Create_____________لاحقة"
+  "selectFeaturesFromMapToStart": "بيت_Select a feature from map to get started. Click while pressing the Ctrl key to select multiple features_____________________________________________________لاحقة.",
+  "createFeature": "إنشاء معلم",
+  "createRecord": "إنشاء سجل",
+  "create": "إنشاء"
 }

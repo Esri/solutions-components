@@ -5,8 +5,8 @@
   "expandPopup": "展开弹出窗口",
   "collapsePopup": "折叠弹出窗口",
   "view": "视图 ({{n}})",
-  "splitView": "试_Split view_____________________验",
-  "tableView": "试_Table view_____________________验",
-  "mapView": "试_Map view_________________验",
-  "filter": "试_Filter: {{title}}__________________验"
+  "splitView": "分割视图",
+  "tableView": "表视图",
+  "mapView": "地图视图",
+  "filter": "过滤器： {{title}}"
 }

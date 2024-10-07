@@ -1,5 +1,6 @@
 {
   "clearSelection": "Xóa lựa chọn",
+  "delete": "Đ_Delete_____________ớ",
   "exportCSV": "Xuất thành CSV",
   "filter": "Bộ lọc: {{title}}",
   "filters": "Bộ lọc",
@@ -10,12 +11,12 @@
   "showSelected": "Hiển thị mục được chọn",
   "switchSelected": "Chuyển đổi mục được chọn",
   "zoom": "Thu phóng",
-  "editMultiple": "Đ_Edit multiple______________ớ",
+  "editMultiple": "Chỉnh sửa nhiều mục",
   "fetchingData": "Đang tìm nạp Dữ liệu",
   "refresh": "Làm mới",
   "showAll": "Hiện tất cả",
   "recordsSelected": "Tổng: {{total}} | Lựa chọn: {{selected}}",
   "moreOptions": "Các tùy chọn bảng khác",
   "showHideColumns": "Hiển thị/ẩn cột",
-  "searchPlaceholder": "Đ_Search text in {{fields}} field_________________ớ"
+  "searchPlaceholder": "Tìm kiếm văn bản trong trường {{fields}}"
 }

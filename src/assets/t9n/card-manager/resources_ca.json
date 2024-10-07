@@ -1,6 +1,7 @@
 {
   "selectFeaturesToStart": "Per començar, seleccioneu un registre. Feu clic mentre premeu la tecla Ctrl per seleccionar diversos registres a la taula.",
-  "createFeature": "ó_Create feature_______________à",
-  "createRecord": "ó_Create record______________à",
-  "create": "ó_Create_____________à"
+  "selectFeaturesFromMapToStart": "ó_Select a feature from map to get started. Click while pressing the Ctrl key to select multiple features_____________________________________________________à.",
+  "createFeature": "Crea entitat",
+  "createRecord": "Crea registre",
+  "create": "Crea"
 }
