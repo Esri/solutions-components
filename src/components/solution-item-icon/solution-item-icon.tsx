@@ -108,201 +108,404 @@ export class SolutionItemIcon {
    *
    * @param type The item type
    * @param typeKeywords The item typeKeywords
+   *
+   * @returns string the asset path for the given item type and typekeywords
    */
   protected _getIconUrl(
     type: string,
     typeKeywords: string[]
   ): string {
-    const
-      itemType = (type && type.toLowerCase()) || "",
-      imgDir = "./item-icons/",
-      size = "16";  //for now we only support 16x16 pixel images
-    let
-      isHosted = false,
-      isRouteLayer = false,
-      isMarkupLayer = false,
-      isTable = false,
-      isSpatiotemporal = false,
-      isRelational = false,
-      imgName = "";
-    typeKeywords = typeKeywords || [];
+    const icon = this._getItemIcon(type, typeKeywords);
+    return getAssetPath(`./item-icons/${icon}16.svg`);
+  }
 
-    if (itemType.indexOf("service") > 0 || itemType === "feature collection" || itemType === "kml" || itemType === "wms" || itemType === "wmts" || itemType === "wfs") {
-      isHosted = typeKeywords.indexOf("Hosted Service") > -1;
-      if (itemType === "feature service" || itemType === "feature collection" || itemType === "kml" || itemType === "wfs") {
-        isTable = typeKeywords.indexOf("Table") > -1;
-        isRouteLayer = typeKeywords.indexOf("Route Layer") > -1;
-        isMarkupLayer = typeKeywords.indexOf("Markup") > -1;
-        isSpatiotemporal = typeKeywords.indexOf("Spatiotemporal") !== -1;
-        imgName = isSpatiotemporal && isTable ? "spatiotemporaltable" : (isTable ? "table" : (isRouteLayer ? "routelayer" : (isMarkupLayer ? "markup" : (isSpatiotemporal ? "spatiotemporal" : (isHosted ? "featureshosted" : "features")))));
-      } else if (itemType === "map service" || itemType === "wms" || itemType === "wmts") {
-        isSpatiotemporal = typeKeywords.indexOf("Spatiotemporal") !== -1;
-        isRelational = typeKeywords.indexOf("Relational") !== -1;
-        if (isSpatiotemporal || isRelational) {
-          imgName = "mapimages";
-        } else {
-          imgName = (isHosted || typeKeywords.indexOf("Tiled") > -1 || itemType === "wmts") ? "maptiles" : "mapimages";
+  /**
+   * This function was copied and slightly modified from the arcgis-app-components.
+   *
+   * This will fetch the name of the icon based on type and typeKeyword info.
+   *
+   * @param type The item type
+   * @param typeKeywords The item typeKeywords
+   *
+   * @returns string the name of the icon for the given type and typekeywords
+   */
+  protected _getItemIcon(
+    type: string,
+    typeKeywords: string[]
+  ): any {
+    const _type = type.toLowerCase();
+    const keywords = typeKeywords || [];
+    const hosted = keywords.includes("Hosted Service");
+
+    switch (_type.trim()) {
+      case "360 vr experience":
+        return "360vr";
+      case "3dtiles package":
+        return "3dtileslayerpackage";
+      case "3dtiles service":
+        return keywords.includes("3DObject")
+          ? "3dobjecttileslayer"
+          : keywords.includes("IntegratedMesh")
+          ? "integratedmeshtileslayer"
+          : "3dobjecttileslayer";
+      case "feature service":
+      case "feature collection":
+      case "kml":
+      case "wfs":
+        if (keywords.includes("IndoorPositioningDataService")) {
+          return "indoorpositioningdataservice";
         }
-      } else if (itemType === "scene service") {
-        if (typeKeywords.indexOf("Line") > -1) {
-          imgName = "sceneweblayerline";
-        } else if (typeKeywords.indexOf("3DObject") > -1) {
-          imgName = "sceneweblayermultipatch";
-        } else if (typeKeywords.indexOf("Point") > -1) {
-          imgName = "sceneweblayerpoint";
-        } else if (typeKeywords.indexOf("IntegratedMesh") > -1) {
-          imgName = "sceneweblayermesh";
-        } else if (typeKeywords.indexOf("PointCloud") > -1) {
-          imgName = "sceneweblayerpointcloud";
-        } else if (typeKeywords.indexOf("Polygon") > -1) {
-          imgName = "sceneweblayerpolygon";
-        } else if (typeKeywords.indexOf("Building") > -1) {
-          imgName = "sceneweblayerbuilding";
-        } else {
-          imgName = "sceneweblayer";
+        const isSpatiotemporal = keywords.includes("Spatiotemporal");
+        if (keywords.includes("Table")) {
+          return isSpatiotemporal ? "spatiotemporaltable" : "table";
         }
-      } else if (itemType === "image service") {
-        imgName = typeKeywords.indexOf("Elevation 3D Layer") > -1 ? "elevationlayer" : (typeKeywords.indexOf("Tiled Imagery") > -1 ? "tiledimagerylayer" : "imagery");
-      } else if (itemType === "stream service") {
-        imgName = "streamlayer";
-      } else if (itemType === "vector tile service") {
-        imgName = "vectortile";
-      } else if (itemType === "datastore catalog service") {
-        imgName = "datastorecollection";
-      } else if (itemType === "geocoding service") {
-        imgName = "geocodeservice";
-      } else if (itemType === "geoprocessing service") {
-        imgName = (typeKeywords.indexOf("Web Tool") > -1 && (this.isPortal)) ? "tool" : "layers";
-      } else {
-        imgName = "layers";
-      }
-    } else if (itemType === "web map" || itemType === "cityengine web scene") {
-      imgName = "maps";
-    } else if (itemType === "web scene") {
-      imgName = typeKeywords.indexOf("ViewingMode-Local") > -1 ? "webscenelocal" : "websceneglobal";
-    } else if (itemType === "web mapping application" || itemType === "mobile application" || itemType === "application" ||
-      itemType === "operation view" || itemType === "desktop application") {
-      imgName = "apps";
-    } else if (itemType === "map document" || itemType === "map package" || itemType === "published map" || itemType === "scene document" ||
-      itemType === "globe document" || itemType === "basemap package" || itemType === "mobile basemap package" || itemType === "mobile map package" ||
-      itemType === "project package" || itemType === "project template" || itemType === "pro map" || itemType === "layout" ||
-      (itemType === "layer" && typeKeywords.indexOf("ArcGIS Pro") > -1) || (itemType === "explorer map" && typeKeywords.indexOf("Explorer Document"))) {
-      imgName = "mapsgray";
-    } else if (itemType === "service definition" || itemType === "csv" || itemType === "shapefile" || itemType === "cad drawing" || itemType === "geojson" || itemType === "360 vr experience" || itemType === "netcdf" || itemType === "administrative report") {
-      imgName = "datafiles";
-    } else if (itemType === "explorer add in" || itemType === "desktop add in" || itemType === "windows viewer add in" || itemType === "windows viewer configuration") {
-      imgName = "appsgray";
-    } else if (itemType === "arcgis pro add in" || itemType === "arcgis pro configuration") {
-      imgName = "addindesktop";
-    } else if (itemType === "rule package" || itemType === "file geodatabase" || itemType === "sqlite geodatabase" || itemType === "csv collection" || itemType === "kml collection" ||
-      itemType === "windows mobile package" || itemType === "map template" || itemType === "desktop application template" || itemType === "gml" ||
-      itemType === "arcpad package" || itemType === "code sample" || itemType === "form" || itemType === "document link" ||
-      itemType === "operations dashboard add in" || itemType === "rules package" || itemType === "image" || itemType === "workflow manager package" ||
-      (itemType === "explorer map" && typeKeywords.indexOf("Explorer Mapping Application") > -1 || typeKeywords.indexOf("Document") > -1)) {
-      imgName = "datafilesgray";
-    } else if (itemType === "network analysis service" || itemType === "geoprocessing service" ||
-      itemType === "geodata service" || itemType === "geometry service" || itemType === "geoprocessing package" ||
-      itemType === "locator package" || itemType === "geoprocessing sample" || itemType === "workflow manager service") {
-      imgName = "toolsgray";
-    } else if (itemType === "layer" || itemType === "layer package" || itemType === "explorer layer") {
-      imgName = "layersgray";
-    } else if (itemType === "scene package") {
-      imgName = "scenepackage";
-    } else if (itemType === "mobile scene package") {
-      imgName = "mobilescenepackage";
-    } else if (itemType === "tile package" || itemType === "compact tile package") {
-      imgName = "tilepackage";
-    } else if (itemType === "task file") {
-      imgName = "taskfile";
-    } else if (itemType === "report template") {
-      imgName = "report-template";
-    } else if (itemType === "statistical data collection") {
-      imgName = "statisticaldatacollection";
-    } else if (itemType === "insights workbook") {
-      imgName = "workbook";
-    } else if (itemType === "insights model") {
-      imgName = "insightsmodel";
-    } else if (itemType === "insights page") {
-      imgName = "insightspage";
-    } else if (itemType === "insights theme") {
-      imgName = "insightstheme";
-    } else if (itemType === "hub initiative") {
-      imgName = "hubinitiative";
-    } else if (itemType === "hub page") {
-      imgName = "hubpage";
-    } else if (itemType === "hub site application") {
-      imgName = "hubsite";
-    } else if (itemType === "hub event") {
-      imgName = "hubevent";
-    } else if (itemType === "relational database connection") {
-      imgName = "relationaldatabaseconnection";
-    } else if (itemType === "big data file share") {
-      imgName = "datastorecollection";
-    } else if (itemType === "image collection") {
-      imgName = "imagecollection";
-    } else if (itemType === "desktop style") {
-      imgName = "desktopstyle";
-    } else if (itemType === "style") {
-      imgName = "style";
-    } else if (itemType === "dashboard") {
-      imgName = "dashboard";
-    } else if (itemType === "raster function template") {
-      imgName = "rasterprocessingtemplate";
-    } else if (itemType === "vector tile package") {
-      imgName = "vectortilepackage";
-    } else if (itemType === "ortho mapping project") {
-      imgName = "orthomappingproject";
-    } else if (itemType === "ortho mapping template") {
-      imgName = "orthomappingtemplate";
-    } else if (itemType === "solution") {
-      imgName = "solutions";
-    } else if (itemType === "geopackage") {
-      imgName = "geopackage";
-    } else if (itemType === "deep learning package") {
-      imgName = "deeplearningpackage";
-    } else if (itemType === "real time analytic") {
-      imgName = "realtimeanalytics";
-    } else if (itemType === "big data analytic") {
-      imgName = "bigdataanalytics";
-    } else if (itemType === "feed") {
-      imgName = "feed";
-    } else if (itemType === "excalibur imagery project") {
-      imgName = "excaliburimageryproject";
-    } else if (itemType === "notebook") {
-      imgName = "notebook";
-    } else if (itemType === "storymap") {
-      imgName = "storymap";
-    } else if (itemType === "survey123 add in") {
-      imgName = "survey123addin";
-    } else if (itemType === "mission") {
-      imgName = "mission";
-    } else if (itemType === "mission report") {
-      imgName = "missionreport";
-    } else if (itemType === "quickcapture project") {
-      imgName = "quickcaptureproject";
-    } else if (itemType === "pro report") {
-      imgName = "proreport";
-    } else if (itemType === "urban model") {
-      imgName = "urbanmodel";
-    } else if (itemType === "web experience") {
-      imgName = "experiencebuilder";
-    } else if (itemType === "web experience template") {
-      imgName = "webexperiencetemplate";
-    } else if (itemType === "workflow") {
-      imgName = "workflow";
-    } else if (itemType === "kernel gateway connection") {
-      imgName = "kernelgatewayconnection";
-    } else if (itemType === "insights script") {
-      imgName = "insightsscript";
-    } else if (itemType === "hub initiative template") {
-      imgName = "hubinitiativetemplate";
-    } else if (itemType === "storymap theme") {
-      imgName = "storymaptheme";
-    } else if (itemType === "group") {
-      imgName = "group"
-    } else {
-      imgName = "maps";
+        if (keywords.includes("Route Layer")) {
+          return "routelayer";
+        }
+        if (keywords.includes("Markup")) {
+          return "markup";
+        }
+        if (isSpatiotemporal) {
+          return "spatiotemporal";
+        }
+        if (keywords.includes("UtilityNetwork")) {
+          return "utilitynetwork";
+        }
+        return hosted ? "featureshosted" : "features";
+      case "group layer":
+        if (keywords.includes("Map")) {
+          return "layergroup2d";
+        }
+        if (keywords.includes("Scene")) {
+          return "layergroup3d";
+        }
+        return "layergroup";
+      case "wmts":
+        return "maptiles";
+      case "map service":
+      case "wms":
+        return hosted || keywords.includes("Tiled") ? "maptiles" : "mapimages";
+      case "scene service":
+        if (keywords.includes("Line")) {
+          return "sceneweblayerline";
+        }
+        if (keywords.includes("3DObject")) {
+          return "sceneweblayermultipatch";
+        }
+        if (keywords.includes("Point")) {
+          return "sceneweblayerpoint";
+        }
+        if (keywords.includes("IntegratedMesh")) {
+          return "sceneweblayermesh";
+        }
+        if (keywords.includes("PointCloud")) {
+          return "sceneweblayerpointcloud";
+        }
+        if (keywords.includes("Polygon")) {
+          return "sceneweblayerpolygon";
+        }
+        if (keywords.includes("Building")) {
+          return "sceneweblayerbuilding";
+        }
+        if (keywords.includes("Voxel")) {
+          return "sceneweblayervoxel";
+        }
+        return "sceneweblayer";
+      case "image service":
+        if (keywords.includes("Elevation 3D Layer")) {
+          return "elevationlayer";
+        }
+        if (keywords.includes("Tiled Imagery")) {
+          return "tiledimagerylayer";
+        }
+        return "imagery";
+      case "stream service":
+        return "streamlayer";
+      case "video service":
+        return keywords.includes("Live Stream") ? "livestreamvideolayer" : "mediaservice";
+      case "vector tile service":
+        return "vectortile";
+      case "datastore catalog service":
+        return "datastorecollection";
+      case "geocoding service":
+        return "geocodeservice";
+      case "geoprocessing service":
+        return keywords.includes("Web Tool") ? "tool" : "layers";
+      case "geodata service":
+        return "geodataservice";
+      case "web map":
+      case "cityengine web scene":
+        return "maps";
+      case "web scene":
+        return keywords.includes("ViewingMode-Local") ? "webscenelocal" : "websceneglobal";
+      case "application":
+      case "web mapping application":
+      case "mobile application":
+      case "operation view":
+      case "desktop application":
+        return keywords.includes("configurableApp") ? "instantapps" : "apps";
+      case "map document":
+      case "map package":
+      case "published map":
+      case "scene document":
+      case "globe document":
+      case "basemap package":
+      case "mobile basemap package":
+      case "mobile map package":
+      case "project package":
+      case "project template":
+      case "pro map":
+      case "layout":
+        return "mapsgray";
+      case "layer":
+        if (keywords.includes("ArcGIS Pro")) {
+          return "mapsgray";
+        }
+      case "explorer map":
+        if (keywords.indexOf("Explorer Document")) {
+          return "mapsgray";
+        }
+        if (keywords.includes("Explorer Mapping Application")) {
+          return "datafilesgray";
+        }
+      case "pro presentation":
+        return "propresentation";
+      case "api key":
+        return "key";
+      case "csv":
+        return "csv";
+      case "shapefile":
+        return "shapefile";
+      case "csv collection":
+        return "csvcollection";
+      case "media layer":
+        return "medialayer";
+      case "microsoft excel":
+        return "excel";
+      case "microsoft powerpoint":
+        return "powerpoint";
+      case "microsoft word":
+        return "word";
+      case "pdf":
+        return "pdf";
+      case "sqlite geodatabase":
+        return "sqlite";
+      case "administrative report":
+        return "report";
+      case "image":
+        return "image";
+      case "cad drawing":
+        return "cad";
+      case "service definition":
+      case "geojson":
+      case "360 vr experience":
+      case "netcdf":
+        return "data";
+      case "explorer add in":
+      case "desktop add in":
+      case "windows viewer add in":
+      case "windows viewer configuration":
+        return "appsgray";
+      case "arcgis pro add in":
+      case "arcgis pro configuration":
+        return "addindesktop";
+      case "rule package":
+      case "file geodatabase":
+      case "kml collection":
+      case "windows mobile package":
+      case "map template":
+      case "desktop application template":
+      case "gml":
+      case "arcpad package":
+      case "code sample":
+      case "document link":
+      case "earth configuration":
+      case "operations dashboard add in":
+      case "rules package":
+      case "workflow manager package":
+        return "datafilesgray";
+      case "form":
+        if (keywords.includes("Survey123")) {
+          return "survey";
+        }
+        return "datafilesgray";
+      case "network analysis service":
+      case "geoprocessing service":
+      case "geodata service":
+      case "geometry service":
+      case "geoprocessing package":
+      case "locator package":
+      case "geoprocessing sample":
+      case "workflow manager service":
+        return "toolsgray";
+      case "layer":
+      case "layer package":
+      case "explorer layer":
+        return "layersgray";
+      case "scene package":
+        return "scenepackage";
+      case "mobile scene package":
+        return "mobilescenepackage";
+      case "tile package":
+      case "compact tile package":
+        return "tilepackage";
+      case "task file":
+        return "taskfile";
+      case "report template":
+        return "reporttemplate";
+      case "statistical data collection":
+        return "statisticaldatacollection";
+      case "analysis model":
+        return "geoprocessingmodel";
+      case "insights workbook":
+        return "workbook";
+      case "insights model":
+        return "insightsmodel";
+      case "insights page":
+        return "insightspage";
+      case "insights theme":
+        return "insightstheme";
+      case "hub initiative":
+        return "hubinitiative";
+      case "hub page":
+        return "hubpage";
+      case "hub event":
+        return "hubevent";
+      case "hub site application":
+        return "hubsite";
+      case "hub project":
+        return "hubproject";
+      case "relational database connection":
+        return "relationaldatabaseconnection";
+      case "image":
+        return "image";
+      case "image collection":
+        return "imagecollection";
+      case "style":
+        if (keywords.includes("Dictionary")) {
+          return "dictionarystyle";
+        }
+        return "style";
+      case "desktop style":
+        return "desktopstyle";
+      case "dashboard":
+        return "dashboard";
+      case "raster function template":
+        return "rasterprocessingtemplate";
+      case "vector tile package":
+        return "vectortilepackage";
+      case "ortho mapping project":
+        return "orthomappingproject";
+      case "ortho mapping template":
+        return "orthomappingtemplate";
+      case "solution":
+        return "solutions";
+      case "geopackage":
+        return "geopackage";
+      case "deep learning package":
+        return "deeplearningpackage";
+      case "real time analytic":
+        return "realtimeanalytics";
+      case "big data analytic":
+        return "bigdataanalytics";
+      case "feed":
+        return "feed";
+      case "excalibur imagery project":
+        return "excaliburimageryproject";
+      case "notebook":
+        return "notebook";
+      case "reality mapping project":
+        return "realitymappingproject";
+      case "storymap":
+        if (keywords.includes("storymaptemplate")) {
+          return "storymapstemplate";
+        }
+
+        if (keywords.includes("storymapcollection")) {
+          return "storymapcollection";
+        }
+        if (keywords.includes("storymapbriefing")) {
+          return "storymapbriefing";
+        }
+        return "storymap";
+      case "survey123 add in":
+        return "survey123addin";
+      case "mission":
+        return "mission";
+      case "mission report":
+        return "missionreport";
+      case "quickcapture project":
+        return "quickcaptureproject";
+      case "pro report":
+        return "proreport";
+      case "urban model":
+        return "urbanmodel";
+      case "urban project":
+        return "urbanproject";
+      case "web experience":
+        return "experiencebuilder";
+      case "web experience template":
+        return "webexperiencetemplate";
+      case "experience builder widget":
+        return "experiencebuilderwidget";
+      case "experience builder widget package":
+        return "experiencebuilderwidgetpackage";
+      case "workflow":
+        return "workflow";
+      case "insights script":
+        return "insightsscript";
+      case "kernel gateway connection":
+        return "kernelgatewayconnection";
+      case "hub initiative template":
+        return "hubinitiativetemplate";
+      case "storymap theme":
+        return "storymaptheme";
+      case "knowledge graph":
+        return "knowledgegraph";
+      case "knowledge studio project":
+        return "knowledgestudio";
+      case "knowledge graph layer":
+        return "knowledgegraphlayer";
+      case "native application":
+        return "nativeapp";
+      case "native application installer":
+        return "nativeappinstaller";
+      case "web link chart":
+        return "linkchart";
+      case "knowledge graph web investigation":
+        return "investigation";
+      case "ogcfeatureserver":
+        return "features";
+      case "pro project":
+        return "proproject";
+      case "insights workbook package":
+        return "insightsworkbookpackage";
+      case "apache parquet":
+        return "apacheparquet";
+      case "notebook code snippets":
+      case "notebook code snippet library":
+        return "notebookcodesnippets";
+      case "suitability model":
+        return "suitabilitymodel";
+      case "esri classifier definition":
+        return "classifierdefinition";
+      case "esri classification schema":
+        return "classificationschema";
+      case "insights data engineering workbook":
+        return "dataengineeringworkbook";
+      case "insights data engineering model":
+        return "dataengineeringmodel";
+      case "deep learning studio project":
+        return "deeplearningproject";
+      case "data store":
+        return "datastore";
+      case "data pipeline":
+        return "datapipeline";
+      default:
+        if (keywords.includes("Document")) {
+          return "datafilesgray";
+        }
+        return _type.includes("service") ? "layers" : "maps";
     }
-    return imgName ? getAssetPath(imgDir + imgName + size + ".png") : null;
   }
 }
