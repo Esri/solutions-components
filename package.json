@@ -37,7 +37,7 @@
     "@babel/preset-typescript": "^7.24.7",
     "@babel/types": "^7.25.4",
     "@esri/arcgis-rest-service-admin": "^3.7.0",
-    "@esri/calcite-components": "^2.12.2",
+    "@esri/calcite-components": "^2.13.0",
     "@esri/calcite-design-tokens": "^2.2.0",
     "@esri/eslint-plugin-calcite-components": "^1.2.0",
     "@esri/hub-common": "^14.179.0",
