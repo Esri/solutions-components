@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.10.28] - October 8th 2024
+Accordion update and package updates
+
 ## [0.10.27] - October 7th 2024
 String and item icon updates
 
@@ -827,4 +830,5 @@ Recover from test releases
 [0.10.25]: https://github.com/Esri/solution.js/compare/v0.10.24...v0.10.25 "v0.10.25"
 [0.10.26]: https://github.com/Esri/solution.js/compare/v0.10.25...v0.10.26 "v0.10.26"
 [0.10.27]: https://github.com/Esri/solution.js/compare/v0.10.26...v0.10.27 "v0.10.27"
-[Unreleased]: https://github.com/Esri/solution.js/compare/v0.10.27...HEAD "Unreleased Changes"
+[0.10.28]: https://github.com/Esri/solution.js/compare/v0.10.27...v0.10.28 "v0.10.28"
+[Unreleased]: https://github.com/Esri/solution.js/compare/v0.10.28...HEAD "Unreleased Changes"
