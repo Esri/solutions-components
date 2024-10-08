@@ -862,7 +862,7 @@ export class CrowdsourceManager {
    * @protected
    */
   protected _getPopupExpandNode(): VNode {
-    const popupNodeClass = this._isMobile ? "height-full" : "position-relative z-index-0"
+    const popupNodeClass = this._isMobile ? "height-full" : "height-full position-relative z-index-0"
     const headerClass = this._isPortraitMobile && this._showInformationHeader ? "display-none height-0" : "";
     const headerTheme = this.popupHeaderColor ? "" : !this._isPortraitMobile ? "calcite-mode-dark" : "calcite-mode-light";
     const containerClass = this._isPortraitMobile && this._hideTable ? "position-absolute-0 width-full height-full" : this._isPortraitMobile ? "display-none height-0" : "";
