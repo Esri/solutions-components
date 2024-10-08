@@ -239,9 +239,10 @@ export class SolutionItemAccordion {
   protected _getList(
     templateInfos: ITemplateInfo[]
   ): VNode {
+    const sortedTemplateInfos = this._sortTemplatesByTitle(templateInfos);
     return (
-      <calcite-list class="padding-start-1">
-        {templateInfos.map(t => this._getListItem(t))}
+      <calcite-list>
+        {sortedTemplateInfos.map(t => this._getListItem(t))}
       </calcite-list>
     );
   }
@@ -260,11 +261,33 @@ export class SolutionItemAccordion {
   ): VNode {
     return (
       <calcite-list-item
+        class="font-size-override"
         description={templateInfo.snippet}
         label={templateInfo.title}
         value={templateInfo.id}
       />
     );
+  }
+
+  /**
+   * Sort the templates based on the title
+   *
+   * @returns the sorted templates
+   *
+   * @protected
+   */
+  protected _sortTemplatesByTitle(
+    templateInfos: ITemplateInfo[]
+  ): ITemplateInfo[] {
+    return templateInfos.sort((a, b) => {
+      if (a.title < b.title) {
+        return -1;
+      }
+      if (a.title > b.title) {
+        return 1;
+      }
+      return 0;
+    });
   }
 
   /**
