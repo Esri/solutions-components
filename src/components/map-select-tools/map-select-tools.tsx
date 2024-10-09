@@ -1398,8 +1398,8 @@ export class MapSelectTools {
       // OIDs are used when the addressee layer and the current "use layer features" layer are the same
       const layerViewLayer = this.layerViews[0].layer;
       const selectLayerViewLayer = this.selectLayerView.layer;
-      const useOIDs = hasOID && (layerViewLayer.url === selectLayerViewLayer.url) &&
-        selectLayerViewLayer?.layerId === layerViewLayer?.layerId;
+      const useOIDs = hasOID && layerViewLayer.url === selectLayerViewLayer.url &&
+        selectLayerViewLayer.layerId === layerViewLayer.layerId;
 
       await this._sketchGraphicsChanged({
         detail: {
