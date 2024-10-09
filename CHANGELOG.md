@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.10.30] - October 9th 2024
+Use OID update
+
 ## [0.10.29] - October 8th 2024
 Accordion update, calcite version update, demo versions update
 
@@ -835,4 +838,5 @@ Recover from test releases
 [0.10.27]: https://github.com/Esri/solution.js/compare/v0.10.26...v0.10.27 "v0.10.27"
 [0.10.28]: https://github.com/Esri/solution.js/compare/v0.10.27...v0.10.28 "v0.10.28"
 [0.10.29]: https://github.com/Esri/solution.js/compare/v0.10.28...v0.10.29 "v0.10.29"
-[Unreleased]: https://github.com/Esri/solution.js/compare/v0.10.29...HEAD "Unreleased Changes"
+[0.10.30]: https://github.com/Esri/solution.js/compare/v0.10.29...v0.10.30 "v0.10.30"
+[Unreleased]: https://github.com/Esri/solution.js/compare/v0.10.30...HEAD "Unreleased Changes"
