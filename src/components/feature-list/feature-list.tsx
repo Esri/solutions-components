@@ -245,7 +245,7 @@ export class FeatureList {
    */
   @Method()
   async refresh(maintainPageState?: boolean): Promise<void> {
-    if (maintainPageState) {
+    if (maintainPageState && this._pagination) {
       const event = {
         target: {
           startItem: this._pagination.startItem
