@@ -155,16 +155,6 @@ export class CreateRelatedFeature {
   //--------------------------------------------------------------------------
 
   /**
-   * Destroy the Editor widget instance
-   */
-  @Method()
-  async close(): Promise<void> {
-    if (this._editor) {
-      this._editor.destroy();
-    }
-  }
-
-  /**
    * Submit the comment
    */
   @Method()
@@ -264,6 +254,15 @@ export class CreateRelatedFeature {
    */
   async componentDidLoad() {
     await this.init();
+  }
+
+  /**
+   * StencilJS: Called every time the component is disconnected from the DOM,
+   */
+  disconnectedCallback(): void {
+    if (this._editor) {
+      this._editor.destroy();
+    }
   }
 
   /**

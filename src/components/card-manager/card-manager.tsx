@@ -343,7 +343,6 @@ export class CardManager {
    */
   protected async _backFromCreateFeature(): Promise<void> {
     if (this._createFeature) {
-      await this._createFeature.close();
       this._showCreateFeatureComponent = false;
       this.backFromCreateWorkFlow.emit();
     }
@@ -355,7 +354,6 @@ export class CardManager {
    * @protected
    */
   protected _featureCreated(): void {
-    void this._createFeature.close();
     this._showCreateFeatureComponent = false;
     this._showSubmitBtn = false;
     this._isFeatureCreated = true;

@@ -128,11 +128,6 @@ export namespace Components {
     }
     interface CreateFeature {
         /**
-          * Destroy the Editor widget instance
-          * @returns Promise that resolves when the operation is complete
-         */
-        "close": () => Promise<void>;
-        /**
           * boolean: Set this to true when have a custom submit button in the app. This will hide the header and footer elements of the editor and user needs to execute the submit method manually.
          */
         "customizeSubmit"?: boolean;
@@ -184,10 +179,6 @@ export namespace Components {
         "submit": () => Promise<void>;
     }
     interface CreateRelatedFeature {
-        /**
-          * Destroy the Editor widget instance
-         */
-        "close": () => Promise<void>;
         /**
           * boolean: Set this to true when have a custom submit button in the app. This will hide the header and footer elements of the editor and user needs to execute the submit method manually.
          */
