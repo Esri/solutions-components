@@ -521,10 +521,10 @@ export class FeatureList {
       let userInfo;
       let featureSymbol;
       if (this.showUserImageInList) {
-        const creatorField = this._selectedLayer.editFieldsInfo?.creatorField.toLowerCase();
+        const creatorField = this._selectedLayer.editFieldsInfo?.creatorField;
         // if feature's creator field is present then only we can fetch the information of user
         if (creatorField) {
-          userInfo = await this.getUserInformation(feature, creatorField);
+          userInfo = await this.getUserInformation(feature);
         }
       }
       if (this.showFeatureSymbol) {
@@ -628,14 +628,19 @@ export class FeatureList {
   /**
    *
    * @param feature Each individual feature instance to be listed
-   * @param creatorField Feature's creator field from the layer
    * @returns user information
    * @protected
    */
-  protected async getUserInformation(feature: __esri.Graphic, creatorField: string): Promise<any> {
-    const userToken = (this.mapView.map as any).portalItem.portal?.credential?.token;
+  protected async getUserInformation(feature: __esri.Graphic): Promise<any> {
+    let creatorField = this._selectedLayer.editFieldsInfo?.creatorField;
+    if (feature.attributes.hasOwnProperty(creatorField.toLowerCase())) {
+      creatorField = creatorField.toLowerCase();
+    } else if (feature.attributes.hasOwnProperty(creatorField.toUpperCase())) {
+      creatorField = creatorField.toUpperCase();
+    }
     //get the user information
     let url = `${this.esriConfig.portalUrl}/sharing/rest/community/users/${feature.attributes[creatorField]}?f=json&returnUserLicensedItems=true`;
+    const userToken = (this.mapView.map as any).portalItem.portal?.credential?.token;
     if (userToken) {
       url += `&token=${userToken}`;
     }
