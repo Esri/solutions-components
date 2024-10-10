@@ -587,10 +587,11 @@ export class FeatureList {
           <calcite-avatar
             class={'profile-img'}
             full-name={userInfo?.fullName}
-            id={userInfo?.id}
             scale="m"
             slot="content-start"
-            thumbnail={userInfo?.userProfileUrl} />}
+            thumbnail={userInfo?.userProfileUrl}
+            userId={userInfo?.id}
+            username={userInfo?.fullName ? userInfo.username : undefined} />}
 
         {this.showFeatureSymbol &&
           <div
