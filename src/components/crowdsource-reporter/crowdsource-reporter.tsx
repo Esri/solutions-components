@@ -1015,7 +1015,6 @@ export class CrowdsourceReporter {
    */
   protected backFromCreateFeaturePanel(): void {
     if (this._createFeature) {
-      void this._createFeature.close();
       void this.updateNonVisibleLayersOnMap(false);
     }
     //on back form will be closed, so update the form state
@@ -1038,7 +1037,6 @@ export class CrowdsourceReporter {
    */
   protected backFromCreateRelatedFeaturePanel(): void {
     if (this._createRelatedFeature) {
-      void this._createRelatedFeature.close();
       this._showSubmitCancelButton = false;
     }
     //on back form will be closed, so update the form state
@@ -1100,9 +1098,6 @@ export class CrowdsourceReporter {
    * @protected
    */
   protected async navigateToHomePage(): Promise<void> {
-    if (this._createFeature) {
-      void this._createFeature.close();
-    }
     if (this._layerList) {
       void this._layerList.refresh();
     }
