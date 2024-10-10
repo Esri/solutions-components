@@ -236,11 +236,6 @@ export class CrowdsourceReporter {
   @State() _hasValidLayers = false;
 
   /**
-   * boolean: show loading indicator for feature details component upto completing pending operations
-   */
-  @State() _loadingFeatureDetails: boolean;
-
-  /**
    * IMapInfo: The current map info stores configuration details
    */
   @State() _mapInfo: IMapInfo;
@@ -472,6 +467,11 @@ export class CrowdsourceReporter {
    * FilterInitState: filter's init state
    */
   protected _filterInitState: FilterInitState;
+
+  /**
+   * string: Previous selected layer id
+   */
+  protected _prevSelectedLayerId: string;
 
   //--------------------------------------------------------------------------
   //
@@ -830,19 +830,30 @@ export class CrowdsourceReporter {
     this._filterActive = false;
     this._filterUrlParams = null;
     this._filterInitState = null;
-    void this._featureList.refresh();
+    if (this._featureList) {
+      await this._featureList.refresh();
+    }
+    if (this._layerList) {
+      await this._layerList.refresh();
+    }
   }
 
   /**
    * Check if the layers definitionExpression has been modified and update the feature list depending on the applied filters
    * @protected
    */
-  protected _handleFilterUpdate(): void {
+  protected async _handleFilterUpdate(): Promise<void> {
+    this._showLoadingIndicator = true;
     //if filter are applied the url params will be generated
     //set the filter active state based on the length of applied filters
     this._filterActive = this._filterList.urlParams.getAll('filter').length > 0;
     this._filterUrlParams = this._filterList.urlParams.getAll('filter');
-    void this._featureList.refresh();
+    this._filterInitState = await this._filterList.getFilterInitState();
+    await this._featureList.refresh();
+    if (this._layerList) {
+      await this._layerList.refresh();
+    }
+    this._showLoadingIndicator = false;
   }
 
   /**
@@ -1015,7 +1026,6 @@ export class CrowdsourceReporter {
    */
   protected backFromCreateFeaturePanel(): void {
     if (this._createFeature) {
-      void this._createFeature.close();
       void this.updateNonVisibleLayersOnMap(false);
     }
     //on back form will be closed, so update the form state
@@ -1038,7 +1048,6 @@ export class CrowdsourceReporter {
    */
   protected backFromCreateRelatedFeaturePanel(): void {
     if (this._createRelatedFeature) {
-      void this._createRelatedFeature.close();
       this._showSubmitCancelButton = false;
     }
     //on back form will be closed, so update the form state
@@ -1100,9 +1109,6 @@ export class CrowdsourceReporter {
    * @protected
    */
   protected async navigateToHomePage(): Promise<void> {
-    if (this._createFeature) {
-      void this._createFeature.close();
-    }
     if (this._layerList) {
       void this._layerList.refresh();
     }
@@ -1124,6 +1130,10 @@ export class CrowdsourceReporter {
   protected async navigateToCreateFeature(evt: CustomEvent): Promise<void> {
     if (evt.detail.layerId && evt.detail.layerName) {
       await this.setSelectedLayer(evt.detail.layerId, evt.detail.layerName);
+    }
+    // reset the applied filter when switching to another layer
+    if (this._selectedLayerId !== this._prevSelectedLayerId && this._filterActive) {
+      await this.resetFilter();
     }
     void this.updateNonVisibleLayersOnMap(true);
     // get the form template elements to pass in create-feature to create a LEVELID field in feature-form
@@ -1188,28 +1198,34 @@ export class CrowdsourceReporter {
     }
   }
 
-  /**On click of layer list item show feature list
+  /**
+   * On click of layer list item show feature list
    * @param evt Event which has details of selected layerId and layerName
    * @protected
    */
-  protected displayFeaturesList(evt: CustomEvent): void {
+  protected async displayFeaturesList(evt: CustomEvent): Promise<void> {
     this._updatedSorting = {
       field: '',
       order: 'desc'
     };
-    this._filterActive = false;
     this._updatedSortOption = "sortNewest";
-    void this.setSelectedLayer(evt.detail.layerId, evt.detail.layerName);
+    await this.setSelectedLayer(evt.detail.layerId, evt.detail.layerName);
     this._flowItems = [...this._flowItems, "feature-list"];
+    // reset the applied filter when switching to another layer
+    if (this._selectedLayerId !== this._prevSelectedLayerId && this._filterActive) {
+      await this.resetFilter();
+    }
+    this._prevSelectedLayerId = this._selectedLayerId;
   }
 
   /**
-   * On back from filter panel get the filter's init state
+   * Reset's the applied filter
    * @protected
    */
-  protected async backFromFilterPanel(): Promise<void> {
-    this._filterInitState = await this._filterList.getFilterInitState();
-    this.backFromSelectedPanel();
+  protected async resetFilter(): Promise<void> {
+    const prevLayer = await getLayerOrTable(this.mapView, this._prevSelectedLayerId);
+    prevLayer.definitionExpression = this._filterInitState.initDefExpressions[this._prevSelectedLayerId];
+    void this._handleFilterListReset();
   }
 
   /**
@@ -1276,10 +1292,14 @@ export class CrowdsourceReporter {
    */
   protected async getRelatedTable(): Promise<void> {
     const selectedLayer = (this._currentFeature.layer as __esri.FeatureLayer);
-    const allRelatedTableIds = selectedLayer.relationships.map(a => a.relatedTableId);
     const allTables = await getAllTables(this.mapView);
-    const relatedTables = allTables.filter((table) => selectedLayer.url === (table as __esri.FeatureLayer).url && allRelatedTableIds.includes((table as __esri.FeatureLayer).layerId));
-    this._relatedTable = (relatedTables[0] as __esri.FeatureLayer);
+    selectedLayer.relationships.some((relationship) => {
+      const relatedTables = allTables.filter((table) => selectedLayer.url === (table as __esri.FeatureLayer).url && (table as __esri.FeatureLayer).layerId === relationship.relatedTableId);
+      if (relatedTables && relatedTables.length > 0) {
+        this._relatedTable = (relatedTables[0] as __esri.FeatureLayer);
+        return true;
+      }
+    });
   }
 
   /**
@@ -1395,7 +1415,7 @@ export class CrowdsourceReporter {
         collapsed={this.isMobile && this._sidePanelCollapsed}
         heading={this._translations?.filterLayerTitle?.replace("{{title}}", this._selectedLayerName)}
         loading={this._showLoadingIndicator}
-        onCalciteFlowItemBack={this.backFromFilterPanel.bind(this)}>
+        onCalciteFlowItemBack={this.backFromSelectedPanel.bind(this)}>
         {this.isMobile && this.getActionToExpandCollapsePanel()}
         <div class={"width-full"}
           slot="footer">
@@ -1404,6 +1424,7 @@ export class CrowdsourceReporter {
             <calcite-button
               appearance="solid"
               class={"footer-top-button footer-button"}
+              disabled={!this._filterActive}
               onClick={() => { void this._filterList?.forceReset() }}
               width="full">
               {this._translations.resetFilter}
@@ -1411,7 +1432,7 @@ export class CrowdsourceReporter {
             <calcite-button
               appearance="outline"
               class={"footer-button"}
-              onClick={this.backFromFilterPanel.bind(this)}
+              onClick={this.backFromSelectedPanel.bind(this)}
               width="full">
               {this._translations.close}
             </calcite-button>

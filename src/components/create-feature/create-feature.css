@@ -63,7 +63,6 @@
   position: absolute;
   bottom: 0;
   width: calc(100% - 22px);
-  height: 50%;
 }
 
 .notice-msg {
@@ -74,4 +73,12 @@
 /* override the padding of the feature form */
 .esri-editor__panel-content {
   padding-block: 10px !important;
+}
+
+/* overide css for editor widget in case of mobile */
+@media only screen and (max-width: 600px) {
+  .esri-editor__panel-content {
+    padding-block: 0 !important;
+    min-height: 0 !important;
+  }
 }

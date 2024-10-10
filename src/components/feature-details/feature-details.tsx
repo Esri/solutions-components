@@ -387,14 +387,12 @@ export class FeatureDetails {
       const allTables = await getAllTables(this.mapView);
       let relatedTable = null;
       let validRelationshipId = null;
-      allTables.some((table) => {
-        if (selectedLayer.url === (table as __esri.FeatureLayer).url) {
-          const relationship = selectedLayer.relationships.filter(a => (table as __esri.FeatureLayer).layerId === a.relatedTableId);
-          if (relationship?.length) {
-            relatedTable = table;
-            validRelationshipId = relationship[0].id;
-            return true;
-          }
+      selectedLayer.relationships.some((relationship) => {
+        const relatedTables = allTables.filter((table) => selectedLayer.url === (table as __esri.FeatureLayer).url && (table as __esri.FeatureLayer).layerId === relationship.relatedTableId);
+        if (relatedTables && relatedTables.length > 0) {
+          relatedTable = (relatedTables[0] as __esri.FeatureLayer);
+          validRelationshipId = relationship.id;
+          return true;
         }
       });
       this.relatedTableId = relatedTable?.id ?? '';
