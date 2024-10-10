@@ -4,7 +4,7 @@
   "enableEditing": "A capacidade de atualização tem de estar ativada na camada.",
   "editDisabled": "Edição Desativada",
   "next": "Seguinte",
-  "back": "Retroceder",
-  "indexOfTotal": "{{index}} de {{total}}",
+  "back": "Voltar",
+  "indexOfTotal": "ã_{{index}} of {{total}}_______________________Ç",
   "delete": "Eliminar"
 }

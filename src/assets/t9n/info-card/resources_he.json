@@ -5,6 +5,6 @@
   "editDisabled": "עריכה מושבתת",
   "next": "הבא",
   "back": "חזור",
-  "indexOfTotal": "{{index}} מתוך {{total}}",
+  "indexOfTotal": "כן_{{index}} of {{total}}_______________________ש",
   "delete": "מחיקה"
 }

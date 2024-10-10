@@ -5,6 +5,6 @@
   "editDisabled": "Editace zakázána",
   "next": "Další",
   "back": "Zpět",
-  "indexOfTotal": "{{index}} z {{total}}",
+  "indexOfTotal": "Ř_{{index}} of {{total}}_______________________ů",
   "delete": "Smazat"
 }

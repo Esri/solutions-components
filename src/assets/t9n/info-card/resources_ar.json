@@ -5,6 +5,6 @@
   "editDisabled": "تم تعطيل التحرير",
   "next": "التالي",
   "back": "رجوع",
-  "indexOfTotal": "{{index}} من {{total}}",
+  "indexOfTotal": "بيت_{{index}} of {{total}}_______________________لاحقة",
   "delete": "حذف"
 }

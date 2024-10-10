@@ -5,6 +5,6 @@
   "editDisabled": "การแก้ไขถูกปิดใช้งาน",
   "next": "ถัดไป",
   "back": "กลับ",
-  "indexOfTotal": "{{index}} จาก {{total}}",
+  "indexOfTotal": "ก้_{{index}} of {{total}}_______________________ษฺ",
   "delete": "ลบ"
 }

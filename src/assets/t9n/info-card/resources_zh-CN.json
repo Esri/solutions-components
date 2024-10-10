@@ -3,8 +3,8 @@
   "edit": "编辑",
   "enableEditing": "必须在图层上启用更新功能。",
   "editDisabled": "已禁用编辑",
-  "next": "下一步",
+  "next": "前进",
   "back": "返回",
-  "indexOfTotal": "{{index}}/{{total}}",
+  "indexOfTotal": "试_{{index}} of {{total}}_______________________验",
   "delete": "删除"
 }

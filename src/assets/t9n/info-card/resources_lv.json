@@ -5,6 +5,6 @@
   "editDisabled": "Rediģēšana atspējota",
   "next": "Tālāk",
   "back": "Atpakaļ",
-  "indexOfTotal": "{{index}} no {{total}}",
+  "indexOfTotal": "ķ_{{index}} of {{total}}_______________________ū",
   "delete": "Dzēst"
 }

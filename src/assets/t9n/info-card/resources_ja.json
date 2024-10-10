@@ -5,6 +5,6 @@
   "editDisabled": "編集が無効になっています",
   "next": "次へ",
   "back": "戻る",
-  "indexOfTotal": "{{index}} / {{total}}",
+  "indexOfTotal": "須_{{index}} of {{total}}_______________________鷗",
   "delete": "削除"
 }

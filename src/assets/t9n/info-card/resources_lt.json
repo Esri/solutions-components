@@ -5,6 +5,6 @@
   "editDisabled": "Redagavimas išjungtas",
   "next": "Kitas",
   "back": "Atgal",
-  "indexOfTotal": "{{index}} iš {{total}}",
+  "indexOfTotal": "Į_{{index}} of {{total}}_______________________š",
   "delete": "Pašalinti"
 }

@@ -5,6 +5,6 @@
   "editDisabled": "Mise à jour désactivée",
   "next": "Suivant",
   "back": "Retour",
-  "indexOfTotal": "{{index}} sur {{total}}",
+  "indexOfTotal": "æ_{{index}} of {{total}}_______________________Â",
   "delete": "Supprimer"
 }
