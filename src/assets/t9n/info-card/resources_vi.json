@@ -5,6 +5,6 @@
   "editDisabled": "Đã tắt Chỉnh sửa",
   "next": "Tiếp",
   "back": "Quay lại",
-  "indexOfTotal": "Đ_{{index}} of {{total}}_______________________ớ",
+  "indexOfTotal": "{{index}} / {{total}}",
   "delete": "Xóa"
 }

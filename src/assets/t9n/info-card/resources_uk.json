@@ -5,6 +5,6 @@
   "editDisabled": "Редагування вимкнено",
   "next": "Далі",
   "back": "Назад",
-  "indexOfTotal": "ґ_{{index}} of {{total}}_______________________Ї",
+  "indexOfTotal": "{{index}} з {{total}}",
   "delete": "Видалити"
 }

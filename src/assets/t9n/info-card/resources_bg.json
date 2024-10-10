@@ -5,6 +5,6 @@
   "editDisabled": "Редактирането е деактивирано",
   "next": "Напред",
   "back": "Назад",
-  "indexOfTotal": "й_{{index}} of {{total}}_______________________й",
+  "indexOfTotal": "{{index}} от {{total}}",
   "delete": "Изтриване"
 }

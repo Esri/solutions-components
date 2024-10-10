@@ -5,6 +5,6 @@
   "editDisabled": "Bewerken is uitgeschakeld",
   "next": "Volgende",
   "back": "Terug",
-  "indexOfTotal": "Ĳ_{{index}} of {{total}}_______________________ä",
+  "indexOfTotal": "{{index}} van {{total}}",
   "delete": "Verwijderen"
 }
