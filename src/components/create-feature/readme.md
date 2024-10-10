@@ -35,16 +35,6 @@
 
 ## Methods
 
-### `close() => Promise<void>`
-
-Destroy the Editor widget instance
-
-#### Returns
-
-Type: `Promise<void>`
-
-Promise that resolves when the operation is complete
-
 ### `refresh(floorLevel: string) => Promise<void>`
 
 refresh the feature form

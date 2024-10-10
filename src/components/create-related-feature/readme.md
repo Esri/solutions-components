@@ -28,16 +28,6 @@
 
 ## Methods
 
-### `close() => Promise<void>`
-
-Destroy the Editor widget instance
-
-#### Returns
-
-Type: `Promise<void>`
-
-
-
 ### `submit() => Promise<void>`
 
 Submit the comment

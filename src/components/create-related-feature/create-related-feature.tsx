@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, h, Prop, Element, Event, EventEmitter, Method, Watch, State, Fragment} from '@stencil/core';
+import { Component, h, Prop, Element, Event, EventEmitter, Method, Watch, State, Fragment } from '@stencil/core';
 import CreateRelatedFeature_T9n from "../../assets/t9n/create-related-feature/resources.json";
 import { loadModules } from "../../utils/loadModules";
 import { getLocaleComponentStrings } from '../../utils/locale';

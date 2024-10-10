@@ -362,8 +362,8 @@ export class CreateFeature {
   componentDidRender() {
     // update the map top according to space occupied by notice msg and search
     if (this.isMobile) {
-      // get the height of notice, search and add 80px(editor msg) height to adjust the map top 
-      const top = this._calciteNotice.offsetHeight + this._searchDiv.offsetHeight  + 80;
+      // get the height of notice, search and add 80px(editor msg) height to adjust the map top
+      const top = this._calciteNotice.offsetHeight + this._searchDiv.offsetHeight + 80;
       this._mapViewContainer.style.top = `${top}px`;
     }
   }
