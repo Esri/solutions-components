@@ -211,6 +211,16 @@ export class CreateFeature {
    */
   protected _selectedLayer: __esri.FeatureLayer;
 
+  /**
+   * HTMLDivElement: refrence for search div element
+   */
+  protected _searchDiv: HTMLDivElement;
+
+  /**
+   * HTMLCalciteNoticeElement: calcite notice refrence element
+   */
+  protected _calciteNotice: HTMLCalciteNoticeElement;
+
   //--------------------------------------------------------------------------
   //
   //  Watch handlers
@@ -346,6 +356,19 @@ export class CreateFeature {
   }
 
   /**
+   * Called after each render
+   * Used to adjust the map top in case of mobile
+   */
+  componentDidRender() {
+    // update the map top according to space occupied by notice msg and search
+    if (this.isMobile) {
+      // get the height of notice, search and add 80px(editor msg) height to adjust the map top 
+      const top = this._calciteNotice.offsetHeight + this._searchDiv.offsetHeight  + 80;
+      this._mapViewContainer.style.top = `${top}px`;
+    }
+  }
+
+  /**
    * StencilJS: Called every time the component is disconnected from the DOM,
    */
   disconnectedCallback(): void {
@@ -376,7 +399,8 @@ export class CreateFeature {
           class="notice-msg"
           icon="lightbulb"
           kind="success"
-          open>
+          open
+          ref={el => this._calciteNotice = el}>
           <div slot="message">{guidingMsg}</div>
         </calcite-notice>}
         <calcite-loader
@@ -385,7 +409,10 @@ export class CreateFeature {
           scale="s"
         />
         <div class={featureFormClass} id="feature-form" />
-        {this.enableSearch && <div class={`search-widget ${showSearchWidget} ${featureFormClass}`} id="search-widget-ref" />}
+        {this.enableSearch &&
+          <div class={`search-widget ${showSearchWidget} ${featureFormClass}`}
+            id="search-widget-ref"
+            ref={el => this._searchDiv = el} />}
         <div class={`${mobileMapClass}`} ref={(el) => { this._mapViewContainer = el }} />
       </Fragment>
     );
@@ -440,7 +467,8 @@ export class CreateFeature {
     this._mapViewContainer.classList.add('hide-map');
     await new this.MapView({
       map: this.mapView.map,
-      container: this._mapViewContainer
+      container: this._mapViewContainer,
+      zoom: this.mapView.zoom
     }).when((view: __esri.MapView) => {
       // update the mapView and load all widgets
       this._updatedMapView = view;
