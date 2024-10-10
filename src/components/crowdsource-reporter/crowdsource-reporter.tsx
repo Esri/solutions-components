@@ -1276,10 +1276,14 @@ export class CrowdsourceReporter {
    */
   protected async getRelatedTable(): Promise<void> {
     const selectedLayer = (this._currentFeature.layer as __esri.FeatureLayer);
-    const allRelatedTableIds = selectedLayer.relationships.map(a => a.relatedTableId);
     const allTables = await getAllTables(this.mapView);
-    const relatedTables = allTables.filter((table) => selectedLayer.url === (table as __esri.FeatureLayer).url && allRelatedTableIds.includes((table as __esri.FeatureLayer).layerId));
-    this._relatedTable = (relatedTables[0] as __esri.FeatureLayer);
+    selectedLayer.relationships.some((relationship) => {
+      const relatedTables = allTables.filter((table) => selectedLayer.url === (table as __esri.FeatureLayer).url && (table as __esri.FeatureLayer).layerId === relationship.relatedTableId);
+      if (relatedTables && relatedTables.length > 0) {
+        this._relatedTable = (relatedTables[0] as __esri.FeatureLayer);
+        return true;
+      }
+    });
   }
 
   /**
