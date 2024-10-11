@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.10.32] - October 11th 2024
+Interim Delivery for Manager AGOL-2024.R03 - UAT #946
+
 ## [0.10.31] - October 10th 2024
 Delivery for Reporter AGOL-2024.R03 - UAT #945
 string updates
@@ -844,4 +847,5 @@ Recover from test releases
 [0.10.29]: https://github.com/Esri/solution.js/compare/v0.10.28...v0.10.29 "v0.10.29"
 [0.10.30]: https://github.com/Esri/solution.js/compare/v0.10.29...v0.10.30 "v0.10.30"
 [0.10.31]: https://github.com/Esri/solution.js/compare/v0.10.30...v0.10.31 "v0.10.31"
-[Unreleased]: https://github.com/Esri/solution.js/compare/v0.10.31...HEAD "Unreleased Changes"
+[0.10.32]: https://github.com/Esri/solution.js/compare/v0.10.31...v0.10.32 "v0.10.32"
+[Unreleased]: https://github.com/Esri/solution.js/compare/v0.10.32...HEAD "Unreleased Changes"
