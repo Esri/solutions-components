@@ -1008,9 +1008,10 @@ export class LayerTable {
     slot?: string
   ): VNode {
     const id = "more-table-options";
+    const toolbarClass = this._canShowFullTextSearch() ? "border-bottom" : "";
     return (
       <div
-        class="display-flex border-bottom height-51-px"
+        class={`display-flex height-51-px ${toolbarClass}`}
         ref={(el) => this._toolbar = el}
         slot={slot}
       >
