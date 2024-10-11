@@ -850,7 +850,7 @@ export class LayerTable {
    * Called after the component is rendered
    */
   componentDidRender(): void {
-    // need to be called after each render to get the clicked mouseEvent 
+    // need to be called after each render to get the clicked mouseEvent
     document.onclick = (e) => this._handleDocumentClick(e);
     document.onkeydown = (e) => this._handleKeyDown(e);
     document.onkeyup = (e) => this._handleKeyUp(e);

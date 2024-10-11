@@ -108,6 +108,7 @@ graph TD;
   delete-button --> calcite-modal
   calcite-modal --> calcite-scrim
   calcite-modal --> calcite-icon
+  map-card --> calcite-progress
   map-card --> map-tools
   map-card --> calcite-action-bar
   map-card --> map-picker

@@ -92,6 +92,7 @@ Type: `Promise<void>`
 
 ### Depends on
 
+- calcite-progress
 - [map-tools](../map-tools)
 - calcite-action-bar
 - [map-picker](../map-picker)
@@ -107,6 +108,7 @@ Type: `Promise<void>`
 ### Graph
 ```mermaid
 graph TD;
+  map-card --> calcite-progress
   map-card --> map-tools
   map-card --> calcite-action-bar
   map-card --> map-picker
