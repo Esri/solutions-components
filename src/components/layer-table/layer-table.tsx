@@ -797,15 +797,16 @@ export class LayerTable {
           <div class={`width-full ${tableHeightClass}`}>
             <calcite-panel class="height-full width-full">
               {showSearch &&
-                <calcite-input
-                  class={"search"}
-                  clearable
-                  icon="search"
-                  onCalciteInputChange={(evt) => void this._searchTextChanged(evt)}
-                  placeholder={this._searchPlaceHolder}
-                  title={this._searchPlaceHolder}
-                  type="search" />
-              }
+                <div class={"search-container"}>
+                  <calcite-input
+                    class={"search"}
+                    clearable
+                    icon="search"
+                    onCalciteInputChange={(evt) => void this._searchTextChanged(evt)}
+                    placeholder={this._searchPlaceHolder}
+                    title={this._searchPlaceHolder}
+                    type="search" />
+                </div>}
 
               <calcite-loader
                 class={loadingClass}

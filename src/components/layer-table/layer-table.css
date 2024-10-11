@@ -138,6 +138,12 @@ html[dir="rtl"] .share-action {
   height: 100%;
 }
 
+.search-container {
+  background-color: var(--calcite-color-foreground-1) !important;
+}
+
 .search {
   --calcite-color-border-input: var(--calcite-color-border-3);
+  width: 60%;
+  padding: 10px;
 }
