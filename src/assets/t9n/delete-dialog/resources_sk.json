@@ -1,0 +1,8 @@
+{
+  "cancel": "Zrušiť",
+  "confirmMultiple": "Tieto prvky budú natrvalo odstránené.",
+  "confirmSingle": "Tento prvok bude natrvalo odstránený.",
+  "delete": "Zmazať",
+  "deleteCount": "Zmazať ({{n}})",
+  "deleteFeature": "Zmazať prvok"
+}

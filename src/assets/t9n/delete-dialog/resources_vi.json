@@ -1,0 +1,8 @@
+{
+  "cancel": "Hủy",
+  "confirmMultiple": "Những đối tượng này sẽ bị xóa vĩnh viễn.",
+  "confirmSingle": "Đối tượng này sẽ bị xóa vĩnh viễn.",
+  "delete": "Xóa",
+  "deleteCount": "Xóa ({{n}})",
+  "deleteFeature": "Xóa đối tượng"
+}

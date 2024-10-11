@@ -49,6 +49,9 @@ export class DeleteDialog {
    */
   @Prop() layer: __esri.FeatureLayer;
 
+  /**
+   * boolean: When true the delete dialog will be displayed
+   */
   @Prop() open = false;
 
   //--------------------------------------------------------------------------
@@ -97,11 +100,25 @@ export class DeleteDialog {
    */
   @Event() editsComplete: EventEmitter<EditType>;
 
+  /**
+   * Emitted on demand when features have been deleted
+   */
+  @Event() deleteDialogClose: EventEmitter<void>;
+
   //--------------------------------------------------------------------------
   //
   //  Functions (lifecycle)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * StencilJS: Called once just after the component is first connected to the DOM.
+   *
+   * @returns Promise when complete
+   */
+  async componentWillLoad(): Promise<void> {
+    await this._getTranslations();
+  }
 
   /**
    * Renders the component.
@@ -118,6 +135,7 @@ export class DeleteDialog {
           kind="danger"
           onCalciteModalClose={() => this._close()}
           open={this.open}
+          widthScale="s"
         >
           <div
             class="display-flex align-center"
@@ -177,6 +195,7 @@ export class DeleteDialog {
    */
   protected _close(): void {
     this.open = false;
+    this.deleteDialogClose.emit();
   }
 
   /**

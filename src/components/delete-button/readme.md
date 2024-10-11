@@ -36,7 +36,7 @@
 - calcite-button
 - calcite-action
 - calcite-tooltip
-- calcite-modal
+- [delete-dialog](../delete-dialog)
 
 ### Graph
 ```mermaid
@@ -44,11 +44,13 @@ graph TD;
   delete-button --> calcite-button
   delete-button --> calcite-action
   delete-button --> calcite-tooltip
-  delete-button --> calcite-modal
+  delete-button --> delete-dialog
   calcite-button --> calcite-loader
   calcite-button --> calcite-icon
   calcite-action --> calcite-loader
   calcite-action --> calcite-icon
+  delete-dialog --> calcite-modal
+  delete-dialog --> calcite-button
   calcite-modal --> calcite-scrim
   calcite-modal --> calcite-icon
   calcite-scrim --> calcite-loader

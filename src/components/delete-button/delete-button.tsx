@@ -80,11 +80,6 @@ export class DeleteButton {
   @State() _deleteEndabled = false;
 
   /**
-   * boolean: When true a loading indicator will be shown in the delete button
-   */
-  @State() _isDeleting = false;
-
-  /**
    * boolean: When true the layer supports delete and a button will be returned
    */
   @State() _supportsDelete: boolean;
@@ -238,67 +233,15 @@ export class DeleteButton {
    * @returns node to confirm or deny the delete operation
    */
   protected _deleteMessage(): VNode {
-    const confirmMessage = this.ids.length === 1 ? this._translations.confirmSingle :
-      this._translations.confirmMultiple;
     return (
-      <calcite-modal
-        aria-labelledby="modal-title"
-        class="delete-modal"
-        kind="danger"
-        onCalciteModalClose={() => this._deleteClosed()}
+      <delete-dialog
+        id="solution-delete-dialog"
+        ids={this.ids}
+        layer={this.layer}
+        onDeleteDialogClose={() => this._confirmDelete = false}
         open={this._confirmDelete}
-      >
-        <div
-          class="display-flex align-center"
-          id="modal-title"
-          slot="header"
-        >
-          {this._translations.deleteFeature}
-        </div>
-        <div slot="content">
-          {confirmMessage}
-        </div>
-        <calcite-button
-          appearance="outline"
-          kind="danger"
-          onClick={() => this._deleteClosed()}
-          slot="secondary"
-          width="full"
-        >
-          {this._translations.cancel}
-        </calcite-button>
-        <calcite-button
-          kind="danger"
-          loading={this._isDeleting}
-          onClick={() => void this._deleteFeatures()}
-          slot="primary" width="full">
-          {this._translations.delete}
-        </calcite-button>
-      </calcite-modal>
+      />
     );
-  }
-
-  /**
-   * Delete the currently selected features
-   */
-  protected async _deleteFeatures(): Promise<void> {
-    this._isDeleting = true;
-    const deleteFeatures = this.ids.map((objectId) => {
-      return { objectId };
-    });
-    await this.layer.applyEdits({
-      deleteFeatures
-    });
-    this._isDeleting = false;
-    this._deleteClosed();
-    this.editsComplete.emit("delete")
-  }
-
-  /**
-   * Set the alertOpen member to false when the alert is closed
-   */
-  protected _deleteClosed(): void {
-    this._confirmDelete = false;
   }
 
   /**

@@ -521,6 +521,9 @@ export namespace Components {
           * esri/views/layers/FeatureLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html
          */
         "layer": __esri.FeatureLayer;
+        /**
+          * boolean: When true the delete dialog will be displayed
+         */
         "open": boolean;
     }
     interface EditCard {
@@ -2073,6 +2076,7 @@ declare global {
     };
     interface HTMLDeleteDialogElementEventMap {
         "editsComplete": EditType;
+        "deleteDialogClose": void;
     }
     interface HTMLDeleteDialogElement extends Components.DeleteDialog, HTMLStencilElement {
         addEventListener<K extends keyof HTMLDeleteDialogElementEventMap>(type: K, listener: (this: HTMLDeleteDialogElement, ev: DeleteDialogCustomEvent<HTMLDeleteDialogElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -3244,7 +3248,14 @@ declare namespace LocalJSX {
         /**
           * Emitted on demand when features have been deleted
          */
+        "onDeleteDialogClose"?: (event: DeleteDialogCustomEvent<void>) => void;
+        /**
+          * Emitted on demand when features have been deleted
+         */
         "onEditsComplete"?: (event: DeleteDialogCustomEvent<EditType>) => void;
+        /**
+          * boolean: When true the delete dialog will be displayed
+         */
         "open"?: boolean;
     }
     interface EditCard {
