@@ -38,6 +38,8 @@ export class DeleteButton {
   //
   //--------------------------------------------------------------------------
 
+  @Prop() deleteDialog;
+
   /**
    * ButtonType (button | action): Support usage as action or button
    */
@@ -233,7 +235,7 @@ export class DeleteButton {
    * @returns node to confirm or deny the delete operation
    */
   protected _deleteMessage(): VNode {
-    return (
+    return this.deleteDialog ? this.deleteDialog : (
       <delete-dialog
         id="solution-delete-dialog"
         ids={this.ids}

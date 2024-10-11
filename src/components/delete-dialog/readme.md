@@ -27,6 +27,7 @@
 ### Used by
 
  - [delete-button](../delete-button)
+ - [layer-table](../layer-table)
 
 ### Depends on
 
@@ -44,6 +45,7 @@ graph TD;
   calcite-button --> calcite-loader
   calcite-button --> calcite-icon
   delete-button --> delete-dialog
+  layer-table --> delete-dialog
   style delete-dialog fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

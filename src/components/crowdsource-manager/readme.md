@@ -198,6 +198,7 @@ graph TD;
   layer-table --> calcite-panel
   layer-table --> calcite-input
   layer-table --> calcite-loader
+  layer-table --> delete-dialog
   layer-table --> calcite-action-bar
   layer-table --> map-layer-picker
   layer-table --> calcite-dropdown

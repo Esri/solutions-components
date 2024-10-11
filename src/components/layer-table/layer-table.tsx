@@ -191,6 +191,11 @@ export class LayerTable {
   @State() _selectAllActive = false;
 
   /**
+   * boolean: When true the delete dialog will be shown
+   */
+  @State() _deleteDialogOpen = false;
+
+  /**
    * boolean: When true the show/hide fields list is forced open
    */
   @State() _showHideOpen = false;
@@ -832,9 +837,19 @@ export class LayerTable {
           }
         </calcite-shell>
         {this.createFilterModal && this._filterModal()}
+        <delete-dialog
+          id={"deleteDialogId"}
+          ids={this._getIds()}
+          layer={this._layer}
+          onDeleteDialogClose={() => this._deleteDialogOpen = false}
+          open={this._deleteDialogOpen}
+          ref={(el) => this._deleteDialog = el}
+        />
       </Host>
     );
   }
+
+  protected _deleteDialog;
 
   /**
    * Called once after the component is loaded
@@ -1231,7 +1246,7 @@ export class LayerTable {
           icon: "trash",
           indicator: undefined,
           label: this._translations.delete,
-          func: () => undefined,
+          func: () => this._showDelete(),
           disabled: !featuresSelected,
           isDanger: true,
           isOverflow: false
@@ -1600,6 +1615,16 @@ export class LayerTable {
   }
 
   /**
+   * Show the delete dialog
+   *
+   * @param
+   *
+   */
+  protected _showDelete(): void {
+    this._deleteDialogOpen = true;
+  }
+
+  /**
    * Get an action and tooltip for share
    *
    * @param icon string the name of the icon to display, will also be used in its id
@@ -1724,6 +1749,7 @@ export class LayerTable {
             class="display-flex"
             disabled={_disabled}
             icon={icon}
+            id="solutions-delete"
             ids={this._getIds()}
             layer={this._layer}
           />
@@ -1755,7 +1781,7 @@ export class LayerTable {
    * @param number[] the selected ids
    */
   protected _getIds(): number[] {
-    return this._table.highlightIds.toArray();
+    return this._table?.highlightIds?.toArray();
   }
 
   /**

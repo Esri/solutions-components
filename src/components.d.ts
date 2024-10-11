@@ -495,6 +495,7 @@ export namespace Components {
           * ButtonType (button | action): Support usage as action or button
          */
         "buttonType": ButtonType;
+        "deleteDialog": any;
         /**
           * boolean: This overrides internal enable/disable logic that is based on checks if the layer supports delete
          */
@@ -3215,6 +3216,7 @@ declare namespace LocalJSX {
           * ButtonType (button | action): Support usage as action or button
          */
         "buttonType"?: ButtonType;
+        "deleteDialog"?: any;
         /**
           * boolean: This overrides internal enable/disable logic that is based on checks if the layer supports delete
          */
