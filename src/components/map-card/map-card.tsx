@@ -516,10 +516,11 @@ export class MapCard {
    * Renders the component.
    */
   render() {
-    const mapContainerClass = this.isMapLayout ? "display-flex height-50-px border-bottom-3px" : "";
+    const mapContainerClass = this.isMapLayout ? "display-flex height-49-px" : "";
     const mapClass = this.hidden ? "visibility-hidden-1" : "";
     const themeClass = this.theme === "dark" ? "calcite-mode-dark" : "calcite-mode-light";
     const mapHeightClass = this.mapInfos?.length > 1 || this.isMapLayout ? "map-height" : "height-full";
+    const progressClass = this.isMapLayout ? "" : "display-none"
     this._validateActiveActions();
     return (
       <Host>
@@ -529,6 +530,8 @@ export class MapCard {
           {/* dropdown actions */}
           {!this.isMobile && this.isMapLayout && this._getDropdown("more-table-options")}
         </div>
+        {/* added calcite progress below header actions to match bottom-border with the split/table view */}
+        <calcite-progress class={progressClass} value={0} />
         <div class={`${mapHeightClass} ${mapClass}`} ref={(el) => (this._mapDiv = el)} />
         <map-tools
           basemapConfig={this.basemapConfig}
