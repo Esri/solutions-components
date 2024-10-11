@@ -797,15 +797,16 @@ export class LayerTable {
           <div class={`width-full ${tableHeightClass}`}>
             <calcite-panel class="height-full width-full">
               {showSearch &&
-                <calcite-input
-                  class={"search"}
-                  clearable
-                  icon="search"
-                  onCalciteInputChange={(evt) => void this._searchTextChanged(evt)}
-                  placeholder={this._searchPlaceHolder}
-                  title={this._searchPlaceHolder}
-                  type="search" />
-              }
+                <div class={"search-container"}>
+                  <calcite-input
+                    class={"search"}
+                    clearable
+                    icon="search"
+                    onCalciteInputChange={(evt) => void this._searchTextChanged(evt)}
+                    placeholder={this._searchPlaceHolder}
+                    title={this._searchPlaceHolder}
+                    type="search" />
+                </div>}
 
               <calcite-loader
                 class={loadingClass}
@@ -1008,9 +1009,10 @@ export class LayerTable {
     slot?: string
   ): VNode {
     const id = "more-table-options";
+    const toolbarClass = this._canShowFullTextSearch() ? "border-bottom" : "";
     return (
       <div
-        class="display-flex border-bottom height-51-px"
+        class={`display-flex height-51-px ${toolbarClass}`}
         ref={(el) => this._toolbar = el}
         slot={slot}
       >
