@@ -47,7 +47,7 @@
     "@esri/telemetry-amazon": "3.0.1",
     "@esri/telemetry-google-analytics": "2.0.1",
     "@stencil-community/postcss": "^2.2.0",
-    "@stencil/core": "^4.19.2",
+    "@stencil/core": "^4.22.1",
     "@stencil/sass": "^3.0.12",
     "@stencil/store": "^2.0.16",
     "@types/jest": "^29.5.13",
