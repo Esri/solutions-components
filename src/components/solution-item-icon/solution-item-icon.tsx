@@ -116,7 +116,8 @@ export class SolutionItemIcon {
     typeKeywords: string[]
   ): string {
     const icon = this._getItemIcon(type, typeKeywords);
-    return getAssetPath(`./item-icons/${icon}16.svg`);
+    return icon === "group" ? getAssetPath(`./item-icons/${icon}16.png`) :
+      getAssetPath(`./item-icons/${icon}16.svg`);
   }
 
   /**
@@ -172,6 +173,8 @@ export class SolutionItemIcon {
           return "utilitynetwork";
         }
         return hosted ? "featureshosted" : "features";
+      case "group":
+        return "group";
       case "group layer":
         if (keywords.includes("Map")) {
           return "layergroup2d";
