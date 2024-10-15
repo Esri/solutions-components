@@ -936,6 +936,10 @@ export namespace Components {
          */
         "enableSearch": boolean;
         /**
+          * boolean: when true the share widget will be available
+         */
+        "enableShare": boolean;
+        /**
           * boolean: when true map tools will be displayed within a single expand/collapse widget when false widgets will be loaded individually into expand widgets
          */
         "enableSingleExpand": boolean;
@@ -1003,6 +1007,14 @@ export namespace Components {
           * __esri.FeatureLayer: Selected layer
          */
         "selectedLayer": __esri.FeatureLayer;
+        /**
+          * boolean: When true the share options will include embed option
+         */
+        "shareIncludeEmbed": boolean;
+        /**
+          * boolean: When true the share options will include social media sharing
+         */
+        "shareIncludeSocial": boolean;
         /**
           * boolean: When true the map widget tools will have no margin between them. When false the map widget tools will have a margin between them.
          */
@@ -3609,6 +3621,10 @@ declare namespace LocalJSX {
          */
         "enableSearch"?: boolean;
         /**
+          * boolean: when true the share widget will be available
+         */
+        "enableShare"?: boolean;
+        /**
           * boolean: when true map tools will be displayed within a single expand/collapse widget when false widgets will be loaded individually into expand widgets
          */
         "enableSingleExpand"?: boolean;
@@ -3688,6 +3704,14 @@ declare namespace LocalJSX {
           * __esri.FeatureLayer: Selected layer
          */
         "selectedLayer"?: __esri.FeatureLayer;
+        /**
+          * boolean: When true the share options will include embed option
+         */
+        "shareIncludeEmbed"?: boolean;
+        /**
+          * boolean: When true the share options will include social media sharing
+         */
+        "shareIncludeSocial"?: boolean;
         /**
           * boolean: When true the map widget tools will have no margin between them. When false the map widget tools will have a margin between them.
          */

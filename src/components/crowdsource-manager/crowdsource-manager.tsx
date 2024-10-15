@@ -829,6 +829,7 @@ export class CrowdsourceManager {
           enableHome={this.enableHome}
           enableLegend={this.enableLegend}
           enableSearch={this.enableSearch}
+          enableShare={this.enableShare}
           enableSingleExpand={true}
           hidden={!this._isPortraitMobile && isTableLayout}
           homeZoomIndex={3}
@@ -846,6 +847,8 @@ export class CrowdsourceManager {
           ref={(el) => this._mapCard = el}
           selectedFeaturesIds={this._layerTable?.selectedIds}
           selectedLayer={this._layer}
+          shareIncludeEmbed={this.shareIncludeEmbed}
+          shareIncludeSocial={this.shareIncludeSocial}
           stackTools={true}
           theme={this.theme}
           toolOrder={["legend", "search", "fullscreen", "basemap", "floorfilter"]}

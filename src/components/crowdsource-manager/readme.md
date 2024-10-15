@@ -119,6 +119,7 @@ graph TD;
   map-card --> calcite-dropdown-group
   map-card --> calcite-dropdown-item
   map-card --> calcite-loader
+  map-card --> instant-apps-social-share
   map-card --> calcite-tooltip
   map-tools --> basemap-gallery
   map-tools --> map-search
@@ -167,6 +168,10 @@ graph TD;
   calcite-combobox-item --> calcite-icon
   calcite-chip --> calcite-icon
   calcite-dropdown-item --> calcite-icon
+  instant-apps-social-share --> calcite-popover
+  instant-apps-social-share --> calcite-button
+  instant-apps-social-share --> calcite-icon
+  instant-apps-social-share --> calcite-action
   card-manager --> calcite-shell
   card-manager --> info-card
   card-manager --> calcite-flow-item
@@ -208,10 +213,6 @@ graph TD;
   layer-table --> delete-button
   layer-table --> calcite-modal
   layer-table --> instant-apps-filter-list
-  instant-apps-social-share --> calcite-popover
-  instant-apps-social-share --> calcite-button
-  instant-apps-social-share --> calcite-icon
-  instant-apps-social-share --> calcite-action
   instant-apps-filter-list --> calcite-panel
   instant-apps-filter-list --> calcite-loader
   instant-apps-filter-list --> calcite-checkbox
