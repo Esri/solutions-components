@@ -575,7 +575,7 @@ export class MapCard {
           {this._getActionBar()}
           {/* dropdown actions */}
           {!this.isMobile && this.isMapLayout && this._getDropdown("more-table-options")}
-          {this.enableShare && !this.isMobile ? this._getShare("share") : undefined}
+          {this.enableShare && !this.isMobile && this.isMapLayout ? this._getShare("share") : undefined}
         </div>
         {/* added calcite progress below header actions to match bottom-border with the split/table view */}
         <calcite-progress class={progressClass} value={0} />
