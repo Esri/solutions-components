@@ -69,6 +69,11 @@ export class CrowdsourceManager {
   @Prop() customInfoText: string;
 
   /**
+   * string: default layout the application should use
+   */
+  @Prop() defaultAppLayout: AppLayout;
+
+  /**
    * string: default center point values for the map
    * ; delimited x;y pair
    */
@@ -325,6 +330,11 @@ export class CrowdsourceManager {
   //--------------------------------------------------------------------------
 
   /**
+   * boolean: When true the default appLayout has been applied and should no longer override
+   */
+  protected _defaultAppLayoutHonored = false;
+
+  /**
    * boolean: When true the map view will be set after render due to popup obstructing the view
    * MapView.when is not fired when mapView is not currently visible
    */
@@ -551,7 +561,10 @@ export class CrowdsourceManager {
    */
   async componentDidLoad(): Promise<void> {
     this._resizeObserver.observe(this.el);
-    if (this.hideMapOnLoad && !this.appLayout) {
+    if (!this._defaultAppLayoutHonored && this.defaultAppLayout) {
+      this._defaultAppLayoutHonored = true;
+      this.appLayout = this.defaultAppLayout;
+    } else if (this.hideMapOnLoad && !this.appLayout) {
       this.appLayout = 'tableView';
     } else if (!this.appLayout) {
       this.appLayout = 'splitView';
