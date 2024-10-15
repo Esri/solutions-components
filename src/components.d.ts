@@ -226,6 +226,10 @@ export namespace Components {
          */
         "customInfoText": string;
         /**
+          * string: default layout the application should use
+         */
+        "defaultAppLayout": AppLayout;
+        /**
           * string: default center point values for the map ; delimited x;y pair
          */
         "defaultCenter": string;
@@ -2904,6 +2908,10 @@ declare namespace LocalJSX {
           * string: custom notification text to display in the card manager
          */
         "customInfoText"?: string;
+        /**
+          * string: default layout the application should use
+         */
+        "defaultAppLayout"?: AppLayout;
         /**
           * string: default center point values for the map ; delimited x;y pair
          */
