@@ -102,6 +102,10 @@
   position: absolute;
 }
 
+.position-sticky {
+  position: sticky;
+}
+
 .height-50 {
   height: 50%;
 }
