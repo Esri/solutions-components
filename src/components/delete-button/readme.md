@@ -7,14 +7,14 @@
 
 ## Properties
 
-| Property       | Attribute       | Description                                                                                                                 | Type                                      | Default     |
-| -------------- | --------------- | --------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------- | ----------- |
-| `buttonType`   | `button-type`   | ButtonType (button \| action): Support usage as action or button                                                            | `"action" \| "button" \| "dropdown-item"` | `"button"`  |
-| `deleteDialog` | `delete-dialog` |                                                                                                                             | `any`                                     | `undefined` |
-| `disabled`     | `disabled`      | boolean: This overrides internal enable/disable logic that is based on checks if the layer supports delete                  | `boolean`                                 | `false`     |
-| `icon`         | `icon`          | string: The icon to display in the component                                                                                | `string`                                  | `undefined` |
-| `ids`          | --              | number[]: The ids that would be deleted                                                                                     | `any[]`                                   | `[]`        |
-| `layer`        | --              | esri/views/layers/FeatureLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html | `FeatureLayer`                            | `undefined` |
+| Property       | Attribute       | Description                                                                                                                               | Type                   | Default     |
+| -------------- | --------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- | ----------- |
+| `buttonType`   | `button-type`   | ButtonType (button \| action): Support usage as action or button                                                                          | `"action" \| "button"` | `"button"`  |
+| `deleteDialog` | `delete-dialog` | calcite-modal: Use this prop when using the button within a parent like a dropdown that would constrain the modal and that is not desired | `any`                  | `undefined` |
+| `disabled`     | `disabled`      | boolean: This overrides internal enable/disable logic that is based on checks if the layer supports delete                                | `boolean`              | `false`     |
+| `icon`         | `icon`          | string: The icon to display in the component                                                                                              | `string`               | `undefined` |
+| `ids`          | --              | number[]: The ids that would be deleted                                                                                                   | `any[]`                | `[]`        |
+| `layer`        | --              | esri/views/layers/FeatureLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html               | `FeatureLayer`         | `undefined` |
 
 
 ## Events

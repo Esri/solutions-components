@@ -495,6 +495,9 @@ export namespace Components {
           * ButtonType (button | action): Support usage as action or button
          */
         "buttonType": ButtonType;
+        /**
+          * calcite-modal: Use this prop when using the button within a parent like a dropdown that would constrain the modal and that is not desired
+         */
         "deleteDialog": any;
         /**
           * boolean: This overrides internal enable/disable logic that is based on checks if the layer supports delete
@@ -3216,6 +3219,9 @@ declare namespace LocalJSX {
           * ButtonType (button | action): Support usage as action or button
          */
         "buttonType"?: ButtonType;
+        /**
+          * calcite-modal: Use this prop when using the button within a parent like a dropdown that would constrain the modal and that is not desired
+         */
         "deleteDialog"?: any;
         /**
           * boolean: This overrides internal enable/disable logic that is based on checks if the layer supports delete
