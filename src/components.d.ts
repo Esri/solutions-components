@@ -796,6 +796,10 @@ export namespace Components {
     }
     interface LayerTable {
         /**
+          * AppLayout: the current app layout
+         */
+        "appLayout": AppLayout;
+        /**
           * Closes the filter
          */
         "closeFilter": () => Promise<void>;
@@ -899,6 +903,10 @@ export namespace Components {
     interface LocationFlowItem {
     }
     interface MapCard {
+        /**
+          * AppLayout: the current app layout
+         */
+        "appLayout": AppLayout;
         /**
           * Array of objects containing proxy information for premium platform services.
          */
@@ -3489,6 +3497,10 @@ declare namespace LocalJSX {
     }
     interface LayerTable {
         /**
+          * AppLayout: the current app layout
+         */
+        "appLayout"?: AppLayout;
+        /**
           * boolean: create filter modal optional (default true) boolean value to create filter modal in layer table
          */
         "createFilterModal"?: boolean;
@@ -3588,6 +3600,10 @@ declare namespace LocalJSX {
     interface LocationFlowItem {
     }
     interface MapCard {
+        /**
+          * AppLayout: the current app layout
+         */
+        "appLayout"?: AppLayout;
         /**
           * Array of objects containing proxy information for premium platform services.
          */

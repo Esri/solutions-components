@@ -7,28 +7,29 @@
 
 ## Properties
 
-| Property                  | Attribute                     | Description                                                                                                        | Type       | Default     |
-| ------------------------- | ----------------------------- | ------------------------------------------------------------------------------------------------------------------ | ---------- | ----------- |
-| `createFilterModal`       | `create-filter-modal`         | boolean: create filter modal optional (default true) boolean value to create filter modal in layer table           | `boolean`  | `true`      |
-| `defaultGlobalId`         | --                            | string: Global ID of the feature to select                                                                         | `string[]` | `undefined` |
-| `defaultLayerId`          | `default-layer-id`            | string: when provided this layer ID will be used when the app loads                                                | `string`   | `undefined` |
-| `defaultOid`              | --                            | number: when provided this will be used to select a feature in the table by default                                | `number[]` | `undefined` |
-| `enableAutoRefresh`       | `enable-auto-refresh`         | boolean: when true the layer table will auto refresh the data                                                      | `boolean`  | `undefined` |
-| `enableCSV`               | `enable-c-s-v`                | boolean: when true the export to csv button will be available                                                      | `boolean`  | `undefined` |
-| `enableColumnReorder`     | `enable-column-reorder`       | boolean: when true the layer table will support drag/drop of columns to adjust order                               | `boolean`  | `true`      |
-| `enableInlineEdit`        | `enable-inline-edit`          | boolean: when true edits can be applied directly within the table                                                  | `boolean`  | `undefined` |
-| `enableShare`             | `enable-share`                | boolean: when true the share widget will be available                                                              | `boolean`  | `undefined` |
-| `isMobile`                | `is-mobile`                   | When true the component will render an optimized view for mobile devices                                           | `boolean`  | `undefined` |
-| `mapHidden`               | `map-hidden`                  | boolean: when true the map is hidden and map specific controls should be hidden                                    | `boolean`  | `undefined` |
-| `mapInfo`                 | --                            | IMapInfo: key configuration details about the current map                                                          | `IMapInfo` | `undefined` |
-| `mapView`                 | --                            | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html             | `MapView`  | `undefined` |
-| `onlyShowUpdatableLayers` | `only-show-updatable-layers`  | boolean: When true only editable layers that support the update capability will be available                       | `boolean`  | `undefined` |
-| `selectedIds`             | --                            | number[]: A list of ids that are currently selected                                                                | `number[]` | `[]`        |
-| `shareIncludeEmbed`       | `share-include-embed`         | boolean: When true the share options will include embed option                                                     | `boolean`  | `undefined` |
-| `shareIncludeSocial`      | `share-include-social`        | boolean: When true the share options will include social media sharing                                             | `boolean`  | `undefined` |
-| `showNewestFirst`         | `show-newest-first`           | boolean: when true the table will be sorted by objectid in descending order by default                             | `boolean`  | `undefined` |
-| `zoomAndScrollToSelected` | `zoom-and-scroll-to-selected` | boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table | `boolean`  | `undefined` |
-| `zoomToScale`             | `zoom-to-scale`               | number: default scale to zoom to when zooming to a single point feature                                            | `number`   | `undefined` |
+| Property                  | Attribute                     | Description                                                                                                        | Type                                      | Default     |
+| ------------------------- | ----------------------------- | ------------------------------------------------------------------------------------------------------------------ | ----------------------------------------- | ----------- |
+| `appLayout`               | `app-layout`                  | AppLayout: the current app layout                                                                                  | `"mapView" \| "splitView" \| "tableView"` | `undefined` |
+| `createFilterModal`       | `create-filter-modal`         | boolean: create filter modal optional (default true) boolean value to create filter modal in layer table           | `boolean`                                 | `true`      |
+| `defaultGlobalId`         | --                            | string: Global ID of the feature to select                                                                         | `string[]`                                | `undefined` |
+| `defaultLayerId`          | `default-layer-id`            | string: when provided this layer ID will be used when the app loads                                                | `string`                                  | `undefined` |
+| `defaultOid`              | --                            | number: when provided this will be used to select a feature in the table by default                                | `number[]`                                | `undefined` |
+| `enableAutoRefresh`       | `enable-auto-refresh`         | boolean: when true the layer table will auto refresh the data                                                      | `boolean`                                 | `undefined` |
+| `enableCSV`               | `enable-c-s-v`                | boolean: when true the export to csv button will be available                                                      | `boolean`                                 | `undefined` |
+| `enableColumnReorder`     | `enable-column-reorder`       | boolean: when true the layer table will support drag/drop of columns to adjust order                               | `boolean`                                 | `true`      |
+| `enableInlineEdit`        | `enable-inline-edit`          | boolean: when true edits can be applied directly within the table                                                  | `boolean`                                 | `undefined` |
+| `enableShare`             | `enable-share`                | boolean: when true the share widget will be available                                                              | `boolean`                                 | `undefined` |
+| `isMobile`                | `is-mobile`                   | When true the component will render an optimized view for mobile devices                                           | `boolean`                                 | `undefined` |
+| `mapHidden`               | `map-hidden`                  | boolean: when true the map is hidden and map specific controls should be hidden                                    | `boolean`                                 | `undefined` |
+| `mapInfo`                 | --                            | IMapInfo: key configuration details about the current map                                                          | `IMapInfo`                                | `undefined` |
+| `mapView`                 | --                            | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html             | `MapView`                                 | `undefined` |
+| `onlyShowUpdatableLayers` | `only-show-updatable-layers`  | boolean: When true only editable layers that support the update capability will be available                       | `boolean`                                 | `undefined` |
+| `selectedIds`             | --                            | number[]: A list of ids that are currently selected                                                                | `number[]`                                | `[]`        |
+| `shareIncludeEmbed`       | `share-include-embed`         | boolean: When true the share options will include embed option                                                     | `boolean`                                 | `undefined` |
+| `shareIncludeSocial`      | `share-include-social`        | boolean: When true the share options will include social media sharing                                             | `boolean`                                 | `undefined` |
+| `showNewestFirst`         | `show-newest-first`           | boolean: when true the table will be sorted by objectid in descending order by default                             | `boolean`                                 | `undefined` |
+| `zoomAndScrollToSelected` | `zoom-and-scroll-to-selected` | boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table | `boolean`                                 | `undefined` |
+| `zoomToScale`             | `zoom-to-scale`               | number: default scale to zoom to when zooming to a single point feature                                            | `number`                                  | `undefined` |
 
 
 ## Events
