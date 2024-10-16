@@ -17,3 +17,7 @@
 :host {
   display: block;
 }
+
+.delete-modal {
+  position: fixed;
+}

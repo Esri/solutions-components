@@ -1534,7 +1534,7 @@ export class LayerTable {
             dropdownItems.map(item => {
               return (
                 <calcite-dropdown-group
-                  class={item.disabled ? "disabled" : ""}
+                  class={`${item.disabled ? "disabled" : ""} ${item.icon === "trash" ? "delete-red" : ""}`}
                   selectionMode={"none"}
                 >
                   <calcite-dropdown-item

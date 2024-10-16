@@ -38,6 +38,9 @@ export class DeleteButton {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * calcite-modal: Use this prop when using the button within a parent like a dropdown that would constrain the modal and that is not desired
+   */
   @Prop() deleteDialog;
 
   /**
