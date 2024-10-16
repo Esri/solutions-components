@@ -226,6 +226,10 @@ export namespace Components {
          */
         "customInfoText": string;
         /**
+          * string: default layout the application should use
+         */
+        "defaultAppLayout": AppLayout;
+        /**
           * string: default center point values for the map ; delimited x;y pair
          */
         "defaultCenter": string;
@@ -810,6 +814,10 @@ export namespace Components {
     }
     interface LayerTable {
         /**
+          * AppLayout: the current app layout
+         */
+        "appLayout": AppLayout;
+        /**
           * Closes the filter
          */
         "closeFilter": () => Promise<void>;
@@ -914,6 +922,10 @@ export namespace Components {
     }
     interface MapCard {
         /**
+          * AppLayout: the current app layout
+         */
+        "appLayout": AppLayout;
+        /**
           * Array of objects containing proxy information for premium platform services.
          */
         "appProxies": any;
@@ -953,6 +965,10 @@ export namespace Components {
           * boolean: when true the search widget will be available
          */
         "enableSearch": boolean;
+        /**
+          * boolean: when true the share widget will be available
+         */
+        "enableShare": boolean;
         /**
           * boolean: when true map tools will be displayed within a single expand/collapse widget when false widgets will be loaded individually into expand widgets
          */
@@ -1021,6 +1037,14 @@ export namespace Components {
           * __esri.FeatureLayer: Selected layer
          */
         "selectedLayer": __esri.FeatureLayer;
+        /**
+          * boolean: When true the share options will include embed option
+         */
+        "shareIncludeEmbed": boolean;
+        /**
+          * boolean: When true the share options will include social media sharing
+         */
+        "shareIncludeSocial": boolean;
         /**
           * boolean: When true the map widget tools will have no margin between them. When false the map widget tools will have a margin between them.
          */
@@ -2934,6 +2958,10 @@ declare namespace LocalJSX {
          */
         "customInfoText"?: string;
         /**
+          * string: default layout the application should use
+         */
+        "defaultAppLayout"?: AppLayout;
+        /**
           * string: default center point values for the map ; delimited x;y pair
          */
         "defaultCenter"?: string;
@@ -3536,6 +3564,10 @@ declare namespace LocalJSX {
     }
     interface LayerTable {
         /**
+          * AppLayout: the current app layout
+         */
+        "appLayout"?: AppLayout;
+        /**
           * boolean: create filter modal optional (default true) boolean value to create filter modal in layer table
          */
         "createFilterModal"?: boolean;
@@ -3636,6 +3668,10 @@ declare namespace LocalJSX {
     }
     interface MapCard {
         /**
+          * AppLayout: the current app layout
+         */
+        "appLayout"?: AppLayout;
+        /**
           * Array of objects containing proxy information for premium platform services.
          */
         "appProxies"?: any;
@@ -3675,6 +3711,10 @@ declare namespace LocalJSX {
           * boolean: when true the search widget will be available
          */
         "enableSearch"?: boolean;
+        /**
+          * boolean: when true the share widget will be available
+         */
+        "enableShare"?: boolean;
         /**
           * boolean: when true map tools will be displayed within a single expand/collapse widget when false widgets will be loaded individually into expand widgets
          */
@@ -3755,6 +3795,14 @@ declare namespace LocalJSX {
           * __esri.FeatureLayer: Selected layer
          */
         "selectedLayer"?: __esri.FeatureLayer;
+        /**
+          * boolean: When true the share options will include embed option
+         */
+        "shareIncludeEmbed"?: boolean;
+        /**
+          * boolean: When true the share options will include social media sharing
+         */
+        "shareIncludeSocial"?: boolean;
         /**
           * boolean: When true the map widget tools will have no margin between them. When false the map widget tools will have a margin between them.
          */

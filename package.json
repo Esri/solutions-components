@@ -1,6 +1,6 @@
 {
   "name": "@esri/solutions-components",
-  "version": "0.10.31",
+  "version": "0.10.34",
   "description": "Web Components for Esri's Solutions Applications",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -33,7 +33,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.25.7",
-    "@babel/preset-env": "^7.25.4",
+    "@babel/preset-env": "^7.25.8",
     "@babel/preset-typescript": "^7.24.7",
     "@babel/types": "^7.25.4",
     "@esri/arcgis-rest-service-admin": "^3.7.0",
@@ -50,7 +50,7 @@
     "@stencil/core": "^4.19.2",
     "@stencil/sass": "^3.0.12",
     "@stencil/store": "^2.0.16",
-    "@types/jest": "^29.5.12",
+    "@types/jest": "^29.5.13",
     "@types/node": "^22.5.5",
     "@typescript-eslint/eslint-plugin": "^7.18.0",
     "@typescript-eslint/parser": "^7.18.0",
@@ -84,7 +84,7 @@
     "workbox-build": "^7.1.1"
   },
   "dependencies": {
-    "@arcgis/core": ">=4.31.0-next.20240922 <4.32",
+    "@arcgis/core": ">=4.31.0-next.20241016 <4.32",
     "@esri/arcgis-rest-auth": "^3.7.0",
     "@esri/arcgis-rest-feature-layer": "^3.7.0",
     "@esri/arcgis-rest-portal": "^3.7.0",

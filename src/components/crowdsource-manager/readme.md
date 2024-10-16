@@ -14,6 +14,7 @@
 | `basemapConfig`             | --                              | IBasemapConfig: List of any basemaps to filter out from the basemap widget                                                                                                                                                                                                                         | `IBasemapConfig`                          | `undefined` |
 | `coverPageEnabled`          | `cover-page-enabled`            | boolean: When true a cover page has been enabled in the consuming application. Also when true a floating button will be shown in the lower right of the window that will emit an event when clicked that the consuming application can respond to that will open the cover page.                   | `boolean`                                 | `undefined` |
 | `customInfoText`            | `custom-info-text`              | string: custom notification text to display in the card manager                                                                                                                                                                                                                                    | `string`                                  | `undefined` |
+| `defaultAppLayout`          | `default-app-layout`            | string: default layout the application should use                                                                                                                                                                                                                                                  | `"mapView" \| "splitView" \| "tableView"` | `undefined` |
 | `defaultCenter`             | `default-center`                | string: default center point values for the map ; delimited x;y pair                                                                                                                                                                                                                               | `string`                                  | `""`        |
 | `defaultGlobalId`           | `default-global-id`             | string: Global ID of the feature to select                                                                                                                                                                                                                                                         | `string`                                  | `""`        |
 | `defaultLayer`              | `default-layer`                 | string: when provided this layer ID will be used when the app loads                                                                                                                                                                                                                                | `string`                                  | `""`        |
@@ -121,6 +122,7 @@ graph TD;
   map-card --> calcite-dropdown-group
   map-card --> calcite-dropdown-item
   map-card --> calcite-loader
+  map-card --> instant-apps-social-share
   map-card --> calcite-tooltip
   map-tools --> basemap-gallery
   map-tools --> map-search
@@ -169,6 +171,10 @@ graph TD;
   calcite-combobox-item --> calcite-icon
   calcite-chip --> calcite-icon
   calcite-dropdown-item --> calcite-icon
+  instant-apps-social-share --> calcite-popover
+  instant-apps-social-share --> calcite-button
+  instant-apps-social-share --> calcite-icon
+  instant-apps-social-share --> calcite-action
   card-manager --> calcite-shell
   card-manager --> info-card
   card-manager --> calcite-flow-item
@@ -211,10 +217,6 @@ graph TD;
   layer-table --> delete-button
   layer-table --> calcite-modal
   layer-table --> instant-apps-filter-list
-  instant-apps-social-share --> calcite-popover
-  instant-apps-social-share --> calcite-button
-  instant-apps-social-share --> calcite-icon
-  instant-apps-social-share --> calcite-action
   instant-apps-filter-list --> calcite-panel
   instant-apps-filter-list --> calcite-loader
   instant-apps-filter-list --> calcite-checkbox

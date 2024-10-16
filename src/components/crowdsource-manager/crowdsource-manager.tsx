@@ -69,6 +69,11 @@ export class CrowdsourceManager {
   @Prop() customInfoText: string;
 
   /**
+   * string: default layout the application should use
+   */
+  @Prop() defaultAppLayout: AppLayout;
+
+  /**
    * string: default center point values for the map
    * ; delimited x;y pair
    */
@@ -325,6 +330,11 @@ export class CrowdsourceManager {
   //--------------------------------------------------------------------------
 
   /**
+   * boolean: When true the default appLayout has been applied and should no longer override
+   */
+  protected _defaultAppLayoutHonored = false;
+
+  /**
    * boolean: When true the map view will be set after render due to popup obstructing the view
    * MapView.when is not fired when mapView is not currently visible
    */
@@ -551,7 +561,10 @@ export class CrowdsourceManager {
    */
   async componentDidLoad(): Promise<void> {
     this._resizeObserver.observe(this.el);
-    if (this.hideMapOnLoad && !this.appLayout) {
+    if (!this._defaultAppLayoutHonored && this.defaultAppLayout) {
+      this._defaultAppLayoutHonored = true;
+      this.appLayout = this.defaultAppLayout;
+    } else if (this.hideMapOnLoad && !this.appLayout) {
       this.appLayout = 'tableView';
     } else if (!this.appLayout) {
       this.appLayout = 'splitView';
@@ -818,6 +831,7 @@ export class CrowdsourceManager {
     return (
       <div class={`${mapContainerClass} overflow-hidden`} id="card-mapView">
         <map-card
+          appLayout={this.appLayout}
           appProxies={this.appProxies}
           basemapConfig={this.basemapConfig}
           class="width-full"
@@ -829,6 +843,7 @@ export class CrowdsourceManager {
           enableHome={this.enableHome}
           enableLegend={this.enableLegend}
           enableSearch={this.enableSearch}
+          enableShare={this.enableShare}
           enableSingleExpand={true}
           hidden={!this._isPortraitMobile && isTableLayout}
           homeZoomIndex={3}
@@ -846,6 +861,8 @@ export class CrowdsourceManager {
           ref={(el) => this._mapCard = el}
           selectedFeaturesIds={this._layerTable?.selectedIds}
           selectedLayer={this._layer}
+          shareIncludeEmbed={this.shareIncludeEmbed}
+          shareIncludeSocial={this.shareIncludeSocial}
           stackTools={true}
           theme={this.theme}
           toolOrder={["legend", "search", "fullscreen", "basemap", "floorfilter"]}
@@ -976,6 +993,7 @@ export class CrowdsourceManager {
         }
         <div class={`width-full height-full position-relative z-index-0 ${tableClass}`}>
           <layer-table
+            appLayout={this.appLayout}
             createFilterModal={false}
             defaultGlobalId={hasMapAndLayer ? globalId : undefined}
             defaultLayerId={hasMapAndLayer ? this.defaultLayer : ""}

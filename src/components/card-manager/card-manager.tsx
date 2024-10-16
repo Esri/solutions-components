@@ -220,7 +220,7 @@ export class CardManager {
     const messageClass = this._graphics?.length > 0 || this._showCreateFeatureComponent ? "display-none" : "";
     const isTable = this.layer?.isTable;
     const heading = isTable ? this._translations.createRecord : this._translations.createFeature;
-    const guideMsg = this.customInfoText || this.selectingFeatureFromMap ? this._translations.selectFeaturesFromMapToStart : this._translations.selectFeaturesToStart
+    const guideMsg = this.customInfoText ? this.customInfoText : this.selectingFeatureFromMap ? this._translations.selectFeaturesFromMapToStart : this._translations.selectFeaturesToStart
     const showCreateFeatureOrRecordBtn = this.enableCreateFeatures && this.layer?.capabilities?.operations?.supportsAdd;
     return (
       <Host>

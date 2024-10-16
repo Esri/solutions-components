@@ -17,10 +17,11 @@
 import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, State, Watch, Method, VNode } from "@stencil/core";
 import MapCard_T9n from "../../assets/t9n/map-card/resources.json"
 import { loadModules } from "../../utils/loadModules";
-import { IBasemapConfig, IMapChange, IMapInfo, ISearchConfiguration, IToolInfo, IToolSizeInfo, theme, TooltipPlacement } from "../../utils/interfaces";
+import { AppLayout, IBasemapConfig, IMapChange, IMapInfo, ISearchConfiguration, IToolInfo, IToolSizeInfo, theme, TooltipPlacement } from "../../utils/interfaces";
 import { joinAppProxies } from "templates-common-library-esm/functionality/proxy";
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { getFeatureLayerView, goToSelection } from "../../utils/mapViewUtils";
+import "@esri/instant-apps-components/dist/components/instant-apps-social-share";
 
 // TODO navigation and accessability isn't right for the map list
 //   tab does not go into the list when it's open
@@ -48,6 +49,11 @@ export class MapCard {
   //  Properties (public)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * AppLayout: the current app layout
+   */
+  @Prop() appLayout: AppLayout;
 
   /**
    * Array of objects containing proxy information for premium platform services.
@@ -83,6 +89,11 @@ export class MapCard {
    * boolean: when true the fullscreen widget will be available
    */
   @Prop() enableFullscreen: boolean;
+
+  /**
+   * boolean: when true the share widget will be available
+   */
+  @Prop() enableShare = false;
 
   /**
    * boolean: when true map tools will be displayed within a single expand/collapse widget
@@ -175,6 +186,16 @@ export class MapCard {
    * boolean: When true map will shown is full screen
    */
   @Prop() isMapLayout: boolean;
+
+  /**
+   * boolean: When true the share options will include embed option
+   */
+  @Prop() shareIncludeEmbed: boolean;
+
+  /**
+   * boolean: When true the share options will include social media sharing
+   */
+  @Prop() shareIncludeSocial: boolean;
 
   /**
    * number[]: A list of ids that are currently selected
@@ -330,6 +351,11 @@ export class MapCard {
   protected _resizeObserver: ResizeObserver;
 
   /**
+   * HTMLInstantAppsSocialShareElement: Element to support app sharing to social media
+   */
+  protected _shareNode: HTMLInstantAppsSocialShareElement;
+
+  /**
    * HTMLCalciteDropdownElement: Dropdown the will support show/hide of table columns
    */
   protected _showHideDropdown: HTMLCalciteDropdownElement;
@@ -366,11 +392,41 @@ export class MapCard {
   //--------------------------------------------------------------------------
 
   /**
+   * Update the url params when the appLayout changes
+   */
+  @Watch("appLayout")
+  appLayoutWatchHandler(): void {
+    this._updateShareUrl();
+  }
+
+  /**
    * Add/remove home widget
    */
   @Watch("enableHome")
   enableHomeWatchHandler(): void {
     this._initHome();
+  }
+
+  /**
+   * Update the toolbar when the share button is enabled/disabled
+   */
+  @Watch("enableShare")
+  enableShareWatchHandler(): void {
+    // this should be caught by component did render and is when I test locally
+    // however have had reported case where it is not somehow on devext so adding explicit check here
+    if (this._toolbar) {
+      this._updateToolbar();
+    }
+  }
+
+  /**
+   * watch for changes in map view and get the first layer
+   */
+  @Watch("mapView")
+  async mapViewWatchHandler(): Promise<void> {
+    if (this.mapView) {
+      this._updateShareUrl();
+    }
   }
 
   /**
@@ -388,6 +444,7 @@ export class MapCard {
    */
   @Watch("selectedFeaturesIds")
   async selectedFeaturesIdsWatchHandler(): Promise<void> {
+    this._updateShareUrl();
     this._validateEnabledActions();
   }
 
@@ -421,6 +478,7 @@ export class MapCard {
   @Method()
   async resetFilter(): Promise<void> {
     this._filterActive = false;
+    this._updateShareUrl();
   }
 
   /**
@@ -429,6 +487,7 @@ export class MapCard {
   @Method()
   async updateFilterState(): Promise<void> {
     this._filterActive = this._definitionExpression !== this.selectedLayer.definitionExpression;
+    this._updateShareUrl();
   }
 
   /**
@@ -529,6 +588,7 @@ export class MapCard {
           {this._getActionBar()}
           {/* dropdown actions */}
           {!this.isMobile && this.isMapLayout && this._getDropdown("more-table-options")}
+          {this.enableShare && !this.isMobile && this.isMapLayout ? this._getShare("share") : undefined}
         </div>
         {/* added calcite progress below header actions to match bottom-border with the split/table view */}
         <calcite-progress class={progressClass} value={0} />
@@ -574,6 +634,7 @@ export class MapCard {
       this._resizeObserver.observe(this._toolbar);
       this._observerSet = true;
     }
+    this._updateShareUrl();
   }
 
   //--------------------------------------------------------------------------
@@ -664,6 +725,7 @@ export class MapCard {
         mapView: this.mapView
       });
     }
+    this._updateShareUrl();
   }
 
   /**
@@ -684,7 +746,7 @@ export class MapCard {
           return prev;
         }, 0);
 
-        const skipControls = ["solutions-more", "solutions-map-layer-picker-container", "map-picker"];
+        const skipControls = ["solutions-more", "solutions-map-layer-picker-container", "map-picker", "solutions-action-share"];
         if (controlsWidth > toolbarWidth) {
           if (this._toolbarSizeInfos.length > 0) {
             const controlsThatFit = [...this._toolbarSizeInfos].reverse().reduce((prev, cur) => {
@@ -908,6 +970,72 @@ export class MapCard {
         </calcite-dropdown-group>
       </calcite-dropdown>
     ) : undefined;
+  }
+
+  /**
+   * Get an action and tooltip for share
+   *
+   * @param icon string the name of the icon to display, will also be used in its id
+   *
+   * @returns VNode The node representing the DOM element that will contain the action
+   */
+  protected _getShare(
+    icon: string
+  ): VNode {
+    return (
+      <div class="share-action" id={this._getId(icon)}>
+        <instant-apps-social-share
+          autoUpdateShareUrl={false}
+          class="instant-app-share"
+          embed={this.shareIncludeEmbed}
+          popoverButtonIconScale="s"
+          ref={el => {
+            this._shareNode = el;
+            this._updateShareUrl();
+          }}
+          scale="m"
+          shareButtonColor="neutral"
+          shareButtonType="action"
+          socialMedia={this.shareIncludeSocial}
+          view={this.mapView}
+        />
+        {this._getToolTip("bottom", icon, this._translations.share)}
+      </div>
+    )
+  }
+
+  /**
+   * Called each time the values that are used for custom url params change
+   */
+  _updateShareUrl(): void {
+    const url = this._shareNode?.shareUrl;
+    if (!url) {
+      return;
+    }
+    const urlObj = new URL(url);
+
+    //set the additional search params
+    if (this._loadedId) {
+      urlObj.searchParams.set("webmap", this._loadedId);
+    } else {
+      urlObj.searchParams.delete("webmap");
+    }
+
+    if (this.selectedLayer?.id) {
+      urlObj.searchParams.set("layer", this.selectedLayer.id);
+    } else {
+      urlObj.searchParams.delete("layer");
+    }
+
+    if (this.selectedFeaturesIds?.length > 0) {
+      urlObj.searchParams.set("oid", this.selectedFeaturesIds.join(","));
+    } else {
+      urlObj.searchParams.delete("oid");
+    }
+
+    urlObj.searchParams.set("applayout", this.appLayout);
+
+    this._shareNode.shareUrl = urlObj.href;
   }
 
   /**

@@ -184,6 +184,11 @@ export class FeatureList {
   protected _highlightHandle: __esri.Handle;
 
   /**
+   * __esri.Collection: Highlight options for the selected layer
+   */
+  protected _highlights: any;
+
+  /**
    * HTMLCalcitePaginationElement: Calcite pagination element instance
    */
   protected _pagination: HTMLCalcitePaginationElement;
@@ -463,7 +468,13 @@ export class FeatureList {
     if (this.highlightOnHover) {
       const oId = selectedFeature.getObjectId();
       const selectedLayerView = await getFeatureLayerView(this.mapView, this.selectedLayerId);
+      // this is a workaround added for https://github.com/Esri/solutions-components/issues/920
+      if (this._highlights) {
+        (selectedLayerView as any).highlights = JSON.parse(this._highlights);
+      }
       selectedLayerView.highlightOptions = { color: new this.Color("#FFFF00") };
+
+      this._highlights = JSON.stringify((selectedLayerView as any).highlights);
       this._highlightHandle = selectedLayerView.highlight([oId]);
     }
   }

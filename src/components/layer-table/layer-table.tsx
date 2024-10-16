@@ -21,7 +21,7 @@ import { getLocaleComponentStrings } from "../../utils/locale";
 import { getFeatureLayerView, getLayerOrTable, goToSelection } from "../../utils/mapViewUtils";
 import { queryAllIds, queryAllOidsWithQueryFeatures, queryFeaturesByGlobalID } from "../../utils/queryUtils";
 import * as downloadUtils from "../../utils/downloadUtils";
-import { EditType, IColumnsInfo, IExportInfos, ILayerDef, IMapClick, IMapInfo, IToolInfo, IToolSizeInfo, TooltipPlacement } from "../../utils/interfaces";
+import { AppLayout, EditType, IColumnsInfo, IExportInfos, ILayerDef, IMapClick, IMapInfo, IToolInfo, IToolSizeInfo, TooltipPlacement } from "../../utils/interfaces";
 import "@esri/instant-apps-components/dist/components/instant-apps-social-share";
 import { LayerExpression } from "@esri/instant-apps-components";
 
@@ -43,6 +43,11 @@ export class LayerTable {
   //  Properties (public)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * AppLayout: the current app layout
+   */
+  @Prop() appLayout: AppLayout;
 
   /**
    * string: Global ID of the feature to select
@@ -437,6 +442,14 @@ export class LayerTable {
   //  Watch handlers
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Update the url params when the appLayout changes
+   */
+  @Watch("appLayout")
+  appLayoutWatchHandler(): void {
+    this._updateShareUrl();
+  }
 
   /**
    * Handle url defaults when defaultOid is set
@@ -1682,6 +1695,8 @@ export class LayerTable {
     } else {
       urlObj.searchParams.delete("oid");
     }
+
+    urlObj.searchParams.set("applayout", this.appLayout);
 
     this._shareNode.shareUrl = urlObj.href;
   }
