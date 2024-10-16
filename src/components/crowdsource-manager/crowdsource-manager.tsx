@@ -831,6 +831,7 @@ export class CrowdsourceManager {
     return (
       <div class={`${mapContainerClass} overflow-hidden`} id="card-mapView">
         <map-card
+          appLayout={this.appLayout}
           appProxies={this.appProxies}
           basemapConfig={this.basemapConfig}
           class="width-full"
@@ -991,6 +992,7 @@ export class CrowdsourceManager {
         }
         <div class={`width-full height-full position-relative z-index-0 ${tableClass}`}>
           <layer-table
+            appLayout={this.appLayout}
             createFilterModal={false}
             defaultGlobalId={hasMapAndLayer ? globalId : undefined}
             defaultLayerId={hasMapAndLayer ? this.defaultLayer : ""}

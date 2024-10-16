@@ -17,7 +17,7 @@
 import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, State, Watch, Method, VNode } from "@stencil/core";
 import MapCard_T9n from "../../assets/t9n/map-card/resources.json"
 import { loadModules } from "../../utils/loadModules";
-import { IBasemapConfig, IMapChange, IMapInfo, ISearchConfiguration, IToolInfo, IToolSizeInfo, theme, TooltipPlacement } from "../../utils/interfaces";
+import { AppLayout, IBasemapConfig, IMapChange, IMapInfo, ISearchConfiguration, IToolInfo, IToolSizeInfo, theme, TooltipPlacement } from "../../utils/interfaces";
 import { joinAppProxies } from "templates-common-library-esm/functionality/proxy";
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { getFeatureLayerView, goToSelection } from "../../utils/mapViewUtils";
@@ -49,6 +49,11 @@ export class MapCard {
   //  Properties (public)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * AppLayout: the current app layout
+   */
+  @Prop() appLayout: AppLayout;
 
   /**
    * Array of objects containing proxy information for premium platform services.
@@ -387,6 +392,14 @@ export class MapCard {
   //--------------------------------------------------------------------------
 
   /**
+   * Update the url params when the appLayout changes
+   */
+  @Watch("appLayout")
+  appLayoutWatchHandler(): void {
+    this._updateShareUrl();
+  }
+
+  /**
    * Add/remove home widget
    */
   @Watch("enableHome")
@@ -621,6 +634,7 @@ export class MapCard {
       this._resizeObserver.observe(this._toolbar);
       this._observerSet = true;
     }
+    this._updateShareUrl();
   }
 
   //--------------------------------------------------------------------------
@@ -711,6 +725,7 @@ export class MapCard {
         mapView: this.mapView
       });
     }
+    this._updateShareUrl();
   }
 
   /**
@@ -974,7 +989,10 @@ export class MapCard {
           class="instant-app-share"
           embed={this.shareIncludeEmbed}
           popoverButtonIconScale="s"
-          ref={el => this._shareNode = el}
+          ref={el => {
+            this._shareNode = el;
+            this._updateShareUrl();
+          }}
           scale="m"
           shareButtonColor="neutral"
           shareButtonType="action"
@@ -1014,6 +1032,8 @@ export class MapCard {
     } else {
       urlObj.searchParams.delete("oid");
     }
+
+    urlObj.searchParams.set("applayout", this.appLayout);
 
     this._shareNode.shareUrl = urlObj.href;
   }
