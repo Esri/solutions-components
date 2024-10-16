@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.10.34] - October 16th 2024
+Show share in map view and add appLayout for share
+
 ## [0.10.33] - October 14th 2024
 highlight workaround, group icon, and use customInfoText
 
@@ -852,4 +855,5 @@ Recover from test releases
 [0.10.31]: https://github.com/Esri/solution.js/compare/v0.10.30...v0.10.31 "v0.10.31"
 [0.10.32]: https://github.com/Esri/solution.js/compare/v0.10.31...v0.10.32 "v0.10.32"
 [0.10.33]: https://github.com/Esri/solution.js/compare/v0.10.32...v0.10.33 "v0.10.33"
-[Unreleased]: https://github.com/Esri/solution.js/compare/v0.10.33...HEAD "Unreleased Changes"
+[0.10.34]: https://github.com/Esri/solution.js/compare/v0.10.33...v0.10.34 "v0.10.34"
+[Unreleased]: https://github.com/Esri/solution.js/compare/v0.10.34...HEAD "Unreleased Changes"
