@@ -512,7 +512,8 @@ export class CrowdsourceReporter {
         }
       }
     }
-    if (this._layerList) {
+    // refresh layer list when user is on layer list panel
+    if (this._flowItems[this._flowItems.length - 1] === "layer-list" && this._layerList) {
       await this._layerList.refresh();
     }
     if (this._featureList) {
@@ -531,7 +532,8 @@ export class CrowdsourceReporter {
     if (this._editableLayerIds) {
       await this._updateFeatures();
       setTimeout(() => {
-        if (this._layerList) {
+        // refresh layer list when user is on layer list panel 
+        if (this._flowItems[this._flowItems.length - 1] === "layer-list" && this._layerList) {
           void this._layerList.refresh();
         }
         if (this._featureList) {
@@ -818,6 +820,7 @@ export class CrowdsourceReporter {
       if (canRestoreFilter) {
         void this._filterList.restoreFilters(this._filterUrlParams[0], this._filterInitState);
       }
+      this._filterInitState = null;
     }, 200);
   }
 
@@ -830,12 +833,6 @@ export class CrowdsourceReporter {
     this._filterActive = false;
     this._filterUrlParams = null;
     this._filterInitState = null;
-    if (this._featureList) {
-      await this._featureList.refresh();
-    }
-    if (this._layerList) {
-      await this._layerList.refresh();
-    }
   }
 
   /**
@@ -848,11 +845,7 @@ export class CrowdsourceReporter {
     //set the filter active state based on the length of applied filters
     this._filterActive = this._filterList.urlParams.getAll('filter').length > 0;
     this._filterUrlParams = this._filterList.urlParams.getAll('filter');
-    this._filterInitState = await this._filterList.getFilterInitState();
     await this._featureList.refresh();
-    if (this._layerList) {
-      await this._layerList.refresh();
-    }
     this._showLoadingIndicator = false;
   }
 
@@ -1068,15 +1061,15 @@ export class CrowdsourceReporter {
    * On submit report navigate to the layer list home page and refresh the layer list
    * @protected
    */
-  protected onReportSubmitted(): void {
-    //on report submit form will be closed, so update the form state
+  protected async onReportSubmitted(): Promise<void> {
+    void this.updateNonVisibleLayersOnMap(false);
+    await this.navigateToHomePage();
+    this._reportSubmitted = true;
+    this._updatedProgressBarStatus = 0.25;
+     //on report submit form will be closed, so update the form state
     if (this._showFullPanel) {
       this.updatePanelState(this._sidePanelCollapsed, false);
     }
-    void this.updateNonVisibleLayersOnMap(false);
-    this._reportSubmitted = true;
-    this._updatedProgressBarStatus = 0.25;
-    void this.navigateToHomePage();
   }
 
   /**
@@ -1109,11 +1102,11 @@ export class CrowdsourceReporter {
    * @protected
    */
   protected async navigateToHomePage(): Promise<void> {
-    if (this._layerList) {
-      void this._layerList.refresh();
-    }
+    // set the selected features and then refresh the layer list to maintain the layer's visibility state
     await this.setSelectedFeatures([]);
-
+    if (this._layerList) {
+      await this._layerList.refresh();
+    }
     if (this._editableLayerIds.length === 1) {
       await this._featureList.refresh();
       this._flowItems = ["feature-list"];
@@ -1226,6 +1219,16 @@ export class CrowdsourceReporter {
     const prevLayer = await getLayerOrTable(this.mapView, this._prevSelectedLayerId);
     prevLayer.definitionExpression = this._filterInitState.initDefExpressions[this._prevSelectedLayerId];
     void this._handleFilterListReset();
+  }
+
+  /**
+   * On back from filter panel get the filter's init state
+   * @protected
+   */
+  protected async backFromFilterPanel(): Promise<void> {
+    this._filterInitState = await this._filterList.getFilterInitState();
+    await this._featureList.refresh();
+    this.backFromSelectedPanel();
   }
 
   /**
@@ -1415,7 +1418,7 @@ export class CrowdsourceReporter {
         collapsed={this.isMobile && this._sidePanelCollapsed}
         heading={this._translations?.filterLayerTitle?.replace("{{title}}", this._selectedLayerName)}
         loading={this._showLoadingIndicator}
-        onCalciteFlowItemBack={this.backFromSelectedPanel.bind(this)}>
+        onCalciteFlowItemBack={this.backFromFilterPanel.bind(this)}>
         {this.isMobile && this.getActionToExpandCollapsePanel()}
         <div class={"width-full"}
           slot="footer">
@@ -1432,7 +1435,7 @@ export class CrowdsourceReporter {
             <calcite-button
               appearance="outline"
               class={"footer-button"}
-              onClick={this.backFromSelectedPanel.bind(this)}
+              onClick={this.backFromFilterPanel.bind(this)}
               width="full">
               {this._translations.close}
             </calcite-button>

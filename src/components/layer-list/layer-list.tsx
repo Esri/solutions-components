@@ -163,7 +163,6 @@ export class LayerList {
    */
   async componentWillLoad(): Promise<void> {
     await this._getTranslations();
-    this._isLoading = true;
   }
 
   /**
@@ -171,7 +170,6 @@ export class LayerList {
    */
   async componentDidLoad() {
     await this.setLayers();
-    this._isLoading = false;
   }
 
   /**
@@ -213,7 +211,9 @@ export class LayerList {
    */
   async setLayers(): Promise<void> {
     if (this.mapView) {
+      this._isLoading = true;
       await this.initLayerHash();
+      this._isLoading = false;
     }
   }
 

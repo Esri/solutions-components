@@ -60,8 +60,9 @@
 
 .show-map {
   padding: 10px !important;
-  position: absolute;
+  position: absolute !important;
   bottom: 0;
+  height: auto !important;
   width: calc(100% - 22px);
 }
 
