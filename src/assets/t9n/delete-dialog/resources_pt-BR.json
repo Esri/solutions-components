@@ -1,0 +1,8 @@
+{
+  "cancel": "Cancelar",
+  "confirmMultiple": "Estas feições serão permanentemente removidas.",
+  "confirmSingle": "Esta feição será completamente removida.",
+  "delete": "Excluir",
+  "deleteCount": "Excluir ({{n}})",
+  "deleteFeature": "Excluir feição"
+}

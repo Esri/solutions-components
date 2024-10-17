@@ -884,8 +884,9 @@ export class CrowdsourceManager {
     const headerTheme = this.popupHeaderColor ? "" : !this._isPortraitMobile ? "calcite-mode-dark" : "calcite-mode-light";
     const containerClass = this._isPortraitMobile && this._hideTable ? "position-absolute-0 width-full height-full" : this._isPortraitMobile ? "display-none height-0" : "";
     const tableViewClass = this.mapInfos?.length > 1 && this.appLayout === "tableView" ? "position-relative top-51" : "";
+    // position-sticky added to avoid an issue where this dialog would overlap the delete message modal in some small screens
     return (
-      <div class={`${headerTheme} ${popupNodeClass} ${containerClass} ${tableViewClass}`}
+      <div class={`${headerTheme} ${popupNodeClass} ${containerClass} ${tableViewClass} position-sticky`}
         style={{
           '--calcite-color-foreground-1': this.popupHeaderColor, /* background color that will be displayed on the popup header */
           '--calcite-color-foreground-2': this.popupHeaderHoverColor, /* background color that will be displayed on button when hovered */

@@ -1,0 +1,8 @@
+{
+  "cancel": "İptal",
+  "confirmMultiple": "Bu detaylar kalıcı olarak kaldırılacak.",
+  "confirmSingle": "Bu detay kalıcı olarak kaldırılacak.",
+  "delete": "Sil",
+  "deleteCount": "Sil ({{n}})",
+  "deleteFeature": "Detayı sil"
+}

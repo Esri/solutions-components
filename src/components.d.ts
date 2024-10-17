@@ -500,6 +500,10 @@ export namespace Components {
          */
         "buttonType": ButtonType;
         /**
+          * calcite-modal: Use this prop when using the button within a parent like a dropdown that would constrain the modal and that is not desired
+         */
+        "deleteDialog": any;
+        /**
           * boolean: This overrides internal enable/disable logic that is based on checks if the layer supports delete
          */
         "disabled": boolean;
@@ -515,6 +519,20 @@ export namespace Components {
           * esri/views/layers/FeatureLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html
          */
         "layer": __esri.FeatureLayer;
+    }
+    interface DeleteDialog {
+        /**
+          * number[]: The ids that would be deleted
+         */
+        "ids": any[];
+        /**
+          * esri/views/layers/FeatureLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html
+         */
+        "layer": __esri.FeatureLayer;
+        /**
+          * boolean: When true the delete dialog will be displayed
+         */
+        "open": boolean;
     }
     interface EditCard {
         /**
@@ -1813,6 +1831,10 @@ export interface DeleteButtonCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLDeleteButtonElement;
 }
+export interface DeleteDialogCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLDeleteDialogElement;
+}
 export interface EditCardCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLEditCardElement;
@@ -2079,6 +2101,24 @@ declare global {
     var HTMLDeleteButtonElement: {
         prototype: HTMLDeleteButtonElement;
         new (): HTMLDeleteButtonElement;
+    };
+    interface HTMLDeleteDialogElementEventMap {
+        "editsComplete": EditType;
+        "deleteDialogClose": void;
+    }
+    interface HTMLDeleteDialogElement extends Components.DeleteDialog, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLDeleteDialogElementEventMap>(type: K, listener: (this: HTMLDeleteDialogElement, ev: DeleteDialogCustomEvent<HTMLDeleteDialogElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLDeleteDialogElementEventMap>(type: K, listener: (this: HTMLDeleteDialogElement, ev: DeleteDialogCustomEvent<HTMLDeleteDialogElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLDeleteDialogElement: {
+        prototype: HTMLDeleteDialogElement;
+        new (): HTMLDeleteDialogElement;
     };
     interface HTMLEditCardElementEventMap {
         "closeEdit": void;
@@ -2614,6 +2654,7 @@ declare global {
         "crowdsource-reporter": HTMLCrowdsourceReporterElement;
         "deduct-calculator": HTMLDeductCalculatorElement;
         "delete-button": HTMLDeleteButtonElement;
+        "delete-dialog": HTMLDeleteDialogElement;
         "edit-card": HTMLEditCardElement;
         "feature-comments": HTMLFeatureCommentsElement;
         "feature-details": HTMLFeatureDetailsElement;
@@ -3207,6 +3248,10 @@ declare namespace LocalJSX {
          */
         "buttonType"?: ButtonType;
         /**
+          * calcite-modal: Use this prop when using the button within a parent like a dropdown that would constrain the modal and that is not desired
+         */
+        "deleteDialog"?: any;
+        /**
           * boolean: This overrides internal enable/disable logic that is based on checks if the layer supports delete
          */
         "disabled"?: boolean;
@@ -3226,6 +3271,28 @@ declare namespace LocalJSX {
           * Emitted on demand when features have been deleted
          */
         "onEditsComplete"?: (event: DeleteButtonCustomEvent<EditType>) => void;
+    }
+    interface DeleteDialog {
+        /**
+          * number[]: The ids that would be deleted
+         */
+        "ids"?: any[];
+        /**
+          * esri/views/layers/FeatureLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html
+         */
+        "layer"?: __esri.FeatureLayer;
+        /**
+          * Emitted on demand when features have been deleted
+         */
+        "onDeleteDialogClose"?: (event: DeleteDialogCustomEvent<void>) => void;
+        /**
+          * Emitted on demand when features have been deleted
+         */
+        "onEditsComplete"?: (event: DeleteDialogCustomEvent<EditType>) => void;
+        /**
+          * boolean: When true the delete dialog will be displayed
+         */
+        "open"?: boolean;
     }
     interface EditCard {
         /**
@@ -4463,6 +4530,7 @@ declare namespace LocalJSX {
         "crowdsource-reporter": CrowdsourceReporter;
         "deduct-calculator": DeductCalculator;
         "delete-button": DeleteButton;
+        "delete-dialog": DeleteDialog;
         "edit-card": EditCard;
         "feature-comments": FeatureComments;
         "feature-details": FeatureDetails;
@@ -4523,6 +4591,7 @@ declare module "@stencil/core" {
             "crowdsource-reporter": LocalJSX.CrowdsourceReporter & JSXBase.HTMLAttributes<HTMLCrowdsourceReporterElement>;
             "deduct-calculator": LocalJSX.DeductCalculator & JSXBase.HTMLAttributes<HTMLDeductCalculatorElement>;
             "delete-button": LocalJSX.DeleteButton & JSXBase.HTMLAttributes<HTMLDeleteButtonElement>;
+            "delete-dialog": LocalJSX.DeleteDialog & JSXBase.HTMLAttributes<HTMLDeleteDialogElement>;
             "edit-card": LocalJSX.EditCard & JSXBase.HTMLAttributes<HTMLEditCardElement>;
             "feature-comments": LocalJSX.FeatureComments & JSXBase.HTMLAttributes<HTMLFeatureCommentsElement>;
             "feature-details": LocalJSX.FeatureDetails & JSXBase.HTMLAttributes<HTMLFeatureDetailsElement>;

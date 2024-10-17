@@ -39,6 +39,11 @@ export class DeleteButton {
   //--------------------------------------------------------------------------
 
   /**
+   * calcite-modal: Use this prop when using the button within a parent like a dropdown that would constrain the modal and that is not desired
+   */
+  @Prop() deleteDialog;
+
+  /**
    * ButtonType (button | action): Support usage as action or button
    */
   @Prop() buttonType: ButtonType = "button";
@@ -78,11 +83,6 @@ export class DeleteButton {
    * boolean: When true the user can delete the current features
    */
   @State() _deleteEndabled = false;
-
-  /**
-   * boolean: When true a loading indicator will be shown in the delete button
-   */
-  @State() _isDeleting = false;
 
   /**
    * boolean: When true the layer supports delete and a button will be returned
@@ -238,67 +238,15 @@ export class DeleteButton {
    * @returns node to confirm or deny the delete operation
    */
   protected _deleteMessage(): VNode {
-    const confirmMessage = this.ids.length === 1 ? this._translations.confirmSingle :
-      this._translations.confirmMultiple;
-    return (
-      <calcite-modal
-        aria-labelledby="modal-title"
-        class="delete-modal"
-        kind="danger"
-        onCalciteModalClose={() => this._deleteClosed()}
+    return this.deleteDialog ? this.deleteDialog : (
+      <delete-dialog
+        id="solution-delete-dialog"
+        ids={this.ids}
+        layer={this.layer}
+        onDeleteDialogClose={() => this._confirmDelete = false}
         open={this._confirmDelete}
-      >
-        <div
-          class="display-flex align-center"
-          id="modal-title"
-          slot="header"
-        >
-          {this._translations.deleteFeature}
-        </div>
-        <div slot="content">
-          {confirmMessage}
-        </div>
-        <calcite-button
-          appearance="outline"
-          kind="danger"
-          onClick={() => this._deleteClosed()}
-          slot="secondary"
-          width="full"
-        >
-          {this._translations.cancel}
-        </calcite-button>
-        <calcite-button
-          kind="danger"
-          loading={this._isDeleting}
-          onClick={() => void this._deleteFeatures()}
-          slot="primary" width="full">
-          {this._translations.delete}
-        </calcite-button>
-      </calcite-modal>
+      />
     );
-  }
-
-  /**
-   * Delete the currently selected features
-   */
-  protected async _deleteFeatures(): Promise<void> {
-    this._isDeleting = true;
-    const deleteFeatures = this.ids.map((objectId) => {
-      return { objectId };
-    });
-    await this.layer.applyEdits({
-      deleteFeatures
-    });
-    this._isDeleting = false;
-    this._deleteClosed();
-    this.editsComplete.emit("delete")
-  }
-
-  /**
-   * Set the alertOpen member to false when the alert is closed
-   */
-  protected _deleteClosed(): void {
-    this._confirmDelete = false;
   }
 
   /**

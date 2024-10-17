@@ -95,6 +95,7 @@ Type: `Promise<void>`
 - calcite-panel
 - calcite-input
 - calcite-loader
+- [delete-dialog](../delete-dialog)
 - calcite-action-bar
 - [map-layer-picker](../map-layer-picker)
 - calcite-dropdown
@@ -115,6 +116,7 @@ graph TD;
   layer-table --> calcite-panel
   layer-table --> calcite-input
   layer-table --> calcite-loader
+  layer-table --> delete-dialog
   layer-table --> calcite-action-bar
   layer-table --> map-layer-picker
   layer-table --> calcite-dropdown
@@ -139,6 +141,12 @@ graph TD;
   calcite-scrim --> calcite-loader
   calcite-input --> calcite-progress
   calcite-input --> calcite-icon
+  delete-dialog --> calcite-modal
+  delete-dialog --> calcite-button
+  calcite-modal --> calcite-scrim
+  calcite-modal --> calcite-icon
+  calcite-button --> calcite-loader
+  calcite-button --> calcite-icon
   calcite-action-bar --> calcite-action-group
   calcite-action-group --> calcite-action-menu
   calcite-action-group --> calcite-action
@@ -162,8 +170,6 @@ graph TD;
   calcite-combobox --> calcite-icon
   calcite-combobox-item --> calcite-icon
   calcite-chip --> calcite-icon
-  calcite-button --> calcite-loader
-  calcite-button --> calcite-icon
   calcite-dropdown-item --> calcite-icon
   instant-apps-social-share --> calcite-popover
   instant-apps-social-share --> calcite-button
@@ -172,9 +178,7 @@ graph TD;
   delete-button --> calcite-button
   delete-button --> calcite-action
   delete-button --> calcite-tooltip
-  delete-button --> calcite-modal
-  calcite-modal --> calcite-scrim
-  calcite-modal --> calcite-icon
+  delete-button --> delete-dialog
   instant-apps-filter-list --> calcite-panel
   instant-apps-filter-list --> calcite-loader
   instant-apps-filter-list --> calcite-checkbox

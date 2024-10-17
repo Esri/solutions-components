@@ -1,0 +1,8 @@
+{
+  "cancel": "Atšaukti",
+  "confirmMultiple": "Šie elementai bus pašalinti visam laikui.",
+  "confirmSingle": "Šis elementas bus pašalintas visam laikui.",
+  "delete": "Pašalinti",
+  "deleteCount": "Ištrinti ({{n}})",
+  "deleteFeature": "Ištrinti elementą"
+}

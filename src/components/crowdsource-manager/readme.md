@@ -106,7 +106,9 @@ graph TD;
   delete-button --> calcite-button
   delete-button --> calcite-action
   delete-button --> calcite-tooltip
-  delete-button --> calcite-modal
+  delete-button --> delete-dialog
+  delete-dialog --> calcite-modal
+  delete-dialog --> calcite-button
   calcite-modal --> calcite-scrim
   calcite-modal --> calcite-icon
   map-card --> calcite-progress
@@ -202,6 +204,7 @@ graph TD;
   layer-table --> calcite-panel
   layer-table --> calcite-input
   layer-table --> calcite-loader
+  layer-table --> delete-dialog
   layer-table --> calcite-action-bar
   layer-table --> map-layer-picker
   layer-table --> calcite-dropdown
