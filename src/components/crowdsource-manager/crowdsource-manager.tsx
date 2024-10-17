@@ -394,6 +394,27 @@ export class CrowdsourceManager {
   //--------------------------------------------------------------------------
 
   /**
+   * Adjust layout based on current appLayout value
+   */
+  @Watch("appLayout")
+  appLayoutWatchHandler(
+    newAppLayout: AppLayout,
+    oldAppLayout: AppLayout
+  ): void {
+    if (newAppLayout !== oldAppLayout) {
+      this._setActiveLayout(newAppLayout);
+      // update the layer if table selected while switching to map view
+      if (this.appLayout === "mapView" && this._layer.isTable) {
+        void this._mapCard.updateLayer()
+      }
+      if (this._isMapViewOnLoad) {
+        void this._layerTable.refresh();
+        this._isMapViewOnLoad = false;
+      }
+    }
+  }
+
+  /**
    * When true the map zoom tools will be available
    */
   @Watch("enableZoom")
@@ -486,7 +507,7 @@ export class CrowdsourceManager {
     layer && await layer.when(() => {
       // on render if no layer is present and only one table is present in map and app is in map view layer then change it to split layout
       if (this._layerIds.length === 0 && this.appLayout === 'mapView' && layer.isTable) {
-        this._changeLayout('splitView');
+        this.appLayout = "splitView";
       }
       this._layer = layer;
       this._initLayerExpressions();
@@ -618,7 +639,9 @@ export class CrowdsourceManager {
    *
    * @protected
    */
-  protected _setActiveLayout(appLayout: AppLayout): void {
+  protected _setActiveLayout(
+    appLayout: AppLayout
+  ): void {
     //When going to splitView layout the panel should be open
     if (appLayout === 'splitView' && !this._panelOpen) {
       this._toggleLayout();
@@ -935,11 +958,10 @@ export class CrowdsourceManager {
           layer={this._layer}
           mapView={this?._mapView}
           onBackFromCreateWorkFlow={() => {
-            this._changeLayout(this.appLayout);
             this._showInformationHeader = true;
           }}
           onCreateWorkFlowStarted={() => {
-            this._changeLayout(this._layer.isTable ? "tableView" : "mapView");
+            this.appLayout = this._layer.isTable ? "tableView" : "mapView";
             this._showInformationHeader = false;
           }}
           onFeatureOrRecordSubmitted={() => void this._layerTable.refresh()}
@@ -1042,7 +1064,7 @@ export class CrowdsourceManager {
           class="toggle-node"
           icon={"browser"}
           id={"browser-action"}
-          onClick={() => { this._changeLayout('splitView') }}
+          onClick={() => { this.appLayout = "splitView" }}
           text=""
         />
         <calcite-tooltip
@@ -1057,7 +1079,7 @@ export class CrowdsourceManager {
           class="toggle-node"
           icon={"dock-left"}
           id={"dock-left-action"}
-          onClick={() => { this._changeLayout('tableView') }}
+          onClick={() => { this.appLayout = "tableView" }}
           text=""
         />
         <calcite-tooltip
@@ -1073,7 +1095,7 @@ export class CrowdsourceManager {
           disabled={this._layerIds?.length === 0}
           icon={"browser-map"}
           id={"browser-map-action"}
-          onClick={() => { this._changeLayout('mapView') }}
+          onClick={() => { this.appLayout = "mapView" }}
           text=""
         />
         <calcite-tooltip
@@ -1210,7 +1232,7 @@ export class CrowdsourceManager {
     if (this._isMobile) {
       this.showHideMapPopupAndTable(!this._isMobile);
       this._isPortraitMobile = !!window.matchMedia("(orientation: portrait)").matches;
-      this._changeLayout('splitView');
+      this.appLayout = "splitView";
     } else {
       this._isPortraitMobile = false;
     }
@@ -1228,33 +1250,12 @@ export class CrowdsourceManager {
   }
 
   /**
-   * Changes the layout mode
-   * @param appLayout selected active app layout
-   *
-   * @protected
-   */
-  protected _changeLayout(appLayout: AppLayout): void {
-    if (this.appLayout !== appLayout) {
-      this._setActiveLayout(appLayout);
-      this.appLayout = appLayout;
-      // update the layer if table selected while switching to map view
-      if (this.appLayout === "mapView" && this._layer.isTable) {
-        void this._mapCard.updateLayer()
-      }
-      if (this._isMapViewOnLoad) {
-        void this._layerTable.refresh();
-        this._isMapViewOnLoad = false;
-      }
-    }
-  }
-
-  /**
     * shows the map in card view
     *
     * @protected
     */
   protected _showMapInCardView(): void {
-    if (this.appLayout === 'mapView') {
+    if (this.appLayout !== "mapView") {
       const fullMapView = document.getElementById('full-map-view').childNodes[0];
       const splitMapClass = document.getElementById('card-mapView');
       if (fullMapView) {
