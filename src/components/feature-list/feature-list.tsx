@@ -607,7 +607,7 @@ export class FeatureList {
         {this.showFeatureSymbol &&
           <div
             class={'feature-symbol'}
-            ref={(el) => el && el.appendChild(featureSymbol)}
+            ref={(el) => el && el.replaceChildren(featureSymbol)}
             slot="content-start" />}
 
         <div
