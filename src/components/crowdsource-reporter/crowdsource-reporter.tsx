@@ -818,6 +818,7 @@ export class CrowdsourceReporter {
       if (canRestoreFilter) {
         void this._filterList.restoreFilters(this._filterUrlParams[0], this._filterInitState);
       }
+      this._filterInitState = null;
     }, 200);
   }
 
@@ -848,7 +849,6 @@ export class CrowdsourceReporter {
     //set the filter active state based on the length of applied filters
     this._filterActive = this._filterList.urlParams.getAll('filter').length > 0;
     this._filterUrlParams = this._filterList.urlParams.getAll('filter');
-    this._filterInitState = await this._filterList.getFilterInitState();
     await this._featureList.refresh();
     if (this._layerList) {
       await this._layerList.refresh();
@@ -1229,6 +1229,16 @@ export class CrowdsourceReporter {
   }
 
   /**
+   * On back from filter panel get the filter's init state
+   * @protected
+   */
+  protected async backFromFilterPanel(): Promise<void> {
+    this._filterInitState = await this._filterList.getFilterInitState();
+    await this._featureList.refresh();
+    this.backFromSelectedPanel();
+  }
+
+  /**
    * On back from selected panel navigate to the previous panel
    * @protected
    */
@@ -1415,7 +1425,7 @@ export class CrowdsourceReporter {
         collapsed={this.isMobile && this._sidePanelCollapsed}
         heading={this._translations?.filterLayerTitle?.replace("{{title}}", this._selectedLayerName)}
         loading={this._showLoadingIndicator}
-        onCalciteFlowItemBack={this.backFromSelectedPanel.bind(this)}>
+        onCalciteFlowItemBack={this.backFromFilterPanel.bind(this)}>
         {this.isMobile && this.getActionToExpandCollapsePanel()}
         <div class={"width-full"}
           slot="footer">
@@ -1432,7 +1442,7 @@ export class CrowdsourceReporter {
             <calcite-button
               appearance="outline"
               class={"footer-button"}
-              onClick={this.backFromSelectedPanel.bind(this)}
+              onClick={this.backFromFilterPanel.bind(this)}
               width="full">
               {this._translations.close}
             </calcite-button>
