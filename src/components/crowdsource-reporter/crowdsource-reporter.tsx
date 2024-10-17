@@ -512,7 +512,8 @@ export class CrowdsourceReporter {
         }
       }
     }
-    if (this._layerList) {
+    // refresh layer list when user is on layer list panel
+    if (this._flowItems[this._flowItems.length - 1] === "layer-list" && this._layerList) {
       await this._layerList.refresh();
     }
     if (this._featureList) {
@@ -531,7 +532,8 @@ export class CrowdsourceReporter {
     if (this._editableLayerIds) {
       await this._updateFeatures();
       setTimeout(() => {
-        if (this._layerList) {
+        // refresh layer list when user is on layer list panel 
+        if (this._flowItems[this._flowItems.length - 1] === "layer-list" && this._layerList) {
           void this._layerList.refresh();
         }
         if (this._featureList) {
@@ -831,12 +833,6 @@ export class CrowdsourceReporter {
     this._filterActive = false;
     this._filterUrlParams = null;
     this._filterInitState = null;
-    if (this._featureList) {
-      await this._featureList.refresh();
-    }
-    if (this._layerList) {
-      await this._layerList.refresh();
-    }
   }
 
   /**
@@ -850,9 +846,6 @@ export class CrowdsourceReporter {
     this._filterActive = this._filterList.urlParams.getAll('filter').length > 0;
     this._filterUrlParams = this._filterList.urlParams.getAll('filter');
     await this._featureList.refresh();
-    if (this._layerList) {
-      await this._layerList.refresh();
-    }
     this._showLoadingIndicator = false;
   }
 
