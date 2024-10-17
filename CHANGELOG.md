@@ -6,6 +6,10 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.10.35] - October 17th 2024
+Delivery for Reporter AGOL-2024.R03 - UAT #966
+Add delete-dialog
+
 ## [0.10.34] - October 16th 2024
 Show share in map view and add appLayout for share
 
@@ -856,4 +860,5 @@ Recover from test releases
 [0.10.32]: https://github.com/Esri/solution.js/compare/v0.10.31...v0.10.32 "v0.10.32"
 [0.10.33]: https://github.com/Esri/solution.js/compare/v0.10.32...v0.10.33 "v0.10.33"
 [0.10.34]: https://github.com/Esri/solution.js/compare/v0.10.33...v0.10.34 "v0.10.34"
-[Unreleased]: https://github.com/Esri/solution.js/compare/v0.10.34...HEAD "Unreleased Changes"
+[0.10.35]: https://github.com/Esri/solution.js/compare/v0.10.34...v0.10.35 "v0.10.35"
+[Unreleased]: https://github.com/Esri/solution.js/compare/v0.10.35...HEAD "Unreleased Changes"
