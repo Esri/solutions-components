@@ -1061,15 +1061,15 @@ export class CrowdsourceReporter {
    * On submit report navigate to the layer list home page and refresh the layer list
    * @protected
    */
-  protected onReportSubmitted(): void {
-    //on report submit form will be closed, so update the form state
+  protected async onReportSubmitted(): Promise<void> {
+    void this.updateNonVisibleLayersOnMap(false);
+    await this.navigateToHomePage();
+    this._reportSubmitted = true;
+    this._updatedProgressBarStatus = 0.25;
+     //on report submit form will be closed, so update the form state
     if (this._showFullPanel) {
       this.updatePanelState(this._sidePanelCollapsed, false);
     }
-    void this.updateNonVisibleLayersOnMap(false);
-    this._reportSubmitted = true;
-    this._updatedProgressBarStatus = 0.25;
-    void this.navigateToHomePage();
   }
 
   /**
@@ -1102,11 +1102,11 @@ export class CrowdsourceReporter {
    * @protected
    */
   protected async navigateToHomePage(): Promise<void> {
-    if (this._layerList) {
-      void this._layerList.refresh();
-    }
+    // set the selected features and then refresh the layer list to maintain the layer's visibility state
     await this.setSelectedFeatures([]);
-
+    if (this._layerList) {
+      await this._layerList.refresh();
+    }
     if (this._editableLayerIds.length === 1) {
       await this._featureList.refresh();
       this._flowItems = ["feature-list"];

@@ -366,11 +366,13 @@ export class FeatureDetails {
    * @protected
    */
   protected async getCompleteGraphic(graphic: __esri.Graphic): Promise<void> {
-    const layer = graphic.layer as __esri.FeatureLayer
-    const query = layer.createQuery();
-    query.objectIds = [graphic.getObjectId()];
-    const completeGraphic = await layer.queryFeatures(query);
-    this._selectedGraphic = completeGraphic.features[0];
+    if (graphic) {
+      const layer = graphic.layer as __esri.FeatureLayer;
+      const query = layer.createQuery();
+      query.objectIds = [graphic.getObjectId()];
+      const completeGraphic = await layer.queryFeatures(query);
+      this._selectedGraphic = completeGraphic.features[0];
+    }
   }
 
   /**

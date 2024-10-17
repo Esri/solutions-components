@@ -566,7 +566,9 @@ export class CreateFeature {
         if (state === 'ready') {
           this._mapViewContainer?.classList?.replace("show-map", "hide-map");
           this._editor.viewModel.featureFormViewModel.on('submit', this.submitted.bind(this));
-          void this._setFloorLevel(this.floorLevel);
+          setTimeout(() => {
+            void this._setFloorLevel(this.floorLevel);
+          }, 50);
           this._currentPage = 'featureForm';
           this.progressStatus.emit(1);
           this.drawComplete.emit();
