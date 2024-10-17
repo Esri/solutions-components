@@ -161,6 +161,7 @@ export class MapLegend {
       if (!this.legendWidget) {
         this.legendWidget = new this.Legend({
           container: this._legendElement,
+          respectLayerDefinitionExpression: true,
           view
         });
       } else {
