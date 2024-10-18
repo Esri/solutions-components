@@ -420,7 +420,15 @@ export class EditCard {
   protected async _startUpdate(): Promise<void> {
     console.log(`_startUpdate`)
 
-    await this._editor.startUpdateWorkflowAtFeatureEdit(this.graphics[this.graphicIndex]);
+    const g = this.graphics[this.graphicIndex];
+    const l = g.layer as __esri.FeatureLayer;
+    const query = l.createQuery();
+    query.objectIds = [g.getObjectId()];
+    query.returnGeometry = true;
+    const { features } = await l.queryFeatures(query);
+
+    // await this._editor.startUpdateWorkflowAtFeatureEdit(this.graphics[this.graphicIndex]);
+    await this._editor.startUpdateWorkflowAtFeatureEdit(features[0]);
     this._shouldClose = true;
   }
 

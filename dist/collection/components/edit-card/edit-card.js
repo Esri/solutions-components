@@ -294,7 +294,14 @@ export class EditCard {
      */
     async _startUpdate() {
         console.log(`_startUpdate`);
-        await this._editor.startUpdateWorkflowAtFeatureEdit(this.graphics[this.graphicIndex]);
+        const g = this.graphics[this.graphicIndex];
+        const l = g.layer;
+        const query = l.createQuery();
+        query.objectIds = [g.getObjectId()];
+        query.returnGeometry = true;
+        const { features } = await l.queryFeatures(query);
+        // await this._editor.startUpdateWorkflowAtFeatureEdit(this.graphics[this.graphicIndex]);
+        await this._editor.startUpdateWorkflowAtFeatureEdit(features[0]);
         this._shouldClose = true;
     }
     /**
