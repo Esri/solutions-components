@@ -93,8 +93,16 @@ describe("downloadUtils", () => {
 
     it("handles some special characters", () => {
       const labelText =
-        "<div style='text-align: left;'>&lt;{NAME}&gt;<br />{STREET}<br/>{CITY},&nbsp;{STATE}&nbsp;{ZIP}<br></div>";
-      const expectedCleanedText = "<{NAME}>|{STREET}|{CITY}, {STATE} {ZIP}";
+        "<div style='text-align: left;'>&lt;{NAME}&gt;<br />{STREET}<br/>{CITY},&nbsp;{STATE}\xA0{ZIP}<br></div>";
+      const expectedCleanedText = "&lt;{NAME}&gt;|{STREET}|{CITY}, {STATE} {ZIP}";
+
+      const result: string = downloadUtils._cleanupLabel(labelText);
+      expect(result).toEqual(expectedCleanedText);
+    });
+
+    it("handles embedded script tag", () => {
+      const labelText = "<scrip<script>is removed</script>t>alert(123)</script>";
+      const expectedCleanedText = "&lt;scrip&lt;script&gt;is removed&lt;/script&gt;t&gt;alert(123)&lt;/script&gt;";
 
       const result: string = downloadUtils._cleanupLabel(labelText);
       expect(result).toEqual(expectedCleanedText);
@@ -182,16 +190,6 @@ describe("downloadUtils", () => {
       const popupInfo =
         "\n<div style='text-align: left;'><span style='font-weight:bold'>{NAME}</span><br />{STREET}<br />{CITY},\xA0{STATE}\xA0{ZIP}\xA0<br /></div>\n";
       const expectedLabelSpec = "{NAME}|{STREET}|{CITY}, {STATE} {ZIP}";
-
-      const result: downloadUtils.ILabelFormat = downloadUtils._convertPopupTextToLabelSpec(popupInfo);
-      expect(result.type).toEqual("pattern");
-      expect(result.format).toEqual(expectedLabelSpec);
-    });
-
-    it("handles some special characters", () => {
-      const popupInfo =
-        "<div style='text-align: left;'>&lt;{NAME}&gt;<br />{STREET}<br/>{CITY},&nbsp;{STATE}&nbsp;{ZIP}<br></div>";
-      const expectedLabelSpec = "<{NAME}>|{STREET}|{CITY}, {STATE} {ZIP}";
 
       const result: downloadUtils.ILabelFormat = downloadUtils._convertPopupTextToLabelSpec(popupInfo);
       expect(result.type).toEqual("pattern");
