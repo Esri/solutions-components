@@ -176,6 +176,8 @@ export class EditCard {
 
   @Watch("open")
   async openWatchHandler(v: boolean): Promise<void> {
+    console.log(`openWatchHandler`)
+
     if (v && this.graphics?.length > 0 && this.graphicIndex > -1) {
       this._editorLoading = true;
       await this._initEditorWidget();
@@ -369,6 +371,7 @@ export class EditCard {
       this._activeWorkflowHandle = this.reactiveUtils.watch(
         () => (this._editor.viewModel.activeWorkflow as any)?.activeWorkflow,
         (activeWorkflow) => {
+          console.log(`activeWorkflow: ${activeWorkflow}`)
           if (activeWorkflow?.type === "update-table-record" || activeWorkflow?.type === "create-features") {
             this._shouldClose = false;
           }
@@ -392,6 +395,8 @@ export class EditCard {
   protected async _closeEdit(
     destroyOnClose: boolean
   ): Promise<void> {
+    console.log(`_closeEdit`)
+
     this._shouldClose = true;
     if (destroyOnClose && this._editor?.activeWorkflow) {
       if ((this._editor.activeWorkflow as any)?.activeWorkflow?.hasPendingEdits) {
@@ -413,6 +418,8 @@ export class EditCard {
    * Start the update workflow for the editor widget
    */
   protected async _startUpdate(): Promise<void> {
+    console.log(`_startUpdate`)
+
     await this._editor.startUpdateWorkflowAtFeatureEdit(this.graphics[this.graphicIndex]);
     this._shouldClose = true;
   }

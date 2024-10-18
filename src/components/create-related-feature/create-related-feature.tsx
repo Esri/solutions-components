@@ -289,7 +289,9 @@ export class CreateRelatedFeature {
     const handle = this.reactiveUtils.watch(
       () => this._editor.viewModel.featureTemplatesViewModel.state,
       (state) => {
+        console.log(`CRF state: ${state}`)
         if (state === 'ready') {
+
           this._editorLoading = true;
         }
       });
@@ -315,6 +317,8 @@ export class CreateRelatedFeature {
     const formHandle = this.reactiveUtils.watch(
       () => this._editor.viewModel.featureFormViewModel?.state,
       (state) => {
+        console.log(`CRF fvm state: ${state}`)
+
         if (state === 'ready') {
           this.formReady.emit();
         }
@@ -354,6 +358,8 @@ export class CreateRelatedFeature {
    * @protected
    */
   protected async hideEditorsElements(): Promise<void> {
+    console.log(`CRF hideEditorsElements`)
+
     if (!this.customizeSubmit) {
       return;
     }

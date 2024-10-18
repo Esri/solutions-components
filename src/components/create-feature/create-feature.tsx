@@ -552,6 +552,8 @@ export class CreateFeature {
     const handle = this.reactiveUtils.watch(
       () => this._editor.viewModel.featureTemplatesViewModel.state,
       (state) => {
+    console.log(`CF state: ${state}`)
+
         if (state === 'ready' && this._editor.viewModel?.activeWorkflow?.type !== "create-features") {
           this.progressStatus.emit(0.5);
           this._editorLoading = true;
@@ -563,6 +565,8 @@ export class CreateFeature {
     const formHandle = this.reactiveUtils.watch(
       () => this._editor.viewModel.featureFormViewModel?.state,
       (state) => {
+    console.log(`CF fvm state: ${state}`)
+
         if (state === 'ready') {
           this._mapViewContainer?.classList?.replace("show-map", "hide-map");
           this._editor.viewModel.featureFormViewModel.on('submit', this.submitted.bind(this));

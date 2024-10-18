@@ -38,11 +38,11 @@
   <script type="module" src="../solutions-components.esm.js"></script>
 
   <script>
-    // require(["esri/config"], (
-    //   esriConfig
-    // ) => {
-    //   esriConfig.portalUrl = "https://holistic.mapsdevext.arcgis.com";
-    // });
+    require(["esri/config"], (
+      esriConfig
+    ) => {
+      esriConfig.portalUrl = "https://holistic.mapsdevext.arcgis.com";
+    });
 
     function infoIconButtonClick(evt) {
       console.log('Introduction window button clicked')
@@ -90,73 +90,18 @@
       demo.mapInfos = [
         ...custom,
         ...[{
-          id: "3715f4899bea4b2a948347c5c2357e58",
-          name: "PN Map"
-        }, {
-          id: "4fa949c89bb04ecb8a9f5ad119448333",
-          name: "CS TIL DATA"
-        }, {
-          id: "f5b01c17a09941eaad63e7b4e6c7d880",
-          name: "Attachments Map"
-        }, {
-          id: "b422923b7a4c4958b9788118255f2f0a",
-          name: "Floor aware map"
-        }, {
-          id: "5dc8ae351ff34280a75f7ffe1115b36b",
-          name: "Standalone table",
-          filterConfig: {
-            mapId: "5dc8ae351ff34280a75f7ffe1115b36b",
-            layerExpressions: [{
-              id: "18c4a8cda15-layer-2",
-              title: "Table_1",
-              operator: " AND ",
-              expressions: [{
-                definitionExpression: "OBJECTID > 14",
-                id: 1702486334825,
-                index: 0,
-                name: "> 14",
-                active: false
-              }]
-            }]
-          }
-        }, {
-          id: "91e220910a994da4abfb0d1763d64ecb",
-          name: "EditMultiLayers",
-          visible: true,
-          layerOptions: {
-            layers: [{
-              id: "18b1fb85a29-layer-3",
-              fields: [
-                "OBJECTID", "a", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "c"
-              ],
-              fieldOrder: [
-                "c", "b", "a", "OBJECTID", "Shape__Area", "Shape__Length", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n"
-              ]
-            }, {
-              id: "18b1fb862df-layer-4",
-              fields: ["OBJECTID", "test"],
-              fieldOrder: ["test", "OBJECTID"]
-            }, {
-              id: "18b1fb82f0e-layer-2",
-              fields: [
-                "URL", "Avg_Stars", "Your_Stars", "Route_Type", "Rating", "Pitches", "Length", "Area_Latitude", "Area_Longitude", "ObjectId"
-              ],
-              fieldOrder: [
-                "Your_Stars", "Route", "Location", "URL", "Avg_Stars", "Route_Type", "Rating", "Pitches", "Length", "Area_Latitude", "Area_Longitude", "ObjectId"
-              ],
-              sortField: "Avg_Stars",
-              sortOrder: "asc"
-            }],
-            mapId: "91e220910a994da4abfb0d1763d64ecb"
-          }
-        }, {
-          id: "7197542839d948258c7862b33f9d96ad",
-          name: "EditPolymap",
-          visible: true
-        }, {
+          id: "e443af6208f6482d8737c406bdbcb17d",
+          name: "Structures",
+          enableInlineEdit: true,
+          enableEditGeometry: true,
+          enableCreateFeatures: true
+        },{
           id: "fbe7bb1907f34d5aa8771ad6475a1dfe",
           name: "Mountain Project",
           visible: true,
+          enableInlineEdit: true,
+          enableEditGeometry: true,
+          enableCreateFeatures: true,
           layerOptions: {
             layers: [{
               id: "18a6ffdeae9-layer-2",
