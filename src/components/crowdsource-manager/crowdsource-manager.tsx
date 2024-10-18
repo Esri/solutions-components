@@ -1256,7 +1256,7 @@ export class CrowdsourceManager {
     */
   protected _showMapInCardView(): void {
     if (this.appLayout !== "mapView") {
-      const fullMapView = document.getElementById('full-map-view').childNodes[0];
+      const fullMapView = document.getElementById('full-map-view')?.childNodes[0];
       const splitMapClass = document.getElementById('card-mapView');
       if (fullMapView) {
         splitMapClass.appendChild(fullMapView);
@@ -1270,7 +1270,7 @@ export class CrowdsourceManager {
    * @protected
    */
   protected _showMapInFullView(): void {
-    const splitMap = document.getElementById('card-mapView').childNodes[0];
+    const splitMap = document.getElementById('card-mapView')?.childNodes[0];
     const fullMapViewClass = document.getElementById('full-map-view');
     if (splitMap) {
       fullMapViewClass.appendChild(splitMap);
