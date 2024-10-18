@@ -21,6 +21,7 @@ import { ILabel, exportPDF } from "./pdfUtils";
 import { loadModules } from "./loadModules";
 import { queryFeaturesByID } from "./queryUtils";
 import { IExportInfo, IExportInfos } from "../utils/interfaces";
+import { Sanitizer } from "@esri/arcgis-html-sanitizer";
 import * as common from "@esri/solution-common";
 
 export { ILabel } from "./pdfUtils";
@@ -277,12 +278,14 @@ export function _cleanupLabel(
   // Replace \n with the line separator character
   labelText = labelText.replace(/\n/gi, "|");
 
-  // Remove remaining HTML tags, replace 0xA0 that popup uses for spaces, and replace some char representations
+  // Remove tricky stuff
+  const sanitizer = new Sanitizer();
+  labelText = sanitizer.sanitize(labelText);
+
+  // Remove remaining HTML tags, replace 0xA0 that popup uses for spaces, and replace &nbsp;
   labelText = labelText
     .replace(/<[\s.]*[^<>]*\/?>/gi, "")
     .replace(/\xA0/gi, " ")
-    .replace(/&lt;/gi, "<")
-    .replace(/&gt;/gi, ">")
     .replace(/&nbsp;/gi, " ");
 
   // Trim each line

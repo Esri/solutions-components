@@ -18,6 +18,10 @@ import { E2EPage, newE2EPage } from '@stencil/core/testing';
 
 describe('spatial-ref', () => {
 
+  beforeAll(() => {
+    console.info = jest.fn();
+  });
+
   let page: E2EPage;
   beforeEach(async () => {
     page = await newE2EPage();
