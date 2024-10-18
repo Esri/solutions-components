@@ -1,0 +1,16 @@
+{
+  "listName": "שם רשימה",
+  "listNamePlaceholder": "הזן שם כאן",
+  "searchDistance": "מרחק חיפוש",
+  "select": "שכבה",
+  "selectedFeatures": "נבחרו {{n}} ישויות",
+  "selectionLoading": "טוען בחירה",
+  "sketch": "שרטוט",
+  "bufferLayer": "שכבת חיץ",
+  "sketchLayer": "שכבת שרטוט",
+  "useLayerFeatures": "השתמש בישויות שכבה",
+  "inputLayer": "שכבת קלט",
+  "useLayerFeaturesTooltip": "בחר שכבה והשתמש בכלי הסקיצה כדי להצביע על ישויות שיכולות לשמש כגבול לצורך בחירת ישויות מצטלבות מתוך שכבת הקלט.",
+  "useSearchDistanceTootip": "הגדר מרחק לכל חיץ חיפוש שישמש לבחירת ישויות קלט המצטלבות עם החיץ.",
+  "placeholder": "חיפוש כתובת או מקום"
+}

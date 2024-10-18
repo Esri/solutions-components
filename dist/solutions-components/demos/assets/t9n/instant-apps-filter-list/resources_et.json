@@ -1,0 +1,16 @@
+{
+  "andOperator": "Tulemustes kuvatakse KÕIK vastavad filtrid",
+  "andOperator2": "AND: tulemustes kuvatakse KÕIK vastavad filtrid",
+  "close": "Sule",
+  "maxSlider": "{field}, ülempiir",
+  "minSlider": "{field}, alampiir",
+  "nextMonth": "Järgmine kuu",
+  "orOperator": "Tulemustes kuvatakse MIS TAHES vastavad filtrid",
+  "orOperator2": "OR: tulemustes kuvatakse MIS TAHES vastavad filtrid",
+  "previousMonth": "Eelmine kuu",
+  "resetDatePicker": "Lähtesta kuupäevavalija",
+  "resetFilter": "Lähtesta filter",
+  "selectFilter": "Vali filter",
+  "zoomTo": "Suumi",
+  "zoomToExtent": "Suumi ulatuseni"
+}

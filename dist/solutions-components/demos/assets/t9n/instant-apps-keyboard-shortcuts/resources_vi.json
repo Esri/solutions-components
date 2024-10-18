@@ -1,0 +1,30 @@
+{
+  "mapShortcuts": {
+    "arrowKeys": "Các phím mũi tên",
+    "nudge": "Di chuyển sang trái, phải, lên hoặc xuống",
+    "N": "Điều chỉnh sang hướng bắc",
+    "A": "Xoay ngược chiều kim đồng hồ",
+    "D": "Xoay theo chiều kim đồng hồ",
+    "plus": "Phóng to tại tâm",
+    "minus": "Thu nhỏ tại tâm"
+  },
+  "sceneShortcuts": {
+    "P": "Di chuyển máy ảnh để nhìn vuông góc với dữ liệu hiển thị trên bản đồ",
+    "N": "Điều chỉnh bản đồ sang hướng bắc",
+    "W": "Nghiêng máy ảnh lên",
+    "A": "Xoay máy ảnh ngược chiều kim đồng hồ",
+    "D": "Xoay máy ảnh theo chiều kim đồng hồ",
+    "S": "Nghiêng máy ảnh xuống",
+    "globalCommands": {
+      "J": "Di chuyển xuống gần bản đồ hơn",
+      "U": "Di chuyển lên cao hơn so với bản đồ"
+    }
+  },
+  "generalShortcuts": {
+    "menu": "menu phím tắt",
+    "shortcut": "Phím tắt",
+    "action": "Hành động",
+    "title": "Chọn bản đồ",
+    "label": "Shortcut của bàn phím"
+  }
+}

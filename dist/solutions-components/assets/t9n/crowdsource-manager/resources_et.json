@@ -1,0 +1,12 @@
+{
+  "open": "Ava",
+  "close": "Sule",
+  "information": "Teave",
+  "expandPopup": "Laienda hüpikaken",
+  "collapsePopup": "Ahenda hüpikaken",
+  "view": "Kuva ({{n}})",
+  "splitView": "Tükeldatud vaade",
+  "tableView": "Tabelivaade",
+  "mapView": "Kaardivaade",
+  "filter": "Filter: {{title}}"
+}

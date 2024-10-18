@@ -1,0 +1,22 @@
+{
+  "clearSelection": "清除选择内容",
+  "delete": "试_Delete_____________验",
+  "exportCSV": "导出到 CSV",
+  "filter": "过滤器：{{title}}",
+  "filters": "过滤器",
+  "hideField": "隐藏字段",
+  "more": "更多",
+  "selectAll": "全选",
+  "share": "共享",
+  "showSelected": "显示所选",
+  "switchSelected": "切换所选",
+  "zoom": "缩放",
+  "editMultiple": "编辑多个",
+  "fetchingData": "正在获取数据",
+  "refresh": "刷新",
+  "showAll": "显示全部",
+  "recordsSelected": "总数：{{total}} | 选择：{{selected}}",
+  "moreOptions": "更多表选项",
+  "showHideColumns": "显示/隐藏列",
+  "searchPlaceholder": "在 {{fields}} 字段中搜索文本"
+}

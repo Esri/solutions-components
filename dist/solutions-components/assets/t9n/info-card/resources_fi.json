@@ -1,0 +1,10 @@
+{
+  "fetchingData": "Noudetaan aineistoa",
+  "edit": "Muokkaa",
+  "enableEditing": "Päivitysominaisuuden on oltava käytössä karttatasossa.",
+  "editDisabled": "Muokkaaminen on poistettu käytöstä",
+  "next": "Seuraava",
+  "back": "Takaisin",
+  "indexOfTotal": "{{index}}/{{total}}",
+  "delete": "Poista"
+}

@@ -1,0 +1,15 @@
+{
+  "noLegend": "Ingen teckenförklaring.",
+  "loading": "Läser in interaktiv teckenförklaring",
+  "open": "Öppna",
+  "close": "Stäng",
+  "expand": "Expandera",
+  "collapse": "Dölj",
+  "totalFeatureCount": "Totalt antal geoobjekt",
+  "showAll": "Visa alla",
+  "zoomTo": "Zooma till",
+  "relationship": {
+    "instructionalText": "Klicka på de färgade rutorna för att filtrera kartan",
+    "notSupported": "Relationsritstil stöds inte för närvarande."
+  }
+}

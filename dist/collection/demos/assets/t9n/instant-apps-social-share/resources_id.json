@@ -1,0 +1,38 @@
+{
+  "share": {
+    "label": "Bagikan"
+  },
+  "embed": {
+    "label": "Sematkan",
+    "copy": "Salin",
+    "width": "Lebar",
+    "height": "Tinggi"
+  },
+  "info": {
+    "label": "Apakah Anda tahu?",
+    "tooltip": "Menyalin tautan akan mempertahankan tampilan peta saat ini, layer yang dapat dilihat, dan pop-up terbuka. Gunakan opsi ini untuk membagikan apa yang Anda lihat di aplikasi."
+  },
+  "success": {
+    "label": "Berhasil!",
+    "url": "URL aplikasi disalin ke papan klip.",
+    "embed": "Sematkan kode yang disalin ke papan klip."
+  },
+  "options": {
+    "link": {
+      "label": "Salin Tautan",
+      "tooltip": "Klik untuk menyalin tautan ke papan klip"
+    },
+    "facebook": {
+      "label": "Facebook",
+      "tooltip": "Klik untuk membagikan ke akun Facebook Anda"
+    },
+    "twitter": {
+      "label": "Twitter",
+      "tooltip": "Klik untuk membagikan ke akun Twitter Anda"
+    },
+    "linkedIn": {
+      "label": "LinkedIn",
+      "tooltip": "Klik untuk membagikan ke akun LinkedIn Anda"
+    }
+  }
+}

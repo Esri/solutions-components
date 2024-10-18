@@ -1,0 +1,12 @@
+{
+  "open": "Otvori",
+  "close": "Zatvori",
+  "information": "Informacije",
+  "expandPopup": "Proširi iskačući prozor",
+  "collapsePopup": "Spusti iskačući prozor",
+  "view": "Prikaz ({{n}})",
+  "splitView": "Podeljeni prikaz",
+  "tableView": "Tabelarni prikaz",
+  "mapView": "Prikaz mape",
+  "filter": "Filter: {{title}}"
+}

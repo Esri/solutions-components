@@ -1,0 +1,12 @@
+{
+  "open": "Deschidere",
+  "close": "Închidere",
+  "information": "Informaţii",
+  "expandPopup": "Extindere pop-up",
+  "collapsePopup": "Restrângere pop-up",
+  "view": "Vizualizare ({{n}})",
+  "splitView": "Vizualizare împărțită",
+  "tableView": "Vizualizare tabel",
+  "mapView": "Vizualizare hartă",
+  "filter": "Filtru: {{title}}"
+}

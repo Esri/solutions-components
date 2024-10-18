@@ -1,0 +1,6 @@
+{
+  "error": "خطأ",
+  "featureErrorMsg": "لم يتم العثور على سجلات.",
+  "thousandsAbbreviation": "بيت_{{abbreviated_value}}k_______________________لاحقة",
+  "millionsAbbreviation": "بيت_{{abbreviated_value}}M_______________________لاحقة"
+}

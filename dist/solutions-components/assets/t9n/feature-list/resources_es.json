@@ -1,0 +1,6 @@
+{
+  "error": "Error",
+  "featureErrorMsg": "No se han encontrado registros.",
+  "thousandsAbbreviation": "á_{{abbreviated_value}}k_______________________Ó",
+  "millionsAbbreviation": "á_{{abbreviated_value}}M_______________________Ó"
+}

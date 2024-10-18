@@ -1,0 +1,6 @@
+{
+  "error": "Chyba",
+  "featureErrorMsg": "Nebyly nalezeny žádné záznamy.",
+  "thousandsAbbreviation": "Ř_{{abbreviated_value}}k_______________________ů",
+  "millionsAbbreviation": "Ř_{{abbreviated_value}}M_______________________ů"
+}

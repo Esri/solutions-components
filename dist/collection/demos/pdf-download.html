@@ -1,0 +1,73 @@
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <title>Pdf Download</title>
+  <!--
+    | Copyright 2022 Esri
+    |
+    | Licensed under the Apache License, Version 2.0 (the "License");
+    | you may not use this file except in compliance with the License.
+    | You may obtain a copy of the License at
+    |
+    |    http://www.apache.org/licenses/LICENSE-2.0
+    |
+    | Unless required by applicable law or agreed to in writing, software
+    | distributed under the License is distributed on an "AS IS" BASIS,
+    | WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    | See the License for the specific language governing permissions and
+    | limitations under the License.
+    -->
+  <style>
+    body {
+      padding: 1rem;
+    }
+
+    .column {
+      width: 300px;
+    }
+
+    #removeDups {
+      float: left;
+    }
+
+    #removeDupsLabel {
+      margin-left: 2.5rem;
+    }
+  </style>
+
+  <link rel="stylesheet" href="https://webapps-cdn.esri.com/CDN/fonts/v1.4.1/fonts.css" />
+  <link rel="stylesheet" type="text/css" href="https://js.arcgis.com/calcite-components/2.13.0/calcite.css" />
+  <link rel="stylesheet" href="../../dist/solutions-components/solutions-components.css" type="text/css">
+
+  <script type="module" src="../../dist/solutions-components/solutions-components.esm.js"></script>
+</head>
+
+<body>
+  <div class="column">
+    <pdf-download id="pdfDownload"></pdf-download>
+    <br>
+    <button onclick="downloadPDF()">Download PDF</button>
+    <button onclick="downloadCSV()">Download CSV</button>
+    <br><br>
+    <calcite-switch checked id="removeDups"></calcite-switch> <calcite-label id="removeDupsLabel">Remove
+      duplicates</calcite-label>
+  </div>
+
+  <script>
+    const pdfDownload = document.getElementById("pdfDownload");
+    const removeDups = document.getElementById("removeDups");
+    const ids = [];
+
+    function downloadPDF() {
+      pdfDownload.downloadPDF(ids, removeDups.checked);
+    }
+
+    function downloadCSV() {
+      pdfDownload.downloadCSV(ids, removeDups.checked);
+    }
+  </script>
+</body>
+
+</html>

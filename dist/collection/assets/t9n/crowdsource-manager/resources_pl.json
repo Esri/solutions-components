@@ -1,0 +1,12 @@
+{
+  "open": "Otwórz",
+  "close": "Zamknij",
+  "information": "Informacje",
+  "expandPopup": "Rozwiń okno podręczne",
+  "collapsePopup": "Zwiń okno podręczne",
+  "view": "Widok ({{n}})",
+  "splitView": "Widok podzielony",
+  "tableView": "Widok tabeli",
+  "mapView": "Widok mapy",
+  "filter": "Filtr: {{title}}"
+}

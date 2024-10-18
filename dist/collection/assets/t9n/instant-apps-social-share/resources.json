@@ -1,0 +1,38 @@
+{
+  "share": {
+    "label": "Share"
+  },
+  "embed": {
+    "label": "Embed",
+    "copy": "Copy",
+    "width": "Width",
+    "height": "Height"
+  },
+  "info": {
+    "label": "Did you know?",
+    "tooltip": "You can share what you see in the app. All share options will preserve the current map view, visible layers, and open popups."
+  },
+  "success": {
+    "label": "Success!",
+    "url": "App URL copied to clipboard.",
+    "embed": "Embed code copied to clipboard."
+  },
+  "options": {
+    "link": {
+      "label": "Copy Link",
+      "tooltip": "Click to copy link to clipboard"
+    },
+    "facebook": {
+      "label": "Facebook",
+      "tooltip": "Click to share to your Facebook account"
+    },
+    "twitter": {
+      "label": "Twitter",
+      "tooltip": "Click to share to your Twitter account"
+    },
+    "linkedIn": {
+      "label": "LinkedIn",
+      "tooltip": "Click to share to your LinkedIn account"
+    }
+  }
+}

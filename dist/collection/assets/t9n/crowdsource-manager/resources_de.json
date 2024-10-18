@@ -1,0 +1,12 @@
+{
+  "open": "Öffnen",
+  "close": "Schließen",
+  "information": "Informationen",
+  "expandPopup": "Pop-up einblenden",
+  "collapsePopup": "Pop-up ausblenden",
+  "view": "Anzeigen ({{n}})",
+  "splitView": "Geteilte Ansicht",
+  "tableView": "Tabellensicht",
+  "mapView": "Kartenansicht",
+  "filter": "Filter: {{title}}"
+}

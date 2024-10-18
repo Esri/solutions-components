@@ -1,0 +1,477 @@
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <title>Solution Item Accordion</title>
+  <!--
+    | Copyright 2024 Esri
+    |
+    | Licensed under the Apache License, Version 2.0 (the "License");
+    | you may not use this file except in compliance with the License.
+    | You may obtain a copy of the License at
+    |
+    |    http://www.apache.org/licenses/LICENSE-2.0
+    |
+    | Unless required by applicable law or agreed to in writing, software
+    | distributed under the License is distributed on an "AS IS" BASIS,
+    | WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    | See the License for the specific language governing permissions and
+    | limitations under the License.
+    -->
+  <style>
+    .main {
+      background-color: var(--calcite-color-foreground-1);
+      display: grid;
+      align-self: center;
+    }
+
+    .column {
+      min-width: 300px;
+      padding: 1rem;
+      border: 1px solid var(--calcite-color-border-2);
+    }
+  </style>
+
+  <link rel="stylesheet" type="text/css" href="https://js.arcgis.com/calcite-components/2.13.0/calcite.css" />
+  <link rel="stylesheet" href="../solutions-components.css" type="text/css">
+
+  <script type="module" src="../solutions-components.esm.js"></script>
+
+  <script>
+    function addValues() {
+      const demo = document.getElementById("demo");
+      demo.templateInfos = [{
+        "id": "6714dd99931140b3a8d90e2536df6f09",
+        "type": "Hub Site Application",
+        "title": "Adopt-A-Catch Basin",
+        "typeKeywords": [
+          "Hub",
+          "hubSite",
+          "hubSolution",
+          "JavaScript",
+          "Map",
+          "Mapping Site",
+          "Online Map",
+          "OpenData",
+          "Ready To Use",
+          "selfConfigured",
+          "Web Map",
+          "Registered App"
+        ],
+        "snippet": "An ArcGIS Hub site used by the general public to learn how they get involved in the Adopt-A-Catch Basin program."
+      },
+      {
+        "id": "843610c2482c4265992e18334cfd7793",
+        "type": "Form",
+        "title": "Catch Basin Request",
+        "typeKeywords": [
+          "Form",
+          "Survey123",
+          "Survey123 Connect",
+          "xForm"
+        ],
+        "snippet": "An ArcGIS Survey123 form used by general public to submit requests for service."
+      },
+      {
+        "id": "cd5eb9f889b3471c8c3353824f095bb2",
+        "type": "Form",
+        "title": "Catch Basin Activities",
+        "typeKeywords": [
+          "Form",
+          "Survey123",
+          "Survey123 Connect",
+          "xForm"
+        ],
+        "snippet": "An ArcGIS Survey123 form used by volunteers to report catch basin clearing activities."
+      },
+      {
+        "id": "9c0c5691395b43959aa2464ddcfb0d3a",
+        "type": "Form",
+        "title": "Catch Basin Volunteer Application",
+        "typeKeywords": [
+          "Form",
+          "Survey123",
+          "Survey123 Connect",
+          "xForm"
+        ],
+        "snippet": "An ArcGIS Survey123 form used by volunteers to express interest in the Adopt-A-Catch Basin program."
+      },
+      {
+        "id": "6bb0514c5aad46ccb64d15eb18a9eddd",
+        "type": "Notebook",
+        "title": "Catch Basin Volunteer Notebook",
+        "typeKeywords": [
+          "Notebook",
+          "Python"
+        ],
+        "snippet": "An ArcGIS Notebooks app used to grant approved volunteers access to the Adopt-A-Catch Basin program."
+      },
+      {
+        "id": "74b2c9b630e3488d8b6799ab8f32573e",
+        "type": "Form",
+        "title": "Catch Basin Adoption",
+        "typeKeywords": [
+          "Form",
+          "Survey123",
+          "Survey123 Connect",
+          "xForm"
+        ],
+        "snippet": "An ArcGIS Survey123 form used by volunteers to adopt or release a catch basin."
+      },
+      {
+        "id": "d52a7f901eb9492a829ab918cd38318d",
+        "type": "Feature Service",
+        "title": "CatchBasinVolunteers_public",
+        "typeKeywords": [
+          "ArcGIS Server",
+          "Data",
+          "Feature Access",
+          "Feature Service",
+          "Multilayer",
+          "Service",
+          "Hosted Service",
+          "View Service"
+        ],
+        "snippet": "A feature layer view used to share volunteers and clearing activities with the Adopt-A-Catch Basin site."
+      },
+      {
+        "id": "cb7f74af39c64abfbe7c7fc5b69587b1",
+        "type": "Feature Service",
+        "title": "CatchBasins_public",
+        "typeKeywords": [
+          "ArcGIS Server",
+          "Data",
+          "Feature Access",
+          "Feature Service",
+          "Service",
+          "Singlelayer",
+          "Hosted Service",
+          "View Service"
+        ],
+        "snippet": "A feature layer view used to share catch basins and their adoption status with the Adopt-A-Catch Basin site. "
+      },
+      {
+        "id": "428b0764ded449c79b143c22d3913603",
+        "type": "Web Mapping Application",
+        "title": "Catch Basin Viewer",
+        "typeKeywords": [
+          "configurableApp",
+          "JavaScript",
+          "Map",
+          "Mapping Site",
+          "Online Map",
+          "Ready To Use",
+          "Web Map"
+        ],
+        "snippet": "An ArcGIS Media Map app used by the general public to view catch basins and their adoption status. "
+      },
+      {
+        "id": "f839b7c2d0564a2d93ef5c1d1ce7d3f6",
+        "type": "Dashboard",
+        "title": "Adopt-A-Catch Basin",
+        "typeKeywords": [
+          "Arcade Data Expression",
+          "ArcGIS Dashboards",
+          "Dashboard",
+          "Operations Dashboard"
+        ],
+        "snippet": "An ArcGIS Dashboard used by volunteers to adopt catch basins and report that they are clear of debris."
+      },
+      {
+        "id": "a842a4e3db044ff2aa94379398f05b10",
+        "type": "Hub Page",
+        "title": "Manage Program",
+        "typeKeywords": [
+          "Hub",
+          "hubPage",
+          "JavaScript",
+          "Map",
+          "Mapping Site",
+          "Online Map",
+          "OpenData",
+          "selfConfigured",
+          "Web Map"
+        ],
+        "snippet": "An ArcGIS Hub Page used by volunteer coordinators to manage key Adopt-A-Catch Basin activities and monitor the performance of the program."
+      },
+      {
+        "id": "b90fe3a4216b4b2c917b96f45dc0dfa6",
+        "type": "Group",
+        "title": "Approved Catch Basin Volunteers",
+        "typeKeywords": [],
+        "snippet": "Welcome to the Adopt-A-Catch Basin program!"
+      },
+      {
+        "id": "9222dec80f024e7e980d9b14edcce041",
+        "type": "Feature Service",
+        "title": "CatchBasinVolunteers",
+        "typeKeywords": [
+          "ArcGIS Server",
+          "Data",
+          "Feature Access",
+          "Feature Service",
+          "Service",
+          "Hosted Service"
+        ],
+        "snippet": "A feature layer used to store catch basin volunteers and clearing activities for use in the Adopt-A-Catch Basin program."
+      },
+      {
+        "id": "1fb4f1d9bea6453db621e8d4a5a716e9",
+        "type": "Feature Service",
+        "title": "CatchBasins_adopt",
+        "typeKeywords": [
+          "ArcGIS Server",
+          "Data",
+          "Feature Access",
+          "Feature Service",
+          "Service",
+          "Singlelayer",
+          "Hosted Service",
+          "View Service"
+        ],
+        "snippet": "A feature layer view used by the Catch Basin Adoption form to adopt and release catch basins."
+      },
+      {
+        "id": "2d93c39c3a7b4c4a8de6d895eda50f67",
+        "type": "Feature Service",
+        "title": "CatchBasinVolunteers_submit",
+        "typeKeywords": [
+          "ArcGIS Server",
+          "Data",
+          "Feature Access",
+          "Feature Service",
+          "Multilayer",
+          "Service",
+          "Hosted Service",
+          "View Service"
+        ],
+        "snippet": "A feature layer view used by the Catch Basin Volunteer Application and Catch Basin Activities forms to submit volunteer applications and clearing activities."
+      },
+      {
+        "id": "64663876c422481ebb3278eda1440c1b",
+        "type": "Feature Service",
+        "title": "Requests_submit",
+        "typeKeywords": [
+          "ArcGIS Server",
+          "Data",
+          "Feature Access",
+          "Feature Service",
+          "Multilayer",
+          "Public Data Collection",
+          "Service",
+          "Hosted Service",
+          "View Service"
+        ],
+        "snippet": "A public view used by the general public and internal staff to submit non-emergency requests."
+      },
+      {
+        "id": "9f89dbf40ae84b0d94551bfa432e38af",
+        "type": "Web Map",
+        "title": "Catch Basin Viewer",
+        "typeKeywords": [
+          "ArcGIS API for JavaScript",
+          "ArcGIS Online",
+          "Explorer Web Map",
+          "FieldMapsDisabled",
+          "Map",
+          "Online Map",
+          "useOnly",
+          "Web Map"
+        ],
+        "snippet": "A map used in the Catch Basin Viewer app to view catch basins and their adoption status. "
+      },
+      {
+        "id": "07d6ef318e6d4a5fa06768e33c8c199b",
+        "type": "Web Map",
+        "title": "Adopt-A-Catch Basin",
+        "typeKeywords": [
+          "ArcGIS API for JavaScript",
+          "ArcGIS Online",
+          "CollectorDisabled",
+          "Data Editing",
+          "Explorer Web Map",
+          "FieldMapsDisabled",
+          "Map",
+          "Online Map",
+          "useOnly",
+          "Web Map"
+        ],
+        "snippet": "A map used in the Adopt-A-Catch Basin app to adopt catch basins and report that they are clear of debris."
+      },
+      {
+        "id": "34801bd8d719467b9abab47de359eebd",
+        "type": "Feature Service",
+        "title": "CatchBasins_activities",
+        "typeKeywords": [
+          "ArcGIS Server",
+          "Data",
+          "Feature Access",
+          "Feature Service",
+          "Multi Services View",
+          "Service",
+          "Singlelayer",
+          "Hosted Service",
+          "View Service"
+        ],
+        "snippet": "A feature layer view used by the Adopt-A-Catch Basin Dashboard to show catch basins and the most recent clearing activity."
+      },
+      {
+        "id": "164fe60f99464898809eca7652a02de7",
+        "type": "Feature Service",
+        "title": "Requests_catchbasin",
+        "typeKeywords": [
+          "ArcGIS Server",
+          "Data",
+          "Feature Access",
+          "Feature Service",
+          "Multilayer",
+          "Service",
+          "Hosted Service",
+          "View Service"
+        ],
+        "snippet": "Catch basin requests submitted by the general public and internal staff. "
+      },
+      {
+        "id": "7f410121298b4100be03af22fb0ec659",
+        "type": "Web Mapping Application",
+        "title": "Adopt-A-Catch Basin Manager",
+        "typeKeywords": [
+          "JavaScript",
+          "Map",
+          "Mapping Site",
+          "Online Map",
+          "Web Map"
+        ],
+        "snippet": "A Crowdsource Manager app used by volunteer coordinators to review volunteer applications, update catch basin adoption details, and triage requests from the public."
+      },
+      {
+        "id": "11b355083f4f41bcbc29e9cc34970461",
+        "type": "Dashboard",
+        "title": "Adopt-A-Catch Basin Dashboard",
+        "typeKeywords": [
+          "ArcGIS Dashboards",
+          "Dashboard",
+          "Extent Filter",
+          "Operations Dashboard"
+        ],
+        "snippet": "An ArcGIS Dashboard used by volunteer coordinators to track the effectiveness of the Adopt-A-Catch Basin program and response to service requests.\\n"
+      },
+      {
+        "id": "6a778ba3379f4598a6c5cc73574e6173",
+        "type": "Group",
+        "title": "Adopt-A-Catch Basin Manager",
+        "typeKeywords": [],
+        "snippet": "A group used in the Adopt-A-Catch Basin Manager application to review volunteer applications, update catch basin adoption details, and triage requests from the public."
+      },
+      {
+        "id": "7d9341ab0043404d8beab89e9236fc2a",
+        "type": "Web Map",
+        "title": "Adopt-A-Catch Basin Dashboard",
+        "typeKeywords": [
+          "ArcGIS API for JavaScript",
+          "ArcGIS Online",
+          "CollectorDisabled",
+          "Data Editing",
+          "Explorer Web Map",
+          "FieldMapsDisabled",
+          "Map",
+          "Online Map",
+          "useOnly",
+          "Web Map"
+        ],
+        "snippet": "A map used in the Adopt-A-Catch Basin Dashboard to track the effectiveness of the Adopt-A-Catch Basin program and response to service requests."
+      },
+      {
+        "id": "93d498db4871447b8c644225710b52a8",
+        "type": "Feature Service",
+        "title": "StormwaterSystem",
+        "typeKeywords": [
+          "ArcGIS API for JavaScript",
+          "ArcGIS Server",
+          "Data",
+          "Feature Access",
+          "Feature Service",
+          "Metadata",
+          "Service",
+          "Hosted Service"
+        ],
+        "snippet": "A service used to administer the Stormwater System feature service."
+      },
+      {
+        "id": "9daf5761f0974c2ba20afa6e8c386d0e",
+        "type": "Feature Service",
+        "title": "Requests",
+        "typeKeywords": [
+          "ArcGIS Server",
+          "Data",
+          "Feature Access",
+          "Feature Service",
+          "Metadata",
+          "Multilayer",
+          "Service",
+          "Hosted Service"
+        ],
+        "snippet": "Non-emergency requests submitted by general public and internal staff."
+      },
+      {
+        "id": "87162923d4114f46bd9a7a2eb20ddd8d",
+        "type": "Web Map",
+        "title": "Requests",
+        "typeKeywords": [
+          "ArcGIS Online",
+          "CollectorDisabled",
+          "Data Editing",
+          "Explorer Web Map",
+          "FieldMapsDisabled",
+          "Map",
+          "Online Map",
+          "useOnly",
+          "Web Map"
+        ],
+        "snippet": "A map used in the Catch Basin Request Manager app to triage requests from the public."
+      },
+      {
+        "id": "373c7d07495e456183e61bb2cba6d732",
+        "type": "Web Map",
+        "title": "Volunteers",
+        "typeKeywords": [
+          "ArcGIS Online",
+          "CollectorDisabled",
+          "Data Editing",
+          "Explorer Web Map",
+          "FieldMapsDisabled",
+          "Map",
+          "Online Map",
+          "useOnly",
+          "Web Map"
+        ],
+        "snippet": "A map used in the Catch Basin Volunteer Manager app to review volunteer applications."
+      },
+      {
+        "id": "6d9665599c684910962904b20bb899eb",
+        "type": "Web Map",
+        "title": "Catch Basins",
+        "typeKeywords": [
+          "ArcGIS Online",
+          "CollectorDisabled",
+          "Data Editing",
+          "Explorer Web Map",
+          "FieldMapsDisabled",
+          "Map",
+          "Online Map",
+          "useOnly",
+          "Web Map"
+        ],
+        "snippet": "A map used in the Catch Basin Volunteer Manager app to update catch basin adoption detail."
+      }];
+
+    }
+  </script>
+</head>
+
+<body onload="addValues()">
+  <solution-item-accordion id="demo" class="main column"></solution-item-accordion>
+</body>
+
+</html>

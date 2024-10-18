@@ -1,0 +1,6 @@
+{
+  "error": "Ошибка",
+  "featureErrorMsg": "Записей не найдено.",
+  "thousandsAbbreviation": "Ж_{{abbreviated_value}}k_______________________Я",
+  "millionsAbbreviation": "Ж_{{abbreviated_value}}M_______________________Я"
+}

@@ -1,0 +1,30 @@
+{
+  "mapShortcuts": {
+    "arrowKeys": "Piltaster",
+    "nudge": "Skyv mot venstre, høyre, oppover eller nedover",
+    "N": "Juster etter nordpunktet",
+    "A": "Roter mot klokken",
+    "D": "Roter med klokken",
+    "plus": "Zoom inn til midten",
+    "minus": "Zoom ut fra midten"
+  },
+  "sceneShortcuts": {
+    "P": "Flytt kartet for å se vinkelrett på dataene som vises på kartet",
+    "N": "Juster kartet etter nordpunktet",
+    "W": "Vipp kameraet opp",
+    "A": "Roter kameraet mot klokken",
+    "D": "Roter kameraet med klokken",
+    "S": "Vipp kameraet ned",
+    "globalCommands": {
+      "J": "Flytt ned nærmere kartet",
+      "U": "Flytt opp høyere fra kartet"
+    }
+  },
+  "generalShortcuts": {
+    "menu": "snarveismeny",
+    "shortcut": "Snarvei",
+    "action": "Handling",
+    "title": "Velg kartet",
+    "label": "Hurtigtaster"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "open": "Avaa",
+  "close": "Sulje",
+  "information": "Tiedot",
+  "expandPopup": "Laajenna ponnahdusikkuna",
+  "collapsePopup": "Pienennä ponnahdusikkuna",
+  "view": "Näkymä ({{n}})",
+  "splitView": "Jaettu näkymä",
+  "tableView": "Taulunäkymä",
+  "mapView": "Karttanäkymä",
+  "filter": "Suodatin: {{title}}"
+}

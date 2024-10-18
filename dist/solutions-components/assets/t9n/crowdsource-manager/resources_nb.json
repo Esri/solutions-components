@@ -1,0 +1,12 @@
+{
+  "open": "Åpne",
+  "close": "Lukk",
+  "information": "Informasjon",
+  "expandPopup": "Utvid popup",
+  "collapsePopup": "Skjul popup",
+  "view": "Vis ({{n}})",
+  "splitView": "Delt visning",
+  "tableView": "Tabellvisning",
+  "mapView": "Kartvisning",
+  "filter": "Filtrer: {{title}}"
+}

@@ -1,0 +1,6 @@
+{
+  "error": "Napaka",
+  "featureErrorMsg": "Ni najdenih zapisov.",
+  "thousandsAbbreviation": "Š_{{abbreviated_value}}k_______________________č",
+  "millionsAbbreviation": "Š_{{abbreviated_value}}M_______________________č"
+}

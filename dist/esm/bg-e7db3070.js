@@ -1,0 +1,82 @@
+/*!
+ * Copyright 2022 Esri
+ * Licensed under the Apache License, Version 2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
+ */
+import { d as dayjs } from './calcite-input-time-picker-cc675f33.js';
+import './index-904bc599.js';
+import './form-d45062d8.js';
+import './dom-75c641a7.js';
+import './guid-b0fb1de3.js';
+import './resources-8e2ed936.js';
+import './interactive-98ed6b6f.js';
+import './key-e6b442de.js';
+import './label-272c5973.js';
+import './component-83541c88.js';
+import './loadable-7cb2fc6f.js';
+import './browser-b67d8df6.js';
+import './locale-24516fec.js';
+import './observers-c83631e8.js';
+import './focusTrapComponent-35b3348c.js';
+import './config-16813c92.js';
+import './time-fbe17659.js';
+import './math-d7c8823c.js';
+import './t9n-9a5d28cf.js';
+import './Validation-cf136c56.js';
+import './input-e01adc49.js';
+
+// Bulgarian [bg]
+var locale = {
+  name: 'bg',
+  weekdays: 'неделя_понеделник_вторник_сряда_четвъртък_петък_събота'.split('_'),
+  weekdaysShort: 'нед_пон_вто_сря_чет_пет_съб'.split('_'),
+  weekdaysMin: 'нд_пн_вт_ср_чт_пт_сб'.split('_'),
+  months: 'януари_февруари_март_април_май_юни_юли_август_септември_октомври_ноември_декември'.split('_'),
+  monthsShort: 'яну_фев_мар_апр_май_юни_юли_авг_сеп_окт_ное_дек'.split('_'),
+  weekStart: 1,
+  ordinal: function ordinal(n) {
+    var last2Digits = n % 100;
+
+    if (last2Digits > 10 && last2Digits < 20) {
+      return n + "-\u0442\u0438";
+    }
+
+    var lastDigit = n % 10;
+
+    if (lastDigit === 1) {
+      return n + "-\u0432\u0438";
+    } else if (lastDigit === 2) {
+      return n + "-\u0440\u0438";
+    } else if (lastDigit === 7 || lastDigit === 8) {
+      return n + "-\u043C\u0438";
+    }
+
+    return n + "-\u0442\u0438";
+  },
+  formats: {
+    LT: 'H:mm',
+    LTS: 'H:mm:ss',
+    L: 'D.MM.YYYY',
+    LL: 'D MMMM YYYY',
+    LLL: 'D MMMM YYYY H:mm',
+    LLLL: 'dddd, D MMMM YYYY H:mm'
+  },
+  relativeTime: {
+    future: 'след %s',
+    past: 'преди %s',
+    s: 'няколко секунди',
+    m: 'минута',
+    mm: '%d минути',
+    h: 'час',
+    hh: '%d часа',
+    d: 'ден',
+    dd: '%d дена',
+    M: 'месец',
+    MM: '%d месеца',
+    y: 'година',
+    yy: '%d години'
+  }
+};
+dayjs.locale(locale, null, true);
+
+export { locale as default };

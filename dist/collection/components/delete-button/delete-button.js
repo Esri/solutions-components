@@ -1,0 +1,311 @@
+/*!
+ * Copyright 2022 Esri
+ * Licensed under the Apache License, Version 2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
+ */
+/** @license
+ * Copyright 2022 Esri
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+import { Host, h } from "@stencil/core";
+import { getLocaleComponentStrings } from "../../utils/locale";
+export class DeleteButton {
+    constructor() {
+        this.deleteDialog = undefined;
+        this.buttonType = "button";
+        this.disabled = false;
+        this.icon = undefined;
+        this.ids = [];
+        this.layer = undefined;
+        this._confirmDelete = false;
+        this._deleteEndabled = false;
+        this._supportsDelete = undefined;
+        this._translations = undefined;
+    }
+    //--------------------------------------------------------------------------
+    //
+    //  Host element access
+    //
+    //--------------------------------------------------------------------------
+    el;
+    //--------------------------------------------------------------------------
+    //
+    //  Properties (protected)
+    //
+    //--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    //
+    //  Watch handlers
+    //
+    //--------------------------------------------------------------------------
+    /**
+     * watch for changes in layer view and verify if it has editing enabled
+     */
+    async idsWatchHandler() {
+        this._setDeleteEnabled();
+    }
+    /**
+     * watch for changes in layer view and verify if it has editing enabled
+     */
+    async layerWatchHandler() {
+        this._setDeleteEnabled();
+    }
+    //--------------------------------------------------------------------------
+    //
+    //  Methods (public)
+    //
+    //--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    //
+    //  Events (public)
+    //
+    //--------------------------------------------------------------------------
+    /**
+     * Emitted on demand when features have been deleted
+     */
+    editsComplete;
+    //--------------------------------------------------------------------------
+    //
+    //  Functions (lifecycle)
+    //
+    //--------------------------------------------------------------------------
+    /**
+     * StencilJS: Called once just after the component is first connected to the DOM.
+     *
+     * @returns Promise when complete
+     */
+    async componentWillLoad() {
+        await this._getTranslations();
+    }
+    /**
+     * Renders the component.
+     */
+    render() {
+        return (h(Host, { key: '4ced17b35479900aaa01ebbd298eeae57194e358' }, this.buttonType === "button" ? (h("calcite-button", { appearance: "outline", disabled: !this._deleteEndabled, id: "solutions-delete", kind: "danger", onClick: () => this._delete(), width: "full" }, this._translations.deleteCount.replace("{{n}}", this.ids.length.toString()))) : (h("calcite-action", { appearance: "solid", compact: true, disabled: !this._deleteEndabled, id: this.icon, onClick: () => this._delete(), scale: "s", text: this._translations.delete }, h("calcite-button", { appearance: "transparent", iconStart: this.icon, kind: "danger" }, this._translations.delete))), this._deleteMessage(), h("calcite-tooltip", { key: '04f82e726cf9142c403ee43cb8151027bb7b617f', placement: "bottom", "reference-element": this.buttonType === "button" ? "solutions-delete" : this.icon }, h("span", { key: 'f7852b2476dae4b18e82495c64a819b3db98696d' }, this._translations.delete))));
+    }
+    /**
+     * StencilJS: Called once just after the component is fully loaded and the first render() occurs.
+     */
+    async componentDidLoad() {
+        this._setDeleteEnabled();
+    }
+    //--------------------------------------------------------------------------
+    //
+    //  Functions (protected)
+    //
+    //--------------------------------------------------------------------------
+    /**
+     * Verify if the layer supports delete and that we have 1 or more ids
+     */
+    _setDeleteEnabled() {
+        this._supportsDelete = this.layer?.editingEnabled && this.layer?.capabilities?.operations?.supportsDelete;
+        this._deleteEndabled = !this.disabled || this._supportsDelete && this.ids.length > 0;
+    }
+    /**
+     * Delete all selected records or shows an alert if the layer does not have editing enabled
+     *
+     * @returns a promise that will resolve when the operation is complete
+     */
+    _delete() {
+        this._confirmDelete = true;
+    }
+    /**
+     * Show delete confirmation message
+     *
+     * @returns node to confirm or deny the delete operation
+     */
+    _deleteMessage() {
+        return this.deleteDialog ? this.deleteDialog : (h("delete-dialog", { id: "solution-delete-dialog", ids: this.ids, layer: this.layer, onDeleteDialogClose: () => this._confirmDelete = false, open: this._confirmDelete }));
+    }
+    /**
+     * Fetches the component's translations
+     *
+     * @returns Promise when complete
+     * @protected
+     */
+    async _getTranslations() {
+        const messages = await getLocaleComponentStrings(this.el);
+        this._translations = messages[0];
+    }
+    static get is() { return "delete-button"; }
+    static get encapsulation() { return "shadow"; }
+    static get originalStyleUrls() {
+        return {
+            "$": ["delete-button.css"]
+        };
+    }
+    static get styleUrls() {
+        return {
+            "$": ["delete-button.css"]
+        };
+    }
+    static get properties() {
+        return {
+            "deleteDialog": {
+                "type": "any",
+                "mutable": false,
+                "complexType": {
+                    "original": "any",
+                    "resolved": "any",
+                    "references": {}
+                },
+                "required": false,
+                "optional": false,
+                "docs": {
+                    "tags": [],
+                    "text": "calcite-modal: Use this prop when using the button within a parent like a dropdown that would constrain the modal and that is not desired"
+                },
+                "attribute": "delete-dialog",
+                "reflect": false
+            },
+            "buttonType": {
+                "type": "string",
+                "mutable": false,
+                "complexType": {
+                    "original": "ButtonType",
+                    "resolved": "\"action\" | \"button\"",
+                    "references": {
+                        "ButtonType": {
+                            "location": "import",
+                            "path": "../../utils/interfaces",
+                            "id": "src/utils/interfaces.ts::ButtonType"
+                        }
+                    }
+                },
+                "required": false,
+                "optional": false,
+                "docs": {
+                    "tags": [],
+                    "text": "ButtonType (button | action): Support usage as action or button"
+                },
+                "attribute": "button-type",
+                "reflect": false,
+                "defaultValue": "\"button\""
+            },
+            "disabled": {
+                "type": "boolean",
+                "mutable": false,
+                "complexType": {
+                    "original": "boolean",
+                    "resolved": "boolean",
+                    "references": {}
+                },
+                "required": false,
+                "optional": false,
+                "docs": {
+                    "tags": [],
+                    "text": "boolean: This overrides internal enable/disable logic that is based on checks if the layer supports delete"
+                },
+                "attribute": "disabled",
+                "reflect": false,
+                "defaultValue": "false"
+            },
+            "icon": {
+                "type": "string",
+                "mutable": false,
+                "complexType": {
+                    "original": "string",
+                    "resolved": "string",
+                    "references": {}
+                },
+                "required": false,
+                "optional": false,
+                "docs": {
+                    "tags": [],
+                    "text": "string: The icon to display in the component"
+                },
+                "attribute": "icon",
+                "reflect": false
+            },
+            "ids": {
+                "type": "unknown",
+                "mutable": false,
+                "complexType": {
+                    "original": "any[]",
+                    "resolved": "any[]",
+                    "references": {}
+                },
+                "required": false,
+                "optional": false,
+                "docs": {
+                    "tags": [],
+                    "text": "number[]: The ids that would be deleted"
+                },
+                "defaultValue": "[]"
+            },
+            "layer": {
+                "type": "unknown",
+                "mutable": false,
+                "complexType": {
+                    "original": "__esri.FeatureLayer",
+                    "resolved": "FeatureLayer",
+                    "references": {
+                        "___esri": {
+                            "location": "global",
+                            "id": "global::___esri"
+                        }
+                    }
+                },
+                "required": false,
+                "optional": false,
+                "docs": {
+                    "tags": [],
+                    "text": "esri/views/layers/FeatureLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html"
+                }
+            }
+        };
+    }
+    static get states() {
+        return {
+            "_confirmDelete": {},
+            "_deleteEndabled": {},
+            "_supportsDelete": {},
+            "_translations": {}
+        };
+    }
+    static get events() {
+        return [{
+                "method": "editsComplete",
+                "name": "editsComplete",
+                "bubbles": true,
+                "cancelable": true,
+                "composed": true,
+                "docs": {
+                    "tags": [],
+                    "text": "Emitted on demand when features have been deleted"
+                },
+                "complexType": {
+                    "original": "EditType",
+                    "resolved": "\"add\" | \"delete\" | \"update\"",
+                    "references": {
+                        "EditType": {
+                            "location": "import",
+                            "path": "../../utils/interfaces",
+                            "id": "src/utils/interfaces.ts::EditType"
+                        }
+                    }
+                }
+            }];
+    }
+    static get elementRef() { return "el"; }
+    static get watchers() {
+        return [{
+                "propName": "ids",
+                "methodName": "idsWatchHandler"
+            }, {
+                "propName": "layer",
+                "methodName": "layerWatchHandler"
+            }];
+    }
+}

@@ -1,0 +1,16 @@
+{
+  "listName": "リスト名",
+  "listNamePlaceholder": "ここに名前を入力",
+  "searchDistance": "検索距離",
+  "select": "レイヤー",
+  "selectedFeatures": "{{n}} の選択フィーチャ",
+  "selectionLoading": "選択の読み込み",
+  "sketch": "スケッチ",
+  "bufferLayer": "バッファー レイヤー",
+  "sketchLayer": "スケッチ レイヤー",
+  "useLayerFeatures": "レイヤー フィーチャの使用",
+  "inputLayer": "入力レイヤー",
+  "useLayerFeaturesTooltip": "レイヤーを選択し、スケッチ ツールを使用して、境界として使用できるフィーチャをポイントすることで、交差するフィーチャを入力レイヤーから選択します。",
+  "useSearchDistanceTootip": "検索バッファーの距離を定義して、バッファーと交差する入力フィーチャを選択します。",
+  "placeholder": "住所または場所の検索"
+}

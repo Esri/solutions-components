@@ -1,0 +1,10 @@
+{
+  "fetchingData": "Daten werden abgerufen",
+  "edit": "Bearbeiten",
+  "enableEditing": "Die Aktualisierungsfunktion muss für den Layer aktiviert sein.",
+  "editDisabled": "Bearbeitung ist deaktiviert",
+  "next": "Weiter",
+  "back": "Zurück",
+  "indexOfTotal": "{{index}} von {{total}}",
+  "delete": "Löschen"
+}

@@ -1,0 +1,9 @@
+{
+  "add": "Lisa",
+  "remove": "Eemalda",
+  "featuresAdded": "Lisatud objektid: {{n}}",
+  "featuresRemoved": "Eemaldatud objektid: {{n}}",
+  "totalSelected": "Kõik valitud: {{n}}",
+  "inputLayer": "Sisendkiht",
+  "inputLayerTip": "Valige sisendkiht, millel soovite valitud objektid üle vaadata, uuendage valitud objektid ühel sisendkihil korraga."
+}

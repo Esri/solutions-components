@@ -1,0 +1,12 @@
+{
+  "open": "Öppna",
+  "close": "Stäng",
+  "information": "Information",
+  "expandPopup": "Expandera popup-fönster",
+  "collapsePopup": "Dölj popup-fönster",
+  "view": "Vy ({{n}})",
+  "splitView": "Delad vy",
+  "tableView": "Tabellvy",
+  "mapView": "Kartvy",
+  "filter": "Filter: {{title}}"
+}

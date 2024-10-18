@@ -1,0 +1,22 @@
+{
+  "clearSelection": "Esborra la selecció",
+  "delete": "ó_Delete_____________à",
+  "exportCSV": "Exporta a CSV",
+  "filter": "Filtre: {{title}}",
+  "filters": "Filtres",
+  "hideField": "Amaga el camp",
+  "more": "Més",
+  "selectAll": "Selecciona-ho tot",
+  "share": "Comparteix",
+  "showSelected": "Mostra els seleccionats",
+  "switchSelected": "Canvia la selecció",
+  "zoom": "Zoom",
+  "editMultiple": "Edició múltiple",
+  "fetchingData": "S'estan recuperant les dades",
+  "refresh": "Actualitza",
+  "showAll": "Mostra-ho tot",
+  "recordsSelected": "Total: {{total}} | Selecció: {{selected}}",
+  "moreOptions": "Més opcions de taula",
+  "showHideColumns": "Mostra o amaga columnes",
+  "searchPlaceholder": "Cerca text al camp {{fields}}"
+}

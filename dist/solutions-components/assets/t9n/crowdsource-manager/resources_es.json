@@ -1,0 +1,12 @@
+{
+  "open": "Abrir",
+  "close": "Cerrar",
+  "information": "Información",
+  "expandPopup": "Expandir elemento emergente",
+  "collapsePopup": "Contraer elemento emergente",
+  "view": "Ver ({{n}})",
+  "splitView": "Vista dividida",
+  "tableView": "Vista de tabla",
+  "mapView": "Vista del mapa",
+  "filter": "Filtro: {{title}}"
+}

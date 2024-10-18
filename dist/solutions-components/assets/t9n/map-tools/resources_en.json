@@ -1,0 +1,10 @@
+{
+  "legend": "Legend",
+  "search": "Search",
+  "expand": "Expand",
+  "basemap": "Basemap",
+  "collapse": "Collapse",
+  "enterFullscreen": "Enter full screen",
+  "exitFullscreen": "Exit full screen",
+  "floorFilter": "Floor filter"
+}

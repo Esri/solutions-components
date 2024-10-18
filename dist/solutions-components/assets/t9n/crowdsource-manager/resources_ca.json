@@ -1,0 +1,12 @@
+{
+  "open": "Obre",
+  "close": "Tanca",
+  "information": "Informació",
+  "expandPopup": "Amplia la finestra emergent",
+  "collapsePopup": "Contrau la finestra emergent",
+  "view": "Mostra ({{n}})",
+  "splitView": "Visualització dividida",
+  "tableView": "Visualització de taula",
+  "mapView": "Visualització del mapa",
+  "filter": "Filtre: {{title}}"
+}

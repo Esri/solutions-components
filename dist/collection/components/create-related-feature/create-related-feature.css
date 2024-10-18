@@ -1,0 +1,22 @@
+:host {
+  display: block;
+}
+
+/* Override to hide Editor settings panel collapsible */
+.esri-editor__panel-toolbar {
+  display: none !important;
+}
+
+.display-none {
+  display: none !important;
+}
+
+/* override the padding of the feature form */
+.esri-editor__panel-content {
+  padding-block: 10px !important;
+}
+
+.notice-msg {
+  padding: 10px;
+  width: calc(100% - 20px);
+}

@@ -1,0 +1,6 @@
+{
+  "error": "שגיאה",
+  "featureErrorMsg": "לא נמצאו רשומות",
+  "thousandsAbbreviation": "כן_{{abbreviated_value}}k_______________________ש",
+  "millionsAbbreviation": "כן_{{abbreviated_value}}M_______________________ש"
+}

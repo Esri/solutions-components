@@ -1,0 +1,11 @@
+{
+  "export": "Exportálás",
+  "exportPopover": "Előugró ablak exportálása",
+  "includeExtraContent": "Eredmények belefoglalása",
+  "includeHeaderTheme": "Fejléctéma belefoglalása",
+  "includeLegend": "Jelmagyarázattal együtt",
+  "includeMap": "Térkép belefoglalása",
+  "includePopup": "Felugró ablak belefoglalása",
+  "title": "Cím",
+  "toggleExport": "Exportálás választókapcsoló"
+}

@@ -1,0 +1,67 @@
+/*!
+ * Copyright 2022 Esri
+ * Licensed under the Apache License, Version 2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
+ */
+import { d as dayjs } from './calcite-input-time-picker-cc675f33.js';
+import './index-904bc599.js';
+import './form-d45062d8.js';
+import './dom-75c641a7.js';
+import './guid-b0fb1de3.js';
+import './resources-8e2ed936.js';
+import './interactive-98ed6b6f.js';
+import './key-e6b442de.js';
+import './label-272c5973.js';
+import './component-83541c88.js';
+import './loadable-7cb2fc6f.js';
+import './browser-b67d8df6.js';
+import './locale-24516fec.js';
+import './observers-c83631e8.js';
+import './focusTrapComponent-35b3348c.js';
+import './config-16813c92.js';
+import './time-fbe17659.js';
+import './math-d7c8823c.js';
+import './t9n-9a5d28cf.js';
+import './Validation-cf136c56.js';
+import './input-e01adc49.js';
+
+// Portuguese [pt]
+var locale = {
+  name: 'pt',
+  weekdays: 'domingo_segunda-feira_terça-feira_quarta-feira_quinta-feira_sexta-feira_sábado'.split('_'),
+  weekdaysShort: 'dom_seg_ter_qua_qui_sex_sab'.split('_'),
+  weekdaysMin: 'Do_2ª_3ª_4ª_5ª_6ª_Sa'.split('_'),
+  months: 'janeiro_fevereiro_março_abril_maio_junho_julho_agosto_setembro_outubro_novembro_dezembro'.split('_'),
+  monthsShort: 'jan_fev_mar_abr_mai_jun_jul_ago_set_out_nov_dez'.split('_'),
+  ordinal: function ordinal(n) {
+    return n + "\xBA";
+  },
+  weekStart: 1,
+  yearStart: 4,
+  formats: {
+    LT: 'HH:mm',
+    LTS: 'HH:mm:ss',
+    L: 'DD/MM/YYYY',
+    LL: 'D [de] MMMM [de] YYYY',
+    LLL: 'D [de] MMMM [de] YYYY [às] HH:mm',
+    LLLL: 'dddd, D [de] MMMM [de] YYYY [às] HH:mm'
+  },
+  relativeTime: {
+    future: 'em %s',
+    past: 'há %s',
+    s: 'alguns segundos',
+    m: 'um minuto',
+    mm: '%d minutos',
+    h: 'uma hora',
+    hh: '%d horas',
+    d: 'um dia',
+    dd: '%d dias',
+    M: 'um mês',
+    MM: '%d meses',
+    y: 'um ano',
+    yy: '%d anos'
+  }
+};
+dayjs.locale(locale, null, true);
+
+export { locale as default };

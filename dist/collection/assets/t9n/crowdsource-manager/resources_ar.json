@@ -1,0 +1,12 @@
+{
+  "open": "فتح",
+  "close": "إغلاق",
+  "information": "معلومات",
+  "expandPopup": "توسيع النافذة المنبثقة",
+  "collapsePopup": "طي النافذة المنبثقة",
+  "view": "عرض ({{n}})",
+  "splitView": "عرض التقسيم",
+  "tableView": "عرض الجدول",
+  "mapView": "عرض الخريطة",
+  "filter": "عامل التصفية: {{title}}"
+}

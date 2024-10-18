@@ -1,0 +1,22 @@
+{
+  "clearSelection": "Rensa markering",
+  "delete": "Å_Delete_____________ö",
+  "exportCSV": "Exportera till CSV",
+  "filter": "Filter: {{title}}",
+  "filters": "Filter",
+  "hideField": "Dölj fält",
+  "more": "Mer",
+  "selectAll": "Markera alla",
+  "share": "Dela",
+  "showSelected": "Visa valda",
+  "switchSelected": "Växla valda",
+  "zoom": "Zooma",
+  "editMultiple": "Redigera flera",
+  "fetchingData": "Hämtar data",
+  "refresh": "Uppdatera",
+  "showAll": "Visa alla",
+  "recordsSelected": "Totalt: {{total}} | Urval: {{selected}}",
+  "moreOptions": "Fler tabellalternativ",
+  "showHideColumns": "Visa/dölj kolumner",
+  "searchPlaceholder": "Söktext i fältet {{fields}}"
+}

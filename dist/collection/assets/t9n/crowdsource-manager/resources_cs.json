@@ -1,0 +1,12 @@
+{
+  "open": "Otevřít",
+  "close": "Zavřít",
+  "information": "Informace",
+  "expandPopup": "Rozbalit vyskakovací okno",
+  "collapsePopup": "Sbalit vyskakovací okno",
+  "view": "Zobrazení ({{n}})",
+  "splitView": "Rozdělené zobrazení",
+  "tableView": "Zobrazení tabulky",
+  "mapView": "Zobrazení mapy",
+  "filter": "Filtr: {{title}}"
+}

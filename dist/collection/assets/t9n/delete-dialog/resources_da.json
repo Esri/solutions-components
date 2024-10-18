@@ -1,0 +1,8 @@
+{
+  "cancel": "Annuller",
+  "confirmMultiple": "Disse objekter vil blive fjernet permanent.",
+  "confirmSingle": "Dette objekt vil blive fjernet permanent.",
+  "delete": "Slet",
+  "deleteCount": "Slet ({{n}})",
+  "deleteFeature": "Slet objekt"
+}

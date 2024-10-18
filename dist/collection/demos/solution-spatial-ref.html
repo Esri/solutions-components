@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
+  <title>Solution Spatial Reference</title>
+  <!--
+   | Copyright 2022 Esri
+   |
+   | Licensed under the Apache License, Version 2.0 (the "License");
+   | you may not use this file except in compliance with the License.
+   | You may obtain a copy of the License at
+   |
+   |    http://www.apache.org/licenses/LICENSE-2.0
+   |
+   | Unless required by applicable law or agreed to in writing, software
+   | distributed under the License is distributed on an "AS IS" BASIS,
+   | WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   | See the License for the specific language governing permissions and
+   | limitations under the License.
+  -->
+
+  <link rel="stylesheet" type="text/css" href="https://js.arcgis.com/calcite-components/2.13.0/calcite.css" />
+  <link rel="stylesheet" href="https://webapps-cdn.esri.com/CDN/fonts/v1.4.1/fonts.css" />
+  <link rel="stylesheet" href="../solutions-components.css" type="text/css">
+  <style>
+    body {
+      padding: 16px;
+      background-color: #F4F4F4;
+      width: unset;
+      overflow-y: auto;
+    }
+
+    h1 {
+      margin: 0 0 12px 0;
+      padding-left: 0;
+    }
+
+    .fadeIn {
+      opacity: 0;
+      transition: 1s;
+    }
+
+    .content {
+      padding: 20px;
+    }
+  </style>
+
+  <script type="module" src="https://js.arcgis.com/calcite-components/2.0.0/calcite.esm.js"></script>
+  <script type="module" src="../solutions-components.esm.js"></script>
+</head>
+
+<body>
+  <h1>Demo Solution Spatial Reference</h1>
+  <main id="main" class="fadeIn">
+    <div>
+      <store-manager id="state" />
+      <solution-spatial-ref />
+    </div>
+  </main>
+
+  <!-- Feedback from store -->
+  <br />
+  <hr />
+  <div id="storeContents" class="fadeIn" dir="ltr">
+    <h3>Store</h3>
+    <h4>spatialReferenceInfo</h4>
+    <pre id="spatialReferenceInfo"></pre>
+    <h4>featureServices</h4>
+    <pre id="featureServices"></pre>
+  </div>
+
+  <script src="./libs/require.js"></script>
+  <script src="./libs/setLocale.js"></script>
+  <script type="module">
+    // Activate Stencil component
+    const state = document.getElementById("state");
+    state.getStoreInfo("spatialReferenceInfo")
+      .then(() => {
+        const spatialReferenceInfo = document.getElementById("spatialReferenceInfo");
+        const featureServices = document.getElementById("featureServices");
+
+        // Set the data
+        fetch("./data/election-outreach.json").then(result => {
+          result.json().then(data => {
+            state.value = JSON.stringify(data);
+
+            // Echo store values
+            setTimeout(updateStoreDisplay, 1000);
+            window.addEventListener("solutionStoreHasChanges",
+              () => { updateStoreDisplay(); }
+            );
+
+            // Show the UI
+            document.getElementById("main").style.opacity = "1";
+            document.getElementById("storeContents").style.opacity = "1";
+          });
+        });
+
+        let getStoreInfo = async (propName) => {
+          const value = await state.getStoreInfo(propName);
+          return Promise.resolve(JSON.stringify(value, null, 2));
+        }
+
+        let updateStoreDisplay = async () => {
+          spatialReferenceInfo.innerHTML = await getStoreInfo("spatialReferenceInfo");
+          featureServices.innerHTML = await getStoreInfo("featureServices");
+        }
+      });
+  </script>
+</body>
+
+</html>

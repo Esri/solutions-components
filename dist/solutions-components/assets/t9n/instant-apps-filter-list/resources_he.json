@@ -1,0 +1,16 @@
+{
+  "andOperator": "התוצאות יציגו את כל המסננים התואמים",
+  "andOperator2": "וגם: התוצאות יציגו את כל המסננים התואמים",
+  "close": "סגירה",
+  "maxSlider": "{field}, גבול עליון",
+  "minSlider": "{field}, גבול תחתון",
+  "nextMonth": "החודש הבא",
+  "orOperator": "התוצאות יציגו כל מסנן תואם",
+  "orOperator2": "או: התוצאות יציגו כל מסנן תואם",
+  "previousMonth": "החודש הקודם",
+  "resetDatePicker": "איפוס בורר התאריכים",
+  "resetFilter": "איפוס מסנן",
+  "selectFilter": "בחר מסנן",
+  "zoomTo": "התמקד אל",
+  "zoomToExtent": "התמקד לתיחום"
+}

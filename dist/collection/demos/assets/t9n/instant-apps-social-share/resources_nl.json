@@ -1,0 +1,38 @@
+{
+  "share": {
+    "label": "Delen"
+  },
+  "embed": {
+    "label": "Inbedden",
+    "copy": "Kopiëren",
+    "width": "Breedte",
+    "height": "Hoogte"
+  },
+  "info": {
+    "label": "Wist u dat?",
+    "tooltip": "Koppeling kopiëren behoudt de huidige kaartweergave, zichtbare lagen en geopende pop-ups. Gebruik deze optie om te delen wat u in de app ziet."
+  },
+  "success": {
+    "label": "Gelukt!",
+    "url": "App-URL gekopieerd naar klembord.",
+    "embed": "Inbed-code gekopieerd naar klembord."
+  },
+  "options": {
+    "link": {
+      "label": "Link kopiëren",
+      "tooltip": "Klik om link naar klembord te kopiëren"
+    },
+    "facebook": {
+      "label": "Facebook",
+      "tooltip": "Klik om te delen met uw Facebook-account"
+    },
+    "twitter": {
+      "label": "Twitter",
+      "tooltip": "Klik om te delen met uw Twitter-account"
+    },
+    "linkedIn": {
+      "label": "LinkedIn",
+      "tooltip": "Klik om te delen met uw LinkedIn-account"
+    }
+  }
+}

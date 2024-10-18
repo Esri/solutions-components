@@ -1,0 +1,15 @@
+{
+  "noLegend": "Ingen signaturforklaring.",
+  "loading": "Henter interaktiv signaturforklaring",
+  "open": "Åbn",
+  "close": "Luk",
+  "expand": "Udvid",
+  "collapse": "Skjul",
+  "totalFeatureCount": "Samlet optælling af objekter",
+  "showAll": "Vis alle",
+  "zoomTo": "Zoom til",
+  "relationship": {
+    "instructionalText": "Klik på de farvede kvadrater for at filtrere kortet",
+    "notSupported": "Tegningstypografi for relationer understøttes ikke i øjeblikket."
+  }
+}

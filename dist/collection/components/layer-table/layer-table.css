@@ -1,0 +1,157 @@
+/** @license
+ * Copyright 2022 Esri
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+:host {
+  display: block;
+}
+
+.height-full {
+  height: 100%;
+}
+
+.height-full-adjusted {
+  height: calc(100% - 20px);
+}
+
+.width-full {
+  width: 100%;
+}
+
+.display-flex {
+  display: flex;
+}
+
+.table-border {
+  border: 1px solid var(--calcite-color-border-2);
+}
+
+.border-end {
+  border-inline-end: 1px solid var(--calcite-color-border-2);
+}
+
+.border-bottom {
+  border-bottom: 1px solid var(--calcite-color-border-2);
+}
+
+.padding-5 {
+  padding: 5px;
+}
+
+.padding-end-1 {
+  padding-inline-end: 1rem;
+}
+
+.height-51-px {
+  height: 51px;
+}
+
+.height-50-px {
+  height: 50px;
+}
+
+.bottom-left {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  padding-left: 5px;
+}
+
+html[dir="rtl"] .bottom-left {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  padding-right: 5px;
+}
+
+.height-19 {
+  height: 19px;
+}
+
+.background {
+  background-color: var(--calcite-color-background);
+}
+
+.text-color {
+  color: var(--calcite-color-text-1);
+}
+
+.align-center {
+  align-items: center;
+}
+
+.danger-color {
+  color: var(--calcite-color-status-danger);
+}
+
+.esri-feature-table vaadin-grid {
+  border: none !important;
+}
+
+vaadin-grid-cell-content {
+  font-size: 14px !important;
+  color: var(--calcite-color-text-3) !important;
+}
+
+.share-action {
+  position: absolute;
+  right: 0;
+}
+
+html[dir="rtl"] .share-action {
+  left: 0;
+}
+
+.disabled {
+  cursor: default !important;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+  opacity: var(--calcite-opacity-disabled);
+  pointer-events: none;
+}
+
+.instant-app-share {
+  height: 50px !important;
+  display: inline-flex;
+}
+
+.border-top {
+  border-top: 1px solid var(--calcite-color-border-2);
+}
+
+.modal {
+  --calcite-modal-content-padding: 0;
+}
+
+.esri-feature-table__table-container {
+  height: 100%;
+}
+
+.search-container {
+  background-color: var(--calcite-color-foreground-1) !important;
+}
+
+.search {
+  --calcite-color-border-input: var(--calcite-color-border-3);
+  width: 60%;
+  padding: 10px;
+}
+
+.delete-red {
+  --calcite-icon-color: var(--calcite-color-status-danger);
+  --calcite-color-text-1: var(--calcite-color-status-danger);
+  --calcite-color-text-3: var(--calcite-color-status-danger);
+}

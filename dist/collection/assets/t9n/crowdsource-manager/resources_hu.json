@@ -1,0 +1,12 @@
+{
+  "open": "Megnyitás",
+  "close": "Bezárás",
+  "information": "Információ",
+  "expandPopup": "Felugró ablak kiterjesztése",
+  "collapsePopup": "Felugró ablak összecsukása",
+  "view": "Megtekintés ({{n}})",
+  "splitView": "Osztott nézet",
+  "tableView": "Táblanézet",
+  "mapView": "Térképnézet",
+  "filter": "Szűrő: {{title}}"
+}

@@ -1,0 +1,22 @@
+{
+  "clearSelection": "Tühista valik",
+  "delete": "Š_Delete_____________ä",
+  "exportCSV": "Ekspordi CSV-vormingusse",
+  "filter": "Filter: {{title}}",
+  "filters": "Filtrid",
+  "hideField": "Peida väli",
+  "more": "Rohkem",
+  "selectAll": "Vali kõik",
+  "share": "Jagamine",
+  "showSelected": "Kuva valitud",
+  "switchSelected": "Lülita valitud",
+  "zoom": "Suumi",
+  "editMultiple": "Mitme üksuse muutmine",
+  "fetchingData": "Andmete toomine",
+  "refresh": "Värskenda",
+  "showAll": "Kuva kõik",
+  "recordsSelected": "Kokku: {{total}} | Valik: {{selected}}",
+  "moreOptions": "Rohkem tabelivalikuid",
+  "showHideColumns": "Kuva/peida veerud",
+  "searchPlaceholder": "Otsige teksti väljal {{fields}}"
+}

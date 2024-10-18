@@ -1,0 +1,11 @@
+{
+  "export": "Eksportér",
+  "exportPopover": "Eksport-popover",
+  "includeExtraContent": "Medtag resultater",
+  "includeHeaderTheme": "Medtag overskriftstema",
+  "includeLegend": "Medtag signaturforklaring",
+  "includeMap": "Medtag kort",
+  "includePopup": "Medtag popup",
+  "title": "Titel",
+  "toggleExport": "Slå eksport til/fra"
+}

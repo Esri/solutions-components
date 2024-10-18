@@ -1,0 +1,12 @@
+{
+  "open": "Aç",
+  "close": "Kapat",
+  "information": "Bilgi",
+  "expandPopup": "Açılır pencereyi genişlet",
+  "collapsePopup": "Açılır pencereyi daralt",
+  "view": "Görüntü ({{n}})",
+  "splitView": "Bölünmüş görünüm",
+  "tableView": "Tablo görünümü",
+  "mapView": "Harita görünümü",
+  "filter": "Filtrele: {{title}}"
+}

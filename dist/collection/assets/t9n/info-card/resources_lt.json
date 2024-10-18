@@ -1,0 +1,10 @@
+{
+  "fetchingData": "Gaunami duomenys",
+  "edit": "Redaguoti",
+  "enableEditing": "Sluoksnyje turi būti įjungtas funkcijų naujinimas.",
+  "editDisabled": "Redagavimas išjungtas",
+  "next": "Kitas",
+  "back": "Atgal",
+  "indexOfTotal": "{{index}} iš {{total}}",
+  "delete": "Pašalinti"
+}

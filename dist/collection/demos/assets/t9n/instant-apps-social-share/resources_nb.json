@@ -1,0 +1,38 @@
+{
+  "share": {
+    "label": "Del"
+  },
+  "embed": {
+    "label": "Bygg inn",
+    "copy": "Kopier",
+    "width": "Bredde",
+    "height": "Høyde"
+  },
+  "info": {
+    "label": "Visste du at?",
+    "tooltip": "Kopier kobling vil beholde gjeldende kartvisning, synlige lag og åpne popup-vinduer. Bruk dette alternativet til å dele det du ser i appen."
+  },
+  "success": {
+    "label": "Vellykket!",
+    "url": "Appens URL er kopiert til utklippstavlen.",
+    "embed": "Bygg inn kode kopiert til utklippstavlen."
+  },
+  "options": {
+    "link": {
+      "label": "Kopier kobling",
+      "tooltip": "Klikk for å kopiere koblingen til utklippstavlen"
+    },
+    "facebook": {
+      "label": "Facebook",
+      "tooltip": "Klikk for å dele til Facebook-kontoen din"
+    },
+    "twitter": {
+      "label": "Twitter",
+      "tooltip": "Klikk for å dele til Twitter-kontoen din"
+    },
+    "linkedIn": {
+      "label": "LinkedIn",
+      "tooltip": "Klikk for å dele til LinkedIn-kontoen din"
+    }
+  }
+}

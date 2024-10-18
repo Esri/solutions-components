@@ -1,0 +1,22 @@
+{
+  "clearSelection": "ล้างการเลือก",
+  "delete": "ก้_Delete_____________ษฺ",
+  "exportCSV": "ส่งออกเป็น CSV",
+  "filter": "ตัวกรอง: {{title}}",
+  "filters": "ตัวกรอง",
+  "hideField": "ซ่อนฟิลด์",
+  "more": "กว่า",
+  "selectAll": "เลือกทั้งหมด",
+  "share": "แชร์",
+  "showSelected": "แสดงที่เลือก",
+  "switchSelected": "สลับรายการที่เลือก",
+  "zoom": "ขยาย",
+  "editMultiple": "แก้ไขหลายรายการ",
+  "fetchingData": "กำลังดึงข้อมูล",
+  "refresh": "รีเฟรช",
+  "showAll": "แสดงทั้งหมด",
+  "recordsSelected": "รวม: {{total}} | ที่เลือก: {{selected}}",
+  "moreOptions": "ตัวเลือกตารางเพิ่มเติม",
+  "showHideColumns": "แสดง/ซ่อนคอลัมน์",
+  "searchPlaceholder": "ค้นหาข้อความในฟิลด์ {{fields}}"
+}

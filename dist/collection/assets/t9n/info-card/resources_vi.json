@@ -1,0 +1,10 @@
+{
+  "fetchingData": "Đang tìm nạp dữ liệu",
+  "edit": "Chỉnh sửa",
+  "enableEditing": "Chức năng cập nhật phải được bật trên lớp.",
+  "editDisabled": "Đã tắt Chỉnh sửa",
+  "next": "Tiếp",
+  "back": "Quay lại",
+  "indexOfTotal": "{{index}} / {{total}}",
+  "delete": "Xóa"
+}

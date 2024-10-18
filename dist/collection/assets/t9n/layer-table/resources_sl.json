@@ -1,0 +1,22 @@
+{
+  "clearSelection": "Počisti izbiro",
+  "delete": "Š_Delete_____________č",
+  "exportCSV": "Izvozi v CSV",
+  "filter": "Filter: {{title}}",
+  "filters": "Filtri",
+  "hideField": "Skrij polje",
+  "more": "Več",
+  "selectAll": "Izberi vse",
+  "share": "Deli",
+  "showSelected": "Prikaži izbrano",
+  "switchSelected": "Preklopi izbrano",
+  "zoom": "Povečava",
+  "editMultiple": "Uredi več",
+  "fetchingData": "Pridobivanje podatkov",
+  "refresh": "Osveži",
+  "showAll": "Prikaži vse",
+  "recordsSelected": "Skupno: {{total}} | Selection: {{selected}}",
+  "moreOptions": "Več možnosti tabele",
+  "showHideColumns": "Pokaži/skrij stolpce",
+  "searchPlaceholder": "Išči besedilo v {{fields}} polju"
+}

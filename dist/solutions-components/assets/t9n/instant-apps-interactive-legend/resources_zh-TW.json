@@ -1,0 +1,15 @@
+{
+  "noLegend": "無圖例。",
+  "loading": "正在載入互動式圖例",
+  "open": "開啟",
+  "close": "關閉",
+  "expand": "展開",
+  "collapse": "摺疊",
+  "totalFeatureCount": "圖徵總計數",
+  "showAll": "顯示全部",
+  "zoomTo": "縮放至",
+  "relationship": {
+    "instructionalText": "按一下顏色方塊以篩選地圖",
+    "notSupported": "目前不支援關係繪製樣式。"
+  }
+}

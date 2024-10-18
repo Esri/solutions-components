@@ -1,0 +1,11 @@
+{
+  "export": "Ekspordi",
+  "exportPopover": "Ekspordi hüpik",
+  "includeExtraContent": "Kaasa tulemused",
+  "includeHeaderTheme": "Kaasa päise teema",
+  "includeLegend": "Kaasa legend",
+  "includeMap": "Kaasa kaart",
+  "includePopup": "Kaasa hüpikaken",
+  "title": "Pealkiri",
+  "toggleExport": "Lülita eksport sisse/välja"
+}

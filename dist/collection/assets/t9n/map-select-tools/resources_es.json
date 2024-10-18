@@ -1,0 +1,16 @@
+{
+  "listName": "Nombre de lista",
+  "listNamePlaceholder": "Introducir nombre aquí",
+  "searchDistance": "Distancia de búsqueda",
+  "select": "Capa",
+  "selectedFeatures": "{{n}} entidades seleccionadas",
+  "selectionLoading": "Carga de selección",
+  "sketch": "Bosquejo",
+  "bufferLayer": "Capa de zonas de influencia",
+  "sketchLayer": "Capa de boceto",
+  "useLayerFeatures": "Usar entidades de capa",
+  "inputLayer": "Capa de entrada",
+  "useLayerFeaturesTooltip": "Elija una capa y utilice la herramienta de bosquejo para señalar las entidades que se pueden utilizar como límites con el fin de seleccionar entidades intersecantes de la capa de entrada.",
+  "useSearchDistanceTootip": "Defina una distancia para la zona de influencia de búsqueda que seleccionará las entidades de entrada que cortan la zona de influencia.",
+  "placeholder": "Buscar dirección o lugar"
+}

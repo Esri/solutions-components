@@ -1,0 +1,11 @@
+{
+  "export": "ส่งออก",
+  "exportPopover": "ส่งออกป็อปโอเวอร์",
+  "includeExtraContent": "รวมผลลัพธ์",
+  "includeHeaderTheme": "รวมธีมส่วนหัว",
+  "includeLegend": "รวมคำอธิบายสัญลักษณ์",
+  "includeMap": "รวมแผนที่",
+  "includePopup": "รวมป็อปอัพ",
+  "title": "คำนำหน้า",
+  "toggleExport": "สลับการส่งออก"
+}

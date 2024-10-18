@@ -1,0 +1,7 @@
+{
+  "selectFeaturesToStart": "Select a record to get started. Click while pressing the Ctrl key to select multiple records in the table.",
+  "selectFeaturesFromMapToStart": "Select a feature from map to get started. Click while pressing the Ctrl key to select multiple features.",
+  "createFeature": "Create feature",
+  "createRecord": "Create record",
+  "create": "Create"
+}

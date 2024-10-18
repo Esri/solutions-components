@@ -1,0 +1,15 @@
+{
+  "noLegend": "Brak legendy.",
+  "loading": "Wczytywanie interaktywnej legendy",
+  "open": "Otwórz",
+  "close": "Zamknij",
+  "expand": "Rozwiń",
+  "collapse": "Zwiń",
+  "totalFeatureCount": "Łączna liczba obiektów",
+  "showAll": "Pokaż wszystko",
+  "zoomTo": "Powiększ do",
+  "relationship": {
+    "instructionalText": "Klikaj kolorowe kwadraty, aby filtrować mapę",
+    "notSupported": "Styl rysowania relacji nie jest obecnie obsługiwany."
+  }
+}

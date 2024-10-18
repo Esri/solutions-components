@@ -1,0 +1,15 @@
+{
+  "noLegend": "범례가 없습니다.",
+  "loading": "대화형 범례를 불러오는 중",
+  "open": "열기",
+  "close": "닫기",
+  "expand": "확장",
+  "collapse": "축소",
+  "totalFeatureCount": "총 피처 개수",
+  "showAll": "모두 보기",
+  "zoomTo": "확대/축소",
+  "relationship": {
+    "instructionalText": "색상 사각형을 클릭하여 맵 필터링",
+    "notSupported": "관계 그리기 스타일은 현재 지원되지 않습니다."
+  }
+}

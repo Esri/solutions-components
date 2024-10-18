@@ -1,0 +1,6 @@
+{
+  "error": "Hata",
+  "featureErrorMsg": "Kayıt bulunamadı.",
+  "thousandsAbbreviation": "ı_{{abbreviated_value}}k_______________________İ",
+  "millionsAbbreviation": "ı_{{abbreviated_value}}M_______________________İ"
+}

@@ -1,0 +1,22 @@
+{
+  "clearSelection": "清除所選內容",
+  "delete": "試_Delete_____________驗",
+  "exportCSV": "匯出至 CSV",
+  "filter": "篩選器: {{title}}",
+  "filters": "篩選器",
+  "hideField": "隱藏欄位",
+  "more": "較多",
+  "selectAll": "全選",
+  "share": "分享",
+  "showSelected": "顯示所選",
+  "switchSelected": "切換所選",
+  "zoom": "縮放",
+  "editMultiple": "編輯多個",
+  "fetchingData": "正在擷取資料",
+  "refresh": "重新整理",
+  "showAll": "顯示全部",
+  "recordsSelected": "總計: {{total}} | 選擇: {{selected}}",
+  "moreOptions": "更多表格選項",
+  "showHideColumns": "顯示/隱藏欄",
+  "searchPlaceholder": "在 {{fields}} 欄位中搜尋文字"
+}

@@ -1,0 +1,22 @@
+{
+  "clearSelection": "Xóa lựa chọn",
+  "delete": "Đ_Delete_____________ớ",
+  "exportCSV": "Xuất thành CSV",
+  "filter": "Bộ lọc: {{title}}",
+  "filters": "Bộ lọc",
+  "hideField": "Ẩn trường",
+  "more": "Thêm",
+  "selectAll": "Chọn tất cả",
+  "share": "Chia sẻ",
+  "showSelected": "Hiển thị mục được chọn",
+  "switchSelected": "Chuyển đổi mục được chọn",
+  "zoom": "Thu phóng",
+  "editMultiple": "Chỉnh sửa nhiều mục",
+  "fetchingData": "Đang tìm nạp Dữ liệu",
+  "refresh": "Làm mới",
+  "showAll": "Hiện tất cả",
+  "recordsSelected": "Tổng: {{total}} | Lựa chọn: {{selected}}",
+  "moreOptions": "Các tùy chọn bảng khác",
+  "showHideColumns": "Hiển thị/ẩn cột",
+  "searchPlaceholder": "Tìm kiếm văn bản trong trường {{fields}}"
+}

@@ -1,0 +1,7 @@
+{
+  "selectFeaturesToStart": "시작하려면 레코드를 선택합니다. 테이블에서 레코드를 여러 개 선택하려면 Ctrl 키를 누른 상태에서 클릭합니다.",
+  "selectFeaturesFromMapToStart": "한_Select a feature from map to get started. Click while pressing the Ctrl key to select multiple features_____________________________________________________빠.",
+  "createFeature": "피처 생성",
+  "createRecord": "레코드 생성",
+  "create": "생성"
+}

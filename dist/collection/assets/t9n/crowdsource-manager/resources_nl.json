@@ -1,0 +1,12 @@
+{
+  "open": "Openen",
+  "close": "Sluiten",
+  "information": "Informatie",
+  "expandPopup": "Pop-up uitvouwen",
+  "collapsePopup": "Pop-up samenvouwen",
+  "view": "Weergeven ({{n}})",
+  "splitView": "Gesplitste weergave",
+  "tableView": "Tabelweergave",
+  "mapView": "Kaartweergave",
+  "filter": "Filter: {{title}}"
+}

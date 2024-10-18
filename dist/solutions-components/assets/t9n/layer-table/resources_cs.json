@@ -1,0 +1,22 @@
+{
+  "clearSelection": "Zrušit výběr",
+  "delete": "Ř_Delete_____________ů",
+  "exportCSV": "Exportovat do CSV",
+  "filter": "Filtr: {{title}}",
+  "filters": "Filtry",
+  "hideField": "Skrýt pole",
+  "more": "Více",
+  "selectAll": "Vybrat vše",
+  "share": "Sdílet",
+  "showSelected": "Zobrazit vybrané",
+  "switchSelected": "Přepnout vybrané",
+  "zoom": "Přiblížení",
+  "editMultiple": "Hromadná editace",
+  "fetchingData": "Načítání dat",
+  "refresh": "Obnovit",
+  "showAll": "Zobrazit vše",
+  "recordsSelected": "Celkem: {{total}} | Výběr: {{selected}}",
+  "moreOptions": "Další možnosti tabulky",
+  "showHideColumns": "Zobrazit/skrýt sloupce",
+  "searchPlaceholder": "Vyhledat text v poli {{fields}}"
+}

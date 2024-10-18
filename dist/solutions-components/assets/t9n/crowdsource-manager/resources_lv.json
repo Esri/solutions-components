@@ -1,0 +1,12 @@
+{
+  "open": "Atvērt",
+  "close": "Aizvērt",
+  "information": "Informācija",
+  "expandPopup": "Izvērst uznirstošo logu",
+  "collapsePopup": "Sakļaut uznirstošo logu",
+  "view": "Skats ({{n}})",
+  "splitView": "Dalīts skats",
+  "tableView": "Tabulas skats",
+  "mapView": "Kartes skats",
+  "filter": "Filtrēt: {{title}}"
+}

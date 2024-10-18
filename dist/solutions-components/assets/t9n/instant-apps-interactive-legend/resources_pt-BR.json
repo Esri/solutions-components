@@ -1,0 +1,15 @@
+{
+  "noLegend": "Sem legenda.",
+  "loading": "Carregando legenda interativa",
+  "open": "Abrir",
+  "close": "Fechar",
+  "expand": "Expandir",
+  "collapse": "Recolher",
+  "totalFeatureCount": "Contagem total de feições",
+  "showAll": "Mostrar todos",
+  "zoomTo": "Zoom para",
+  "relationship": {
+    "instructionalText": "Clique nos quadrados de cor para filtrar o mapa",
+    "notSupported": "O estilo de desenho do relacionamento atualmente não é suportado."
+  }
+}

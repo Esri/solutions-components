@@ -1,0 +1,15 @@
+{
+  "noLegend": "Nessuna legenda.",
+  "loading": "Caricamento legenda interattiva",
+  "open": "Apri",
+  "close": "Chiudi",
+  "expand": "Espandi",
+  "collapse": "Comprimi",
+  "totalFeatureCount": "Conteggio totale feature",
+  "showAll": "Mostra tutto",
+  "zoomTo": "Zoom a",
+  "relationship": {
+    "instructionalText": "Fare clic sui quadrati di colore per filtrare la mappa",
+    "notSupported": "Lo stile di disegno della relazione non è attualmente supportato."
+  }
+}

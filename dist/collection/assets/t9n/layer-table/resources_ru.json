@@ -1,0 +1,22 @@
+{
+  "clearSelection": "Очистить выборку",
+  "delete": "Ж_Delete_____________Я",
+  "exportCSV": "Экспорт в CSV",
+  "filter": "Фильтр: {{title}}",
+  "filters": "Фильтры",
+  "hideField": "Скрыть поле",
+  "more": "Больше",
+  "selectAll": "Выбрать все",
+  "share": "Общий доступ",
+  "showSelected": "Показать выбранные",
+  "switchSelected": "Переключить выбранные",
+  "zoom": "Масштабировать",
+  "editMultiple": "Редактировать несколько",
+  "fetchingData": "Извлечение данных",
+  "refresh": "Обновить",
+  "showAll": "Показать все",
+  "recordsSelected": "Всего: {{total}} | Выборка: {{selected}}",
+  "moreOptions": "Дополнительные опции таблицы",
+  "showHideColumns": "Показать/скрыть столбцы",
+  "searchPlaceholder": "Поиск текста в поле {{fields}}"
+}

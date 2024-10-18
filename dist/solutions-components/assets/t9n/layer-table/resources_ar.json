@@ -1,0 +1,22 @@
+{
+  "clearSelection": "مسح التحديد",
+  "delete": "بيت_Delete_____________لاحقة",
+  "exportCSV": "تصدير إلى CSV",
+  "filter": "تصفية: {{title}}",
+  "filters": "عوامل تصفية",
+  "hideField": "إخفاء الحقل",
+  "more": "المزيد",
+  "selectAll": "تحديد الكل",
+  "share": "مشاركة",
+  "showSelected": "عرض المحدد",
+  "switchSelected": "تبديل المحدد",
+  "zoom": "تغيير مقياس الرسم",
+  "editMultiple": "تحرير متعدد",
+  "fetchingData": "إحضار البيانات",
+  "refresh": "تحديث",
+  "showAll": "إظهار الكل",
+  "recordsSelected": "الإجمالي: {{total}} | التحديد: {{selected}}",
+  "moreOptions": "المزيد من خيارات الجدول",
+  "showHideColumns": "إظهار/إخفاء الأعمدة",
+  "searchPlaceholder": "نص البحث في الحقل {{fields}}"
+}

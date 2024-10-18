@@ -1,0 +1,22 @@
+{
+  "clearSelection": "Wyczyść wybór",
+  "delete": "ł_Delete_____________ą",
+  "exportCSV": "Eksportuj do CSV",
+  "filter": "Filtr: {{title}}",
+  "filters": "Filtry",
+  "hideField": "Ukryj pole",
+  "more": "Więcej",
+  "selectAll": "Wybierz wszystkie",
+  "share": "Udostępnij",
+  "showSelected": "Pokaż wybrane",
+  "switchSelected": "Przełącz wybrane",
+  "zoom": "Powiększ",
+  "editMultiple": "Edytuj wiele",
+  "fetchingData": "Pobieranie danych",
+  "refresh": "Odśwież",
+  "showAll": "Pokaż wszystko",
+  "recordsSelected": "Łącznie: {{total}} | Wybrane: {{selected}}",
+  "moreOptions": "Więcej opcji tabeli",
+  "showHideColumns": "Pokaż/ukryj kolumny",
+  "searchPlaceholder": "Wyszukaj tekst w polu {{fields}}"
+}

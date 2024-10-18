@@ -1,0 +1,8 @@
+{
+  "cancel": "Mégse",
+  "confirmMultiple": "Ezek a vektoros elemek végleg el lesznek távolítva.",
+  "confirmSingle": "A vektoros elem véglegesen el lesz távolítva.",
+  "delete": "Törlés",
+  "deleteCount": "Törlés ({{n}})",
+  "deleteFeature": "Vektoros elem törlése"
+}

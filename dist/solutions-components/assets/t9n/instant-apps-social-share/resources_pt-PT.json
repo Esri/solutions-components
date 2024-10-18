@@ -1,0 +1,38 @@
+{
+  "share": {
+    "label": "Partilhar"
+  },
+  "embed": {
+    "label": "Incorporar",
+    "copy": "Copiar",
+    "width": "Largura",
+    "height": "Altura"
+  },
+  "info": {
+    "label": "Sabia que…?",
+    "tooltip": "Copiar a ligação irá manter a vista de mapa atual, as camadas visíveis e os pop-ups abertos. Use esta opção para partilhar o que vê na aplicação."
+  },
+  "success": {
+    "label": "Sucesso!",
+    "url": "O URL da aplicação foi copiado para a área de transferência.",
+    "embed": "O código de incorporação foi copiado para a área de transferência."
+  },
+  "options": {
+    "link": {
+      "label": "Copiar Ligação",
+      "tooltip": "Clique para copiar a ligação para a área de transferência"
+    },
+    "facebook": {
+      "label": "Facebook",
+      "tooltip": "Clique para partilhar na sua conta do Facebook"
+    },
+    "twitter": {
+      "label": "Twitter",
+      "tooltip": "Clique para partilhar na sua conta do Twitter"
+    },
+    "linkedIn": {
+      "label": "LinkedIn",
+      "tooltip": "Clique para partilhar na sua conta do LinkedIn"
+    }
+  }
+}

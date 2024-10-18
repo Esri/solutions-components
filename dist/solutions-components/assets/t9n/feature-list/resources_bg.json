@@ -1,0 +1,6 @@
+{
+  "error": "Грешка",
+  "featureErrorMsg": "Няма намерени записи.",
+  "thousandsAbbreviation": "й_{{abbreviated_value}}k_______________________й",
+  "millionsAbbreviation": "й_{{abbreviated_value}}M_______________________й"
+}

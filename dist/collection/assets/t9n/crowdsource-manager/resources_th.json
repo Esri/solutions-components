@@ -1,0 +1,12 @@
+{
+  "open": "เปิด",
+  "close": "ปิด",
+  "information": "ข้อมูล",
+  "expandPopup": "ขยายป็อปอัพ",
+  "collapsePopup": "ย่อป็อปอัพ",
+  "view": "มุมมอง ({{n}})",
+  "splitView": "มุมมองแยก",
+  "tableView": "มุมมองตาราง",
+  "mapView": "มุมมองแผนที่",
+  "filter": "ตัวกรอง: {{title}}"
+}

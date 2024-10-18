@@ -1,0 +1,22 @@
+{
+  "clearSelection": "選択の解除",
+  "delete": "須_Delete_____________鷗",
+  "exportCSV": "CSV にエクスポート",
+  "filter": "フィルター: {{title}}",
+  "filters": "フィルター",
+  "hideField": "フィールドを非表示",
+  "more": "その他",
+  "selectAll": "すべて選択",
+  "share": "共有",
+  "showSelected": "選択の表示",
+  "switchSelected": "選択の切り替え",
+  "zoom": "ズーム",
+  "editMultiple": "複数を編集",
+  "fetchingData": "データを取得しています",
+  "refresh": "更新",
+  "showAll": "すべて表示",
+  "recordsSelected": "合計: {{total}} | 選択: {{selected}}",
+  "moreOptions": "その他のテーブル オプション",
+  "showHideColumns": "列の表示/非表示",
+  "searchPlaceholder": "{{fields}} フィールドのテキストを検索"
+}

@@ -1,0 +1,8 @@
+{
+  "cancel": "Avbryt",
+  "confirmMultiple": "Dessa geoobjekt tas bort permanent.",
+  "confirmSingle": "Geoobjektet tas bort permanent.",
+  "delete": "Ta bort",
+  "deleteCount": "Ta bort ({{n}})",
+  "deleteFeature": "Ta bort geoobjekt"
+}
