@@ -94,6 +94,8 @@ export class SolutionItemAccordion {
     "Web Scene",
     "Feature Layer (hosted, view)",
     "Feature Layer (hosted)",
+    "Table (hosted, view)",
+    "Table (hosted)",
     "Tile Layer",
     "CSV",
     "Microsoft Excel",
@@ -348,8 +350,10 @@ export class SolutionItemAccordion {
   ): string {
     let _type = type;
     if (type === "Feature Service") {
-      _type = typeKeywords.indexOf("View Service") > -1 ?
-        "Feature Layer (hosted, view)" : "Feature Layer (hosted)";
+      const isView = typeKeywords.indexOf("View Service") > -1;
+      const isTable = typeKeywords.indexOf("Table") > -1
+      _type = isView && isTable ? "Table (hosted, view)" : isTable ? "Table (hosted)" :
+        isView ? "Feature Layer (hosted, view)" : "Feature Layer (hosted)";
     }
 
     if (type === "Web Mapping Application") {
