@@ -81,9 +81,9 @@ export class SolutionItemAccordion {
     "Form",
     "QuickCapture Project",
     "Workflow",
-    "Big Data Analytic",
-    "Real Time Analytic",
-    "Feed",
+    "Big Data Analytic (hosted)",
+    "Real Time Analytic (hosted)",
+    "Feed (hosted)",
     "Tool",
     "Notebook",
     "Data Pipeline",
@@ -360,6 +360,16 @@ export class SolutionItemAccordion {
       _type = typeKeywords.indexOf("configurableApp") > -1 ?
         "Instant App" : _type;
     }
+
+    _type = type === "Geoprocessing Service" ? "Tool" : _type;
+
+    _type = type === "Feed" ? "Feed (hosted)" : _type;
+
+    _type = type === "Real Time Analytic" ? "Real Time Analytic (hosted)" : _type;
+
+    _type = type === "Big Data Analytic" ? "Big Data Analytic (hosted)" : _type;
+
+    _type = type === "Vector Tile Service" ? "Tile Layer" : _type;
 
     return _type;
   }
