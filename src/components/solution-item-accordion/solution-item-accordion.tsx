@@ -361,6 +361,8 @@ export class SolutionItemAccordion {
         "Instant App" : _type;
     }
 
+    _type = type === "Geoprocessing Service" ? "Tool" : _type;
+
     return _type;
   }
 
