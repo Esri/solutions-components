@@ -16,7 +16,7 @@
   "currentLocationMsg": "Geçerli konumumu kullan",
   "addLocationMsg": "Lütfen bir konum ekleyin.",
   "submitMsg": "Teşekkürler! Raporunuz başarıyla gönderildi.",
-  "filterLayerTitle": "ı_Filter: {{title}}__________________İ",
+  "filterLayerTitle": "Filtre: {{title}}",
   "indexOfTotal": "{{index}} / {{total}}",
   "comment": "Yorum",
   "commentSubmittedMsg": "Yorum gönderildi",

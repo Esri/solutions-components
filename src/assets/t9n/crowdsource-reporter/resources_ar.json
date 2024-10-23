@@ -16,7 +16,7 @@
   "currentLocationMsg": "استخدم موقعي الحالي",
   "addLocationMsg": "الرجاء إضافة موقع.",
   "submitMsg": "شكرًا لك! تم إرسال تقريرك بنجاح.",
-  "filterLayerTitle": "بيت_Filter: {{title}}__________________لاحقة",
+  "filterLayerTitle": "تصفية: {{title}}",
   "indexOfTotal": "{{index}} من {{total}}",
   "comment": "تعليق",
   "commentSubmittedMsg": "تم إرسال تعليق",

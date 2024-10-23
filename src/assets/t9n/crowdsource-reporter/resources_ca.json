@@ -16,7 +16,7 @@
   "currentLocationMsg": "Utilitza la meva ubicació actual",
   "addLocationMsg": "Afegiu una ubicació.",
   "submitMsg": "Gràcies. El vostre informe s'ha enviat correctament.",
-  "filterLayerTitle": "ó_Filter: {{title}}__________________à",
+  "filterLayerTitle": "Filtre: {{title}}",
   "indexOfTotal": "{{index}} de {{total}}",
   "comment": "Comentaris",
   "commentSubmittedMsg": "S'ha enviat el comentari",

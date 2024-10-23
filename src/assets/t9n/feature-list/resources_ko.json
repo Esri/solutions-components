@@ -1,6 +1,6 @@
 {
   "error": "오류",
   "featureErrorMsg": "레코드를 찾을 수 없습니다.",
-  "thousandsAbbreviation": "한_{{abbreviated_value}}k_______________________빠",
-  "millionsAbbreviation": "한_{{abbreviated_value}}M_______________________빠"
+  "thousandsAbbreviation": "{{abbreviated_value}}k",
+  "millionsAbbreviation": "{{abbreviated_value}}M"
 }

@@ -1,6 +1,6 @@
 {
   "error": "Fehler",
   "featureErrorMsg": "Keine Datensätze gefunden.",
-  "thousandsAbbreviation": "ä_{{abbreviated_value}}k_______________________Ü",
-  "millionsAbbreviation": "ä_{{abbreviated_value}}M_______________________Ü"
+  "thousandsAbbreviation": "{{abbreviated_value}} Tsd.",
+  "millionsAbbreviation": "{{abbreviated_value}} Mio."
 }

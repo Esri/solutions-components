@@ -16,7 +16,7 @@
   "currentLocationMsg": "ใช้ตำแหน่งปัจจุบันของฉัน",
   "addLocationMsg": "โปรดเพิ่มตำแหน่ง",
   "submitMsg": "ขอบคุณ ส่งรายงานของคุณเรียบร้อยแล้ว",
-  "filterLayerTitle": "ก้_Filter: {{title}}__________________ษฺ",
+  "filterLayerTitle": "ตัวกรอง: {{title}}",
   "indexOfTotal": "{{index}} จาก {{total}}",
   "comment": "ความคิดเห็น",
   "commentSubmittedMsg": "ส่งความคิดเห็นแล้ว",

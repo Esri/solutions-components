@@ -16,7 +16,7 @@
   "currentLocationMsg": "Χρήση τρέχουσας τοποθεσίας μου",
   "addLocationMsg": "Προσθέστε τοποθεσία.",
   "submitMsg": "Σας ευχαριστούμε! Η αναφορά υποβολήθηκε με επιτυχία.",
-  "filterLayerTitle": "Đ_Filter: {{title}}__________________ớ",
+  "filterLayerTitle": "Φίλτρο: {{title}}",
   "indexOfTotal": "{{index}} από {{total}}",
   "comment": "Σχόλιο",
   "commentSubmittedMsg": "Το σχόλιο υποβλήθηκε",

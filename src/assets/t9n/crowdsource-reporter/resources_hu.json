@@ -16,7 +16,7 @@
   "currentLocationMsg": "Jelenlegi saját hely használata",
   "addLocationMsg": "Adjon meg egy helyszínt.",
   "submitMsg": "Köszönjük! Az Ön jelentésének elküldése sikeresen megtörtént.",
-  "filterLayerTitle": "í_Filter: {{title}}__________________ő",
+  "filterLayerTitle": "Szűrő: {{title}}",
   "indexOfTotal": "{{index}}/{{total}}",
   "comment": "Megjegyzés",
   "commentSubmittedMsg": "A hozzászólás elküldve",

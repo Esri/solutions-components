@@ -16,7 +16,7 @@
   "currentLocationMsg": "Izmantot manu pašreizējo novietojumu",
   "addLocationMsg": "Lūdzu, pievienojiet atrašanās vietu.",
   "submitMsg": "Paldies! Jūsu pārskats ir veiksmīgi iesniegts.",
-  "filterLayerTitle": "ķ_Filter: {{title}}__________________ū",
+  "filterLayerTitle": "Filtrēt: {{title}}",
   "indexOfTotal": "{{index}} no {{total}}",
   "comment": "Komentārs",
   "commentSubmittedMsg": "Komentārs iesniegts",

@@ -16,7 +16,7 @@
   "currentLocationMsg": "Aktuelle eigene Position verwenden",
   "addLocationMsg": "Fügen Sie einen Speicherort hinzu.",
   "submitMsg": "Vielen Dank. Ihr Bericht wurde erfolgreich gesendet.",
-  "filterLayerTitle": "ä_Filter: {{title}}__________________Ü",
+  "filterLayerTitle": "Filter: {{title}}",
   "indexOfTotal": "{{index}} von {{total}}",
   "comment": "Kommentar",
   "commentSubmittedMsg": "Kommentar gesendet",

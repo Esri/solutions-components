@@ -16,7 +16,7 @@
   "currentLocationMsg": "Uporabi mojo trenutno lokacijo",
   "addLocationMsg": "Dodajte lokacijo.",
   "submitMsg": "Hvala! Vaše poročilo je bilo uspešno poslano.",
-  "filterLayerTitle": "Š_Filter: {{title}}__________________č",
+  "filterLayerTitle": "Filter: {{title}}",
   "indexOfTotal": "{{index}} od {{total}}",
   "comment": "Komentar",
   "commentSubmittedMsg": "Komentar poslan",

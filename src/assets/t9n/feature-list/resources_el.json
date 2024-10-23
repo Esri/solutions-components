@@ -1,6 +1,6 @@
 {
   "error": "Σφάλμα",
   "featureErrorMsg": "Δεν βρέθηκαν εγγραφές.",
-  "thousandsAbbreviation": "Đ_{{abbreviated_value}}k_______________________ớ",
-  "millionsAbbreviation": "Đ_{{abbreviated_value}}M_______________________ớ"
+  "thousandsAbbreviation": "{{abbreviated_value}}k",
+  "millionsAbbreviation": "{{abbreviated_value}}M"
 }

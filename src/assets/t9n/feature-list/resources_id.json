@@ -1,6 +1,6 @@
 {
   "error": "Kesalahan",
   "featureErrorMsg": "Tidak ada catatan ditemukan.",
-  "thousandsAbbreviation": "ng_{{abbreviated_value}}k_______________________ny",
-  "millionsAbbreviation": "ng_{{abbreviated_value}}M_______________________ny"
+  "thousandsAbbreviation": "{{abbreviated_value}}k",
+  "millionsAbbreviation": "{{abbreviated_value}}M"
 }

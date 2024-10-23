@@ -16,7 +16,7 @@
   "currentLocationMsg": "使用我的目前位置",
   "addLocationMsg": "请添加位置。",
   "submitMsg": "谢谢! 您的报告已成功提交。",
-  "filterLayerTitle": "试_Filter: {{title}}__________________验",
+  "filterLayerTitle": "过滤器：{{title}}",
   "indexOfTotal": "{{index}}/{{total}}",
   "comment": "评论",
   "commentSubmittedMsg": "评论已提交",

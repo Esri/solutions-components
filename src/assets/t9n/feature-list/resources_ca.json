@@ -1,6 +1,6 @@
 {
   "error": "Error",
   "featureErrorMsg": "No s'ha trobat cap registre.",
-  "thousandsAbbreviation": "ó_{{abbreviated_value}}k_______________________à",
-  "millionsAbbreviation": "ó_{{abbreviated_value}}M_______________________à"
+  "thousandsAbbreviation": "{{abbreviated_value}}k",
+  "millionsAbbreviation": "{{abbreviated_value}}M"
 }

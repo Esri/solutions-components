@@ -1,6 +1,6 @@
 {
   "error": "Erreur",
   "featureErrorMsg": "Aucun enregistrement trouvé.",
-  "thousandsAbbreviation": "æ_{{abbreviated_value}}k_______________________Â",
-  "millionsAbbreviation": "æ_{{abbreviated_value}}M_______________________Â"
+  "thousandsAbbreviation": "{{abbreviated_value}}k",
+  "millionsAbbreviation": "{{abbreviated_value}}M"
 }

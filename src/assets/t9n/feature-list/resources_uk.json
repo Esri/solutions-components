@@ -1,6 +1,6 @@
 {
   "error": "Помилка",
   "featureErrorMsg": "Записів не знайдено.",
-  "thousandsAbbreviation": "ґ_{{abbreviated_value}}k_______________________Ї",
-  "millionsAbbreviation": "ґ_{{abbreviated_value}}M_______________________Ї"
+  "thousandsAbbreviation": "{{abbreviated_value}}k",
+  "millionsAbbreviation": "{{abbreviated_value}}M"
 }

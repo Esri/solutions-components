@@ -16,7 +16,7 @@
   "currentLocationMsg": "Brug min nuværende position",
   "addLocationMsg": "Tilføj en position.",
   "submitMsg": "Tak Din rapport er blevet sendt.",
-  "filterLayerTitle": "ø_Filter: {{title}}__________________å",
+  "filterLayerTitle": "Filter: {{title}}",
   "indexOfTotal": "{{index}} for {{total}}",
   "comment": "Kommentar",
   "commentSubmittedMsg": "Kommentar sendt",

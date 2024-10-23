@@ -16,7 +16,7 @@
   "currentLocationMsg": "Použiť moju aktuálnu polohu",
   "addLocationMsg": "Pridajte lokalitu.",
   "submitMsg": "Ďakujeme! Váš report bol úspešne odoslaný.",
-  "filterLayerTitle": "ĺ_Filter: {{title}}__________________ľ",
+  "filterLayerTitle": "Filter: {{title}}",
   "indexOfTotal": "{{index}} z {{total}}",
   "comment": "Komentovať",
   "commentSubmittedMsg": "Komentár bol odoslaný",

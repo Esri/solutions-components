@@ -1,6 +1,6 @@
 {
   "error": "Feil",
   "featureErrorMsg": "Fant ingen poster.",
-  "thousandsAbbreviation": "å_{{abbreviated_value}}k_______________________ø",
-  "millionsAbbreviation": "å_{{abbreviated_value}}M_______________________ø"
+  "thousandsAbbreviation": "{{abbreviated_value}}k",
+  "millionsAbbreviation": "{{abbreviated_value}}M"
 }

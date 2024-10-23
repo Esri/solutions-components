@@ -16,7 +16,7 @@
   "currentLocationMsg": "Använd min aktuella plats",
   "addLocationMsg": "Lägg till en plats.",
   "submitMsg": "Tack! Din rapport har skickats in.",
-  "filterLayerTitle": "Å_Filter: {{title}}__________________ö",
+  "filterLayerTitle": "Filter: {{title}}",
   "indexOfTotal": "{{index}} av {{total}}",
   "comment": "Kommentar",
   "commentSubmittedMsg": "Kommentar har skickats",

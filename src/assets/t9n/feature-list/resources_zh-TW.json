@@ -1,6 +1,6 @@
 {
   "error": "錯誤",
   "featureErrorMsg": "找不到任何記錄。",
-  "thousandsAbbreviation": "試_{{abbreviated_value}}k_______________________驗",
-  "millionsAbbreviation": "試_{{abbreviated_value}}M_______________________驗"
+  "thousandsAbbreviation": "{{abbreviated_value}}k",
+  "millionsAbbreviation": "{{abbreviated_value}}M"
 }

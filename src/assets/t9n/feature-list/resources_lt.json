@@ -1,6 +1,6 @@
 {
   "error": "Klaida",
   "featureErrorMsg": "Įrašų nerasta.",
-  "thousandsAbbreviation": "Į_{{abbreviated_value}}k_______________________š",
-  "millionsAbbreviation": "Į_{{abbreviated_value}}M_______________________š"
+  "thousandsAbbreviation": "{{abbreviated_value}} tūkst.",
+  "millionsAbbreviation": "{{abbreviated_value}} mln."
 }

@@ -16,7 +16,7 @@
   "currentLocationMsg": "השתמש במיקום הנוכחי שלי",
   "addLocationMsg": "הוסף מיקום.",
   "submitMsg": "תודה! הדוח שלך נשלח בהצלחה.",
-  "filterLayerTitle": "כן_Filter: {{title}}__________________ש",
+  "filterLayerTitle": "מסנן: {{title}}",
   "indexOfTotal": "{{index}} מתוך {{total}}",
   "comment": "הערה",
   "commentSubmittedMsg": "ההערה נשלחה",

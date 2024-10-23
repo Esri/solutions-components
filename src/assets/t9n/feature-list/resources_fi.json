@@ -1,6 +1,6 @@
 {
   "error": "Virhe",
   "featureErrorMsg": "Tietueita ei löytynyt.",
-  "thousandsAbbreviation": "Å_{{abbreviated_value}}k_______________________ö",
-  "millionsAbbreviation": "Å_{{abbreviated_value}}M_______________________ö"
+  "thousandsAbbreviation": "{{abbreviated_value}}k",
+  "millionsAbbreviation": "{{abbreviated_value}}M"
 }

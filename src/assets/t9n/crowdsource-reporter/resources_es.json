@@ -16,7 +16,7 @@
   "currentLocationMsg": "Utilizar mi ubicación actual",
   "addLocationMsg": "Agregue una ubicación.",
   "submitMsg": "Gracias. Su informe se ha enviado correctamente.",
-  "filterLayerTitle": "á_Filter: {{title}}__________________Ó",
+  "filterLayerTitle": "Filtro: {{title}}",
   "indexOfTotal": "{{index}} de {{total}}",
   "comment": "Comentario",
   "commentSubmittedMsg": "Comentario enviado",

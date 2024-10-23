@@ -16,7 +16,7 @@
   "currentLocationMsg": "Gunakan lokasi saya saat ini",
   "addLocationMsg": "Tambahkan lokasi.",
   "submitMsg": "Terima kasih! Laporan Anda berhasil dikirim.",
-  "filterLayerTitle": "ng_Filter: {{title}}__________________ny",
+  "filterLayerTitle": "Filter: {{title}}",
   "indexOfTotal": "{{index}} dari {{total}}",
   "comment": "Komentar",
   "commentSubmittedMsg": "Komentar dikirimkan",

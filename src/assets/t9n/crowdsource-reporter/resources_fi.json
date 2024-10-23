@@ -16,7 +16,7 @@
   "currentLocationMsg": "Käytä nykyistä sijaintiani",
   "addLocationMsg": "Lisää sijainti.",
   "submitMsg": "Kiitos! Raporttisi lähettäminen onnistui.",
-  "filterLayerTitle": "Å_Filter: {{title}}__________________ö",
+  "filterLayerTitle": "Suodatin: {{title}}",
   "indexOfTotal": "{{index}}/{{total}}",
   "comment": "Kommentti",
   "commentSubmittedMsg": "Kommentti lähetetty",

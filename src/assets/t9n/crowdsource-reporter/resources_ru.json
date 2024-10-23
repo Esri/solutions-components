@@ -16,7 +16,7 @@
   "currentLocationMsg": "Использовать мое текущее местоположение",
   "addLocationMsg": "Добавьте местоположение.",
   "submitMsg": "Спасибо! Ваш отчет успешно отправлен.",
-  "filterLayerTitle": "Ж_Filter: {{title}}__________________Я",
+  "filterLayerTitle": "Фильтр: {{title}}",
   "indexOfTotal": "{{index}} из {{total}}",
   "comment": "Комментарий",
   "commentSubmittedMsg": "Комментарий добавлен",

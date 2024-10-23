@@ -16,7 +16,7 @@
   "currentLocationMsg": "Kasuta minu praegust asukohta",
   "addLocationMsg": "Lisage asukoht.",
   "submitMsg": "Täname teid. Teie aruanne edastati.",
-  "filterLayerTitle": "Š_Filter: {{title}}__________________ä",
+  "filterLayerTitle": "Filter: {{title}}",
   "indexOfTotal": "{{index}}/{{total}}",
   "comment": "Kommentaar",
   "commentSubmittedMsg": "Kommentaari esitatud",

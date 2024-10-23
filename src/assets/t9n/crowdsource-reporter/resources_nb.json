@@ -16,7 +16,7 @@
   "currentLocationMsg": "Bruk min nåværende lokasjon",
   "addLocationMsg": "Legg til en lokasjon.",
   "submitMsg": "Takk! Rapporten er innsendt.",
-  "filterLayerTitle": "å_Filter: {{title}}__________________ø",
+  "filterLayerTitle": "Filter: {{title}}",
   "indexOfTotal": "{{index}} av {{total}}",
   "comment": "Kommentar",
   "commentSubmittedMsg": "Kommentar sendt inn",

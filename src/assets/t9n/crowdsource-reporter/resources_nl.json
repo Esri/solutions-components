@@ -16,7 +16,7 @@
   "currentLocationMsg": "Gebruik mijn huidige locatie",
   "addLocationMsg": "Voeg een locatie toe.",
   "submitMsg": "Bedankt! Uw rapport is ingediend.",
-  "filterLayerTitle": "Ĳ_Filter: {{title}}__________________ä",
+  "filterLayerTitle": "Filter: {{title}}",
   "indexOfTotal": "{{index}} van {{total}}",
   "comment": "Opmerkingen maken",
   "commentSubmittedMsg": "Opmerking is verzonden",

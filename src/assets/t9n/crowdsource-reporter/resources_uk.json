@@ -16,7 +16,7 @@
   "currentLocationMsg": "Використовувати моє поточне місце розташування",
   "addLocationMsg": "Додайте місце розташування.",
   "submitMsg": "Дякуємо! Ваш звіт було успішно надіслано.",
-  "filterLayerTitle": "ґ_Filter: {{title}}__________________Ї",
+  "filterLayerTitle": "Фільтр: {{title}}",
   "indexOfTotal": "{{index}} з {{total}}",
   "comment": "Коментар",
   "commentSubmittedMsg": "Коментар надіслано",

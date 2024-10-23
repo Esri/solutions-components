@@ -1,6 +1,6 @@
 {
   "error": "Błąd",
   "featureErrorMsg": "Nie znaleziono rekordów.",
-  "thousandsAbbreviation": "ł_{{abbreviated_value}}k_______________________ą",
-  "millionsAbbreviation": "ł_{{abbreviated_value}}M_______________________ą"
+  "thousandsAbbreviation": "{{abbreviated_value}}k",
+  "millionsAbbreviation": "{{abbreviated_value}}M"
 }

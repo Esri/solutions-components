@@ -16,7 +16,7 @@
   "currentLocationMsg": "Folosiți locația mea curentă",
   "addLocationMsg": "Adăugați o locație.",
   "submitMsg": "Vă mulțumim! Raportul dvs. a fost trimis cu succes.",
-  "filterLayerTitle": "Ă_Filter: {{title}}__________________ș",
+  "filterLayerTitle": "Filtrare: {{title}}",
   "indexOfTotal": "{{index}} din {{total}}",
   "comment": "Comentariu",
   "commentSubmittedMsg": "Comentariu transmis",
