@@ -404,7 +404,7 @@ export class CrowdsourceManager {
     if (newAppLayout !== oldAppLayout) {
       this._setActiveLayout(newAppLayout);
       // update the layer if table selected while switching to map view
-      if (this.appLayout === "mapView" && this._layer.isTable) {
+      if (this.appLayout === "mapView" && this._layer?.isTable) {
         void this._mapCard.updateLayer()
       }
       if (this._isMapViewOnLoad) {
