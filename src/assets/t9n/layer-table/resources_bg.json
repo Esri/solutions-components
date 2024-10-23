@@ -1,6 +1,6 @@
 {
   "clearSelection": "Изчистване на избора",
-  "delete": "й_Delete_____________й",
+  "delete": "Изтриване",
   "exportCSV": "Експортиране в CSV",
   "filter": "Филтър: {{title}}",
   "filters": "Филтри",

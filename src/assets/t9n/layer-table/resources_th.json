@@ -1,6 +1,6 @@
 {
   "clearSelection": "ล้างการเลือก",
-  "delete": "ก้_Delete_____________ษฺ",
+  "delete": "ลบ",
   "exportCSV": "ส่งออกเป็น CSV",
   "filter": "ตัวกรอง: {{title}}",
   "filters": "ตัวกรอง",

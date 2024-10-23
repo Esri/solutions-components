@@ -1,6 +1,6 @@
 {
   "selectFeaturesToStart": "Aloita valitsemalla tietue. Valitse taulusta useita tietueita napsauttamalla tietueita ja pitämällä samalla Ctrl-näppäintä painettuna.",
-  "selectFeaturesFromMapToStart": "Å_Select a feature from map to get started. Click while pressing the Ctrl key to select multiple features_____________________________________________________ö.",
+  "selectFeaturesFromMapToStart": "Aloita valitsemalla kohde kartasta. Valitse useita kohteita napsauttamalla kohteita ja pitämällä samalla Ctrl-näppäintä painettuna.",
   "createFeature": "Luo kohde",
   "createRecord": "Luo tietue",
   "create": "Luo"

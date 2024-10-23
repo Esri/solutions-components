@@ -1,6 +1,6 @@
 {
   "selectFeaturesToStart": "Selezionare un record per iniziare. Fare clic tenendo premuto il tasto Ctrl per selezionare più record nella tabella.",
-  "selectFeaturesFromMapToStart": "é_Select a feature from map to get started. Click while pressing the Ctrl key to select multiple features_____________________________________________________È.",
+  "selectFeaturesFromMapToStart": "Selezionare una feature dalla mappa per cominciare. Fare clic premendo il tasto Ctrl per selezionare più feature.",
   "createFeature": "Crea feature",
   "createRecord": "Crea record",
   "create": "Crea"

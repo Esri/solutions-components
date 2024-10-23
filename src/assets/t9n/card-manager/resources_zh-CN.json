@@ -1,6 +1,6 @@
 {
   "selectFeaturesToStart": "选择一条记录即可开始。 在按住 Ctrl 键的同时单击可选择表中的多条记录。",
-  "selectFeaturesFromMapToStart": "试_Select a feature from map to get started. Click while pressing the Ctrl key to select multiple features_____________________________________________________验.",
+  "selectFeaturesFromMapToStart": "从地图中选择一个要素即可开始。 按住 Ctrl 键并单击可选择多个要素。",
   "createFeature": "创建要素",
   "createRecord": "创建记录",
   "create": "创建"

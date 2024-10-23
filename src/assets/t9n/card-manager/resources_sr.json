@@ -1,6 +1,6 @@
 {
   "selectFeaturesToStart": "Izaberite zapis da biste otpočeli. Kliknite dok držite taster Ctrl da biste izabrali više zapisa u tabeli.",
-  "selectFeaturesFromMapToStart": "Č_Select a feature from map to get started. Click while pressing the Ctrl key to select multiple features_____________________________________________________ž.",
+  "selectFeaturesFromMapToStart": "Izaberite geoobjekat iz mape da biste počeli. Kliknite dok držite pritisnut taster Ctrl da biste izabrali više geoobjekata.",
   "createFeature": "Kreiraj geoobjekat",
   "createRecord": "Kreiraj zapis",
   "create": "Kreiraj"

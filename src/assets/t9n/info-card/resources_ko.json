@@ -5,6 +5,6 @@
   "editDisabled": "편집이 비활성화됨",
   "next": "다음",
   "back": "뒤로",
-  "indexOfTotal": "{{index}} / {{total}}",
+  "indexOfTotal": "{{index}}개 중 {{total}}개",
   "delete": "삭제"
 }

@@ -1,6 +1,6 @@
 {
   "selectFeaturesToStart": "Alustamiseks valige kirje. Tabelis mitme kirje valimiseks hoidke klõpsamise ajal alla klahvi CTRL.",
-  "selectFeaturesFromMapToStart": "Š_Select a feature from map to get started. Click while pressing the Ctrl key to select multiple features_____________________________________________________ä.",
+  "selectFeaturesFromMapToStart": "Alustamiseks valige kaardilt funktsioon. Mitme funktsiooni valimiseks hoitke funktsioonide valimisel all Ctrl-klahvi.",
   "createFeature": "Loo objekt",
   "createRecord": "Loo kirje",
   "create": "Loo"

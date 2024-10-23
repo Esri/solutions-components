@@ -1,6 +1,6 @@
 {
   "clearSelection": "清除选择内容",
-  "delete": "试_Delete_____________验",
+  "delete": "删除",
   "exportCSV": "导出到 CSV",
   "filter": "过滤器：{{title}}",
   "filters": "过滤器",

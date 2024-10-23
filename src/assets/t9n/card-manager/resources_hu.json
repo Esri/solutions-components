@@ -1,6 +1,6 @@
 {
   "selectFeaturesToStart": "Válasszon ki egy rekordot a kezdéshez. A Ctrl billentyű lenyomása közben kattintson a táblázat több rekordjának kijelöléséhez.",
-  "selectFeaturesFromMapToStart": "í_Select a feature from map to get started. Click while pressing the Ctrl key to select multiple features_____________________________________________________ő.",
+  "selectFeaturesFromMapToStart": "A kezdéshez válasszon ki egy vektoros elemet a térképen. A Ctrl billentyű lenyomása közben kattintson a több vektoros elem kijelöléséhez.",
   "createFeature": "Vektoros elem létrehozása",
   "createRecord": "Rekord létrehozása",
   "create": "Hozzon létre"

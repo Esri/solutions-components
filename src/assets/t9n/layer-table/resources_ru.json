@@ -1,6 +1,6 @@
 {
   "clearSelection": "Очистить выборку",
-  "delete": "Ж_Delete_____________Я",
+  "delete": "Удалить",
   "exportCSV": "Экспорт в CSV",
   "filter": "Фильтр: {{title}}",
   "filters": "Фильтры",

@@ -1,6 +1,6 @@
 {
   "selectFeaturesToStart": "เลือกบันทึกข้อมูลเพื่อเริ่ม คลิกในขณะที่กดปุ่ม Ctrl ค้างไว้ เพื่อเลือกบันทึกข้อมูลหลายรายการในตาราง",
-  "selectFeaturesFromMapToStart": "ก้_Select a feature from map to get started. Click while pressing the Ctrl key to select multiple features_____________________________________________________ษฺ.",
+  "selectFeaturesFromMapToStart": "เลือกฟีเจอร์จากแผนที่เพื่อเริ่ม คลิกขณะกดปุ่ม Ctrl ค้างไว้เพื่อเลือกหลายฟีเจอร์",
   "createFeature": "สร้างฟีเจอร์",
   "createRecord": "สร้างบันทึกข้อมูล",
   "create": "สร้าง"

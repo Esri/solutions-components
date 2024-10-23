@@ -1,6 +1,6 @@
 {
   "selectFeaturesToStart": "Chọn một bản ghi để bắt đầu. Nhấp trong khi giữ phím Ctrl để chọn nhiều bản ghi trong bảng.",
-  "selectFeaturesFromMapToStart": "Đ_Select a feature from map to get started. Click while pressing the Ctrl key to select multiple features_____________________________________________________ớ.",
+  "selectFeaturesFromMapToStart": "Chọn đối tượng từ bản đồ để bắt đầu. Nhấp chuột đồng thời giữ phím Ctrl để chọn nhiều đối tượng.",
   "createFeature": "Tạo đối tượng",
   "createRecord": "Tạo bản ghi",
   "create": "Tạo"

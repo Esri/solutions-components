@@ -1,6 +1,6 @@
 {
   "selectFeaturesToStart": "Vælg en post at starte med. Klik mens du holder Crtrl-tasten nede for at markere flere poster i tabellen.",
-  "selectFeaturesFromMapToStart": "ø_Select a feature from map to get started. Click while pressing the Ctrl key to select multiple features_____________________________________________________å.",
+  "selectFeaturesFromMapToStart": "Vælg et objekt på kortet for at komme i gang. Klik og hold Ctrl-tasten nede for at markere flere objekter.",
   "createFeature": "Opret objekt",
   "createRecord": "Opret post",
   "create": "Opret"

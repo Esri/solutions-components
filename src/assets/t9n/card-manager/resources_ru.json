@@ -1,6 +1,6 @@
 {
   "selectFeaturesToStart": "Выберите запись, чтобы начать работу. Щелкните, удерживая клавишу Ctrl, чтобы выбрать несколько записей в таблице.",
-  "selectFeaturesFromMapToStart": "Ж_Select a feature from map to get started. Click while pressing the Ctrl key to select multiple features_____________________________________________________Я.",
+  "selectFeaturesFromMapToStart": "Выберите объект на карте, чтобы начать работу. Щелкните, удерживая клавишу Ctrl, чтобы выбрать несколько объектов.",
   "createFeature": "Создать объект",
   "createRecord": "Создать запись",
   "create": "Создать"
